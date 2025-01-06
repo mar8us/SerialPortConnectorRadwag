@@ -1,0 +1,6 @@
+<RCC>
+    <qresource prefix="/">
+        <file>icons/settings_dark.png</file>
+        <file>icons/settings_white.png</file>
+    </qresource>
+</RCC>
