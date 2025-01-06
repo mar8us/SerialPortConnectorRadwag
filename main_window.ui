@@ -13,9 +13,261 @@
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
-  <widget class="QWidget" name="centralwidget"/>
+  <widget class="QWidget" name="centralwidget">
+   <layout class="QHBoxLayout" name="horizontalLayout">
+    <item>
+     <widget class="QStackedWidget" name="stackedWidget">
+      <property name="currentIndex">
+       <number>1</number>
+      </property>
+      <widget class="QWidget" name="page"/>
+      <widget class="QWidget" name="page_2">
+       <layout class="QHBoxLayout" name="horizontalLayout_2">
+        <item>
+         <widget class="QGroupBox" name="groupBox">
+          <property name="title">
+           <string>Połącz komputerem z urządzeniem </string>
+          </property>
+          <widget class="QPushButton" name="selectDiviceButton">
+           <property name="geometry">
+            <rect>
+             <x>250</x>
+             <y>260</y>
+             <width>91</width>
+             <height>29</height>
+            </rect>
+           </property>
+           <property name="text">
+            <string>Wybierz</string>
+           </property>
+          </widget>
+          <widget class="QLabel" name="diviceNameLabel">
+           <property name="geometry">
+            <rect>
+             <x>20</x>
+             <y>330</y>
+             <width>91</width>
+             <height>20</height>
+            </rect>
+           </property>
+           <property name="text">
+            <string>Urządzenie:</string>
+           </property>
+          </widget>
+          <widget class="QPushButton" name="addDeviceButton">
+           <property name="geometry">
+            <rect>
+             <x>350</x>
+             <y>60</y>
+             <width>111</width>
+             <height>29</height>
+            </rect>
+           </property>
+           <property name="text">
+            <string>Dodaj nowe</string>
+           </property>
+          </widget>
+          <widget class="QLineEdit" name="deviceNameEdit">
+           <property name="geometry">
+            <rect>
+             <x>150</x>
+             <y>320</y>
+             <width>113</width>
+             <height>28</height>
+            </rect>
+           </property>
+           <property name="readOnly">
+            <bool>true</bool>
+           </property>
+          </widget>
+          <widget class="QLabel" name="titleConnLabel">
+           <property name="geometry">
+            <rect>
+             <x>10</x>
+             <y>300</y>
+             <width>81</width>
+             <height>20</height>
+            </rect>
+           </property>
+           <property name="font">
+            <font>
+             <bold>true</bold>
+            </font>
+           </property>
+           <property name="text">
+            <string>Połaczenie</string>
+           </property>
+          </widget>
+          <widget class="QLabel" name="portLabel">
+           <property name="geometry">
+            <rect>
+             <x>20</x>
+             <y>360</y>
+             <width>81</width>
+             <height>20</height>
+            </rect>
+           </property>
+           <property name="text">
+            <string>Port:</string>
+           </property>
+          </widget>
+          <widget class="QLabel" name="statusConnLabel">
+           <property name="geometry">
+            <rect>
+             <x>20</x>
+             <y>400</y>
+             <width>121</width>
+             <height>20</height>
+            </rect>
+           </property>
+           <property name="text">
+            <string>Status połączenia:</string>
+           </property>
+          </widget>
+          <widget class="QPushButton" name="deleteDeviceButton">
+           <property name="geometry">
+            <rect>
+             <x>350</x>
+             <y>140</y>
+             <width>111</width>
+             <height>29</height>
+            </rect>
+           </property>
+           <property name="text">
+            <string>Usuń</string>
+           </property>
+          </widget>
+          <widget class="QPushButton" name="editDeviceButton">
+           <property name="geometry">
+            <rect>
+             <x>350</x>
+             <y>100</y>
+             <width>111</width>
+             <height>29</height>
+            </rect>
+           </property>
+           <property name="text">
+            <string>Edytuj</string>
+           </property>
+          </widget>
+          <widget class="QLabel" name="statusLabel">
+           <property name="geometry">
+            <rect>
+             <x>150</x>
+             <y>400</y>
+             <width>111</width>
+             <height>21</height>
+            </rect>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">QLabel { background-color: red; color: white; }</string>
+           </property>
+           <property name="text">
+            <string>Brak połączenia</string>
+           </property>
+           <property name="textFormat">
+            <enum>Qt::TextFormat::AutoText</enum>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignmentFlag::AlignCenter</set>
+           </property>
+          </widget>
+          <widget class="QComboBox" name="serialPortCombo">
+           <property name="geometry">
+            <rect>
+             <x>150</x>
+             <y>360</y>
+             <width>111</width>
+             <height>28</height>
+            </rect>
+           </property>
+          </widget>
+          <widget class="QLabel" name="titleRembDivLabel">
+           <property name="geometry">
+            <rect>
+             <x>10</x>
+             <y>30</y>
+             <width>171</width>
+             <height>20</height>
+            </rect>
+           </property>
+           <property name="font">
+            <font>
+             <bold>true</bold>
+            </font>
+           </property>
+           <property name="text">
+            <string>Wybierz urządzenie:</string>
+           </property>
+          </widget>
+          <widget class="QListView" name="devicesListView">
+           <property name="geometry">
+            <rect>
+             <x>10</x>
+             <y>60</y>
+             <width>331</width>
+             <height>192</height>
+            </rect>
+           </property>
+           <property name="font">
+            <font>
+             <pointsize>12</pointsize>
+             <bold>true</bold>
+            </font>
+           </property>
+          </widget>
+          <widget class="QPushButton" name="connectButton">
+           <property name="geometry">
+            <rect>
+             <x>180</x>
+             <y>430</y>
+             <width>83</width>
+             <height>29</height>
+            </rect>
+           </property>
+           <property name="text">
+            <string>Połącz</string>
+           </property>
+          </widget>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+     </widget>
+    </item>
+   </layout>
+  </widget>
   <widget class="QStatusBar" name="statusbar"/>
+  <widget class="QToolBar" name="toolBar">
+   <property name="windowTitle">
+    <string>toolBar</string>
+   </property>
+   <property name="toolButtonStyle">
+    <enum>Qt::ToolButtonStyle::ToolButtonTextUnderIcon</enum>
+   </property>
+   <attribute name="toolBarArea">
+    <enum>TopToolBarArea</enum>
+   </attribute>
+   <attribute name="toolBarBreak">
+    <bool>false</bool>
+   </attribute>
+   <addaction name="actionSettings"/>
+  </widget>
+  <action name="actionSettings">
+   <property name="icon">
+    <iconset resource="resources.qrc">
+     <normaloff>:/icons/settings_white.png</normaloff>:/icons/settings_white.png</iconset>
+   </property>
+   <property name="text">
+    <string>Ustawienia</string>
+   </property>
+   <property name="menuRole">
+    <enum>QAction::MenuRole::NoRole</enum>
+   </property>
+  </action>
  </widget>
- <resources/>
+ <resources>
+  <include location="resources.qrc"/>
+ </resources>
  <connections/>
 </ui>
