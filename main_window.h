@@ -25,6 +25,8 @@ private:
     Ui::MainWindow *ui;
     QIcon defaultSettingsIcon;
     QIcon activeSettingsIcon;
+    QIcon defaultRadwagIcon;
+    QIcon activeRadwagIcon;
 
     void connectButtons();
     void setIcons();
