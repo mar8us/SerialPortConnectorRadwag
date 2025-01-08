@@ -4,5 +4,6 @@
         <file>icons/settings_white.png</file>
         <file>icons/balance_dark.png</file>
         <file>icons/balance_white.png</file>
+        <file>icons/settings_selected.png</file>
     </qresource>
 </RCC>

@@ -17,7 +17,16 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
+private slots:
+    void navigateToToolBoxPage(QWidget* page);
+    void updateActionIcons(int index);
+
 private:
     Ui::MainWindow *ui;
+    QIcon defaultSettingsIcon;
+    QIcon activeSettingsIcon;
+
+    void connectButtons();
+    void setIcons();
 };
 #endif // MAIN_WINDOW_H
