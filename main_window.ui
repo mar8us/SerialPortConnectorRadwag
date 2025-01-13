@@ -7,13 +7,13 @@
     <x>0</x>
     <y>0</y>
     <width>968</width>
-    <height>747</height>
+    <height>770</height>
    </rect>
   </property>
   <property name="minimumSize">
    <size>
-    <width>800</width>
-    <height>600</height>
+    <width>860</width>
+    <height>770</height>
    </size>
   </property>
   <property name="windowTitle">
@@ -48,7 +48,7 @@
              <widget class="QGroupBox" name="stageMeasureDensityGroupBox">
               <property name="minimumSize">
                <size>
-                <width>220</width>
+                <width>200</width>
                 <height>0</height>
                </size>
               </property>
@@ -162,6 +162,12 @@
             </item>
             <item>
              <widget class="QStackedWidget" name="measureDensityStage">
+              <property name="minimumSize">
+               <size>
+                <width>220</width>
+                <height>180</height>
+               </size>
+              </property>
               <property name="currentIndex">
                <number>0</number>
               </property>
@@ -171,13 +177,13 @@
                  <widget class="QPushButton" name="buttonGoDataStage">
                   <property name="minimumSize">
                    <size>
-                    <width>200</width>
+                    <width>150</width>
                     <height>0</height>
                    </size>
                   </property>
                   <property name="maximumSize">
                    <size>
-                    <width>200</width>
+                    <width>150</width>
                     <height>16777215</height>
                    </size>
                   </property>
@@ -401,6 +407,25 @@
               </widget>
               <widget class="QWidget" name="measureAirPageStage">
                <layout class="QGridLayout" name="gridLayout">
+                <item row="2" column="1">
+                 <widget class="QPushButton" name="buttonGoAirStage">
+                  <property name="minimumSize">
+                   <size>
+                    <width>150</width>
+                    <height>0</height>
+                   </size>
+                  </property>
+                  <property name="maximumSize">
+                   <size>
+                    <width>150</width>
+                    <height>16777215</height>
+                   </size>
+                  </property>
+                  <property name="text">
+                   <string>Przejdż dalej</string>
+                  </property>
+                 </widget>
+                </item>
                 <item row="1" column="0" colspan="4">
                  <widget class="QGroupBox" name="measureAirGroupBox">
                   <property name="title">
@@ -502,13 +527,13 @@
                  <widget class="QPushButton" name="buttonBackAirStage">
                   <property name="minimumSize">
                    <size>
-                    <width>100</width>
+                    <width>150</width>
                     <height>0</height>
                    </size>
                   </property>
                   <property name="maximumSize">
                    <size>
-                    <width>200</width>
+                    <width>150</width>
                     <height>16777215</height>
                    </size>
                   </property>
@@ -517,31 +542,12 @@
                   </property>
                  </widget>
                 </item>
-                <item row="2" column="1">
-                 <widget class="QPushButton" name="buttonGoAirStage">
-                  <property name="minimumSize">
-                   <size>
-                    <width>100</width>
-                    <height>0</height>
-                   </size>
-                  </property>
-                  <property name="maximumSize">
-                   <size>
-                    <width>200</width>
-                    <height>16777215</height>
-                   </size>
-                  </property>
-                  <property name="text">
-                   <string>Przejdż dalej</string>
-                  </property>
-                 </widget>
-                </item>
                 <item row="0" column="0" colspan="4">
                  <widget class="QGroupBox" name="guideMeasureAirGroupLabels">
                   <property name="maximumSize">
                    <size>
                     <width>16777215</width>
-                    <height>250</height>
+                    <height>16777215</height>
                    </size>
                   </property>
                   <property name="autoFillBackground">
@@ -607,6 +613,78 @@
                      <property name="alignment">
                       <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignTop</set>
                      </property>
+                    </widget>
+                   </item>
+                  </layout>
+                 </widget>
+                </item>
+                <item row="0" column="4" rowspan="2">
+                 <widget class="QGroupBox" name="calculationAirGroupBox">
+                  <property name="minimumSize">
+                   <size>
+                    <width>200</width>
+                    <height>0</height>
+                   </size>
+                  </property>
+                  <property name="maximumSize">
+                   <size>
+                    <width>260</width>
+                    <height>16777215</height>
+                   </size>
+                  </property>
+                  <property name="title">
+                   <string>Obliczenia</string>
+                  </property>
+                  <layout class="QFormLayout" name="formLayout_8">
+                   <property name="leftMargin">
+                    <number>16</number>
+                   </property>
+                   <item row="0" column="0" colspan="2">
+                    <widget class="QGroupBox" name="calculationAirDateGroupBox">
+                     <property name="minimumSize">
+                      <size>
+                       <width>0</width>
+                       <height>80</height>
+                      </size>
+                     </property>
+                     <property name="maximumSize">
+                      <size>
+                       <width>16777215</width>
+                       <height>100</height>
+                      </size>
+                     </property>
+                     <property name="title">
+                      <string>Dane</string>
+                     </property>
+                     <layout class="QGridLayout" name="gridLayout_10">
+                      <item row="0" column="1">
+                       <widget class="QLineEdit" name="averageAirWeightEdit">
+                        <property name="enabled">
+                         <bool>false</bool>
+                        </property>
+                        <property name="maximumSize">
+                         <size>
+                          <width>75</width>
+                          <height>16777215</height>
+                         </size>
+                        </property>
+                       </widget>
+                      </item>
+                      <item row="0" column="0">
+                       <widget class="QLabel" name="averageAirWeightLabel">
+                        <property name="text">
+                         <string>Średnia masa:
+(w powietrzu)</string>
+                        </property>
+                        <property name="alignment">
+                         <set>Qt::AlignmentFlag::AlignJustify|Qt::AlignmentFlag::AlignTop</set>
+                        </property>
+                        <property name="wordWrap">
+                         <bool>false</bool>
+                        </property>
+                       </widget>
+                      </item>
+                     </layout>
                     </widget>
                    </item>
                   </layout>
@@ -705,13 +783,13 @@
                  <widget class="QPushButton" name="buttonBackPrepareStage">
                   <property name="minimumSize">
                    <size>
-                    <width>100</width>
+                    <width>150</width>
                     <height>0</height>
                    </size>
                   </property>
                   <property name="maximumSize">
                    <size>
-                    <width>200</width>
+                    <width>150</width>
                     <height>16777215</height>
                    </size>
                   </property>
@@ -724,13 +802,13 @@
                  <widget class="QPushButton" name="buttonGoPrepareStage">
                   <property name="minimumSize">
                    <size>
-                    <width>100</width>
+                    <width>150</width>
                     <height>0</height>
                    </size>
                   </property>
                   <property name="maximumSize">
                    <size>
-                    <width>200</width>
+                    <width>150</width>
                     <height>16777215</height>
                    </size>
                   </property>
@@ -743,8 +821,126 @@
               </widget>
               <widget class="QWidget" name="measureHydroPageStage">
                <layout class="QGridLayout" name="gridLayout_3">
+                <item row="2" column="1">
+                 <widget class="QPushButton" name="buttonGoHydroStage">
+                  <property name="minimumSize">
+                   <size>
+                    <width>150</width>
+                    <height>0</height>
+                   </size>
+                  </property>
+                  <property name="maximumSize">
+                   <size>
+                    <width>150</width>
+                    <height>16777215</height>
+                   </size>
+                  </property>
+                  <property name="text">
+                   <string>Przejdż dalej</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="0" column="0" colspan="4">
+                 <widget class="QGroupBox" name="guideMeasureHydroGroupLabels">
+                  <property name="maximumSize">
+                   <size>
+                    <width>800</width>
+                    <height>250</height>
+                   </size>
+                  </property>
+                  <property name="autoFillBackground">
+                   <bool>true</bool>
+                  </property>
+                  <property name="styleSheet">
+                   <string notr="true"/>
+                  </property>
+                  <property name="title">
+                   <string/>
+                  </property>
+                  <layout class="QFormLayout" name="formLayout_6">
+                   <item row="0" column="0">
+                    <widget class="QLabel" name="titleGuideLabel_3">
+                     <property name="font">
+                      <font>
+                       <pointsize>14</pointsize>
+                       <bold>false</bold>
+                      </font>
+                     </property>
+                     <property name="text">
+                      <string>Przewodnik</string>
+                     </property>
+                     <property name="alignment">
+                      <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignTop</set>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="1" column="0">
+                    <widget class="QLabel" name="descGuideEdit_3">
+                     <property name="font">
+                      <font>
+                       <pointsize>11</pointsize>
+                       <bold>false</bold>
+                      </font>
+                     </property>
+                     <property name="text">
+                      <string>Wykonaj poniższe kroki aby przejść do kolejnego etapu pomiaru:</string>
+                     </property>
+                     <property name="alignment">
+                      <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignTop</set>
+                     </property>
+                     <property name="wordWrap">
+                      <bool>true</bool>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="2" column="0">
+                    <widget class="QLabel" name="stepsGuideLabel_3">
+                     <property name="font">
+                      <font>
+                       <pointsize>10</pointsize>
+                       <bold>false</bold>
+                      </font>
+                     </property>
+                     <property name="text">
+                      <string>1. Zważ próbkę zanurzoną w wodzie
+2. Zapisz wynik do arkusza (m2)
+3. Powtórz pomiar 3 razy</string>
+                     </property>
+                     <property name="alignment">
+                      <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignTop</set>
+                     </property>
+                    </widget>
+                   </item>
+                  </layout>
+                 </widget>
+                </item>
+                <item row="2" column="0">
+                 <widget class="QPushButton" name="buttonBackHydroStage">
+                  <property name="minimumSize">
+                   <size>
+                    <width>150</width>
+                    <height>0</height>
+                   </size>
+                  </property>
+                  <property name="maximumSize">
+                   <size>
+                    <width>150</width>
+                    <height>16777215</height>
+                   </size>
+                  </property>
+                  <property name="text">
+                   <string>Wróć</string>
+                  </property>
+                 </widget>
+                </item>
                 <item row="1" column="0" colspan="4">
                  <widget class="QGroupBox" name="measureHydroGroupBox">
+                  <property name="maximumSize">
+                   <size>
+                    <width>16777215</width>
+                    <height>16777215</height>
+                   </size>
+                  </property>
                   <property name="title">
                    <string>Pomiar masy w cieczy</string>
                   </property>
@@ -840,116 +1036,282 @@
                   </layout>
                  </widget>
                 </item>
-                <item row="0" column="0" colspan="4">
-                 <widget class="QGroupBox" name="guideMeasureHydroGroupLabels">
+                <item row="2" column="4">
+                 <widget class="QPushButton" name="buttonSaveHydro">
                   <property name="maximumSize">
                    <size>
                     <width>16777215</width>
-                    <height>250</height>
+                    <height>16777215</height>
                    </size>
                   </property>
-                  <property name="autoFillBackground">
-                   <bool>true</bool>
+                  <property name="text">
+                   <string>Zapisz</string>
                   </property>
-                  <property name="styleSheet">
-                   <string notr="true"/>
+                 </widget>
+                </item>
+                <item row="0" column="4" rowspan="2">
+                 <widget class="QGroupBox" name="calculationHydroGroupBox">
+                  <property name="minimumSize">
+                   <size>
+                    <width>260</width>
+                    <height>0</height>
+                   </size>
+                  </property>
+                  <property name="maximumSize">
+                   <size>
+                    <width>260</width>
+                    <height>16777215</height>
+                   </size>
                   </property>
                   <property name="title">
-                   <string/>
+                   <string>Obliczenia</string>
                   </property>
-                  <layout class="QFormLayout" name="formLayout_6">
-                   <item row="0" column="0">
-                    <widget class="QLabel" name="titleGuideLabel_3">
-                     <property name="font">
-                      <font>
-                       <pointsize>14</pointsize>
-                       <bold>false</bold>
-                      </font>
+                  <layout class="QFormLayout" name="formLayout_5">
+                   <item row="1" column="1">
+                    <widget class="QGroupBox" name="calculationHydroResultsGroupBox">
+                     <property name="minimumSize">
+                      <size>
+                       <width>0</width>
+                       <height>220</height>
+                      </size>
                      </property>
-                     <property name="text">
-                      <string>Przewodnik</string>
+                     <property name="maximumSize">
+                      <size>
+                       <width>16777215</width>
+                       <height>300</height>
+                      </size>
                      </property>
-                     <property name="alignment">
-                      <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignTop</set>
+                     <property name="sizeIncrement">
+                      <size>
+                       <width>0</width>
+                       <height>0</height>
+                      </size>
                      </property>
+                     <property name="title">
+                      <string>Wyniki</string>
+                     </property>
+                     <layout class="QGridLayout" name="gridLayout_9">
+                      <item row="0" column="0" colspan="2">
+                       <widget class="QLabel" name="volumeHydroLabel">
+                        <property name="maximumSize">
+                         <size>
+                          <width>16777215</width>
+                          <height>16777215</height>
+                         </size>
+                        </property>
+                        <property name="text">
+                         <string>Objętość pozorna:</string>
+                        </property>
+                        <property name="alignment">
+                         <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignTop</set>
+                        </property>
+                        <property name="wordWrap">
+                         <bool>false</bool>
+                        </property>
+                       </widget>
+                      </item>
+                      <item row="0" column="2">
+                       <widget class="QLineEdit" name="volumeHydroEdit">
+                        <property name="enabled">
+                         <bool>false</bool>
+                        </property>
+                        <property name="maximumSize">
+                         <size>
+                          <width>75</width>
+                          <height>16777215</height>
+                         </size>
+                        </property>
+                       </widget>
+                      </item>
+                      <item row="1" column="0" colspan="2">
+                       <widget class="QLabel" name="densityApparentHydroLabel">
+                        <property name="text">
+                         <string>Gęstość pozorna:</string>
+                        </property>
+                        <property name="alignment">
+                         <set>Qt::AlignmentFlag::AlignJustify|Qt::AlignmentFlag::AlignTop</set>
+                        </property>
+                       </widget>
+                      </item>
+                      <item row="1" column="2">
+                       <widget class="QLineEdit" name="volumeApparentHydroEdit">
+                        <property name="enabled">
+                         <bool>false</bool>
+                        </property>
+                        <property name="maximumSize">
+                         <size>
+                          <width>75</width>
+                          <height>16777215</height>
+                         </size>
+                        </property>
+                       </widget>
+                      </item>
+                      <item row="2" column="0" colspan="2">
+                       <widget class="QLabel" name="volumeRelativeHydroLabel">
+                        <property name="text">
+                         <string>Gęstość względna:</string>
+                        </property>
+                        <property name="alignment">
+                         <set>Qt::AlignmentFlag::AlignJustify|Qt::AlignmentFlag::AlignTop</set>
+                        </property>
+                       </widget>
+                      </item>
+                      <item row="2" column="2">
+                       <widget class="QLineEdit" name="volumeRelativeHydroEdit">
+                        <property name="enabled">
+                         <bool>false</bool>
+                        </property>
+                        <property name="maximumSize">
+                         <size>
+                          <width>75</width>
+                          <height>16777215</height>
+                         </size>
+                        </property>
+                       </widget>
+                      </item>
+                      <item row="3" column="0">
+                       <widget class="QPushButton" name="buttonCalculateHydro">
+                        <property name="minimumSize">
+                         <size>
+                          <width>100</width>
+                          <height>0</height>
+                         </size>
+                        </property>
+                        <property name="maximumSize">
+                         <size>
+                          <width>200</width>
+                          <height>16777215</height>
+                         </size>
+                        </property>
+                        <property name="text">
+                         <string>Oblicz</string>
+                        </property>
+                       </widget>
+                      </item>
+                      <item row="3" column="1" colspan="2">
+                       <widget class="QPushButton" name="buttonShowDetailsHydro">
+                        <property name="minimumSize">
+                         <size>
+                          <width>110</width>
+                          <height>0</height>
+                         </size>
+                        </property>
+                        <property name="maximumSize">
+                         <size>
+                          <width>200</width>
+                          <height>16777215</height>
+                         </size>
+                        </property>
+                        <property name="text">
+                         <string>Pokaż szczegóły</string>
+                        </property>
+                       </widget>
+                      </item>
+                     </layout>
                     </widget>
                    </item>
-                   <item row="1" column="0">
-                    <widget class="QLabel" name="descGuideEdit_3">
-                     <property name="font">
-                      <font>
-                       <pointsize>11</pointsize>
-                       <bold>false</bold>
-                      </font>
+                   <item row="0" column="1">
+                    <widget class="QGroupBox" name="calculationHydroDateGroupBox">
+                     <property name="minimumSize">
+                      <size>
+                       <width>220</width>
+                       <height>180</height>
+                      </size>
                      </property>
-                     <property name="text">
-                      <string>Wykonaj poniższe kroki aby przejść do kolejnego etapu pomiaru:</string>
+                     <property name="maximumSize">
+                      <size>
+                       <width>16777215</width>
+                       <height>180</height>
+                      </size>
                      </property>
-                     <property name="alignment">
-                      <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignTop</set>
+                     <property name="title">
+                      <string>Dane</string>
                      </property>
-                     <property name="wordWrap">
-                      <bool>true</bool>
-                     </property>
-                    </widget>
-                   </item>
-                   <item row="2" column="0">
-                    <widget class="QLabel" name="stepsGuideLabel_3">
-                     <property name="font">
-                      <font>
-                       <pointsize>10</pointsize>
-                       <bold>false</bold>
-                      </font>
-                     </property>
-                     <property name="text">
-                      <string>1. Zważ próbkę zanurzoną w wodzie
-2. Zapisz wynik do arkusza (m2)
-3. Powtórz pomiar 3 razy</string>
-                     </property>
-                     <property name="alignment">
-                      <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignTop</set>
-                     </property>
+                     <layout class="QGridLayout" name="gridLayout_6">
+                      <item row="0" column="0">
+                       <widget class="QLabel" name="averageAirWeightLabelHydro">
+                        <property name="text">
+                         <string>Średnia masa:
+(w powietrzu)</string>
+                        </property>
+                        <property name="alignment">
+                         <set>Qt::AlignmentFlag::AlignJustify|Qt::AlignmentFlag::AlignTop</set>
+                        </property>
+                        <property name="wordWrap">
+                         <bool>false</bool>
+                        </property>
+                       </widget>
+                      </item>
+                      <item row="0" column="1">
+                       <widget class="QLineEdit" name="averageAirWeightEditHydro">
+                        <property name="enabled">
+                         <bool>false</bool>
+                        </property>
+                        <property name="maximumSize">
+                         <size>
+                          <width>75</width>
+                          <height>16777215</height>
+                         </size>
+                        </property>
+                       </widget>
+                      </item>
+                      <item row="1" column="0">
+                       <widget class="QLabel" name="averageHydroWeightLabel">
+                        <property name="text">
+                         <string>Średnia masa:
+(w cieczy)</string>
+                        </property>
+                        <property name="alignment">
+                         <set>Qt::AlignmentFlag::AlignJustify|Qt::AlignmentFlag::AlignTop</set>
+                        </property>
+                        <property name="wordWrap">
+                         <bool>false</bool>
+                        </property>
+                       </widget>
+                      </item>
+                      <item row="1" column="1">
+                       <widget class="QLineEdit" name="averageHydroWeightEdit">
+                        <property name="enabled">
+                         <bool>false</bool>
+                        </property>
+                        <property name="maximumSize">
+                         <size>
+                          <width>75</width>
+                          <height>16777215</height>
+                         </size>
+                        </property>
+                       </widget>
+                      </item>
+                      <item row="2" column="0">
+                       <widget class="QLabel" name="densityFluidHydroLabel">
+                        <property name="text">
+                         <string>Gęstość cieczy:</string>
+                        </property>
+                        <property name="alignment">
+                         <set>Qt::AlignmentFlag::AlignJustify|Qt::AlignmentFlag::AlignTop</set>
+                        </property>
+                        <property name="wordWrap">
+                         <bool>false</bool>
+                        </property>
+                       </widget>
+                      </item>
+                      <item row="2" column="1">
+                       <widget class="QLineEdit" name="densityFluidEditHydro">
+                        <property name="enabled">
+                         <bool>false</bool>
+                        </property>
+                        <property name="maximumSize">
+                         <size>
+                          <width>75</width>
+                          <height>16777215</height>
+                         </size>
+                        </property>
+                       </widget>
+                      </item>
+                     </layout>
                     </widget>
                    </item>
                   </layout>
-                 </widget>
-                </item>
-                <item row="2" column="0">
-                 <widget class="QPushButton" name="buttonBackHydroStage">
-                  <property name="minimumSize">
-                   <size>
-                    <width>100</width>
-                    <height>0</height>
-                   </size>
-                  </property>
-                  <property name="maximumSize">
-                   <size>
-                    <width>200</width>
-                    <height>16777215</height>
-                   </size>
-                  </property>
-                  <property name="text">
-                   <string>Wróć</string>
-                  </property>
-                 </widget>
-                </item>
-                <item row="2" column="1">
-                 <widget class="QPushButton" name="buttonGoHydroStage">
-                  <property name="minimumSize">
-                   <size>
-                    <width>100</width>
-                    <height>0</height>
-                   </size>
-                  </property>
-                  <property name="maximumSize">
-                   <size>
-                    <width>200</width>
-                    <height>16777215</height>
-                   </size>
-                  </property>
-                  <property name="text">
-                   <string>Przejdż dalej</string>
-                  </property>
                  </widget>
                 </item>
                </layout>
@@ -1053,44 +1415,6 @@
                   </layout>
                  </widget>
                 </item>
-                <item row="2" column="0">
-                 <widget class="QPushButton" name="buttonBackAirEndStage">
-                  <property name="minimumSize">
-                   <size>
-                    <width>100</width>
-                    <height>0</height>
-                   </size>
-                  </property>
-                  <property name="maximumSize">
-                   <size>
-                    <width>200</width>
-                    <height>16777215</height>
-                   </size>
-                  </property>
-                  <property name="text">
-                   <string>Wróć</string>
-                  </property>
-                 </widget>
-                </item>
-                <item row="2" column="1">
-                 <widget class="QPushButton" name="buttonGoAirEndStage">
-                  <property name="minimumSize">
-                   <size>
-                    <width>100</width>
-                    <height>0</height>
-                   </size>
-                  </property>
-                  <property name="maximumSize">
-                   <size>
-                    <width>200</width>
-                    <height>16777215</height>
-                   </size>
-                  </property>
-                  <property name="text">
-                   <string>Przejdż dalej</string>
-                  </property>
-                 </widget>
-                </item>
                 <item row="0" column="0" colspan="4">
                  <widget class="QGroupBox" name="guideMeasureAirEndGroupLabels">
                   <property name="maximumSize">
@@ -1165,6 +1489,392 @@
                     </widget>
                    </item>
                   </layout>
+                 </widget>
+                </item>
+                <item row="2" column="1">
+                 <widget class="QPushButton" name="buttonGoAirEndStage">
+                  <property name="minimumSize">
+                   <size>
+                    <width>150</width>
+                    <height>0</height>
+                   </size>
+                  </property>
+                  <property name="maximumSize">
+                   <size>
+                    <width>150</width>
+                    <height>16777215</height>
+                   </size>
+                  </property>
+                  <property name="text">
+                   <string>Przejdż dalej</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="2" column="0">
+                 <widget class="QPushButton" name="buttonBackAirEndStage">
+                  <property name="minimumSize">
+                   <size>
+                    <width>150</width>
+                    <height>0</height>
+                   </size>
+                  </property>
+                  <property name="maximumSize">
+                   <size>
+                    <width>150</width>
+                    <height>16777215</height>
+                   </size>
+                  </property>
+                  <property name="text">
+                   <string>Wróć</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="0" column="4" rowspan="2">
+                 <widget class="QGroupBox" name="calculateAirEndGroupBox">
+                  <property name="minimumSize">
+                   <size>
+                    <width>260</width>
+                    <height>0</height>
+                   </size>
+                  </property>
+                  <property name="maximumSize">
+                   <size>
+                    <width>260</width>
+                    <height>16777215</height>
+                   </size>
+                  </property>
+                  <property name="title">
+                   <string>Obliczenia</string>
+                  </property>
+                  <layout class="QFormLayout" name="formLayout_7">
+                   <property name="leftMargin">
+                    <number>15</number>
+                   </property>
+                   <item row="0" column="0" colspan="2">
+                    <widget class="QGroupBox" name="calculationAirEndGroupBox">
+                     <property name="minimumSize">
+                      <size>
+                       <width>220</width>
+                       <height>220</height>
+                      </size>
+                     </property>
+                     <property name="maximumSize">
+                      <size>
+                       <width>16777215</width>
+                       <height>220</height>
+                      </size>
+                     </property>
+                     <property name="title">
+                      <string>Dane</string>
+                     </property>
+                     <layout class="QGridLayout" name="gridLayout_7">
+                      <item row="0" column="1">
+                       <widget class="QLineEdit" name="averageAirWeightEditAirEnd">
+                        <property name="enabled">
+                         <bool>false</bool>
+                        </property>
+                        <property name="maximumSize">
+                         <size>
+                          <width>75</width>
+                          <height>16777215</height>
+                         </size>
+                        </property>
+                       </widget>
+                      </item>
+                      <item row="2" column="0">
+                       <widget class="QLabel" name="averageAirEndSatWeightLabel">
+                        <property name="text">
+                         <string>Średnia masa:
+(nasycona)</string>
+                        </property>
+                        <property name="alignment">
+                         <set>Qt::AlignmentFlag::AlignJustify|Qt::AlignmentFlag::AlignTop</set>
+                        </property>
+                        <property name="wordWrap">
+                         <bool>false</bool>
+                        </property>
+                       </widget>
+                      </item>
+                      <item row="3" column="0">
+                       <widget class="QLabel" name="densityFluidHydroLabelAirEnd">
+                        <property name="text">
+                         <string>Gęstość cieczy:</string>
+                        </property>
+                        <property name="alignment">
+                         <set>Qt::AlignmentFlag::AlignJustify|Qt::AlignmentFlag::AlignTop</set>
+                        </property>
+                        <property name="wordWrap">
+                         <bool>false</bool>
+                        </property>
+                       </widget>
+                      </item>
+                      <item row="2" column="1">
+                       <widget class="QLineEdit" name="averageAirEndSatWeightEdit">
+                        <property name="enabled">
+                         <bool>false</bool>
+                        </property>
+                        <property name="maximumSize">
+                         <size>
+                          <width>75</width>
+                          <height>16777215</height>
+                         </size>
+                        </property>
+                       </widget>
+                      </item>
+                      <item row="3" column="1">
+                       <widget class="QLineEdit" name="densityFluidHydroEditAirEnd">
+                        <property name="enabled">
+                         <bool>false</bool>
+                        </property>
+                        <property name="maximumSize">
+                         <size>
+                          <width>75</width>
+                          <height>16777215</height>
+                         </size>
+                        </property>
+                       </widget>
+                      </item>
+                      <item row="0" column="0">
+                       <widget class="QLabel" name="averageAirWeightLabelAirEnd">
+                        <property name="text">
+                         <string>Średnia masa:
+(w powietrzu)</string>
+                        </property>
+                        <property name="alignment">
+                         <set>Qt::AlignmentFlag::AlignJustify|Qt::AlignmentFlag::AlignTop</set>
+                        </property>
+                        <property name="wordWrap">
+                         <bool>false</bool>
+                        </property>
+                       </widget>
+                      </item>
+                      <item row="1" column="0">
+                       <widget class="QLabel" name="averageHydroWeightLabelAirEnd">
+                        <property name="text">
+                         <string>Średnia masa:
+(w cieczy)</string>
+                        </property>
+                        <property name="alignment">
+                         <set>Qt::AlignmentFlag::AlignJustify|Qt::AlignmentFlag::AlignTop</set>
+                        </property>
+                        <property name="wordWrap">
+                         <bool>false</bool>
+                        </property>
+                       </widget>
+                      </item>
+                      <item row="1" column="1">
+                       <widget class="QLineEdit" name="averageHydroWeightEditAirEnd">
+                        <property name="enabled">
+                         <bool>false</bool>
+                        </property>
+                        <property name="maximumSize">
+                         <size>
+                          <width>75</width>
+                          <height>16777215</height>
+                         </size>
+                        </property>
+                       </widget>
+                      </item>
+                     </layout>
+                    </widget>
+                   </item>
+                   <item row="1" column="0" colspan="2">
+                    <widget class="QGroupBox" name="calculationAirEndResultsGroupBox">
+                     <property name="minimumSize">
+                      <size>
+                       <width>0</width>
+                       <height>300</height>
+                      </size>
+                     </property>
+                     <property name="maximumSize">
+                      <size>
+                       <width>16777215</width>
+                       <height>380</height>
+                      </size>
+                     </property>
+                     <property name="title">
+                      <string>Wyniki</string>
+                     </property>
+                     <layout class="QGridLayout" name="gridLayout_8">
+                      <item row="6" column="0">
+                       <widget class="QPushButton" name="buttonCalculateAirEnd">
+                        <property name="minimumSize">
+                         <size>
+                          <width>100</width>
+                          <height>0</height>
+                         </size>
+                        </property>
+                        <property name="maximumSize">
+                         <size>
+                          <width>200</width>
+                          <height>16777215</height>
+                         </size>
+                        </property>
+                        <property name="text">
+                         <string>Oblicz</string>
+                        </property>
+                       </widget>
+                      </item>
+                      <item row="6" column="1" colspan="2">
+                       <widget class="QPushButton" name="buttonShowDetailsAirEnd">
+                        <property name="minimumSize">
+                         <size>
+                          <width>110</width>
+                          <height>0</height>
+                         </size>
+                        </property>
+                        <property name="maximumSize">
+                         <size>
+                          <width>200</width>
+                          <height>16777215</height>
+                         </size>
+                        </property>
+                        <property name="text">
+                         <string>Pokaż szczegóły</string>
+                        </property>
+                       </widget>
+                      </item>
+                      <item row="1" column="2">
+                       <widget class="QLineEdit" name="densityApparentHydroEditAirEnd">
+                        <property name="enabled">
+                         <bool>false</bool>
+                        </property>
+                        <property name="maximumSize">
+                         <size>
+                          <width>75</width>
+                          <height>16777215</height>
+                         </size>
+                        </property>
+                       </widget>
+                      </item>
+                      <item row="1" column="0" colspan="2">
+                       <widget class="QLabel" name="densityApparentHydroLabelAirEnd">
+                        <property name="text">
+                         <string>Gęstość pozorna:</string>
+                        </property>
+                        <property name="alignment">
+                         <set>Qt::AlignmentFlag::AlignJustify|Qt::AlignmentFlag::AlignTop</set>
+                        </property>
+                       </widget>
+                      </item>
+                      <item row="0" column="2">
+                       <widget class="QLineEdit" name="volumeHydroEditAirEnd">
+                        <property name="enabled">
+                         <bool>false</bool>
+                        </property>
+                        <property name="maximumSize">
+                         <size>
+                          <width>75</width>
+                          <height>16777215</height>
+                         </size>
+                        </property>
+                       </widget>
+                      </item>
+                      <item row="4" column="0">
+                       <widget class="QLabel" name="absorbabilityWeightLabel">
+                        <property name="text">
+                         <string>Nasiąkliwość wagowa:</string>
+                        </property>
+                        <property name="alignment">
+                         <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignTop</set>
+                        </property>
+                        <property name="wordWrap">
+                         <bool>true</bool>
+                        </property>
+                       </widget>
+                      </item>
+                      <item row="0" column="0" colspan="2">
+                       <widget class="QLabel" name="volumeHydroLabelAirEnd">
+                        <property name="text">
+                         <string>Objętość pozorna:</string>
+                        </property>
+                        <property name="alignment">
+                         <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignTop</set>
+                        </property>
+                        <property name="wordWrap">
+                         <bool>true</bool>
+                        </property>
+                       </widget>
+                      </item>
+                      <item row="2" column="2">
+                       <widget class="QLineEdit" name="volumeRelativeHydroEditAirEnd">
+                        <property name="enabled">
+                         <bool>false</bool>
+                        </property>
+                        <property name="maximumSize">
+                         <size>
+                          <width>75</width>
+                          <height>16777215</height>
+                         </size>
+                        </property>
+                       </widget>
+                      </item>
+                      <item row="2" column="0" colspan="2">
+                       <widget class="QLabel" name="volumeRelativeHydroLabelAirEnd">
+                        <property name="text">
+                         <string>Gęstość względna:</string>
+                        </property>
+                        <property name="alignment">
+                         <set>Qt::AlignmentFlag::AlignJustify|Qt::AlignmentFlag::AlignTop</set>
+                        </property>
+                       </widget>
+                      </item>
+                      <item row="4" column="2">
+                       <widget class="QLineEdit" name="absorbabilityWeightEdit">
+                        <property name="enabled">
+                         <bool>false</bool>
+                        </property>
+                        <property name="maximumSize">
+                         <size>
+                          <width>75</width>
+                          <height>16777215</height>
+                         </size>
+                        </property>
+                       </widget>
+                      </item>
+                      <item row="3" column="0">
+                       <widget class="QLabel" name="porosityOpenAirEndLabel">
+                        <property name="text">
+                         <string>Porowatość otwarta:</string>
+                        </property>
+                        <property name="alignment">
+                         <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignTop</set>
+                        </property>
+                        <property name="wordWrap">
+                         <bool>true</bool>
+                        </property>
+                       </widget>
+                      </item>
+                      <item row="3" column="2">
+                       <widget class="QLineEdit" name="porosityOpenAirEndEdit">
+                        <property name="enabled">
+                         <bool>false</bool>
+                        </property>
+                        <property name="maximumSize">
+                         <size>
+                          <width>75</width>
+                          <height>16777215</height>
+                         </size>
+                        </property>
+                       </widget>
+                      </item>
+                     </layout>
+                    </widget>
+                   </item>
+                  </layout>
+                 </widget>
+                </item>
+                <item row="2" column="4">
+                 <widget class="QPushButton" name="buttonSaveAirEnd">
+                  <property name="maximumSize">
+                   <size>
+                    <width>16777215</width>
+                    <height>16777215</height>
+                   </size>
+                  </property>
+                  <property name="text">
+                   <string>Zapisz</string>
+                  </property>
                  </widget>
                 </item>
                </layout>
