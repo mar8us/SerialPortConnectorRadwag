@@ -10,6 +10,8 @@ MainWindow::MainWindow(QWidget *parent)
     setIcons();
     setProperty();
     updateStageLabels();
+    navigateToToolBoxPage(ui->measureDensityPage);
+    updateActionIcons(0);
 }
 
 MainWindow::~MainWindow()
