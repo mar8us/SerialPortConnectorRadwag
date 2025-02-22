@@ -25,6 +25,13 @@ private slots:
 private:
     Ui::add_divice_form *ui;
 
+    void initControls();
+    void fillBaudRateCombo();
+    void fillDataBitsCombo();
+    void fillStopBitsCombo();
+    void fillParitySettingCombo();
+    void setupCommandTable();
+
 };
 
 #endif // ADD_DIVICE_FORM_H
