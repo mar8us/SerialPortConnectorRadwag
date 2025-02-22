@@ -2,6 +2,8 @@
 #define MAIN_WINDOW_H
 
 #include <QMainWindow>
+#include "add_divice_form.h"
+#include "device_list_model.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -32,6 +34,11 @@ private slots:
     void goToPreviousMeasureStage();
     void goToNextMeasureStage();
     void updateActionIcons(int index);
+    void onAddDeviceButtonClicked();
+    void onEditDeviceButtonClicked();
+    void onDeleteDeviceButtonClicked();
+    void onSelectDeviceButtonClicked();
+    void onDeviceCreated(const Device *device);
 
 private:
     Ui::MainWindow *ui;
@@ -46,5 +53,13 @@ private:
     void connectButtons();
     void setProperty();
     void setIcons();
+
+    void setSettingsButtonsState();
+
+    int openDeviceDialog(const Device* device = nullptr);
+    bool updateDevicesList(const Device* device);
+
+    DeviceListModel* deviceModel;
+    const Device *activeDevice;
 };
 #endif // MAIN_WINDOW_H

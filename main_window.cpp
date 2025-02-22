@@ -6,6 +6,8 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    deviceModel = new DeviceListModel(this);
+    ui->devicesListView->setModel(deviceModel);
     connectButtons();
     setIcons();
     setProperty();
@@ -130,6 +132,67 @@ void MainWindow::connectButtons()
     connect(ui->buttonGoHydroStage, &QPushButton::clicked, this, &MainWindow::goToNextMeasureStage);
     connect(ui->buttonBackHydroStage, &QPushButton::clicked, this, &MainWindow::goToPreviousMeasureStage);
     connect(ui->buttonBackAirEndStage, &QPushButton::clicked, this, &MainWindow::goToPreviousMeasureStage);
+
+    connect(ui->addDeviceButton, &QPushButton::clicked, this, &MainWindow::onAddDeviceButtonClicked);
+    connect(ui->editDeviceButton, &QPushButton::clicked, this, &MainWindow::onEditDeviceButtonClicked);
+    connect(ui->deleteDeviceButton, &QPushButton::clicked, this, &MainWindow::onDeleteDeviceButtonClicked);
+    connect(ui->selectDiviceButton, &QPushButton::clicked, this, &MainWindow::onSelectDeviceButtonClicked);
+    connect(ui->selectDiviceButton, &QPushButton::clicked, this, &MainWindow::setSettingsButtonsState);
+}
+
+void MainWindow::onDeviceCreated(const Device* device)
+{
+    bool result = deviceModel->addDevice(device);
+}
+
+void MainWindow::onAddDeviceButtonClicked()
+{
+    auto dialogDevice = std::make_unique<DeviceForm>(this, nullptr);
+    connect(dialogDevice.get(), &DeviceForm::deviceCreated, this, &MainWindow::onDeviceCreated);
+    dialogDevice->exec();
+}
+
+void MainWindow::onEditDeviceButtonClicked()
+{
+    const Device *editedDevice = deviceModel->getDevice(ui->devicesListView->currentIndex().row());
+    if(!editedDevice)
+        return;
+    openDeviceDialog(editedDevice);
+    //updateActiveDeviceTitle();
+}
+
+void MainWindow::onDeleteDeviceButtonClicked()
+{
+    deviceModel->removeDevice(ui->devicesListView->currentIndex().row());
+    activeDevice = nullptr;
+    //updateActiveDeviceTitle();
+}
+
+void MainWindow::onSelectDeviceButtonClicked()
+{
+    activeDevice = deviceModel->getDevice(ui->devicesListView->currentIndex().row());
+    //updateActiveDeviceTitle();
+}
+
+void MainWindow::setSettingsButtonsState()
+{
+    ui->deviceNameEdit->setText(activeDevice ? activeDevice->getName() : QString());
+}
+
+int MainWindow::openDeviceDialog(const Device* device)
+{
+    auto dialogDevice = std::make_unique<DeviceForm>(this, device);
+    connect(dialogDevice.get(), !device ? &DeviceForm::deviceCreated : &DeviceForm::deviceEdited, this, &MainWindow::updateDevicesList);
+    return dialogDevice->exec();
+}
+
+bool MainWindow::updateDevicesList(const Device* device)
+{
+    bool isActiveDevice = activeDevice->getGuid().compare(device->getGuid());
+    bool result = deviceModel->updateDevicesList(device);
+    if(isActiveDevice)
+        activeDevice = device;
+    return result;
 }
 
 void MainWindow::setProperty()

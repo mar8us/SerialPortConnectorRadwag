@@ -24,6 +24,12 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         MANUAL_FINALIZATION
         ${PROJECT_SOURCES}
         resources.qrc
+        add_divice_form.ui
+        add_divice_form.cpp add_divice_form.h
+        device.cpp device.h
+        device_list_model.cpp device_list_model.h
+        device_storage.cpp device_storage.h
+
     )
 # Define target properties for Android with Qt 6 as:
 #    set_property(TARGET SerialPortConnectorRadwag APPEND PROPERTY QT_ANDROID_PACKAGE_SOURCE_DIR
