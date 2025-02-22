@@ -20,12 +20,19 @@ signals:
 
 
 private slots:
-
+    void onAddCommandButtonClicked();
+    void onRemoveCommandsButtonClicked();
+    void onItemSelectionChangedCommandTableWidget();
 
 private:
+    void addCommandToTable(const QString &commandDescription, const QString &command);
+    void removeCommadFromTable(const QList<QModelIndex> &selectedRows);
+
     Ui::add_divice_form *ui;
 
     void initControls();
+    void connectButtons();
+    void setButtonsState();
     void fillBaudRateCombo();
     void fillDataBitsCombo();
     void fillStopBitsCombo();

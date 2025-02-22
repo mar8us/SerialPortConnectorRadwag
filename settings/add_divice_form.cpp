@@ -8,11 +8,65 @@ DeviceForm::DeviceForm(QWidget *parent)
     , ui(new Ui::add_divice_form)
 {
     initControls();
+    connectButtons();
 }
 
 DeviceForm::~DeviceForm()
 {
     delete ui;
+}
+
+void DeviceForm::onAddCommandButtonClicked()
+{
+    QString commandDesc = ui->commandDescEdit->text();
+    QString command = ui->commandEdit->text();
+
+    if (commandDesc.isEmpty())
+    {
+        QMessageBox::warning(this, "Błąd", "Pole \"Opis\" nie może być puste");
+        return;
+    }
+
+    if(command.isEmpty())
+    {
+        QMessageBox::warning(this, "Błąd", "Pole \"Komenda\" nie może być puste");
+        return;
+    }
+
+    addCommandToTable(commandDesc, command);
+}
+
+void DeviceForm::onRemoveCommandsButtonClicked()
+{
+    removeCommadFromTable(ui->commandTableWidget->selectionModel()->selectedRows());
+}
+
+void DeviceForm::onItemSelectionChangedCommandTableWidget()
+{
+    setButtonsState();
+}
+
+void DeviceForm::addCommandToTable(const QString &commandDescription, const QString &command)
+{
+    int row = ui->commandTableWidget->rowCount();
+    ui->commandTableWidget->insertRow(row);
+
+    ui->commandTableWidget->setItem(row, 0, new QTableWidgetItem(commandDescription));
+    ui->commandTableWidget->setItem(row, 1, new QTableWidgetItem(command));
+
+    ui->commandDescEdit->clear();
+    ui->commandEdit->clear();
+}
+
+void DeviceForm::removeCommadFromTable(const QList<QModelIndex> &selectedRows)
+{
+    QList<QModelIndex> rows = selectedRows;
+    std::sort(rows.begin(), rows.end(), [](const QModelIndex &a, const QModelIndex &b) {
+        return a.row() > b.row();
+    });
+
+    for(const QModelIndex &index : rows)
+        ui->commandTableWidget->removeRow(index.row());
 }
 
 void DeviceForm::initControls()
@@ -24,6 +78,18 @@ void DeviceForm::initControls()
     fillParitySettingCombo();
     fillStopBitsCombo();
     setupCommandTable();
+}
+
+void DeviceForm::connectButtons()
+{
+    connect(ui->addCommandButton, &QPushButton::clicked, this, &DeviceForm::onAddCommandButtonClicked);
+    connect(ui->removeCommandButton, &QPushButton::clicked, this, &DeviceForm::onRemoveCommandsButtonClicked);
+    connect(ui->commandTableWidget, &QTableWidget::itemSelectionChanged, this, &DeviceForm::onItemSelectionChangedCommandTableWidget);
+}
+
+void DeviceForm::setButtonsState()
+{
+    ui->removeCommandButton->setEnabled(!ui->commandTableWidget->selectionModel()->selectedRows().isEmpty());
 }
 
 void DeviceForm::fillBaudRateCombo()
@@ -75,4 +141,7 @@ void DeviceForm::setupCommandTable()
     ui->commandTableWidget->setColumnCount(2);
     ui->commandTableWidget->setHorizontalHeaderLabels(headers);
     ui->commandTableWidget->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+    ui->commandTableWidget->horizontalHeader()->setStyleSheet("QHeaderView::section { font-weight: bold; }");
+
+    setButtonsState();
 }
