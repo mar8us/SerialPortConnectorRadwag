@@ -25,6 +25,7 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         ${PROJECT_SOURCES}
         resources.qrc
         settings/add_divice_form.ui
+        settings/add_divice_form.cpp settings/add_divice_form.h
 
     )
 # Define target properties for Android with Qt 6 as:

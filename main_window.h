@@ -33,6 +33,8 @@ private slots:
     void goToNextMeasureStage();
     void updateActionIcons(int index);
 
+    void onAddDeviceButtonClicked();
+
 private:
     Ui::MainWindow *ui;
     static inline const QColor ACTIVE_LABEL_COLOR = QColor(0, 0, 255);
