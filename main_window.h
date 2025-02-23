@@ -36,17 +36,19 @@ private slots:
     void onAddDeviceButtonClicked();
 
 private:
+    void initControls();
+    void connectButtons();
+    void updateStageLabels();
+    void setProperty();
+    void setIcons();
+
     Ui::MainWindow *ui;
-    static inline const QColor ACTIVE_LABEL_COLOR = QColor(0, 0, 255);
 
     QIcon defaultSettingsIcon;
     QIcon activeSettingsIcon;
     QIcon defaultRadwagIcon;
     QIcon activeRadwagIcon;
 
-    void updateStageLabels();
-    void connectButtons();
-    void setProperty();
-    void setIcons();
+    static inline const QColor ACTIVE_LABEL_COLOR = QColor(0, 0, 255);
 };
 #endif // MAIN_WINDOW_H
