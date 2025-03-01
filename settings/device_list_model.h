@@ -8,11 +8,8 @@
 class DeviceListModel : public QAbstractListModel
 {
     Q_OBJECT
-private:
-    QList<std::shared_ptr<const Device>> devices;
 
 public:
-
     enum class OperationResult
     {
         NullDevice,
@@ -29,6 +26,10 @@ public:
 
     int rowCount(const QModelIndex &parent = QModelIndex()) const override;
     QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
+
+private:
+    QList<std::shared_ptr<const Device>> devices;
+    QMap<QString, int> devicesIndexMap;
 };
 
 #endif // DEVICE_LIST_MODEL_H

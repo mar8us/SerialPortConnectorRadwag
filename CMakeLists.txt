@@ -28,6 +28,7 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         settings/add_divice_form.cpp settings/add_divice_form.h
         settings/device.cpp settings/device.h
         settings/device_list_model.cpp settings/device_list_model.h
+        settings/device_controler.h settings/device_controler.cpp
 
     )
 # Define target properties for Android with Qt 6 as:

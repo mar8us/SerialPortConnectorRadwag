@@ -19,11 +19,11 @@ class Device
 {
 public:
     explicit Device(const QString &name,
-                    const QSerialPort::BaudRate baudRate,
-                    const QSerialPort::DataBits dataBits,
-                    const QSerialPort::Parity parity,
-                    const QSerialPort::StopBits stopBits,
-                    const QList<DeviceCommand> &deviceCommands,
+                    const QSerialPort::BaudRate baudRate = QSerialPort::Baud9600,
+                    const QSerialPort::DataBits dataBits = QSerialPort::Data8,
+                    const QSerialPort::Parity parity = QSerialPort::NoParity,
+                    const QSerialPort::StopBits stopBits = QSerialPort::OneStop,
+                    const QList<DeviceCommand> &deviceCommands = {},
                     const std::optional<QUuid> guid = std::nullopt);
 
     Device(const Device& source);
@@ -42,7 +42,6 @@ public:
     void setParity(const QSerialPort::Parity value);
     void setStopBits(const QSerialPort::StopBits value);
     void setCommands(const QList<DeviceCommand>& newCommands);
-    void setParity(const QSerialPort::Parity value);
     void setGuid(const QString& newGuid);
 
 private:

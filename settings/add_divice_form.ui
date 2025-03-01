@@ -16,20 +16,20 @@
   <widget class="QPushButton" name="addDiviceButton">
    <property name="geometry">
     <rect>
-     <x>500</x>
+     <x>550</x>
      <y>360</y>
-     <width>141</width>
+     <width>91</width>
      <height>29</height>
     </rect>
    </property>
    <property name="text">
-    <string>Dodaj urządzenie</string>
+    <string>OK</string>
    </property>
   </widget>
   <widget class="QPushButton" name="cancelButton">
    <property name="geometry">
     <rect>
-     <x>410</x>
+     <x>457</x>
      <y>360</y>
      <width>83</width>
      <height>29</height>

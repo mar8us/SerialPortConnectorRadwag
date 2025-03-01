@@ -2,6 +2,9 @@
 #define MAIN_WINDOW_H
 
 #include <QMainWindow>
+#include "settings/device.h"
+#include "settings/device_list_model.h"
+#include "settings/device_controler.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -27,13 +30,15 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
+signals:
+
 private slots:
+    void onAddDeviceButtonClicked();
+
     void navigateToToolBoxPage(QWidget* page);
     void goToPreviousMeasureStage();
     void goToNextMeasureStage();
     void updateActionIcons(int index);
-
-    void onAddDeviceButtonClicked();
 
 private:
     void initControls();
@@ -43,6 +48,8 @@ private:
     void setIcons();
 
     Ui::MainWindow *ui;
+    DeviceListModel deviceModel;
+    DeviceControler deviceControler;
 
     QIcon defaultSettingsIcon;
     QIcon activeSettingsIcon;

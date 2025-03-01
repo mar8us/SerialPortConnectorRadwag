@@ -13,11 +13,13 @@ DeviceListModel::OperationResult DeviceListModel::addDevice(const std::shared_pt
     const QString &deviceName = newDevice->getName();
     if(deviceName.isEmpty())
         return OperationResult::DeviceNameIsEmpty;
+
     if(!isUniqueDeviceName(deviceName))
         return OperationResult::DeviceNameIsNotUnique;
 
     beginInsertRows(QModelIndex(), devices.size(), devices.size());
     devices.append(newDevice);
+    devicesIndexMap[newDevice->getName()] = devices.size() - 1;
     endInsertRows();
 
     return OperationResult::DeviceAdded;
@@ -25,10 +27,7 @@ DeviceListModel::OperationResult DeviceListModel::addDevice(const std::shared_pt
 
 bool DeviceListModel::isUniqueDeviceName(const QString &name)
 {
-    return std::none_of(devices.begin(), devices.end(),
-                        [&name](const std::shared_ptr<const Device>& existingDevice) {
-                            return existingDevice->getName() == name;
-                        });
+    return devicesIndexMap.find(name) == devicesIndexMap.end();
 }
 
 int DeviceListModel::rowCount(const QModelIndex &parent) const

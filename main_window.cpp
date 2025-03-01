@@ -1,9 +1,12 @@
 #include "main_window.h"
 #include "./ui_main_window.h"
+#include "QMessageBox"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
+    , deviceModel(this)
+    , deviceControler(deviceModel, this)
 {
     initControls();
     connectButtons();
@@ -12,6 +15,11 @@ MainWindow::MainWindow(QWidget *parent)
 MainWindow::~MainWindow()
 {
     delete ui;
+}
+
+void MainWindow::onAddDeviceButtonClicked()
+{
+    deviceControler.beginNew();
 }
 
 void MainWindow::navigateToToolBoxPage(QWidget* page)
@@ -62,8 +70,7 @@ void MainWindow::initControls()
     navigateToToolBoxPage(ui->measureDensityPage);
     updateStageLabels();
     updateActionIcons(0);
-    deviceModel = new DeviceListModel(this);
-    ui->devicesListView->setModel(deviceModel);
+    ui->devicesListView->setModel(&deviceModel);
 }
 
 void MainWindow::connectButtons()
@@ -86,6 +93,8 @@ void MainWindow::connectButtons()
     connect(ui->buttonGoHydroStage, &QPushButton::clicked, this, &MainWindow::goToNextMeasureStage);
     connect(ui->buttonBackHydroStage, &QPushButton::clicked, this, &MainWindow::goToPreviousMeasureStage);
     connect(ui->buttonBackAirEndStage, &QPushButton::clicked, this, &MainWindow::goToPreviousMeasureStage);
+
+    connect(ui->addDeviceButton, &QPushButton::clicked, this, &MainWindow::onAddDeviceButtonClicked);
 }
 
 void MainWindow::updateStageLabels()
@@ -116,26 +125,30 @@ void MainWindow::updateStageLabels()
     MeasurementStage currentStage = ui->measureDensityStage->property("currentStage").value<MeasurementStage>();
     switch(currentStage)
     {
-    case MeasurementStage::Data:
-        ui->dataStageLabel->setFont(boldFont);
-        ui->dataStageLabel->setPalette(activePalette);
-        break;
-    case MeasurementStage::AirMeasure:
-        ui->measureAirStageLabel->setFont(boldFont);
-        ui->measureAirStageLabel->setPalette(activePalette);
-        break;
-    case MeasurementStage::PrepareHydro:
-        ui->prepareMeasureHydroStageLabel->setFont(boldFont);
-        ui->prepareMeasureHydroStageLabel->setPalette(activePalette);
-        break;
-    case MeasurementStage::HydroMeasure:
-        ui->measureHydroStageLabel->setFont(boldFont);
-        ui->measureHydroStageLabel->setPalette(activePalette);
-        break;
-    case MeasurementStage::AirEndMeasure:
-        ui->measureAirStageLabel_2->setFont(boldFont);
-        ui->measureAirStageLabel_2->setPalette(activePalette);
-        break;
+        case MeasurementStage::Data:
+            ui->dataStageLabel->setFont(boldFont);
+            ui->dataStageLabel->setPalette(activePalette);
+            break;
+
+        case MeasurementStage::AirMeasure:
+            ui->measureAirStageLabel->setFont(boldFont);
+            ui->measureAirStageLabel->setPalette(activePalette);
+            break;
+
+        case MeasurementStage::PrepareHydro:
+            ui->prepareMeasureHydroStageLabel->setFont(boldFont);
+            ui->prepareMeasureHydroStageLabel->setPalette(activePalette);
+            break;
+
+        case MeasurementStage::HydroMeasure:
+            ui->measureHydroStageLabel->setFont(boldFont);
+            ui->measureHydroStageLabel->setPalette(activePalette);
+            break;
+
+        case MeasurementStage::AirEndMeasure:
+            ui->measureAirStageLabel_2->setFont(boldFont);
+            ui->measureAirStageLabel_2->setPalette(activePalette);
+            break;
     }
 }
 
