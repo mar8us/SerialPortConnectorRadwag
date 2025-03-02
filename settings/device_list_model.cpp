@@ -81,8 +81,18 @@ QVariant DeviceListModel::data(const QModelIndex &index, int role) const
     if (!index.isValid() || index.row() >= devices.size())
         return QVariant();
 
-    if (role == Qt::DisplayRole)
-        return devices.at(index.row())->getName();
+    const auto &device = devices.at(index.row());
+
+    switch(role) {
+    case Qt::DisplayRole:
+        return device->getName();
+    case Qt::ToolTipRole:
+        return QString("Prędkość transmisji: %1, Bity danych: %2, Kontrola parzystości: %3, Bity stopu: %4")
+            .arg(QString::number(device->getBaudRate()))
+            .arg(QString::number(device->getDataBits()))
+            .arg(device->getParityString())
+            .arg(QString::number(device->getStopBits()));
+    }
 
     return QVariant();
 }

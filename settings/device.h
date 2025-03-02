@@ -32,6 +32,7 @@ public:
     QSerialPort::BaudRate getBaudRate() const;
     QSerialPort::DataBits getDataBits() const;
     QSerialPort::Parity getParity() const;
+    QString getParityString() const;
     QSerialPort::StopBits getStopBits() const;
     const QList<DeviceCommand>& getCommands() const;
     QString getGuid() const;

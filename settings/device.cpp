@@ -50,6 +50,25 @@ QSerialPort::Parity Device::getParity() const
     return parity;
 }
 
+QString Device::getParityString() const
+{
+    switch (parity)
+    {
+    case QSerialPort::Parity::NoParity:
+        return "brak";
+    case QSerialPort::Parity::EvenParity:
+        return "parzysta";
+    case QSerialPort::Parity::OddParity:
+        return "nieparzysta";
+    case QSerialPort::Parity::SpaceParity:
+        return "spacja";
+    case QSerialPort::Parity::MarkParity:
+        return "znacznik";
+    default:
+        return "nieznana";
+    }
+}
+
 QSerialPort::StopBits Device::getStopBits() const
 {
     return stopBits;
