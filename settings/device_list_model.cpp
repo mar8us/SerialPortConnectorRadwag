@@ -5,7 +5,7 @@ DeviceListModel::DeviceListModel(QObject *parent) : QAbstractListModel(parent)
 
 }
 
-DeviceListModel::OperationResult DeviceListModel::addDevice(const std::shared_ptr<Device> &newDevice)
+DeviceListModel::OperationResult DeviceListModel::addDevice(const std::shared_ptr<const Device> &newDevice)
 {
     if(!newDevice)
         return OperationResult::NullDevice;

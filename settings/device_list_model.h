@@ -20,7 +20,7 @@ public:
 
     DeviceListModel(QObject *parent = nullptr);
 
-    OperationResult addDevice(const std::shared_ptr<Device> &newDevice);
+    OperationResult addDevice(const std::shared_ptr<const Device> &newDevice);
 
     bool isUniqueDeviceName(const QString &name);
 

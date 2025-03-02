@@ -13,15 +13,19 @@ const std::shared_ptr<const Device> DeviceControler::beginNew()
     auto newDevice = std::make_shared<Device>(QString());
     auto dialog = std::make_unique<DeviceForm>(newDevice, parent);
 
-    connect(dialog.get(), &DeviceForm::dialogAccepted, this, &DeviceControler::endNewDevice);
+    bool result = false;
+    connect(dialog.get(), &DeviceForm::dialogAccepted, this,
+            [this, &result](const std::shared_ptr<const Device> &newDevice)
+            {
+                result = handleModelOperationResult(deviceListModel.addDevice(newDevice), newDevice);
+            });
     connect(this, &DeviceControler::addDeviceSuccess, dialog.get(), &DeviceForm::onAddDeviceSuccess);
     connect(this, &DeviceControler::addDeviceFailed, dialog.get(), &DeviceForm::onAddDeviceFailed);
 
     dialog->setWindowTitle("Dodaj urządzenie");
-
     dialog->exec();
 
-    return std::const_pointer_cast<const Device>(newDevice);
+    return result ? std::shared_ptr<const Device>(newDevice) : nullptr;
 }
 
 void DeviceControler::endNewDevice(const std::shared_ptr<Device> &newDevice)
@@ -29,7 +33,7 @@ void DeviceControler::endNewDevice(const std::shared_ptr<Device> &newDevice)
     handleModelOperationResult(deviceListModel.addDevice(newDevice), newDevice);
 }
 
-bool DeviceControler::handleModelOperationResult(DeviceListModel::OperationResult result, const std::shared_ptr<Device> &device)
+bool DeviceControler::handleModelOperationResult(DeviceListModel::OperationResult result, const std::shared_ptr<const Device> &device)
 {
     switch(result)
     {

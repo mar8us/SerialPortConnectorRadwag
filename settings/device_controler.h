@@ -13,7 +13,7 @@ public:
     const std::shared_ptr<const Device> beginNew();
 
 private:
-    bool handleModelOperationResult(DeviceListModel::OperationResult result, const std::shared_ptr<Device> &device);
+    bool handleModelOperationResult(DeviceListModel::OperationResult result, const std::shared_ptr<const Device> &device);
 
     DeviceListModel &deviceListModel;
     QWidget *parent;
@@ -23,7 +23,6 @@ signals:
     void addDeviceFailed(const QString &errorMsg);
 
 private slots:
-    void endNewDevice(const std::shared_ptr<Device> &newDevice);
 };
 
 #endif // DEVICE_CONTROLER_H
