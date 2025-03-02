@@ -14,15 +14,22 @@ public:
     {
         NullDevice,
         DeviceAdded,
+        DeviceEdited,
         DeviceNameIsEmpty,
         DeviceNameIsNotUnique,
+        DeviceNotFound,
     };
 
     DeviceListModel(QObject *parent = nullptr);
 
     OperationResult addDevice(const std::shared_ptr<const Device> &newDevice);
+    OperationResult editDevice(const QString &originalDeviceName, const std::shared_ptr<const Device> &editedDevice);
 
-    bool isUniqueDeviceName(const QString &name);
+    const std::shared_ptr<const Device> getDevice(const QString &name) const;
+    const std::shared_ptr<const Device> getDevice(int row) const;
+    int getDeviceIndex(const QString &name) const;
+
+    bool isUniqueDeviceName(const QString &name) const;
 
     int rowCount(const QModelIndex &parent = QModelIndex()) const override;
     QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;

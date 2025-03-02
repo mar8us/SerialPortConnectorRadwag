@@ -34,6 +34,7 @@ signals:
 
 private slots:
     void onAddDeviceButtonClicked();
+    void onEditDeviceButtonClicked();
 
     void navigateToToolBoxPage(QWidget* page);
     void goToPreviousMeasureStage();

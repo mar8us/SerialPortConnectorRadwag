@@ -22,6 +22,13 @@ void MainWindow::onAddDeviceButtonClicked()
     deviceControler.beginNew();
 }
 
+void MainWindow::onEditDeviceButtonClicked()
+{
+    QModelIndex currentIndex = ui->devicesListView->currentIndex();
+    if(currentIndex.isValid())
+        deviceControler.beginEdit(deviceModel.data(currentIndex, Qt::DisplayRole).toString());
+}
+
 void MainWindow::navigateToToolBoxPage(QWidget* page)
 {
     if(page && ui->stackedWidget->indexOf(page) != -1)
@@ -95,6 +102,7 @@ void MainWindow::connectButtons()
     connect(ui->buttonBackAirEndStage, &QPushButton::clicked, this, &MainWindow::goToPreviousMeasureStage);
 
     connect(ui->addDeviceButton, &QPushButton::clicked, this, &MainWindow::onAddDeviceButtonClicked);
+    connect(ui->editDeviceButton, &QPushButton::clicked, this, &MainWindow::onEditDeviceButtonClicked);
 }
 
 void MainWindow::updateStageLabels()
