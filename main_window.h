@@ -2,6 +2,9 @@
 #define MAIN_WINDOW_H
 
 #include <QMainWindow>
+#include "settings/device.h"
+#include "settings/device_list_model.h"
+#include "settings/device_controler.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -27,24 +30,34 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
+signals:
+
 private slots:
+    void onAddDeviceButtonClicked();
+    void onEditDeviceButtonClicked();
+    void onRemoveDeviceButtonClicked();
+
     void navigateToToolBoxPage(QWidget* page);
     void goToPreviousMeasureStage();
     void goToNextMeasureStage();
     void updateActionIcons(int index);
 
 private:
+    void initControls();
+    void connectButtons();
+    void updateStageLabels();
+    void setProperty();
+    void setIcons();
+
     Ui::MainWindow *ui;
-    static inline const QColor ACTIVE_LABEL_COLOR = QColor(0, 0, 255);
+    DeviceListModel deviceModel;
+    DeviceControler deviceControler;
 
     QIcon defaultSettingsIcon;
     QIcon activeSettingsIcon;
     QIcon defaultRadwagIcon;
     QIcon activeRadwagIcon;
 
-    void updateStageLabels();
-    void connectButtons();
-    void setProperty();
-    void setIcons();
+    static inline const QColor ACTIVE_LABEL_COLOR = QColor(0, 0, 255);
 };
 #endif // MAIN_WINDOW_H

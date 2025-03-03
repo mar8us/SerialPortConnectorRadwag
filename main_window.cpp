@@ -4,17 +4,36 @@
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
+    , deviceModel(this)
+    , deviceControler(deviceModel, this)
 {
-    ui->setupUi(this);
+    initControls();
     connectButtons();
-    setIcons();
-    setProperty();
-    updateStageLabels();
+    QLocale::setDefault(QLocale(QLocale::Polish, QLocale::Poland));
 }
 
 MainWindow::~MainWindow()
 {
     delete ui;
+}
+
+void MainWindow::onAddDeviceButtonClicked()
+{
+    deviceControler.beginNew();
+}
+
+void MainWindow::onEditDeviceButtonClicked()
+{
+    QModelIndex currentIndex = ui->devicesListView->currentIndex();
+    if(currentIndex.isValid())
+        deviceControler.beginEdit(deviceModel.data(currentIndex, Qt::DisplayRole).toString());
+}
+
+void MainWindow::onRemoveDeviceButtonClicked()
+{
+    QModelIndex currentIndex = ui->devicesListView->currentIndex();
+    if(currentIndex.isValid())
+        deviceControler.beginRemove(deviceModel.data(currentIndex, Qt::DisplayRole).toString());
 }
 
 void MainWindow::navigateToToolBoxPage(QWidget* page)
@@ -57,6 +76,43 @@ void MainWindow::updateActionIcons(int index)
     ui->actionMeasureDensity->setIcon(ui->stackedWidget->widget(index) == ui->measureDensityPage ? activeRadwagIcon : defaultRadwagIcon);
 }
 
+void MainWindow::initControls()
+{
+    ui->setupUi(this);
+    setIcons();
+    setProperty();
+    navigateToToolBoxPage(ui->measureDensityPage);
+    updateStageLabels();
+    updateActionIcons(0);
+    ui->devicesListView->setModel(&deviceModel);
+}
+
+void MainWindow::connectButtons()
+{
+    connect(ui->actionSettings, &QAction::triggered, this, [this]() {
+        navigateToToolBoxPage(ui->settingsPage);
+    });
+
+    connect(ui->actionMeasureDensity, &QAction::triggered, this, [this]() {
+        navigateToToolBoxPage(ui->measureDensityPage);
+    });
+
+    connect(ui->stackedWidget, &QStackedWidget::currentChanged, this, &MainWindow::updateActionIcons);
+
+    connect(ui->buttonGoDataStage, &QPushButton::clicked, this, &MainWindow::goToNextMeasureStage);
+    connect(ui->buttonGoAirStage, &QPushButton::clicked, this, &MainWindow::goToNextMeasureStage);
+    connect(ui->buttonBackAirStage, &QPushButton::clicked, this, &MainWindow::goToPreviousMeasureStage);
+    connect(ui->buttonGoPrepareStage, &QPushButton::clicked, this, &MainWindow::goToNextMeasureStage);
+    connect(ui->buttonBackPrepareStage, &QPushButton::clicked, this, &MainWindow::goToPreviousMeasureStage);
+    connect(ui->buttonGoHydroStage, &QPushButton::clicked, this, &MainWindow::goToNextMeasureStage);
+    connect(ui->buttonBackHydroStage, &QPushButton::clicked, this, &MainWindow::goToPreviousMeasureStage);
+    connect(ui->buttonBackAirEndStage, &QPushButton::clicked, this, &MainWindow::goToPreviousMeasureStage);
+
+    connect(ui->addDeviceButton, &QPushButton::clicked, this, &MainWindow::onAddDeviceButtonClicked);
+    connect(ui->editDeviceButton, &QPushButton::clicked, this, &MainWindow::onEditDeviceButtonClicked);
+    connect(ui->deleteDeviceButton, &QPushButton::clicked, this, &MainWindow::onRemoveDeviceButtonClicked);
+}
+
 void MainWindow::updateStageLabels()
 {
     QFont normalFont = ui->dataStageLabel->font();
@@ -85,49 +141,31 @@ void MainWindow::updateStageLabels()
     MeasurementStage currentStage = ui->measureDensityStage->property("currentStage").value<MeasurementStage>();
     switch(currentStage)
     {
-    case MeasurementStage::Data:
-        ui->dataStageLabel->setFont(boldFont);
-        ui->dataStageLabel->setPalette(activePalette);
-        break;
-    case MeasurementStage::AirMeasure:
-        ui->measureAirStageLabel->setFont(boldFont);
-        ui->measureAirStageLabel->setPalette(activePalette);
-        break;
-    case MeasurementStage::PrepareHydro:
-        ui->prepareMeasureHydroStageLabel->setFont(boldFont);
-        ui->prepareMeasureHydroStageLabel->setPalette(activePalette);
-        break;
-    case MeasurementStage::HydroMeasure:
-        ui->measureHydroStageLabel->setFont(boldFont);
-        ui->measureHydroStageLabel->setPalette(activePalette);
-        break;
-    case MeasurementStage::AirEndMeasure:
-        ui->measureAirStageLabel_2->setFont(boldFont);
-        ui->measureAirStageLabel_2->setPalette(activePalette);
-        break;
+        case MeasurementStage::Data:
+            ui->dataStageLabel->setFont(boldFont);
+            ui->dataStageLabel->setPalette(activePalette);
+            break;
+
+        case MeasurementStage::AirMeasure:
+            ui->measureAirStageLabel->setFont(boldFont);
+            ui->measureAirStageLabel->setPalette(activePalette);
+            break;
+
+        case MeasurementStage::PrepareHydro:
+            ui->prepareMeasureHydroStageLabel->setFont(boldFont);
+            ui->prepareMeasureHydroStageLabel->setPalette(activePalette);
+            break;
+
+        case MeasurementStage::HydroMeasure:
+            ui->measureHydroStageLabel->setFont(boldFont);
+            ui->measureHydroStageLabel->setPalette(activePalette);
+            break;
+
+        case MeasurementStage::AirEndMeasure:
+            ui->measureAirStageLabel_2->setFont(boldFont);
+            ui->measureAirStageLabel_2->setPalette(activePalette);
+            break;
     }
-}
-
-void MainWindow::connectButtons()
-{
-    connect(ui->actionSettings, &QAction::triggered, this, [this]() {
-        navigateToToolBoxPage(ui->settingsPage);
-    });
-
-    connect(ui->actionMeasureDensity, &QAction::triggered, this, [this]() {
-        navigateToToolBoxPage(ui->measureDensityPage);
-    });
-
-    connect(ui->stackedWidget, &QStackedWidget::currentChanged, this, &MainWindow::updateActionIcons);
-
-    connect(ui->buttonGoDataStage, &QPushButton::clicked, this, &MainWindow::goToNextMeasureStage);
-    connect(ui->buttonGoAirStage, &QPushButton::clicked, this, &MainWindow::goToNextMeasureStage);
-    connect(ui->buttonBackAirStage, &QPushButton::clicked, this, &MainWindow::goToPreviousMeasureStage);
-    connect(ui->buttonGoPrepareStage, &QPushButton::clicked, this, &MainWindow::goToNextMeasureStage);
-    connect(ui->buttonBackPrepareStage, &QPushButton::clicked, this, &MainWindow::goToPreviousMeasureStage);
-    connect(ui->buttonGoHydroStage, &QPushButton::clicked, this, &MainWindow::goToNextMeasureStage);
-    connect(ui->buttonBackHydroStage, &QPushButton::clicked, this, &MainWindow::goToPreviousMeasureStage);
-    connect(ui->buttonBackAirEndStage, &QPushButton::clicked, this, &MainWindow::goToPreviousMeasureStage);
 }
 
 void MainWindow::setProperty()

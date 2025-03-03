@@ -173,7 +173,7 @@
               </property>
               <widget class="QWidget" name="dataPageStage">
                <layout class="QGridLayout" name="gridLayout_5">
-                <item row="3" column="0">
+                <item row="8" column="0">
                  <widget class="QPushButton" name="buttonGoDataStage">
                   <property name="minimumSize">
                    <size>
@@ -192,30 +192,12 @@
                   </property>
                  </widget>
                 </item>
-                <item row="0" column="0">
+                <item row="1" column="0">
                  <widget class="QGroupBox" name="dataGroupBox">
                   <property name="title">
                    <string>Dane wstępne</string>
                   </property>
-                  <layout class="QFormLayout" name="formLayout_2">
-                   <property name="horizontalSpacing">
-                    <number>5</number>
-                   </property>
-                   <property name="verticalSpacing">
-                    <number>0</number>
-                   </property>
-                   <property name="leftMargin">
-                    <number>10</number>
-                   </property>
-                   <property name="topMargin">
-                    <number>0</number>
-                   </property>
-                   <property name="rightMargin">
-                    <number>0</number>
-                   </property>
-                   <property name="bottomMargin">
-                    <number>0</number>
-                   </property>
+                  <layout class="QFormLayout" name="formLayout_10">
                    <item row="0" column="0">
                     <widget class="QLabel" name="sampleNumberLabel">
                      <property name="maximumSize">
@@ -311,20 +293,7 @@
                      </property>
                     </widget>
                    </item>
-                   <item row="4" column="1">
-                    <widget class="QPushButton" name="buttonAddFluid">
-                     <property name="maximumSize">
-                      <size>
-                       <width>250</width>
-                       <height>16777215</height>
-                      </size>
-                     </property>
-                     <property name="text">
-                      <string>Dodaj ciecz</string>
-                     </property>
-                    </widget>
-                   </item>
-                   <item row="5" column="0">
+                   <item row="4" column="0">
                     <widget class="QLabel" name="temperatureFluidLabel">
                      <property name="maximumSize">
                       <size>
@@ -337,7 +306,7 @@
                      </property>
                     </widget>
                    </item>
-                   <item row="5" column="1">
+                   <item row="4" column="1">
                     <widget class="QComboBox" name="temeratureFluidComboBox">
                      <property name="maximumSize">
                       <size>
@@ -347,7 +316,7 @@
                      </property>
                     </widget>
                    </item>
-                   <item row="6" column="0">
+                   <item row="5" column="0">
                     <widget class="QLabel" name="dateLabel">
                      <property name="maximumSize">
                       <size>
@@ -360,7 +329,7 @@
                      </property>
                     </widget>
                    </item>
-                   <item row="6" column="1">
+                   <item row="5" column="1">
                     <widget class="QDateTimeEdit" name="dataTimeEdit">
                      <property name="maximumSize">
                       <size>
@@ -370,7 +339,7 @@
                      </property>
                     </widget>
                    </item>
-                   <item row="7" column="0">
+                   <item row="6" column="0">
                     <widget class="QLabel" name="autorLabel">
                      <property name="maximumSize">
                       <size>
@@ -383,7 +352,7 @@
                      </property>
                     </widget>
                    </item>
-                   <item row="7" column="1">
+                   <item row="6" column="1">
                     <widget class="QLineEdit" name="authorEdit">
                      <property name="maximumSize">
                       <size>
@@ -396,12 +365,38 @@
                   </layout>
                  </widget>
                 </item>
-                <item row="2" column="0">
-                 <widget class="QCheckBox" name="showGuideComboBox">
-                  <property name="text">
-                   <string>Pokazuj przewodnik</string>
-                  </property>
-                 </widget>
+                <item row="0" column="0">
+                 <layout class="QHBoxLayout" name="horizontalLayout_3">
+                  <item>
+                   <widget class="QGroupBox" name="groupBox_2">
+                    <property name="title">
+                     <string>Ustawienia</string>
+                    </property>
+                    <layout class="QVBoxLayout" name="verticalLayout_2">
+                     <item>
+                      <widget class="QPushButton" name="buttonAddFluid">
+                       <property name="maximumSize">
+                        <size>
+                         <width>150</width>
+                         <height>16777215</height>
+                        </size>
+                       </property>
+                       <property name="text">
+                        <string>Tabele cieczy</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item>
+                      <widget class="QCheckBox" name="showGuideComboBox">
+                       <property name="text">
+                        <string>Pokazuj przewodnik</string>
+                       </property>
+                      </widget>
+                     </item>
+                    </layout>
+                   </widget>
+                  </item>
+                 </layout>
                 </item>
                </layout>
               </widget>
