@@ -1,6 +1,5 @@
 #include "main_window.h"
 #include "./ui_main_window.h"
-#include "QMessageBox"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -10,6 +9,7 @@ MainWindow::MainWindow(QWidget *parent)
 {
     initControls();
     connectButtons();
+    QLocale::setDefault(QLocale(QLocale::Polish, QLocale::Poland));
 }
 
 MainWindow::~MainWindow()
@@ -27,6 +27,13 @@ void MainWindow::onEditDeviceButtonClicked()
     QModelIndex currentIndex = ui->devicesListView->currentIndex();
     if(currentIndex.isValid())
         deviceControler.beginEdit(deviceModel.data(currentIndex, Qt::DisplayRole).toString());
+}
+
+void MainWindow::onRemoveDeviceButtonClicked()
+{
+    QModelIndex currentIndex = ui->devicesListView->currentIndex();
+    if(currentIndex.isValid())
+        deviceControler.beginRemove(deviceModel.data(currentIndex, Qt::DisplayRole).toString());
 }
 
 void MainWindow::navigateToToolBoxPage(QWidget* page)
@@ -103,6 +110,7 @@ void MainWindow::connectButtons()
 
     connect(ui->addDeviceButton, &QPushButton::clicked, this, &MainWindow::onAddDeviceButtonClicked);
     connect(ui->editDeviceButton, &QPushButton::clicked, this, &MainWindow::onEditDeviceButtonClicked);
+    connect(ui->deleteDeviceButton, &QPushButton::clicked, this, &MainWindow::onRemoveDeviceButtonClicked);
 }
 
 void MainWindow::updateStageLabels()

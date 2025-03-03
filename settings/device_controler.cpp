@@ -1,6 +1,6 @@
 #include "device_controler.h"
 #include "add_divice_form.h"
-#include <QMessageBox>
+#include "../message_utils.h"
 
 DeviceControler::DeviceControler(DeviceListModel &deviceListModel, QWidget *parent)
     : deviceListModel(deviceListModel), parent(parent)
@@ -52,6 +52,14 @@ const std::shared_ptr<const Device> DeviceControler::beginEdit(const QString& de
     return result ? std::shared_ptr<const Device>(editedDevice) : nullptr;
 }
 
+bool DeviceControler::beginRemove(const QString& deviceToEditName)
+{
+    auto device = deviceListModel.getDevice(deviceToEditName);
+    if(!Messages::showYesNoWarning(parent,  QString("Czy na pewno chcesz usunąć urządzenie o nazwie: \"%1\" ?").arg(device->getName())))
+        return false;
+    return handleModelOperationResult(deviceListModel.removeDevice(device->getName()), NULL);
+}
+
 bool DeviceControler::handleModelOperationResult(DeviceListModel::OperationResult result, const std::shared_ptr<const Device> &device)
 {
     switch(result)
@@ -59,6 +67,9 @@ bool DeviceControler::handleModelOperationResult(DeviceListModel::OperationResul
         case DeviceListModel::OperationResult::DeviceAdded:
         case DeviceListModel::OperationResult::DeviceEdited:
             emit addDeviceSuccess();
+            return true;
+
+        case DeviceListModel::OperationResult::DeviceRemoved:
             return true;
 
         case DeviceListModel::OperationResult::NullDevice:

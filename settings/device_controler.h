@@ -12,6 +12,8 @@ public:
 
     const std::shared_ptr<const Device> beginNew();
     const std::shared_ptr<const Device> beginEdit(const QString& deviceToEditName);
+    bool beginRemove(const QString& deviceToEditName);
+
 private:
     bool handleModelOperationResult(DeviceListModel::OperationResult result, const std::shared_ptr<const Device> &device);
 

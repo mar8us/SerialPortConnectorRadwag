@@ -48,6 +48,24 @@ DeviceListModel::OperationResult DeviceListModel::editDevice(const QString &orig
     return OperationResult::DeviceEdited;
 }
 
+DeviceListModel::OperationResult DeviceListModel::removeDevice(const QString &deviceName)
+{
+    if(isUniqueDeviceName(deviceName))
+        return OperationResult::DeviceNotFound;
+
+    int index = devicesIndexMap[deviceName];
+    beginRemoveRows(QModelIndex(), index, index);
+    devices.removeAt(index);
+    devicesIndexMap.remove(deviceName);
+
+    for(auto it = devicesIndexMap.begin(); it != devicesIndexMap.end(); it++)
+        if(it.value() > index)
+            it.value()--;
+
+    endRemoveRows();
+    return OperationResult::DeviceRemoved;
+}
+
 const std::shared_ptr<const Device> DeviceListModel::getDevice(const QString &name) const
 {
     int index = getDeviceIndex(name);

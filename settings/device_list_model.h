@@ -15,6 +15,7 @@ public:
         NullDevice,
         DeviceAdded,
         DeviceEdited,
+        DeviceRemoved,
         DeviceNameIsEmpty,
         DeviceNameIsNotUnique,
         DeviceNotFound,
@@ -24,6 +25,7 @@ public:
 
     OperationResult addDevice(const std::shared_ptr<const Device> &newDevice);
     OperationResult editDevice(const QString &originalDeviceName, const std::shared_ptr<const Device> &editedDevice);
+    OperationResult removeDevice(const QString &deviceName);
 
     const std::shared_ptr<const Device> getDevice(const QString &name) const;
     const std::shared_ptr<const Device> getDevice(int row) const;
