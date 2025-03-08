@@ -32,6 +32,13 @@ void MainWindow::onRemoveDeviceButtonClicked()
     deviceControler.beginRemove(getSelectedDevice());
 }
 
+void MainWindow::onSelectDeviceButtonClicked()
+{
+    auto selectedDevice = getSelectedDevice();
+    if(deviceControler.setActiveDevice(selectedDevice))
+        ui->deviceNameEdit->setText(selectedDevice->getName());
+}
+
 void MainWindow::navigateToToolBoxPage(QWidget* page)
 {
     if(page && ui->stackedWidget->indexOf(page) != -1)
@@ -120,6 +127,7 @@ void MainWindow::connectButtons()
     connect(ui->addDeviceButton, &QPushButton::clicked, this, &MainWindow::onAddDeviceButtonClicked);
     connect(ui->editDeviceButton, &QPushButton::clicked, this, &MainWindow::onEditDeviceButtonClicked);
     connect(ui->deleteDeviceButton, &QPushButton::clicked, this, &MainWindow::onRemoveDeviceButtonClicked);
+    connect(ui->selectDiviceButton, &QPushButton::clicked, this, &MainWindow::onSelectDeviceButtonClicked);
 }
 
 void MainWindow::updateStageLabels()

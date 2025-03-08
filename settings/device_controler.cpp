@@ -60,6 +60,19 @@ bool DeviceControler::beginRemove(const std::shared_ptr<const Device> &device)
     return handleModelOperationResult(deviceListModel.removeDevice(device->getName()), NULL);
 }
 
+std::shared_ptr<const Device> DeviceControler::getActiveDevice()
+{
+    return activeDevice;
+}
+
+bool DeviceControler::setActiveDevice(const std::shared_ptr<const Device>& newActiveDevice)
+{
+    if(!newActiveDevice || activeDevice == newActiveDevice)
+        return false;
+    activeDevice = newActiveDevice;
+    return true;
+}
+
 bool DeviceControler::handleModelOperationResult(DeviceListModel::OperationResult result, const std::shared_ptr<const Device> &device)
 {
     switch(result)
