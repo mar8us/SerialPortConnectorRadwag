@@ -36,7 +36,7 @@ private slots:
     void onAddDeviceButtonClicked();
     void onEditDeviceButtonClicked();
     void onRemoveDeviceButtonClicked();
-    void onSelectDeviceButtonClicked();
+    void onDeviceComboSelectionChanged();
 
     void navigateToToolBoxPage(QWidget* page);
     void goToPreviousMeasureStage();
@@ -51,6 +51,7 @@ private:
     void updateStageLabels();
     void setProperty();
     void setIcons();
+    void updateDevicesComboConnection();
 
     Ui::MainWindow *ui;
     DeviceListModel deviceModel;

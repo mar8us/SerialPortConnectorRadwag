@@ -66,6 +66,11 @@ DeviceListModel::OperationResult DeviceListModel::removeDevice(const QString &de
     return OperationResult::DeviceRemoved;
 }
 
+const QList<std::shared_ptr<const Device>>& DeviceListModel::getDevicesList() const
+{
+    return devices;
+}
+
 std::shared_ptr<const Device> DeviceListModel::getDevice(const QString &name) const
 {
     int index = getDeviceIndex(name);

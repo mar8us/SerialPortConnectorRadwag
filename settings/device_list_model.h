@@ -27,6 +27,7 @@ public:
     OperationResult replaceDevice(const QString &originalDeviceName, const std::shared_ptr<const Device> &editedDevice);
     OperationResult removeDevice(const QString &deviceName);
 
+    const QList<std::shared_ptr<const Device>>& getDevicesList() const;
     std::shared_ptr<const Device> getDevice(const QString &name) const;
     std::shared_ptr<const Device> getDevice(int row) const;
     int getDeviceIndex(const QString &name) const;

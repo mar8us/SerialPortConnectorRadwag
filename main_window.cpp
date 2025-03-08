@@ -20,23 +20,24 @@ MainWindow::~MainWindow()
 void MainWindow::onAddDeviceButtonClicked()
 {
     deviceControler.beginNew();
+    updateDevicesComboConnection();
 }
 
 void MainWindow::onEditDeviceButtonClicked()
 {
     deviceControler.beginEdit(getSelectedDevice());
+    updateDevicesComboConnection();
 }
 
 void MainWindow::onRemoveDeviceButtonClicked()
 {
     deviceControler.beginRemove(getSelectedDevice());
+    updateDevicesComboConnection();
 }
 
-void MainWindow::onSelectDeviceButtonClicked()
+void MainWindow::onDeviceComboSelectionChanged()
 {
-    auto selectedDevice = getSelectedDevice();
-    if(deviceControler.setActiveDevice(selectedDevice))
-        ui->deviceNameEdit->setText(selectedDevice->getName());
+    deviceControler.setActiveDevice(ui->devicesComboConnection->currentData().value<std::shared_ptr<const Device>>());
 }
 
 void MainWindow::navigateToToolBoxPage(QWidget* page)
@@ -101,6 +102,7 @@ void MainWindow::initControls()
     updateStageLabels();
     updateActionIcons(0);
     ui->devicesListView->setModel(&deviceModel);
+    updateDevicesComboConnection();
 }
 
 void MainWindow::connectButtons()
@@ -127,7 +129,8 @@ void MainWindow::connectButtons()
     connect(ui->addDeviceButton, &QPushButton::clicked, this, &MainWindow::onAddDeviceButtonClicked);
     connect(ui->editDeviceButton, &QPushButton::clicked, this, &MainWindow::onEditDeviceButtonClicked);
     connect(ui->deleteDeviceButton, &QPushButton::clicked, this, &MainWindow::onRemoveDeviceButtonClicked);
-    connect(ui->selectDiviceButton, &QPushButton::clicked, this, &MainWindow::onSelectDeviceButtonClicked);
+
+    connect(ui->devicesComboConnection, &QComboBox::currentIndexChanged, this, &MainWindow::onDeviceComboSelectionChanged);
 }
 
 void MainWindow::updateStageLabels()
@@ -196,4 +199,34 @@ void MainWindow::setIcons()
     activeSettingsIcon = QIcon(":/icons/settings_selected.png");
     defaultRadwagIcon = QIcon(":/icons/balance_white.png");
     activeRadwagIcon = QIcon(":/icons/balance_selected.png");
+}
+
+void MainWindow::updateDevicesComboConnection()
+{
+    DeviceListModel* model = qobject_cast<DeviceListModel*>(ui->devicesListView->model());
+    if(!model)
+        return;
+
+    ui->devicesComboConnection->blockSignals(true);
+
+    const QList<std::shared_ptr<const Device>>& devicesList = model->getDevicesList();
+    QString currentText = ui->devicesComboConnection->currentText();
+    ui->devicesComboConnection->clear();
+
+    if(!devicesList.size())
+        ui->devicesComboConnection->addItem("", QVariant());
+
+    for(const auto& device : devicesList)
+    {
+        QVariant deviceData;
+        deviceData.setValue(device);
+        ui->devicesComboConnection->addItem(device->getName(), deviceData);
+    }
+    int index = ui->devicesComboConnection->findText(currentText);
+    if(index != -1 && !currentText.isEmpty())
+        ui->devicesComboConnection->setCurrentIndex(index);
+    else
+        ui->devicesComboConnection->setCurrentIndex(-1);
+
+    ui->devicesComboConnection->blockSignals(false);
 }

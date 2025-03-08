@@ -55,5 +55,6 @@ private:
     QUuid guid;
 };
 
+// Q_DECLARE_METATYPE(std::shared_ptr<const Device>)
 
 #endif // DEVICE_H
