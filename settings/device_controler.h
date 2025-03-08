@@ -11,8 +11,8 @@ public:
     DeviceControler(DeviceListModel &deviceListModel, QWidget *parent);
 
     const std::shared_ptr<const Device> beginNew();
-    const std::shared_ptr<const Device> beginEdit(const QString& deviceToEditName);
-    bool beginRemove(const QString& deviceToEditName);
+    const std::shared_ptr<const Device> beginEdit(const std::shared_ptr<const Device> &device);
+    bool beginRemove(const std::shared_ptr<const Device> &device);
 
 private:
     bool handleModelOperationResult(DeviceListModel::OperationResult result, const std::shared_ptr<const Device> &device);
@@ -21,8 +21,8 @@ private:
     QWidget *parent;
 
 signals:
-    void addDeviceSuccess();
-    void addDeviceFailed(const QString &errorMsg);
+    void operationSuccess();
+    void operationFailed(const QString &errorMsg);
 
 private slots:
 };

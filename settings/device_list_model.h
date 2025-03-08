@@ -24,11 +24,11 @@ public:
     DeviceListModel(QObject *parent = nullptr);
 
     OperationResult addDevice(const std::shared_ptr<const Device> &newDevice);
-    OperationResult editDevice(const QString &originalDeviceName, const std::shared_ptr<const Device> &editedDevice);
+    OperationResult replaceDevice(const QString &originalDeviceName, const std::shared_ptr<const Device> &editedDevice);
     OperationResult removeDevice(const QString &deviceName);
 
-    const std::shared_ptr<const Device> getDevice(const QString &name) const;
-    const std::shared_ptr<const Device> getDevice(int row) const;
+    std::shared_ptr<const Device> getDevice(const QString &name) const;
+    std::shared_ptr<const Device> getDevice(int row) const;
     int getDeviceIndex(const QString &name) const;
 
     bool isUniqueDeviceName(const QString &name) const;

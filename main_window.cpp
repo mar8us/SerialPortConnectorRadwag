@@ -24,16 +24,12 @@ void MainWindow::onAddDeviceButtonClicked()
 
 void MainWindow::onEditDeviceButtonClicked()
 {
-    QModelIndex currentIndex = ui->devicesListView->currentIndex();
-    if(currentIndex.isValid())
-        deviceControler.beginEdit(deviceModel.data(currentIndex, Qt::DisplayRole).toString());
+    deviceControler.beginEdit(getSelectedDevice());
 }
 
 void MainWindow::onRemoveDeviceButtonClicked()
 {
-    QModelIndex currentIndex = ui->devicesListView->currentIndex();
-    if(currentIndex.isValid())
-        deviceControler.beginRemove(deviceModel.data(currentIndex, Qt::DisplayRole).toString());
+    deviceControler.beginRemove(getSelectedDevice());
 }
 
 void MainWindow::navigateToToolBoxPage(QWidget* page)
@@ -74,6 +70,19 @@ void MainWindow::updateActionIcons(int index)
 {
     ui->actionSettings->setIcon(ui->stackedWidget->widget(index) == ui->settingsPage ? activeSettingsIcon : defaultSettingsIcon);
     ui->actionMeasureDensity->setIcon(ui->stackedWidget->widget(index) == ui->measureDensityPage ? activeRadwagIcon : defaultRadwagIcon);
+}
+
+std::shared_ptr<const Device> MainWindow::getSelectedDevice()
+{
+    QModelIndex currentIndex = ui->devicesListView->currentIndex();
+    if (!currentIndex.isValid())
+        return nullptr;
+
+    DeviceListModel* model = qobject_cast<DeviceListModel*>(ui->devicesListView->model());
+    if (!model)
+        return nullptr;
+
+    return model->getDevice(currentIndex.row());
 }
 
 void MainWindow::initControls()

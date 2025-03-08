@@ -19,8 +19,8 @@ const std::shared_ptr<const Device> DeviceControler::beginNew()
             {
                 result = handleModelOperationResult(deviceListModel.addDevice(newDevice), newDevice);
             });
-    connect(this, &DeviceControler::addDeviceSuccess, dialog.get(), &DeviceForm::onAddDeviceSuccess);
-    connect(this, &DeviceControler::addDeviceFailed, dialog.get(), &DeviceForm::onAddDeviceFailed);
+    connect(this, &DeviceControler::operationSuccess, dialog.get(), &DeviceForm::onAddDeviceSuccess);
+    connect(this, &DeviceControler::operationFailed, dialog.get(), &DeviceForm::onAddDeviceFailed);
 
     dialog->setWindowTitle("Dodaj urządzenie");
     dialog->exec();
@@ -28,33 +28,33 @@ const std::shared_ptr<const Device> DeviceControler::beginNew()
     return result ? std::shared_ptr<const Device>(newDevice) : nullptr;
 }
 
-const std::shared_ptr<const Device> DeviceControler::beginEdit(const QString& deviceToEditName)
+const std::shared_ptr<const Device> DeviceControler::beginEdit(const std::shared_ptr<const Device> &device)
 {
-    const auto originalDevice = deviceListModel.getDevice(deviceToEditName);
-    if(!originalDevice.get())
+    if(!device)
         return nullptr;
-
-    auto editedDevice = std::make_shared<Device>(*originalDevice);
+    auto editedDevice = std::make_shared<Device>(*device);
     auto dialog = std::make_unique<DeviceForm>(editedDevice, parent);
-
     bool result = false;
+
     connect(dialog.get(), &DeviceForm::dialogAccepted, this,
-            [this, &result, originalName = deviceToEditName](const std::shared_ptr<Device> &editedDevice)
+            [this, &result, device](const std::shared_ptr<Device> &editedDevice)
             {
-                result = handleModelOperationResult(deviceListModel.editDevice(originalName, editedDevice), editedDevice);
+                result = handleModelOperationResult(deviceListModel.replaceDevice(device->getName(), editedDevice), editedDevice);
             });
-    connect(this, &DeviceControler::addDeviceSuccess, dialog.get(), &DeviceForm::onAddDeviceSuccess);
-    connect(this, &DeviceControler::addDeviceFailed, dialog.get(), &DeviceForm::onAddDeviceFailed);
+
+    connect(this, &DeviceControler::operationSuccess, dialog.get(), &DeviceForm::onAddDeviceSuccess);
+    connect(this, &DeviceControler::operationFailed, dialog.get(), &DeviceForm::onAddDeviceFailed);
 
     dialog->setWindowTitle("Edytuj urządzenie");
     dialog->exec();
 
-    return result ? std::shared_ptr<const Device>(editedDevice) : nullptr;
+    return result ? editedDevice : nullptr;
 }
 
-bool DeviceControler::beginRemove(const QString& deviceToEditName)
+bool DeviceControler::beginRemove(const std::shared_ptr<const Device> &device)
 {
-    auto device = deviceListModel.getDevice(deviceToEditName);
+    if(!device)
+        return false;
     if(!Messages::showYesNoWarning(parent,  QString("Czy na pewno chcesz usunąć urządzenie o nazwie: \"%1\" ?").arg(device->getName())))
         return false;
     return handleModelOperationResult(deviceListModel.removeDevice(device->getName()), NULL);
@@ -66,30 +66,30 @@ bool DeviceControler::handleModelOperationResult(DeviceListModel::OperationResul
     {
         case DeviceListModel::OperationResult::DeviceAdded:
         case DeviceListModel::OperationResult::DeviceEdited:
-            emit addDeviceSuccess();
+            emit operationSuccess();
             return true;
 
         case DeviceListModel::OperationResult::DeviceRemoved:
             return true;
 
         case DeviceListModel::OperationResult::NullDevice:
-            emit addDeviceFailed("Urządzenie jest puste!");
+            emit operationFailed("Urządzenie jest puste!");
             return false;
 
         case DeviceListModel::OperationResult::DeviceNameIsEmpty:
-            emit addDeviceFailed("Nazwa urządzenia nie może być pusta!");
+            emit operationFailed("Nazwa urządzenia nie może być pusta!");
             return false;
 
         case DeviceListModel::OperationResult::DeviceNameIsNotUnique:
-            emit addDeviceFailed("Urządzenie o nazwie \"" + device->getName() + "\" już istnieje!");
+            emit operationFailed("Urządzenie o nazwie \"" + device->getName() + "\" już istnieje!");
             return false;
 
         case DeviceListModel::OperationResult::DeviceNotFound:
-            emit addDeviceFailed("Nie odnaleziono edytowanego urządzenia!");
+            emit operationFailed("Nie odnaleziono urządzenia!");
             return false;
 
         default:
-            emit addDeviceFailed("Nieznany błąd!");
+            emit operationFailed("Nieznany błąd!");
             return false;
     }
 }

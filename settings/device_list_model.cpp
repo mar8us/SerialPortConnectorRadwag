@@ -25,7 +25,7 @@ DeviceListModel::OperationResult DeviceListModel::addDevice(const std::shared_pt
     return OperationResult::DeviceAdded;
 }
 
-DeviceListModel::OperationResult DeviceListModel::editDevice(const QString &originalDeviceName, const std::shared_ptr<const Device> &editedDevice)
+DeviceListModel::OperationResult DeviceListModel::replaceDevice(const QString &originalDeviceName, const std::shared_ptr<const Device> &editedDevice)
 {
     if(!editedDevice)
         return OperationResult::NullDevice;
@@ -66,13 +66,13 @@ DeviceListModel::OperationResult DeviceListModel::removeDevice(const QString &de
     return OperationResult::DeviceRemoved;
 }
 
-const std::shared_ptr<const Device> DeviceListModel::getDevice(const QString &name) const
+std::shared_ptr<const Device> DeviceListModel::getDevice(const QString &name) const
 {
     int index = getDeviceIndex(name);
     return index != -1 ? devices[index] : nullptr;
 }
 
-const std::shared_ptr<const Device> DeviceListModel::getDevice(int row) const
+std::shared_ptr<const Device> DeviceListModel::getDevice(int row) const
 {
     if(row >= 0 && row < devices.size())
         return devices.at(row);

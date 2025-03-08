@@ -43,6 +43,8 @@ private slots:
     void updateActionIcons(int index);
 
 private:
+    std::shared_ptr<const Device> getSelectedDevice();
+
     void initControls();
     void connectButtons();
     void updateStageLabels();
