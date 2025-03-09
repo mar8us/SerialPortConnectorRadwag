@@ -1,5 +1,5 @@
-#include "add_divice_form.h"
-#include "ui_add_divice_form.h"
+#include "device_form.h"
+#include "ui_device_form.h"
 #include "QMessageBox"
 #include <QtSerialPort/QSerialPort>
 

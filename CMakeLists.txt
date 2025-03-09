@@ -24,13 +24,13 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         MANUAL_FINALIZATION
         ${PROJECT_SOURCES}
         resources.qrc
-        settings/add_divice_form.ui
-        settings/add_divice_form.cpp settings/add_divice_form.h
+        settings/device_form.ui
+        settings/device_form.cpp settings/device_form.h
         settings/device.cpp settings/device.h
-        settings/device_list_model.cpp settings/device_list_model.h
-        settings/device_controler.h settings/device_controler.cpp
+        settings/devices_list_model.cpp settings/devices_list_model.h
+        settings/devices_list_controler.h settings/devices_list_controler.cpp
         message_utils.h message_utils.cpp
-        settings/device_storage.cpp settings/device_storage.h
+        settings/devices_storage.cpp settings/devices_storage.h
 
     )
 # Define target properties for Android with Qt 6 as:

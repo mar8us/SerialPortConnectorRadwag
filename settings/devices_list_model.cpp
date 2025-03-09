@@ -1,4 +1,4 @@
-#include "device_list_model.h"
+#include "devices_list_model.h"
 
 DeviceListModel::DeviceListModel(QObject *parent) : QAbstractListModel(parent)
 {

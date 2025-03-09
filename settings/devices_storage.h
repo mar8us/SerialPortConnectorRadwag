@@ -1,5 +1,5 @@
-#ifndef DEVICE_STORAGE_H
-#define DEVICE_STORAGE_H
+#ifndef DEVICES_STORAGE_H
+#define DEVICES_STORAGE_H
 
 #include <QFile>
 #include <QJsonDocument>
@@ -21,4 +21,4 @@ private:
     QList<DeviceCommand> parseCommands(const QJsonObject& obj);
 };
 
-#endif // DEVICE_STORAGE_H
+#endif // DEVICES_STORAGE_H
