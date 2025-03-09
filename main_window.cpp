@@ -37,7 +37,7 @@ void MainWindow::onRemoveDeviceButtonClicked()
 
 void MainWindow::onDeviceComboSelectionChanged()
 {
-    devicesListControler.setActiveDevice(ui->devicesComboConnection->currentData().value<std::shared_ptr<const Device>>());
+    deviceConnector.setActiveDevice(ui->devicesComboConnection->currentData().value<std::shared_ptr<const Device>>());
 }
 
 void MainWindow::navigateToToolBoxPage(QWidget* page)

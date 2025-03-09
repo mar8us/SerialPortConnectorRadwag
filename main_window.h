@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 #include "settings/device.h"
+#include "settings/device_connector.h"
 #include "settings/devices_list_model.h"
 #include "settings/devices_list_controler.h"
 
@@ -56,6 +57,7 @@ private:
     Ui::MainWindow *ui;
     DeviceListModel devicesListModel;
     DeviceControler devicesListControler;
+    DeviceConnector deviceConnector;
 
     QIcon defaultSettingsIcon;
     QIcon activeSettingsIcon;

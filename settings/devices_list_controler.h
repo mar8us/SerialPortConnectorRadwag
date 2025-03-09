@@ -15,9 +15,6 @@ public:
     const std::shared_ptr<const Device> beginEdit(const std::shared_ptr<const Device> &device);
     bool beginRemove(const std::shared_ptr<const Device> &device);
 
-    std::shared_ptr<const Device> getActiveDevice();
-    bool setActiveDevice(const std::shared_ptr<const Device>& newActiveDevice);
-
 private:
     bool handleModelOperationResult(DeviceListModel::OperationResult result, const std::shared_ptr<const Device> &device);
 
