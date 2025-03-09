@@ -54,8 +54,8 @@ private:
     void updateDevicesComboConnection();
 
     Ui::MainWindow *ui;
-    DeviceListModel deviceModel;
-    DeviceControler deviceControler;
+    DeviceListModel devicesListModel;
+    DeviceControler devicesListControler;
 
     QIcon defaultSettingsIcon;
     QIcon activeSettingsIcon;
