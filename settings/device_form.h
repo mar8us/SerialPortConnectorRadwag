@@ -1,5 +1,5 @@
-#ifndef ADD_DIVICE_FORM_H
-#define ADD_DIVICE_FORM_H
+#ifndef DEVICE_FORM_H
+#define DEVICE_FORM_H
 
 #include <QDialog>
 #include "device.h"
@@ -50,4 +50,4 @@ private:
     const std::shared_ptr<Device> &device;
 };
 
-#endif // ADD_DIVICE_FORM_H
+#endif // DEVICE_FORM_H

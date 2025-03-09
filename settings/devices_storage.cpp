@@ -1,4 +1,4 @@
-#include "device_storage.h"
+#include "devices_storage.h"
 
 QString DeviceStorage::getStoragePath()
 {

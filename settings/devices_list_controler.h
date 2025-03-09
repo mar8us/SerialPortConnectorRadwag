@@ -1,9 +1,9 @@
-#ifndef DEVICE_CONTROLER_H
-#define DEVICE_CONTROLER_H
+#ifndef DEVICES_LIST_CONTROLER_H
+#define DEVICES_LIST_CONTROLER_H
 
 #include "device.h"
-#include "device_list_model.h"
-#include "device_storage.h"
+#include "devices_list_model.h"
+#include "devices_storage.h"
 
 class DeviceControler : public QObject
 {
@@ -34,4 +34,4 @@ private slots:
     void onOperationSuccess();
 };
 
-#endif // DEVICE_CONTROLER_H
+#endif // DEVICES_LIST_CONTROLER_H

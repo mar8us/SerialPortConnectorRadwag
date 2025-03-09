@@ -1,5 +1,5 @@
-#include "device_controler.h"
-#include "add_divice_form.h"
+#include "devices_list_controler.h"
+#include "device_form.h"
 #include "../message_utils.h"
 
 DeviceControler::DeviceControler(DeviceListModel &deviceListModel, QWidget *parent)

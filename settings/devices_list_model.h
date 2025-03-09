@@ -1,5 +1,5 @@
-#ifndef DEVICE_LIST_MODEL_H
-#define DEVICE_LIST_MODEL_H
+#ifndef DEVICES_LIST_MODEL_H
+#define DEVICES_LIST_MODEL_H
 
 #include "device.h"
 #include <QObject>
@@ -44,4 +44,4 @@ private:
     QMap<QString, int> devicesIndexMap;
 };
 
-#endif // DEVICE_LIST_MODEL_H
+#endif // DEVICES_LIST_MODEL_H

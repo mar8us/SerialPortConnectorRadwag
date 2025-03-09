@@ -3,8 +3,8 @@
 
 #include <QMainWindow>
 #include "settings/device.h"
-#include "settings/device_list_model.h"
-#include "settings/device_controler.h"
+#include "settings/devices_list_model.h"
+#include "settings/devices_list_controler.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
