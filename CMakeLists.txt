@@ -30,6 +30,7 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         settings/device_list_model.cpp settings/device_list_model.h
         settings/device_controler.h settings/device_controler.cpp
         message_utils.h message_utils.cpp
+        settings/device_storage.cpp settings/device_storage.h
 
     )
 # Define target properties for Android with Qt 6 as:

@@ -5,7 +5,8 @@
 DeviceControler::DeviceControler(DeviceListModel &deviceListModel, QWidget *parent)
     : deviceListModel(deviceListModel), parent(parent)
 {
-
+    deviceListModel.setDevicesList(deviceStorage.loadDevicesFromFile());
+    connect(this, &DeviceControler::operationSuccess, this, &DeviceControler::onOperationSuccess);
 }
 
 const std::shared_ptr<const Device> DeviceControler::beginNew()
@@ -83,6 +84,7 @@ bool DeviceControler::handleModelOperationResult(DeviceListModel::OperationResul
             return true;
 
         case DeviceListModel::OperationResult::DeviceRemoved:
+            operationSuccess();
             return true;
 
         case DeviceListModel::OperationResult::NullDevice:
@@ -105,4 +107,9 @@ bool DeviceControler::handleModelOperationResult(DeviceListModel::OperationResul
             emit operationFailed("Nieznany błąd!");
             return false;
     }
+}
+
+void DeviceControler::onOperationSuccess()
+{
+    deviceStorage.saveDevicesToFile(deviceListModel.getDevicesList());
 }

@@ -71,6 +71,13 @@ const QList<std::shared_ptr<const Device>>& DeviceListModel::getDevicesList() co
     return devices;
 }
 
+void DeviceListModel::setDevicesList(const QList<std::shared_ptr<const Device>> &newDevices)
+{
+    beginResetModel();
+    devices = newDevices;
+    endResetModel();
+}
+
 std::shared_ptr<const Device> DeviceListModel::getDevice(const QString &name) const
 {
     int index = getDeviceIndex(name);

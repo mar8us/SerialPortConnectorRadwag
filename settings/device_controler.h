@@ -3,6 +3,7 @@
 
 #include "device.h"
 #include "device_list_model.h"
+#include "device_storage.h"
 
 class DeviceControler : public QObject
 {
@@ -22,6 +23,7 @@ private:
 
     DeviceListModel &deviceListModel;
     std::shared_ptr<const Device> activeDevice;
+    DeviceStorage deviceStorage;
     QWidget *parent;
 
 signals:
@@ -29,6 +31,7 @@ signals:
     void operationFailed(const QString &errorMsg);
 
 private slots:
+    void onOperationSuccess();
 };
 
 #endif // DEVICE_CONTROLER_H
