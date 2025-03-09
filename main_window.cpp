@@ -4,8 +4,8 @@
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
-    , deviceModel(this)
-    , deviceControler(deviceModel, this)
+    , devicesListModel(this)
+    , devicesListControler(devicesListModel, this)
 {
     initControls();
     connectButtons();
@@ -19,25 +19,25 @@ MainWindow::~MainWindow()
 
 void MainWindow::onAddDeviceButtonClicked()
 {
-    deviceControler.beginNew();
+    devicesListControler.beginNew();
     updateDevicesComboConnection();
 }
 
 void MainWindow::onEditDeviceButtonClicked()
 {
-    deviceControler.beginEdit(getSelectedDevice());
+    devicesListControler.beginEdit(getSelectedDevice());
     updateDevicesComboConnection();
 }
 
 void MainWindow::onRemoveDeviceButtonClicked()
 {
-    deviceControler.beginRemove(getSelectedDevice());
+    devicesListControler.beginRemove(getSelectedDevice());
     updateDevicesComboConnection();
 }
 
 void MainWindow::onDeviceComboSelectionChanged()
 {
-    deviceControler.setActiveDevice(ui->devicesComboConnection->currentData().value<std::shared_ptr<const Device>>());
+    devicesListControler.setActiveDevice(ui->devicesComboConnection->currentData().value<std::shared_ptr<const Device>>());
 }
 
 void MainWindow::navigateToToolBoxPage(QWidget* page)
@@ -101,7 +101,7 @@ void MainWindow::initControls()
     navigateToToolBoxPage(ui->measureDensityPage);
     updateStageLabels();
     updateActionIcons(0);
-    ui->devicesListView->setModel(&deviceModel);
+    ui->devicesListView->setModel(&devicesListModel);
     updateDevicesComboConnection();
 }
 
