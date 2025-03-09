@@ -53,6 +53,7 @@ private:
     void setProperty();
     void setIcons();
     void updateDevicesComboConnection();
+    void fillSerialPortCombo();
 
     Ui::MainWindow *ui;
     DeviceListModel devicesListModel;
