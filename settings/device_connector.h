@@ -3,11 +3,15 @@
 
 #include "device.h"
 #include "QSerialPortInfo"
+#include "../serialPort/serial_port.h"
 
-class DeviceConnector
+class DeviceConnector : public QObject
 {
+    Q_OBJECT
 public:
     DeviceConnector();
+
+    bool connectDevice(const QString &portName);
 
     std::shared_ptr<const Device> getActiveDevice();
     bool setActiveDevice(const std::shared_ptr<const Device>& newActiveDevice);
@@ -15,6 +19,8 @@ public:
 
 private:
     std::shared_ptr<const Device> activeDevice;
+    std::unique_ptr<SerialPort> serialPort;
+
 };
 
 #endif // DEVICE_CONNECTOR_H

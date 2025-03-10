@@ -1,8 +1,20 @@
 #include "device_connector.h"
 
 DeviceConnector::DeviceConnector()
+    : serialPort(std::make_unique<SerialPort>())
 {
 
+}
+bool DeviceConnector::connectDevice(const QString &portName)
+{
+    if(!activeDevice)
+        return false;
+
+    if (!serialPort->connect(portName, activeDevice->getBaudRate(), activeDevice->getDataBits(), activeDevice->getParity(), activeDevice->getStopBits()))
+        return false;
+
+
+    return true;
 }
 
 std::shared_ptr<const Device> DeviceConnector::getActiveDevice()
