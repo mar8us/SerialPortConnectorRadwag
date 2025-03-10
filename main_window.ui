@@ -169,7 +169,7 @@
                </size>
               </property>
               <property name="currentIndex">
-               <number>4</number>
+               <number>0</number>
               </property>
               <widget class="QWidget" name="dataPageStage">
                <layout class="QGridLayout" name="gridLayout_5">
@@ -372,25 +372,99 @@
                     <property name="title">
                      <string>Ustawienia</string>
                     </property>
-                    <layout class="QVBoxLayout" name="verticalLayout_2">
+                    <layout class="QHBoxLayout" name="horizontalLayout_3">
                      <item>
-                      <widget class="QPushButton" name="buttonAddFluid">
-                       <property name="maximumSize">
-                        <size>
-                         <width>150</width>
-                         <height>16777215</height>
-                        </size>
+                      <widget class="QGroupBox" name="groupBox">
+                       <property name="title">
+                        <string>Ogólne</string>
                        </property>
-                       <property name="text">
-                        <string>Tabele cieczy</string>
-                       </property>
+                       <layout class="QVBoxLayout" name="verticalLayout_2">
+                        <item>
+                         <widget class="QPushButton" name="buttonAddFluid">
+                          <property name="maximumSize">
+                           <size>
+                            <width>150</width>
+                            <height>16777215</height>
+                           </size>
+                          </property>
+                          <property name="text">
+                           <string>Tabele cieczy</string>
+                          </property>
+                         </widget>
+                        </item>
+                        <item>
+                         <widget class="QCheckBox" name="showGuideComboBox">
+                          <property name="text">
+                           <string>Pokazuj przewodnik</string>
+                          </property>
+                         </widget>
+                        </item>
+                       </layout>
                       </widget>
                      </item>
                      <item>
-                      <widget class="QCheckBox" name="showGuideComboBox">
-                       <property name="text">
-                        <string>Pokazuj przewodnik</string>
+                      <widget class="QGroupBox" name="connectionGroupBox_2">
+                       <property name="maximumSize">
+                        <size>
+                         <width>300</width>
+                         <height>16777215</height>
+                        </size>
                        </property>
+                       <property name="title">
+                        <string>Połaczenie</string>
+                       </property>
+                       <layout class="QFormLayout" name="formLayout_2">
+                        <item row="0" column="0">
+                         <widget class="QLabel" name="diviceNameLabel_2">
+                          <property name="text">
+                           <string>Urządzenie:</string>
+                          </property>
+                         </widget>
+                        </item>
+                        <item row="0" column="1">
+                         <widget class="QComboBox" name="devicesComboConnection_2"/>
+                        </item>
+                        <item row="1" column="0">
+                         <widget class="QLabel" name="portLabel_2">
+                          <property name="text">
+                           <string>Port:</string>
+                          </property>
+                         </widget>
+                        </item>
+                        <item row="1" column="1">
+                         <widget class="QComboBox" name="serialPortCombo_2"/>
+                        </item>
+                        <item row="2" column="0">
+                         <widget class="QLabel" name="statusConnLabel_2">
+                          <property name="text">
+                           <string>Status połączenia:</string>
+                          </property>
+                         </widget>
+                        </item>
+                        <item row="2" column="1">
+                         <widget class="QLabel" name="statusLabel_2">
+                          <property name="styleSheet">
+                           <string notr="true">QLabel { background-color: red; color: white; }</string>
+                          </property>
+                          <property name="text">
+                           <string>Brak połączenia</string>
+                          </property>
+                          <property name="textFormat">
+                           <enum>Qt::TextFormat::AutoText</enum>
+                          </property>
+                          <property name="alignment">
+                           <set>Qt::AlignmentFlag::AlignCenter</set>
+                          </property>
+                         </widget>
+                        </item>
+                        <item row="3" column="1">
+                         <widget class="QPushButton" name="buttonConnectDevice_2">
+                          <property name="text">
+                           <string>Połącz</string>
+                          </property>
+                         </widget>
+                        </item>
+                       </layout>
                       </widget>
                      </item>
                     </layout>
