@@ -21,6 +21,8 @@ private:
     std::shared_ptr<const Device> activeDevice;
     std::unique_ptr<SerialPort> serialPort;
 
+private slots:
+    void dataReceived(QByteArray b);
 };
 
 #endif // DEVICE_CONNECTOR_H

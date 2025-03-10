@@ -13,6 +13,7 @@ bool DeviceConnector::connectDevice(const QString &portName)
     if (!serialPort->connect(portName, activeDevice->getBaudRate(), activeDevice->getDataBits(), activeDevice->getParity(), activeDevice->getStopBits()))
         return false;
 
+    connect(serialPort.get(), &SerialPort::dataRecevied, this, &DeviceConnector::dataReceived);
 
     return true;
 }
@@ -37,3 +38,9 @@ QStringList DeviceConnector::getAvaiablePorts()
         ports.append(port.portName());
     return ports;
 }
+
+void DeviceConnector::dataReceived(QByteArray b)
+{
+
+}
+
