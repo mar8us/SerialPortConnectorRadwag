@@ -33,6 +33,9 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         settings/devices_storage.cpp settings/devices_storage.h
         settings/device_connector.cpp settings/device_connector.h
         serialPort/serial_port.cpp serialPort/serial_port.h
+        settings/device_data.h settings/device_data.cpp
+
+        radwag/radwag_measure.h radwag/radwag_measure.cpp
 
     )
 # Define target properties for Android with Qt 6 as:
