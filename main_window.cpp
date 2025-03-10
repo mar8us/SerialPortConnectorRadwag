@@ -103,6 +103,7 @@ void MainWindow::initControls()
     updateActionIcons(0);
     ui->devicesListView->setModel(&devicesListModel);
     updateDevicesComboConnection();
+    fillSerialPortCombo();
 }
 
 void MainWindow::connectButtons()
@@ -229,4 +230,9 @@ void MainWindow::updateDevicesComboConnection()
         ui->devicesComboConnection->setCurrentIndex(-1);
 
     ui->devicesComboConnection->blockSignals(false);
+}
+
+void MainWindow::fillSerialPortCombo()
+{
+    ui->serialPortCombo->addItems(deviceConnector.getAvaiablePorts());
 }

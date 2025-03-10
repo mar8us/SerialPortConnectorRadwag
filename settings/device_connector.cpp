@@ -17,3 +17,11 @@ bool DeviceConnector::setActiveDevice(const std::shared_ptr<const Device>& newAc
     activeDevice = newActiveDevice;
     return true;
 }
+
+QStringList DeviceConnector::getAvaiablePorts()
+{
+    QStringList ports;
+    foreach(auto&port, QSerialPortInfo::availablePorts())
+        ports.append(port.portName());
+    return ports;
+}

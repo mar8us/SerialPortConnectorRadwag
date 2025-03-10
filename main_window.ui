@@ -1905,7 +1905,7 @@
           <property name="title">
            <string>Połaczenie</string>
           </property>
-          <widget class="QPushButton" name="connectButton">
+          <widget class="QPushButton" name="buttonConnectDevice">
            <property name="geometry">
             <rect>
              <x>152</x>
