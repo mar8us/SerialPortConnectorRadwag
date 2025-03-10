@@ -11,7 +11,7 @@ DeviceControler::DeviceControler(DeviceListModel &deviceListModel, QWidget *pare
 
 const std::shared_ptr<const Device> DeviceControler::beginNew()
 {
-    auto newDevice = std::make_shared<Device>(QString());
+    auto newDevice = std::make_shared<Device>(DeviceType::None, QString());
     auto dialog = std::make_unique<DeviceForm>(newDevice, parent);
 
     bool result = false;

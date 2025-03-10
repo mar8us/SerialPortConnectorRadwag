@@ -111,6 +111,7 @@ void DeviceForm::initControls()
 {
     ui->setupUi(this);
 
+    fillDeviceTypeCombo();
     fillBaudRateCombo();
     fillDataBitsCombo();
     fillParitySettingCombo();
@@ -131,6 +132,12 @@ void DeviceForm::connectButtons()
 void DeviceForm::setButtonsState()
 {
     ui->removeCommandButton->setEnabled(!ui->commandTableWidget->selectionModel()->selectedRows().isEmpty());
+}
+
+void DeviceForm::fillDeviceTypeCombo()
+{
+    ui->deviceTypeCombo->addItem("Waga RADWAG", static_cast<int>(DeviceType::RadwagScale));
+    ui->deviceTypeCombo->addItem("Przesiewacz", static_cast<int>(DeviceType::Sifter));
 }
 
 void DeviceForm::fillBaudRateCombo()
@@ -191,7 +198,7 @@ bool DeviceForm::setDataFromDevice()
 {
     if(!device)
         return false;
-
+    ui->deviceTypeCombo->setCurrentIndex(ui->deviceTypeCombo->findData(static_cast<int>(device->getDeviceType())));
     ui->divNameEdit->setText(device->getName());
     ui->baudRateCombo->setCurrentIndex(ui->baudRateCombo->findData(device->getBaudRate()));
     ui->dataBitsCombo->setCurrentIndex(ui->dataBitsCombo->findData(device->getDataBits()));

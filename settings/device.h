@@ -6,6 +6,13 @@
 #include <QtSerialPort/QSerialPort>
 #include <QUuid>
 
+enum class DeviceType
+{
+    None,
+    RadwagScale,
+    Sifter
+};
+
 struct DeviceCommand
 {
     DeviceCommand(const QString &description, const QString &command)
@@ -18,7 +25,8 @@ struct DeviceCommand
 class Device
 {
 public:
-    explicit Device(const QString &name,
+    explicit Device(DeviceType deviceType,
+                    const QString &name,
                     const QSerialPort::BaudRate baudRate = QSerialPort::Baud9600,
                     const QSerialPort::DataBits dataBits = QSerialPort::Data8,
                     const QSerialPort::Parity parity = QSerialPort::NoParity,
@@ -28,6 +36,7 @@ public:
 
     Device(const Device& source);
 
+    DeviceType getDeviceType() const;
     QString getName() const;
     QSerialPort::BaudRate getBaudRate() const;
     QSerialPort::DataBits getDataBits() const;
@@ -53,6 +62,7 @@ private:
     QSerialPort::StopBits stopBits;
     QList<DeviceCommand> commands;
     QUuid guid;
+    DeviceType deviceType;
 };
 
 // Q_DECLARE_METATYPE(std::shared_ptr<const Device>)

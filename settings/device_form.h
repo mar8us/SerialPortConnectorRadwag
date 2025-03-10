@@ -39,6 +39,7 @@ private:
     void initControls();
     void connectButtons();
     void setButtonsState();
+    void fillDeviceTypeCombo();
     void fillBaudRateCombo();
     void fillDataBitsCombo();
     void fillStopBitsCombo();
