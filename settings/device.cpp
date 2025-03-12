@@ -92,6 +92,11 @@ QString Device::getGuid() const
     return guid.toString(QUuid::WithoutBraces);
 }
 
+void Device::setDeviceType(DeviceType value)
+{
+    deviceType = value;
+}
+
 void Device::setName(const QString& value)
 {
     name = value;

@@ -38,11 +38,14 @@ private slots:
     void onEditDeviceButtonClicked();
     void onRemoveDeviceButtonClicked();
     void onDeviceComboSelectionChanged();
+    void onConnectDeviceClicked();
 
     void navigateToToolBoxPage(QWidget* page);
     void goToPreviousMeasureStage();
     void goToNextMeasureStage();
     void updateActionIcons(int index);
+
+    void on_buttonConnectDevice_3_clicked();
 
 private:
     std::shared_ptr<const Device> getSelectedDevice();

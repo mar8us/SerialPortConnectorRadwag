@@ -40,6 +40,11 @@ void MainWindow::onDeviceComboSelectionChanged()
     deviceConnector.setActiveDevice(ui->devicesComboConnection->currentData().value<std::shared_ptr<const Device>>());
 }
 
+void MainWindow::onConnectDeviceClicked()
+{
+    deviceConnector.connectDevice(ui->serialPortCombo->currentText());
+}
+
 void MainWindow::navigateToToolBoxPage(QWidget* page)
 {
     if(page && ui->stackedWidget->indexOf(page) != -1)
@@ -132,6 +137,7 @@ void MainWindow::connectButtons()
     connect(ui->deleteDeviceButton, &QPushButton::clicked, this, &MainWindow::onRemoveDeviceButtonClicked);
 
     connect(ui->devicesComboConnection, &QComboBox::currentIndexChanged, this, &MainWindow::onDeviceComboSelectionChanged);
+    connect(ui->buttonConnectDevice, &QPushButton::clicked, this, &MainWindow::onConnectDeviceClicked);
 }
 
 void MainWindow::updateStageLabels()
@@ -236,3 +242,9 @@ void MainWindow::fillSerialPortCombo()
 {
     ui->serialPortCombo->addItems(deviceConnector.getAvaiablePorts());
 }
+
+void MainWindow::on_buttonConnectDevice_3_clicked()
+{
+    deviceConnector.sendImmediateWeightCommand();
+}
+

@@ -16,13 +16,14 @@ public:
     std::shared_ptr<const Device> getActiveDevice();
     bool setActiveDevice(const std::shared_ptr<const Device>& newActiveDevice);
     QStringList getAvaiablePorts();
+    void sendImmediateWeightCommand();
 
 private:
     std::shared_ptr<const Device> activeDevice;
     std::unique_ptr<SerialPort> serialPort;
 
 private slots:
-    void dataReceived(QByteArray b);
+    void dataReceived(const QByteArray &deviceData);
 };
 
 #endif // DEVICE_CONNECTOR_H

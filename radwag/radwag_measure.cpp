@@ -2,5 +2,5 @@
 
 RadwagMeasure::RadwagMeasure(const QByteArray& rawData) : DeviceData(rawData)
 {
-
+    parse();
 }

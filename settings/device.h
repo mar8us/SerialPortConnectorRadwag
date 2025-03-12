@@ -46,6 +46,7 @@ public:
     const QList<DeviceCommand>& getCommands() const;
     QString getGuid() const;
 
+    void setDeviceType(DeviceType type);
     void setName(const QString& value);
     void setBaudRate(const QSerialPort::BaudRate value);
     void setDataBits(const QSerialPort::DataBits value);

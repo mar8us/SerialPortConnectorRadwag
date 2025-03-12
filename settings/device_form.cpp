@@ -20,6 +20,7 @@ DeviceForm::~DeviceForm()
 
 void DeviceForm::onAcceptButtonClicked()
 {
+    device->setDeviceType(static_cast<DeviceType>(ui->deviceTypeCombo->currentData().toInt()));
     device->setName(ui->divNameEdit->text());
     device->setBaudRate(static_cast<QSerialPort::BaudRate>(ui->baudRateCombo->currentData().toInt()));
     device->setDataBits(static_cast<QSerialPort::DataBits>(ui->dataBitsCombo->currentData().toInt()));
@@ -198,6 +199,7 @@ bool DeviceForm::setDataFromDevice()
 {
     if(!device)
         return false;
+
     ui->deviceTypeCombo->setCurrentIndex(ui->deviceTypeCombo->findData(static_cast<int>(device->getDeviceType())));
     ui->divNameEdit->setText(device->getName());
     ui->baudRateCombo->setCurrentIndex(ui->baudRateCombo->findData(device->getBaudRate()));
