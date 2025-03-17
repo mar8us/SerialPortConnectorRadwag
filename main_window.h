@@ -20,11 +20,17 @@ class MainWindow : public QMainWindow
 public:
     enum class MeasurementStage
     {
-        Data = 0,
-        AirMeasure,
-        PrepareHydro,
-        HydroMeasure,
-        AirEndMeasure
+        InitialData = 0,       // pageInitialData
+        DryMeasure = 1,        // pageDryMeasure
+
+        // Etapy dla pomiaru dwustopniowego
+        PrepareSecond = 2,     // pagePrepareMeasureSecond
+        FinishSecond = 3,      // pageFinishMeasurementSecond
+
+        // Etapy dla pomiaru trzystopniowego
+        PrepareTriple = 4,     // pagePrepareMeasureTriple
+        SaturatedMass = 5,     // pageMeasureTriple
+        FinishTriple = 6       // pageFinishMeasurementTriple
     };
     Q_ENUM(MeasurementStage)
 
@@ -38,10 +44,12 @@ private slots:
     void onEditDeviceButtonClicked();
     void onRemoveDeviceButtonClicked();
     void onDeviceComboSelectionChanged();
+    void onConnectDeviceClicked();
 
     void navigateToToolBoxPage(QWidget* page);
     void goToPreviousMeasureStage();
     void goToNextMeasureStage();
+    void onMeasurementTypeChanged();
     void updateActionIcons(int index);
 
 private:
@@ -50,6 +58,7 @@ private:
     void initControls();
     void connectButtons();
     void updateStageLabels();
+    void finishMeasurement();
     void setProperty();
     void setIcons();
     void updateDevicesComboConnection();
