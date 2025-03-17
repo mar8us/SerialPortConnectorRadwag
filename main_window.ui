@@ -61,7 +61,7 @@
                  </size>
                 </property>
                 <property name="currentIndex">
-                 <number>0</number>
+                 <number>1</number>
                 </property>
                 <widget class="QWidget" name="stageSecondMeasure">
                  <layout class="QVBoxLayout" name="verticalLayout_9">
@@ -383,7 +383,7 @@
                </size>
               </property>
               <property name="currentIndex">
-               <number>0</number>
+               <number>2</number>
               </property>
               <widget class="QWidget" name="pageInitialData">
                <layout class="QGridLayout" name="gridLayout_5">
@@ -994,7 +994,8 @@ Odpowiedni dla materiałów wchłaniających wodę (ceramika, skały osadowe, be
                            </size>
                           </property>
                           <property name="text">
-                           <string>2. Złap próbkę w rękawiczkach, umieść na wadzę i wykonaj pomiar</string>
+                           <string>2. Umieść suchą próbkę w powietrzu na szalce górnej układu 
+i wykonaj pomiar</string>
                           </property>
                          </widget>
                         </item>
@@ -1474,7 +1475,7 @@ Odpowiedni dla materiałów wchłaniających wodę (ceramika, skały osadowe, be
                            <enum>Qt::LayoutDirection::LeftToRight</enum>
                           </property>
                           <property name="text">
-                           <string>1. Napełnij naczynie cieczą do odpowiedniego poziomu</string>
+                           <string>1. Sprawdź poziom cieczy w naczyniu</string>
                           </property>
                          </widget>
                         </item>
@@ -1485,7 +1486,7 @@ Odpowiedni dla materiałów wchłaniających wodę (ceramika, skały osadowe, be
                         <item>
                          <widget class="QCheckBox" name="stepTwoPrepareMeasureSecond">
                           <property name="text">
-                           <string>2. Zmierz i zapisz temperaturę wody (wpływa bezpośrednio na jej gęstość)</string>
+                           <string>2. Odczytaj aktualną temperaturę cieczy (wpływa bezpośrednio na gęstość) i zapisz ją w okienku poniżej </string>
                           </property>
                           <property name="tristate">
                            <bool>false</bool>
@@ -1499,7 +1500,7 @@ Odpowiedni dla materiałów wchłaniających wodę (ceramika, skały osadowe, be
                         <item>
                          <widget class="QCheckBox" name="stepTreePrepareMeasureSecond">
                           <property name="text">
-                           <string>3. Zamocuj solidnie próbkę w uchwycie zanurzeniowym</string>
+                           <string>3. Umieść próbkę na szalce dolnej w cieczy</string>
                           </property>
                          </widget>
                         </item>
@@ -1510,7 +1511,7 @@ Odpowiedni dla materiałów wchłaniających wodę (ceramika, skały osadowe, be
                         <item>
                          <widget class="QCheckBox" name="stepFourPrepareMeasureSecond">
                           <property name="text">
-                           <string>4. Upewnij się, że próbka będzie całkowicie zanurzona podczas pomiaru</string>
+                           <string>4. Upewnij się, że próbka jest całkowicie zanurzona</string>
                           </property>
                          </widget>
                         </item>
@@ -1521,7 +1522,8 @@ Odpowiedni dla materiałów wchłaniających wodę (ceramika, skały osadowe, be
                         <item>
                          <widget class="QCheckBox" name="stepFivePrepareMeasureSecond">
                           <property name="text">
-                           <string>5. Unikaj bezpośredniego dotykania próbki palcami</string>
+                           <string>5. Pozbądź się nadmiaru powietrza z próbki 
+umieszczając ją w komorze próźniowej na czas zaniku ostatniego pęcherzyka</string>
                           </property>
                          </widget>
                         </item>
