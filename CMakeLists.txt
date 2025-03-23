@@ -38,6 +38,9 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         fluid_tabels/fluid_tables_form.h fluid_tabels/fluid_tables_form.cpp fluid_tabels/fluid_tables_form.ui
         fluid_tabels/fluid.h
         fluid_tabels/fluid.cpp
+        material_tabels/material_tabels_dialog.h material_tabels/material_tabels_dialog.cpp material_tabels/material_tabels_dialog.ui
+        material_tabels/material.h material_tabels/material.cpp
+
 
     )
 # Define target properties for Android with Qt 6 as:

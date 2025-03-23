@@ -53,6 +53,7 @@ private slots:
     void updateActionIcons(int index);
 
     void buttonTableFluidsOnClicked();
+    void buttonTableMatrialsOnClicked();
 
 private:
     std::shared_ptr<const Device> getSelectedDevice();

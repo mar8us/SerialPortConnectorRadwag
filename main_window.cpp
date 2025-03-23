@@ -1,6 +1,7 @@
 #include "main_window.h"
 #include "./ui_main_window.h"
 #include "fluid_tabels/fluid_tables_form.h"
+#include "material_tabels/material_tabels_dialog.h"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -201,6 +202,12 @@ void MainWindow::buttonTableFluidsOnClicked()
     dialog->exec();
 }
 
+void MainWindow::buttonTableMatrialsOnClicked()
+{
+    auto dialog = new MaterialTablesDialog(this);
+    dialog->exec();
+}
+
 std::shared_ptr<const Device> MainWindow::getSelectedDevice()
 {
     QModelIndex currentIndex = ui->devicesListView->currentIndex();
@@ -285,6 +292,8 @@ void MainWindow::connectButtons()
     connect(ui->buttonConnectDevice, &QPushButton::clicked, this, &MainWindow::onConnectDeviceClicked);
 
     connect(ui->buttonTableFluids, &QPushButton::clicked, this, &MainWindow::buttonTableFluidsOnClicked);
+    connect(ui->buttonTableMatrials, &QPushButton::clicked, this, &MainWindow::buttonTableMatrialsOnClicked);
+
 }
 
 void MainWindow::updateStageLabels()
