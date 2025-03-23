@@ -45,6 +45,7 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         material_tabels/material_tabels_dialog.h material_tabels/material_tabels_dialog.cpp material_tabels/material_tabels_dialog.ui
         material_tabels/material.h material_tabels/material.cpp
         material_tabels/material_manager.h material_tabels/material_manager.cpp
+        tooltip/tooltip_manager.h tooltip/tooltip_manager.cpp
 
     )
 # Define target properties for Android with Qt 6 as:

@@ -2,6 +2,7 @@
 #include "./ui_main_window.h"
 #include "fluid_tabels/fluid_tables_form.h"
 #include "material_tabels/material_tabels_dialog.h"
+#include "tooltip/tooltip_manager.h"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -14,6 +15,12 @@ MainWindow::MainWindow(QWidget *parent)
     initControls();
     connectButtons();
     QLocale::setDefault(QLocale(QLocale::Polish, QLocale::Poland));
+
+    // tooltip i.e
+    TooltipManager& tooltipManager = TooltipManager::getInstance();
+    tooltipManager.setGlobalStyle("QToolTip { background-color: #2C3E50; color: white; }");
+    tooltipManager.registerImage("info", ":/icons/image.jpg", 424, 424);
+    tooltipManager.registerTooltip(ui->buttonDryMassExecuteStepOne, ui->buttonDryMassExecuteStepOne->text(), "Wyzeruj wagę wskazanym na ilustracji przyciskiem", "info", TooltipManager::IMAGE_BOTTOM);
 }
 
 MainWindow::~MainWindow()
