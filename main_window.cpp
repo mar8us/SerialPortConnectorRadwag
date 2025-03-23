@@ -7,6 +7,7 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
     , devicesListModel(this)
     , devicesListControler(devicesListModel, this)
+    , fluidManager(std::make_unique<FluidManager>(new FluidManager()))
 {
     initControls();
     connectButtons();
@@ -197,8 +198,10 @@ void MainWindow::updateActionIcons(int index)
 
 void MainWindow::buttonTableFluidsOnClicked()
 {
-    auto dialog = new FluidTablesDialog(this);
+    QMap<QString, Fluid> fluids = fluidManager->getFluids();
+    auto dialog = new FluidTablesDialog(fluids, this);
     dialog->exec();
+    fluidManager->setFluids(fluids);
 }
 
 std::shared_ptr<const Device> MainWindow::getSelectedDevice()

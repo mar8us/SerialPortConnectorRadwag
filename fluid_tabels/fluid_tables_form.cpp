@@ -10,10 +10,11 @@
 #include <QJsonArray>
 #include <QJsonObject>
 
-FluidTablesDialog::FluidTablesDialog(QWidget *parent) :
+FluidTablesDialog::FluidTablesDialog(QMap<QString, Fluid> &fluids, QWidget *parent) :
     QDialog(parent),
     ui(new Ui::FluidTablesDialog),
-    modified(false)
+    modified(false),
+    fluids(fluids)
 {
     ui->setupUi(this);
     ui->tableWidgetDensity->setColumnCount(2);
@@ -23,7 +24,8 @@ FluidTablesDialog::FluidTablesDialog(QWidget *parent) :
 
     connectSignalsAndSlots();
     connectSignalsForModification();
-    loadFluids();
+    updateFluidList();
+    //loadFluids();
 }
 
 FluidTablesDialog::~FluidTablesDialog()
@@ -374,7 +376,7 @@ void FluidTablesDialog::buttonCloseOnClicked()
         QMessageBox::warning(this, tr("Niezapisane zmiany"), tr("Masz niezapisane zmiany. Zapisz lub anuluj edycje"), QMessageBox::Ok);
         return;
     }
-    saveFluids();
+    // saveFluids();
     accept();
 }
 
@@ -388,6 +390,14 @@ void FluidTablesDialog::listWidgetFluidsOnCurrentItemChanged(QListWidgetItem *cu
     ui->groupBoxFluidDetails->setEnabled(false);
     updateFluidDetails(current->text());
     updateButtonsState();
+}
+
+void FluidTablesDialog::updateFluidList()
+{
+    for(auto fluid = fluids.begin(); fluid != fluids.end(); fluid++)
+        ui->listWidgetFluids->addItem(fluid->getName());
+    if(ui->listWidgetFluids->count() > 0)
+        ui->listWidgetFluids->setCurrentRow(0);
 }
 
 void FluidTablesDialog::loadFluids()

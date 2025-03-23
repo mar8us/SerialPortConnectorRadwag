@@ -18,7 +18,7 @@ class FluidTablesDialog : public QDialog
     Q_OBJECT
 
 public:
-    explicit FluidTablesDialog(QWidget *parent = nullptr);
+    explicit FluidTablesDialog(QMap<QString, Fluid> &fluids, QWidget *parent = nullptr);
     ~FluidTablesDialog();
 
     QMap<QString, Fluid> getFluids() const;
@@ -37,7 +37,7 @@ private slots:
 
 private:
     Ui::FluidTablesDialog *ui;
-    QMap<QString, Fluid> fluids;
+    QMap<QString, Fluid> &fluids;
     bool modified;
     QString editingFluidName;
 
@@ -49,6 +49,7 @@ private:
     bool isUniqueFluidName(const QString &name) const;
     QVector<DensityPoint> getDensityPointsFromTable() const;
 
+    void updateFluidList();
     void loadFluids();
     void saveFluids();
 
