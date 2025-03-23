@@ -2,6 +2,7 @@
 #define MAIN_WINDOW_H
 
 #include <QMainWindow>
+#include "material_tabels/material_manager.h"
 #include "settings/device.h"
 #include "settings/device_connector.h"
 #include "settings/devices_list_model.h"
@@ -71,6 +72,7 @@ private:
     DeviceListModel devicesListModel;
     DeviceControler devicesListControler;
     DeviceConnector deviceConnector;
+    std::unique_ptr<MaterialManager> materialManager;
 
     QIcon defaultSettingsIcon;
     QIcon activeSettingsIcon;

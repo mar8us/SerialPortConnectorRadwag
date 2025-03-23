@@ -8,6 +8,7 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
     , devicesListModel(this)
     , devicesListControler(devicesListModel, this)
+    , materialManager(std::make_unique<MaterialManager>(new MaterialManager(this)))
 {
     initControls();
     connectButtons();
@@ -204,8 +205,10 @@ void MainWindow::buttonTableFluidsOnClicked()
 
 void MainWindow::buttonTableMatrialsOnClicked()
 {
-    auto dialog = new MaterialTablesDialog(this);
+    QMap<QString, Material> materials = materialManager->getMaterials();
+    auto dialog = new MaterialTablesDialog(materials, this);
     dialog->exec();
+    materialManager->setMaterials(materials);
 }
 
 std::shared_ptr<const Device> MainWindow::getSelectedDevice()

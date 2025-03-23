@@ -1,17 +1,19 @@
 #include "material_tabels_dialog.h"
 #include "ui_material_tabels_dialog.h"
 
-MaterialTablesDialog::MaterialTablesDialog(QWidget *parent) :
+MaterialTablesDialog::MaterialTablesDialog(QMap<QString, Material> &materials, QWidget *parent) :
     QDialog(parent),
     ui(new Ui::MaterialTabelsDialog),
-    modified(false)
+    modified(false),
+    materials(materials)
 {
     ui->setupUi(this);
     ui->groupBoxMaterialDetails->setEnabled(false);
 
     connectSignalsAndSlots();
     connectSignalsForModification();
-    loadMaterials();
+    updateMaterialList();
+    //loadMaterials();
 }
 
 MaterialTablesDialog::~MaterialTablesDialog()
@@ -115,6 +117,14 @@ void MaterialTablesDialog::buttonCancelEditMaterialOnClicked()
     ui->groupBoxMaterialDetails->setEnabled(false);
     modified = false;
     updateButtonsState();
+}
+
+void MaterialTablesDialog::updateMaterialList()
+{
+    for(auto materialIt = materials.begin(); materialIt != materials.end(); materialIt++)
+        ui->listWidgetMaterials->addItem(materialIt->getName());
+    if(ui->listWidgetMaterials->count() > 0)
+        ui->listWidgetMaterials->setCurrentRow(0);
 }
 
 bool MaterialTablesDialog::validateMaterialDetails()
@@ -234,7 +244,7 @@ void MaterialTablesDialog::buttonCloseOnClicked()
         QMessageBox::warning(this, tr("Niezapisane zmiany"), tr("Masz niezapisane zmiany. Zapisz lub anuluj edycję"), QMessageBox::Ok);
         return;
     }
-    saveMaterials();
+    //saveMaterials();
     accept();
 }
 

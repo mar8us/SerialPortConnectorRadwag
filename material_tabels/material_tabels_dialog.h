@@ -22,7 +22,7 @@ class MaterialTablesDialog : public QDialog
     Q_OBJECT
 
 public:
-    explicit MaterialTablesDialog(QWidget *parent = nullptr);
+    explicit MaterialTablesDialog(QMap<QString, Material> &materials, QWidget *parent = nullptr);
     ~MaterialTablesDialog();
     QMap<QString, Material> getMaterials() const;
 
@@ -37,10 +37,11 @@ private slots:
 
 private:
     Ui::MaterialTabelsDialog *ui;
-    QMap<QString, Material> materials;
+    QMap<QString, Material> &materials;
     bool modified;
     QString editingMaterialName;
 
+    void updateMaterialList();
     bool validateMaterialDetails();
     void updateMaterialDetails(const QString &materialName);
     void clearMaterialDetails();

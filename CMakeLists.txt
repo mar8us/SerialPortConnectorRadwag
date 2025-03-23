@@ -40,6 +40,7 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         fluid_tabels/fluid.cpp
         material_tabels/material_tabels_dialog.h material_tabels/material_tabels_dialog.cpp material_tabels/material_tabels_dialog.ui
         material_tabels/material.h material_tabels/material.cpp
+        material_tabels/material_manager.h material_tabels/material_manager.cpp
 
 
     )
