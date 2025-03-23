@@ -1,6 +1,7 @@
 #include "main_window.h"
 #include "./ui_main_window.h"
 #include "fluid_tabels/fluid_tables_form.h"
+#include "material_tabels/material_tabels_dialog.h"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -8,6 +9,7 @@ MainWindow::MainWindow(QWidget *parent)
     , devicesListModel(this)
     , devicesListControler(devicesListModel, this)
     , fluidManager(std::make_unique<FluidManager>(new FluidManager()))
+    , materialManager(std::make_unique<MaterialManager>(new MaterialManager(this)))
 {
     initControls();
     connectButtons();
@@ -204,6 +206,14 @@ void MainWindow::buttonTableFluidsOnClicked()
     fluidManager->setFluids(fluids);
 }
 
+void MainWindow::buttonTableMatrialsOnClicked()
+{
+    QMap<QString, Material> materials = materialManager->getMaterials();
+    auto dialog = new MaterialTablesDialog(materials, this);
+    dialog->exec();
+    materialManager->setMaterials(materials);
+}
+
 std::shared_ptr<const Device> MainWindow::getSelectedDevice()
 {
     QModelIndex currentIndex = ui->devicesListView->currentIndex();
@@ -288,6 +298,8 @@ void MainWindow::connectButtons()
     connect(ui->buttonConnectDevice, &QPushButton::clicked, this, &MainWindow::onConnectDeviceClicked);
 
     connect(ui->buttonTableFluids, &QPushButton::clicked, this, &MainWindow::buttonTableFluidsOnClicked);
+    connect(ui->buttonTableMatrials, &QPushButton::clicked, this, &MainWindow::buttonTableMatrialsOnClicked);
+
 }
 
 void MainWindow::updateStageLabels()

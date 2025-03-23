@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 #include "fluid_tabels/fluid_manager.h"
+#include "material_tabels/material_manager.h"
 #include "settings/device.h"
 #include "settings/device_connector.h"
 #include "settings/devices_list_model.h"
@@ -55,6 +56,7 @@ private slots:
 
     void on_buttonConnectDevice_3_clicked();
     void buttonTableFluidsOnClicked();
+    void buttonTableMatrialsOnClicked();
 
 private:
     std::shared_ptr<const Device> getSelectedDevice();
@@ -73,6 +75,7 @@ private:
     DeviceControler devicesListControler;
     DeviceConnector deviceConnector;
     std::unique_ptr<FluidManager> fluidManager;
+    std::unique_ptr<MaterialManager> materialManager;
 
     QIcon defaultSettingsIcon;
     QIcon activeSettingsIcon;

@@ -308,7 +308,7 @@
                       <widget class="QPushButton" name="buttonTableFluids">
                        <property name="minimumSize">
                         <size>
-                         <width>130</width>
+                         <width>140</width>
                          <height>30</height>
                         </size>
                        </property>
@@ -319,7 +319,26 @@
                         </size>
                        </property>
                        <property name="text">
-                        <string>Tabele cieczy</string>
+                        <string>Katalog cieczy</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item>
+                      <widget class="QPushButton" name="buttonTableMatrials">
+                       <property name="minimumSize">
+                        <size>
+                         <width>140</width>
+                         <height>0</height>
+                        </size>
+                       </property>
+                       <property name="maximumSize">
+                        <size>
+                         <width>130</width>
+                         <height>30</height>
+                        </size>
+                       </property>
+                       <property name="text">
+                        <string>Katalog materiałów</string>
                        </property>
                       </widget>
                      </item>
@@ -383,7 +402,7 @@
                </size>
               </property>
               <property name="currentIndex">
-               <number>2</number>
+               <number>0</number>
               </property>
               <widget class="QWidget" name="pageInitialData">
                <layout class="QGridLayout" name="gridLayout_5">
@@ -3875,7 +3894,7 @@ umieszczając ją w komorze próźniowej na czas zaniku ostatniego pęcherzyka</
                         <x>0</x>
                         <y>0</y>
                         <width>360</width>
-                        <height>687</height>
+                        <height>673</height>
                        </rect>
                       </property>
                       <layout class="QVBoxLayout" name="verticalLayout_6">
