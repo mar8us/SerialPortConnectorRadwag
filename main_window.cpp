@@ -1,5 +1,6 @@
 #include "main_window.h"
 #include "./ui_main_window.h"
+#include "fluid_tabels/fluid_tables_form.h"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -194,6 +195,12 @@ void MainWindow::updateActionIcons(int index)
     ui->actionMeasureDensity->setIcon(ui->stackedWidget->widget(index) == ui->measureDensityPage ? activeRadwagIcon : defaultRadwagIcon);
 }
 
+void MainWindow::buttonTableFluidsOnClicked()
+{
+    auto dialog = new FluidTablesDialog(this);
+    dialog->exec();
+}
+
 std::shared_ptr<const Device> MainWindow::getSelectedDevice()
 {
     QModelIndex currentIndex = ui->devicesListView->currentIndex();
@@ -276,6 +283,8 @@ void MainWindow::connectButtons()
 
     connect(ui->devicesComboConnection, &QComboBox::currentIndexChanged, this, &MainWindow::onDeviceComboSelectionChanged);
     connect(ui->buttonConnectDevice, &QPushButton::clicked, this, &MainWindow::onConnectDeviceClicked);
+
+    connect(ui->buttonTableFluids, &QPushButton::clicked, this, &MainWindow::buttonTableFluidsOnClicked);
 }
 
 void MainWindow::updateStageLabels()

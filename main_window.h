@@ -52,6 +52,8 @@ private slots:
     void onMeasurementTypeChanged();
     void updateActionIcons(int index);
 
+    void buttonTableFluidsOnClicked();
+
 private:
     std::shared_ptr<const Device> getSelectedDevice();
 

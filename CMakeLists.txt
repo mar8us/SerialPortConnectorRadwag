@@ -34,6 +34,11 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         settings/device_connector.cpp settings/device_connector.h
         serialPort/serial_port.cpp serialPort/serial_port.h
 
+
+        fluid_tabels/fluid_tables_form.h fluid_tabels/fluid_tables_form.cpp fluid_tabels/fluid_tables_form.ui
+        fluid_tabels/fluid.h
+        fluid_tabels/fluid.cpp
+
     )
 # Define target properties for Android with Qt 6 as:
 #    set_property(TARGET SerialPortConnectorRadwag APPEND PROPERTY QT_ANDROID_PACKAGE_SOURCE_DIR
