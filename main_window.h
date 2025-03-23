@@ -2,6 +2,7 @@
 #define MAIN_WINDOW_H
 
 #include <QMainWindow>
+#include "fluid_tabels/fluid_manager.h"
 #include "settings/device.h"
 #include "settings/device_connector.h"
 #include "settings/devices_list_model.h"
@@ -53,6 +54,7 @@ private slots:
     void updateActionIcons(int index);
 
     void on_buttonConnectDevice_3_clicked();
+    void buttonTableFluidsOnClicked();
 
 private:
     std::shared_ptr<const Device> getSelectedDevice();
@@ -70,6 +72,7 @@ private:
     DeviceListModel devicesListModel;
     DeviceControler devicesListControler;
     DeviceConnector deviceConnector;
+    std::unique_ptr<FluidManager> fluidManager;
 
     QIcon defaultSettingsIcon;
     QIcon activeSettingsIcon;
