@@ -69,6 +69,7 @@ private:
     void setIcons();
     void updateDevicesComboConnection();
     void fillSerialPortCombo();
+    void fillFluidCombo();
 
     Ui::MainWindow *ui;
     DeviceListModel devicesListModel;

@@ -211,6 +211,7 @@ void MainWindow::buttonTableFluidsOnClicked()
     auto dialog = new FluidTablesDialog(fluids, this);
     dialog->exec();
     fluidManager->setFluids(fluids);
+    fillFluidCombo();
 }
 
 void MainWindow::buttonTableMatrialsOnClicked()
@@ -245,6 +246,7 @@ void MainWindow::initControls()
     ui->devicesListView->setModel(&devicesListModel);
     updateDevicesComboConnection();
     fillSerialPortCombo();
+    fillFluidCombo();
     onMeasurementTypeChanged();
 }
 
@@ -528,6 +530,15 @@ void MainWindow::updateDevicesComboConnection()
 void MainWindow::fillSerialPortCombo()
 {
     ui->serialPortCombo->addItems(deviceConnector.getAvaiablePorts());
+}
+
+void MainWindow::fillFluidCombo()
+{
+    ui->comboBoxFluid->clear();
+    const QMap<QString, Fluid> &fluids = fluidManager->getFluids();
+    for(auto &fluid : fluids)
+        ui->comboBoxFluid->addItem(fluid.getName());
+    ui->comboBoxFluid->setCurrentIndex(-1);
 }
 
 void MainWindow::on_buttonConnectDevice_3_clicked()
