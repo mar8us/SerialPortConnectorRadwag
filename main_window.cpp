@@ -306,7 +306,6 @@ void MainWindow::connectButtons()
 
     connect(ui->buttonTableFluids, &QPushButton::clicked, this, &MainWindow::buttonTableFluidsOnClicked);
     connect(ui->buttonTableMatrials, &QPushButton::clicked, this, &MainWindow::buttonTableMatrialsOnClicked);
-
 }
 
 void MainWindow::updateStageLabels()
