@@ -563,7 +563,7 @@ Odpowiedni dla materiałów wchłaniających wodę (ceramika, skały osadowe, be
                       </widget>
                      </item>
                      <item>
-                      <widget class="QPushButton" name="buttonConnectDevice_2">
+                      <widget class="QPushButton" name="buttonConnectDevice">
                        <property name="minimumSize">
                         <size>
                          <width>110</width>
@@ -4877,126 +4877,6 @@ umieszczając ją w komorze próźniowej na czas zaniku ostatniego pęcherzyka</
       <widget class="QWidget" name="settingsPage">
        <layout class="QHBoxLayout" name="horizontalLayout">
         <item>
-         <widget class="QGroupBox" name="connectionGroupBox">
-          <property name="maximumSize">
-           <size>
-            <width>300</width>
-            <height>16777215</height>
-           </size>
-          </property>
-          <property name="title">
-           <string>Połaczenie</string>
-          </property>
-          <widget class="QPushButton" name="buttonConnectDevice">
-           <property name="geometry">
-            <rect>
-             <x>152</x>
-             <y>147</y>
-             <width>111</width>
-             <height>29</height>
-            </rect>
-           </property>
-           <property name="text">
-            <string>Połącz</string>
-           </property>
-          </widget>
-          <widget class="QLabel" name="portLabel">
-           <property name="geometry">
-            <rect>
-             <x>20</x>
-             <y>81</y>
-             <width>81</width>
-             <height>20</height>
-            </rect>
-           </property>
-           <property name="text">
-            <string>Port:</string>
-           </property>
-          </widget>
-          <widget class="QLabel" name="statusLabel">
-           <property name="geometry">
-            <rect>
-             <x>150</x>
-             <y>117</y>
-             <width>111</width>
-             <height>21</height>
-            </rect>
-           </property>
-           <property name="styleSheet">
-            <string notr="true">QLabel { background-color: red; color: white; }</string>
-           </property>
-           <property name="text">
-            <string>Brak połączenia</string>
-           </property>
-           <property name="textFormat">
-            <enum>Qt::TextFormat::AutoText</enum>
-           </property>
-           <property name="alignment">
-            <set>Qt::AlignmentFlag::AlignCenter</set>
-           </property>
-          </widget>
-          <widget class="QLabel" name="statusConnLabel">
-           <property name="geometry">
-            <rect>
-             <x>20</x>
-             <y>117</y>
-             <width>121</width>
-             <height>20</height>
-            </rect>
-           </property>
-           <property name="text">
-            <string>Status połączenia:</string>
-           </property>
-          </widget>
-          <widget class="QLabel" name="diviceNameLabel">
-           <property name="geometry">
-            <rect>
-             <x>20</x>
-             <y>43</y>
-             <width>91</width>
-             <height>20</height>
-            </rect>
-           </property>
-           <property name="text">
-            <string>Urządzenie:</string>
-           </property>
-          </widget>
-          <widget class="QComboBox" name="serialPortCombo">
-           <property name="geometry">
-            <rect>
-             <x>150</x>
-             <y>77</y>
-             <width>113</width>
-             <height>28</height>
-            </rect>
-           </property>
-          </widget>
-          <widget class="QComboBox" name="devicesComboConnection">
-           <property name="geometry">
-            <rect>
-             <x>150</x>
-             <y>40</y>
-             <width>113</width>
-             <height>28</height>
-            </rect>
-           </property>
-          </widget>
-          <widget class="QPushButton" name="buttonConnectDevice_3">
-           <property name="geometry">
-            <rect>
-             <x>160</x>
-             <y>210</y>
-             <width>111</width>
-             <height>29</height>
-            </rect>
-           </property>
-           <property name="text">
-            <string>Wyślij</string>
-           </property>
-          </widget>
-         </widget>
-        </item>
-        <item>
          <widget class="QGroupBox" name="deviceListGroupBox">
           <property name="maximumSize">
            <size>
@@ -5095,7 +4975,7 @@ umieszczając ją w komorze próźniowej na czas zaniku ostatniego pęcherzyka</
   </widget>
   <action name="actionSettings">
    <property name="icon">
-    <iconset resource="resources.qrc">
+    <iconset>
      <normaloff>:/icons/settings_white.png</normaloff>:/icons/settings_white.png</iconset>
    </property>
    <property name="text">
@@ -5107,7 +4987,7 @@ umieszczając ją w komorze próźniowej na czas zaniku ostatniego pęcherzyka</
   </action>
   <action name="actionMeasureDensity">
    <property name="icon">
-    <iconset resource="resources.qrc">
+    <iconset>
      <normaloff>:/icons/balance_white.png</normaloff>:/icons/balance_white.png</iconset>
    </property>
    <property name="text">
@@ -5118,8 +4998,6 @@ umieszczając ją w komorze próźniowej na czas zaniku ostatniego pęcherzyka</
    </property>
   </action>
  </widget>
- <resources>
-  <include location="resources.qrc"/>
- </resources>
+ <resources/>
  <connections/>
 </ui>

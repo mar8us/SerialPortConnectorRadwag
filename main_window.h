@@ -69,7 +69,7 @@ private:
     void finishMeasurement();
     void setProperty();
     void setIcons();
-    void updateDevicesComboConnection();
+    void fillDevicesCombo();
     void fillSerialPortCombo();
     void fillFluidCombo();
     void fillMaterialCombo();
