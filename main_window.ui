@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1263</width>
-    <height>863</height>
+    <height>778</height>
    </rect>
   </property>
   <property name="minimumSize">
@@ -328,7 +328,7 @@
                        <property name="minimumSize">
                         <size>
                          <width>140</width>
-                         <height>0</height>
+                         <height>30</height>
                         </size>
                        </property>
                        <property name="maximumSize">
@@ -406,227 +406,6 @@
               </property>
               <widget class="QWidget" name="pageInitialData">
                <layout class="QGridLayout" name="gridLayout_5">
-                <item row="2" column="0" colspan="2">
-                 <widget class="QGroupBox" name="groupBoxInitialData">
-                  <property name="title">
-                   <string>Dane wstępne</string>
-                  </property>
-                  <layout class="QFormLayout" name="formLayout_10">
-                   <item row="0" column="0">
-                    <widget class="QLabel" name="labelSampleNumber">
-                     <property name="maximumSize">
-                      <size>
-                       <width>130</width>
-                       <height>16777215</height>
-                      </size>
-                     </property>
-                     <property name="text">
-                      <string>Numer próbki:</string>
-                     </property>
-                    </widget>
-                   </item>
-                   <item row="0" column="1">
-                    <widget class="QLineEdit" name="editSampleNumber">
-                     <property name="minimumSize">
-                      <size>
-                       <width>0</width>
-                       <height>30</height>
-                      </size>
-                     </property>
-                     <property name="maximumSize">
-                      <size>
-                       <width>250</width>
-                       <height>16777215</height>
-                      </size>
-                     </property>
-                     <property name="placeholderText">
-                      <string>Automatyczny jeśli puste</string>
-                     </property>
-                    </widget>
-                   </item>
-                   <item row="1" column="0">
-                    <widget class="QLabel" name="labelSampleName">
-                     <property name="maximumSize">
-                      <size>
-                       <width>130</width>
-                       <height>16777215</height>
-                      </size>
-                     </property>
-                     <property name="text">
-                      <string>Nazwa próbki:</string>
-                     </property>
-                    </widget>
-                   </item>
-                   <item row="1" column="1">
-                    <widget class="QLineEdit" name="editSampleName">
-                     <property name="minimumSize">
-                      <size>
-                       <width>0</width>
-                       <height>30</height>
-                      </size>
-                     </property>
-                     <property name="maximumSize">
-                      <size>
-                       <width>250</width>
-                       <height>16777215</height>
-                      </size>
-                     </property>
-                    </widget>
-                   </item>
-                   <item row="2" column="0">
-                    <widget class="QLabel" name="labelMaterial">
-                     <property name="maximumSize">
-                      <size>
-                       <width>130</width>
-                       <height>16777215</height>
-                      </size>
-                     </property>
-                     <property name="text">
-                      <string>Materiał badany:</string>
-                     </property>
-                    </widget>
-                   </item>
-                   <item row="2" column="1">
-                    <widget class="QLineEdit" name="editMaterial">
-                     <property name="minimumSize">
-                      <size>
-                       <width>0</width>
-                       <height>30</height>
-                      </size>
-                     </property>
-                     <property name="maximumSize">
-                      <size>
-                       <width>250</width>
-                       <height>16777215</height>
-                      </size>
-                     </property>
-                    </widget>
-                   </item>
-                   <item row="3" column="0">
-                    <widget class="QLabel" name="labelSampleDescription">
-                     <property name="maximumSize">
-                      <size>
-                       <width>130</width>
-                       <height>16777215</height>
-                      </size>
-                     </property>
-                     <property name="text">
-                      <string>Opis próbki:</string>
-                     </property>
-                     <property name="alignment">
-                      <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignTop</set>
-                     </property>
-                    </widget>
-                   </item>
-                   <item row="3" column="1">
-                    <widget class="QPlainTextEdit" name="editSampleDescription">
-                     <property name="minimumSize">
-                      <size>
-                       <width>0</width>
-                       <height>30</height>
-                      </size>
-                     </property>
-                     <property name="maximumSize">
-                      <size>
-                       <width>250</width>
-                       <height>80</height>
-                      </size>
-                     </property>
-                    </widget>
-                   </item>
-                   <item row="4" column="0">
-                    <widget class="QLabel" name="labelFluid">
-                     <property name="maximumSize">
-                      <size>
-                       <width>130</width>
-                       <height>16777215</height>
-                      </size>
-                     </property>
-                     <property name="text">
-                      <string>Ciecz:</string>
-                     </property>
-                    </widget>
-                   </item>
-                   <item row="4" column="1">
-                    <widget class="QComboBox" name="comboBoxFluid">
-                     <property name="minimumSize">
-                      <size>
-                       <width>0</width>
-                       <height>30</height>
-                      </size>
-                     </property>
-                     <property name="maximumSize">
-                      <size>
-                       <width>250</width>
-                       <height>16777215</height>
-                      </size>
-                     </property>
-                    </widget>
-                   </item>
-                   <item row="5" column="0">
-                    <widget class="QLabel" name="labelDate">
-                     <property name="maximumSize">
-                      <size>
-                       <width>130</width>
-                       <height>16777215</height>
-                      </size>
-                     </property>
-                     <property name="text">
-                      <string>Data:</string>
-                     </property>
-                    </widget>
-                   </item>
-                   <item row="5" column="1">
-                    <widget class="QDateTimeEdit" name="dateTimeEditMeasurement">
-                     <property name="minimumSize">
-                      <size>
-                       <width>0</width>
-                       <height>30</height>
-                      </size>
-                     </property>
-                     <property name="maximumSize">
-                      <size>
-                       <width>250</width>
-                       <height>16777215</height>
-                      </size>
-                     </property>
-                     <property name="calendarPopup">
-                      <bool>true</bool>
-                     </property>
-                    </widget>
-                   </item>
-                   <item row="6" column="0">
-                    <widget class="QLabel" name="labelAuthor">
-                     <property name="maximumSize">
-                      <size>
-                       <width>130</width>
-                       <height>16777215</height>
-                      </size>
-                     </property>
-                     <property name="text">
-                      <string>Wykonujący:</string>
-                     </property>
-                    </widget>
-                   </item>
-                   <item row="6" column="1">
-                    <widget class="QLineEdit" name="editAuthor">
-                     <property name="minimumSize">
-                      <size>
-                       <width>0</width>
-                       <height>30</height>
-                      </size>
-                     </property>
-                     <property name="maximumSize">
-                      <size>
-                       <width>250</width>
-                       <height>16777215</height>
-                      </size>
-                     </property>
-                    </widget>
-                   </item>
-                  </layout>
-                 </widget>
-                </item>
                 <item row="1" column="0">
                  <widget class="QGroupBox" name="groupBoxInitialDataMeasure">
                   <property name="title">
@@ -852,6 +631,284 @@ Odpowiedni dla materiałów wchłaniających wodę (ceramika, skały osadowe, be
                       </spacer>
                      </item>
                     </layout>
+                   </item>
+                  </layout>
+                 </widget>
+                </item>
+                <item row="2" column="0" colspan="2">
+                 <widget class="QGroupBox" name="groupBoxInitialData">
+                  <property name="title">
+                   <string>Dane wstępne</string>
+                  </property>
+                  <layout class="QGridLayout" name="gridLayout_24">
+                   <item row="0" column="0">
+                    <widget class="QScrollArea" name="scrollAreaInitialData">
+                     <property name="frameShape">
+                      <enum>QFrame::Shape::NoFrame</enum>
+                     </property>
+                     <property name="frameShadow">
+                      <enum>QFrame::Shadow::Plain</enum>
+                     </property>
+                     <property name="widgetResizable">
+                      <bool>true</bool>
+                     </property>
+                     <widget class="QWidget" name="scrollAreaWidgetContents_2">
+                      <property name="geometry">
+                       <rect>
+                        <x>0</x>
+                        <y>0</y>
+                        <width>810</width>
+                        <height>311</height>
+                       </rect>
+                      </property>
+                      <layout class="QGridLayout" name="gridLayout_17">
+                       <item row="0" column="0">
+                        <widget class="QLabel" name="labelSampleNumber">
+                         <property name="maximumSize">
+                          <size>
+                           <width>130</width>
+                           <height>16777215</height>
+                          </size>
+                         </property>
+                         <property name="text">
+                          <string>Numer próbki:</string>
+                         </property>
+                        </widget>
+                       </item>
+                       <item row="0" column="2" colspan="2">
+                        <widget class="QLineEdit" name="editSampleNumber">
+                         <property name="minimumSize">
+                          <size>
+                           <width>0</width>
+                           <height>30</height>
+                          </size>
+                         </property>
+                         <property name="maximumSize">
+                          <size>
+                           <width>250</width>
+                           <height>16777215</height>
+                          </size>
+                         </property>
+                         <property name="placeholderText">
+                          <string>Automatyczny jeśli puste</string>
+                         </property>
+                        </widget>
+                       </item>
+                       <item row="1" column="0">
+                        <widget class="QLabel" name="labelSampleName">
+                         <property name="maximumSize">
+                          <size>
+                           <width>130</width>
+                           <height>16777215</height>
+                          </size>
+                         </property>
+                         <property name="text">
+                          <string>Nazwa próbki:</string>
+                         </property>
+                        </widget>
+                       </item>
+                       <item row="1" column="2" colspan="2">
+                        <widget class="QLineEdit" name="editSampleName">
+                         <property name="minimumSize">
+                          <size>
+                           <width>0</width>
+                           <height>30</height>
+                          </size>
+                         </property>
+                         <property name="maximumSize">
+                          <size>
+                           <width>250</width>
+                           <height>16777215</height>
+                          </size>
+                         </property>
+                        </widget>
+                       </item>
+                       <item row="2" column="0" colspan="2">
+                        <widget class="QLabel" name="labelMaterial">
+                         <property name="maximumSize">
+                          <size>
+                           <width>130</width>
+                           <height>16777215</height>
+                          </size>
+                         </property>
+                         <property name="text">
+                          <string>Materiał badany:</string>
+                         </property>
+                        </widget>
+                       </item>
+                       <item row="2" column="2">
+                        <widget class="QComboBox" name="comboBoxMaterial">
+                         <property name="minimumSize">
+                          <size>
+                           <width>0</width>
+                           <height>30</height>
+                          </size>
+                         </property>
+                         <property name="maximumSize">
+                          <size>
+                           <width>250</width>
+                           <height>16777215</height>
+                          </size>
+                         </property>
+                        </widget>
+                       </item>
+                       <item row="3" column="0" colspan="2">
+                        <widget class="QLabel" name="labelMaterialDensity">
+                         <property name="text">
+                          <string>Gęstość teoretyczna materiału:</string>
+                         </property>
+                        </widget>
+                       </item>
+                       <item row="3" column="2" colspan="2">
+                        <widget class="QLineEdit" name="editMaterialDensity">
+                         <property name="minimumSize">
+                          <size>
+                           <width>0</width>
+                           <height>30</height>
+                          </size>
+                         </property>
+                         <property name="maximumSize">
+                          <size>
+                           <width>250</width>
+                           <height>16777215</height>
+                          </size>
+                         </property>
+                         <property name="alignment">
+                          <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
+                         </property>
+                         <property name="readOnly">
+                          <bool>true</bool>
+                         </property>
+                         <property name="clearButtonEnabled">
+                          <bool>false</bool>
+                         </property>
+                        </widget>
+                       </item>
+                       <item row="4" column="0">
+                        <widget class="QLabel" name="labelSampleDescription">
+                         <property name="maximumSize">
+                          <size>
+                           <width>130</width>
+                           <height>16777215</height>
+                          </size>
+                         </property>
+                         <property name="text">
+                          <string>Opis próbki:</string>
+                         </property>
+                         <property name="alignment">
+                          <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignTop</set>
+                         </property>
+                        </widget>
+                       </item>
+                       <item row="4" column="2" colspan="2">
+                        <widget class="QPlainTextEdit" name="editSampleDescription">
+                         <property name="minimumSize">
+                          <size>
+                           <width>0</width>
+                           <height>30</height>
+                          </size>
+                         </property>
+                         <property name="maximumSize">
+                          <size>
+                           <width>250</width>
+                           <height>80</height>
+                          </size>
+                         </property>
+                        </widget>
+                       </item>
+                       <item row="5" column="0">
+                        <widget class="QLabel" name="labelFluid">
+                         <property name="maximumSize">
+                          <size>
+                           <width>130</width>
+                           <height>16777215</height>
+                          </size>
+                         </property>
+                         <property name="text">
+                          <string>Ciecz:</string>
+                         </property>
+                        </widget>
+                       </item>
+                       <item row="5" column="2">
+                        <widget class="QComboBox" name="comboBoxFluid">
+                         <property name="minimumSize">
+                          <size>
+                           <width>0</width>
+                           <height>30</height>
+                          </size>
+                         </property>
+                         <property name="maximumSize">
+                          <size>
+                           <width>250</width>
+                           <height>16777215</height>
+                          </size>
+                         </property>
+                        </widget>
+                       </item>
+                       <item row="6" column="0">
+                        <widget class="QLabel" name="labelDate">
+                         <property name="maximumSize">
+                          <size>
+                           <width>130</width>
+                           <height>16777215</height>
+                          </size>
+                         </property>
+                         <property name="text">
+                          <string>Data:</string>
+                         </property>
+                        </widget>
+                       </item>
+                       <item row="7" column="0">
+                        <widget class="QLabel" name="labelAuthor">
+                         <property name="maximumSize">
+                          <size>
+                           <width>130</width>
+                           <height>16777215</height>
+                          </size>
+                         </property>
+                         <property name="text">
+                          <string>Wykonujący:</string>
+                         </property>
+                        </widget>
+                       </item>
+                       <item row="6" column="2">
+                        <widget class="QDateTimeEdit" name="dateTimeEditMeasurement">
+                         <property name="minimumSize">
+                          <size>
+                           <width>0</width>
+                           <height>30</height>
+                          </size>
+                         </property>
+                         <property name="maximumSize">
+                          <size>
+                           <width>250</width>
+                           <height>16777215</height>
+                          </size>
+                         </property>
+                         <property name="calendarPopup">
+                          <bool>true</bool>
+                         </property>
+                        </widget>
+                       </item>
+                       <item row="7" column="2">
+                        <widget class="QLineEdit" name="editAuthor">
+                         <property name="minimumSize">
+                          <size>
+                           <width>0</width>
+                           <height>30</height>
+                          </size>
+                         </property>
+                         <property name="maximumSize">
+                          <size>
+                           <width>250</width>
+                           <height>16777215</height>
+                          </size>
+                         </property>
+                        </widget>
+                       </item>
+                      </layout>
+                     </widget>
+                    </widget>
                    </item>
                   </layout>
                  </widget>

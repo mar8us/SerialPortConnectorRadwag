@@ -58,6 +58,8 @@ private slots:
     void buttonTableFluidsOnClicked();
     void buttonTableMatrialsOnClicked();
 
+    void onMaterialComboBoxChanged(int index);
+
 private:
     std::shared_ptr<const Device> getSelectedDevice();
 
@@ -69,6 +71,8 @@ private:
     void setIcons();
     void updateDevicesComboConnection();
     void fillSerialPortCombo();
+    void fillFluidCombo();
+    void fillMaterialCombo();
 
     Ui::MainWindow *ui;
     DeviceListModel devicesListModel;

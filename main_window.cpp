@@ -211,6 +211,7 @@ void MainWindow::buttonTableFluidsOnClicked()
     auto dialog = new FluidTablesDialog(fluids, this);
     dialog->exec();
     fluidManager->setFluids(fluids);
+    fillFluidCombo();
 }
 
 void MainWindow::buttonTableMatrialsOnClicked()
@@ -219,6 +220,11 @@ void MainWindow::buttonTableMatrialsOnClicked()
     auto dialog = new MaterialTablesDialog(materials, this);
     dialog->exec();
     materialManager->setMaterials(materials);
+}
+
+void MainWindow::onMaterialComboBoxChanged(int index)
+{
+    ui->editMaterialDensity->setText(QString::number(materialManager->getMaterial(ui->comboBoxMaterial->currentText()).getDensity(), 'f', 3) + " g/cm³");
 }
 
 std::shared_ptr<const Device> MainWindow::getSelectedDevice()
@@ -245,6 +251,8 @@ void MainWindow::initControls()
     ui->devicesListView->setModel(&devicesListModel);
     updateDevicesComboConnection();
     fillSerialPortCombo();
+    fillFluidCombo();
+    fillMaterialCombo();
     onMeasurementTypeChanged();
 }
 
@@ -306,6 +314,8 @@ void MainWindow::connectButtons()
 
     connect(ui->buttonTableFluids, &QPushButton::clicked, this, &MainWindow::buttonTableFluidsOnClicked);
     connect(ui->buttonTableMatrials, &QPushButton::clicked, this, &MainWindow::buttonTableMatrialsOnClicked);
+
+    connect(ui->comboBoxMaterial, &QComboBox::currentIndexChanged, this, &MainWindow::onMaterialComboBoxChanged);
 }
 
 void MainWindow::updateStageLabels()
@@ -484,6 +494,7 @@ void MainWindow::finishMeasurement()
 void MainWindow::setProperty()
 {
     ui->stackedWidget->setProperty("currentStage", QVariant::fromValue(MeasurementStage::InitialData));
+    ui->scrollAreaInitialData->setBackgroundRole(QPalette::Base);
 }
 
 void MainWindow::setIcons()
@@ -527,6 +538,24 @@ void MainWindow::updateDevicesComboConnection()
 void MainWindow::fillSerialPortCombo()
 {
     ui->serialPortCombo->addItems(deviceConnector.getAvaiablePorts());
+}
+
+void MainWindow::fillFluidCombo()
+{
+    ui->comboBoxFluid->clear();
+    const QMap<QString, Fluid> &fluids = fluidManager->getFluids();
+    for(auto &fluid : fluids)
+        ui->comboBoxFluid->addItem(fluid.getName());
+    ui->comboBoxFluid->setCurrentIndex(-1);
+}
+
+void MainWindow::fillMaterialCombo()
+{
+    ui->comboBoxMaterial->clear();
+    const QMap<QString, Material> &materials = materialManager->getMaterials();
+    for(auto &material : materials)
+        ui->comboBoxMaterial->addItem(material.getName());
+    ui->comboBoxMaterial->setCurrentIndex(-1);
 }
 
 void MainWindow::on_buttonConnectDevice_3_clicked()
