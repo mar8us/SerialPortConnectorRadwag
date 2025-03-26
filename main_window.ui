@@ -572,12 +572,31 @@ Odpowiedni dla materiałów wchłaniających wodę (ceramika, skały osadowe, be
                        </property>
                        <property name="maximumSize">
                         <size>
-                         <width>80</width>
-                         <height>28</height>
+                         <width>110</width>
+                         <height>30</height>
                         </size>
                        </property>
                        <property name="text">
                         <string>Połącz</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item>
+                      <widget class="QPushButton" name="buttonDisconnectDevice">
+                       <property name="minimumSize">
+                        <size>
+                         <width>110</width>
+                         <height>30</height>
+                        </size>
+                       </property>
+                       <property name="maximumSize">
+                        <size>
+                         <width>110</width>
+                         <height>30</height>
+                        </size>
+                       </property>
+                       <property name="text">
+                        <string>Rozłącz</string>
                        </property>
                       </widget>
                      </item>
@@ -613,7 +632,7 @@ Odpowiedni dla materiałów wchłaniających wodę (ceramika, skały osadowe, be
                         </font>
                        </property>
                        <property name="text">
-                        <string>Połączono</string>
+                        <string> </string>
                        </property>
                       </widget>
                      </item>
@@ -4975,7 +4994,7 @@ umieszczając ją w komorze próźniowej na czas zaniku ostatniego pęcherzyka</
   </widget>
   <action name="actionSettings">
    <property name="icon">
-    <iconset>
+    <iconset resource="resources.qrc">
      <normaloff>:/icons/settings_white.png</normaloff>:/icons/settings_white.png</iconset>
    </property>
    <property name="text">
@@ -4987,7 +5006,7 @@ umieszczając ją w komorze próźniowej na czas zaniku ostatniego pęcherzyka</
   </action>
   <action name="actionMeasureDensity">
    <property name="icon">
-    <iconset>
+    <iconset resource="resources.qrc">
      <normaloff>:/icons/balance_white.png</normaloff>:/icons/balance_white.png</iconset>
    </property>
    <property name="text">
@@ -4998,6 +5017,8 @@ umieszczając ją w komorze próźniowej na czas zaniku ostatniego pęcherzyka</
    </property>
   </action>
  </widget>
- <resources/>
+ <resources>
+  <include location="resources.qrc"/>
+ </resources>
  <connections/>
 </ui>

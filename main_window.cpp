@@ -56,6 +56,11 @@ void MainWindow::onConnectDeviceClicked()
     deviceConnector.connectDevice(ui->comboBoxSelectPort->currentText());
 }
 
+void MainWindow::onDisconnectDeviceClicked()
+{
+    deviceConnector.closeActiveConnection();
+}
+
 void MainWindow::navigateToToolBoxPage(QWidget* page)
 {
     if(page && ui->stackedWidget->indexOf(page) != -1)
@@ -254,6 +259,12 @@ void MainWindow::initControls()
     fillFluidCombo();
     fillMaterialCombo();
     onMeasurementTypeChanged();
+    updateStatusConnectionLabel(false);
+}
+
+void MainWindow::onConnectResult(bool connected)
+{
+    updateStatusConnectionLabel(connected);
 }
 
 void MainWindow::connectButtons()
@@ -311,11 +322,14 @@ void MainWindow::connectButtons()
 
     connect(ui->comboBoxSelectDevice, &QComboBox::currentIndexChanged, this, &MainWindow::onDeviceComboSelectionChanged);
     connect(ui->buttonConnectDevice, &QPushButton::clicked, this, &MainWindow::onConnectDeviceClicked);
+    connect(ui->buttonDisconnectDevice, &QPushButton::clicked, this, &MainWindow::onDisconnectDeviceClicked);
 
     connect(ui->buttonTableFluids, &QPushButton::clicked, this, &MainWindow::buttonTableFluidsOnClicked);
     connect(ui->buttonTableMatrials, &QPushButton::clicked, this, &MainWindow::buttonTableMatrialsOnClicked);
 
     connect(ui->comboBoxMaterial, &QComboBox::currentIndexChanged, this, &MainWindow::onMaterialComboBoxChanged);
+
+    connect(&deviceConnector, &DeviceConnector::connectionResult, this, &MainWindow::onConnectResult);
 }
 
 void MainWindow::updateStageLabels()
@@ -522,6 +536,7 @@ void MainWindow::fillDevicesCombo()
         ui->comboBoxSelectDevice->addItem(device->getName(), deviceData);
     }
     ui->comboBoxSelectDevice->setCurrentIndex(-1);
+    onDeviceComboSelectionChanged();
     ui->comboBoxSelectDevice->blockSignals(false);
 }
 
@@ -548,7 +563,18 @@ void MainWindow::fillMaterialCombo()
     ui->comboBoxMaterial->setCurrentIndex(-1);
 }
 
-void MainWindow::on_buttonConnectDevice_3_clicked()
+void MainWindow::updateStatusConnectionLabel(bool connectionStatus)
 {
-    deviceConnector.sendImmediateWeightCommand();
+    if(connectionStatus)
+    {
+        ui->labelEditStatusConnection->setStyleSheet("color: green; font-weight: bold;");
+        ui->labelEditStatusConnection->setText("Połączono");
+        ui->comboBoxSelectDevice->setEnabled(false);
+    }
+    else
+    {
+        ui->labelEditStatusConnection->setStyleSheet("color: red; font-weight: bold;");
+        ui->labelEditStatusConnection->setText("Brak połączenia");
+        ui->comboBoxSelectDevice->setEnabled(true);
+    }
 }

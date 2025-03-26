@@ -47,6 +47,8 @@ private slots:
     void onRemoveDeviceButtonClicked();
     void onDeviceComboSelectionChanged();
     void onConnectDeviceClicked();
+    void onDisconnectDeviceClicked();
+    void onConnectResult(bool connected);
 
     void navigateToToolBoxPage(QWidget* page);
     void goToPreviousMeasureStage();
@@ -54,7 +56,6 @@ private slots:
     void onMeasurementTypeChanged();
     void updateActionIcons(int index);
 
-    void on_buttonConnectDevice_3_clicked();
     void buttonTableFluidsOnClicked();
     void buttonTableMatrialsOnClicked();
 
@@ -73,6 +74,7 @@ private:
     void fillSerialPortCombo();
     void fillFluidCombo();
     void fillMaterialCombo();
+    void updateStatusConnectionLabel(bool connectionStatus);
 
     Ui::MainWindow *ui;
     DeviceListModel devicesListModel;

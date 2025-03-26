@@ -34,16 +34,17 @@ bool SerialPort::connect(QString portName, QSerialPort::BaudRate baudRate, QSeri
 
 bool SerialPort::closeConnection()
 {
-    if(serial_port == nullptr)
+    if(!serial_port)
         return false;
     serial_port->close();
     delete serial_port;
+    serial_port = nullptr;
     return true;
 }
 
 qint64 SerialPort::write(QByteArray data)
 {
-    if(serial_port == nullptr || !serial_port->isOpen())
+    if(!serial_port || !serial_port->isOpen())
         return -1;
     return serial_port->write(data);
 }
@@ -56,5 +57,5 @@ void SerialPort::dataReady()
 
 bool SerialPort::isOpen()
 {
-    return serial_port->isOpen();
+    return serial_port && serial_port->isOpen();
 }

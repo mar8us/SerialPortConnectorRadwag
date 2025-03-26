@@ -12,9 +12,10 @@ public:
     DeviceConnector();
 
     bool connectDevice(const QString &portName);
+    bool closeActiveConnection();
 
     std::shared_ptr<const Device> getActiveDevice();
-    bool setActiveDevice(const std::shared_ptr<const Device>& newActiveDevice);
+    void setActiveDevice(const std::shared_ptr<const Device>& newActiveDevice);
     QStringList getAvaiablePorts();
     void sendImmediateWeightCommand();
 
@@ -24,6 +25,9 @@ private:
 
 private slots:
     void dataReceived(const QByteArray &deviceData);
+
+signals:
+    void connectionResult(bool connected);
 };
 
 #endif // DEVICE_CONNECTOR_H
