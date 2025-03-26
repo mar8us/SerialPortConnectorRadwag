@@ -19,7 +19,7 @@ DeviceListModel::OperationResult DeviceListModel::addDevice(const std::shared_pt
 
     beginInsertRows(QModelIndex(), devices.size(), devices.size());
     devices.append(newDevice);
-    devicesIndexMap[newDevice->getName()] = devices.size() - 1;
+    recreateDevicesMap();
     endInsertRows();
 
     return OperationResult::DeviceAdded;
@@ -42,8 +42,7 @@ DeviceListModel::OperationResult DeviceListModel::replaceDevice(const QString &o
 
     int index = devicesIndexMap[originalDeviceName];
     devices.replace(index, editedDevice);
-    devicesIndexMap.remove(originalDeviceName);
-    devicesIndexMap.insert(editedDevice->getName(), index);
+    recreateDevicesMap();
 
     return OperationResult::DeviceEdited;
 }
@@ -57,10 +56,7 @@ DeviceListModel::OperationResult DeviceListModel::removeDevice(const QString &de
     beginRemoveRows(QModelIndex(), index, index);
     devices.removeAt(index);
     devicesIndexMap.remove(deviceName);
-
-    for(auto it = devicesIndexMap.begin(); it != devicesIndexMap.end(); it++)
-        if(it.value() > index)
-            it.value()--;
+    recreateDevicesMap();
 
     endRemoveRows();
     return OperationResult::DeviceRemoved;
@@ -75,6 +71,7 @@ void DeviceListModel::setDevicesList(const QList<std::shared_ptr<const Device>> 
 {
     beginResetModel();
     devices = newDevices;
+    recreateDevicesMap();
     endResetModel();
 }
 
@@ -99,6 +96,13 @@ int DeviceListModel::getDeviceIndex(const QString &name) const
 bool DeviceListModel::isUniqueDeviceName(const QString &name) const
 {
     return devicesIndexMap.find(name) == devicesIndexMap.end();
+}
+
+void DeviceListModel::recreateDevicesMap()
+{
+    devicesIndexMap.clear();
+    for(int i = 0; i < devices.size(); i++)
+        devicesIndexMap.insert(devices[i]->getName(), i);
 }
 
 int DeviceListModel::rowCount(const QModelIndex &parent) const
