@@ -54,7 +54,7 @@ private slots:
     void goToPreviousMeasureStage();
     void goToNextMeasureStage();
     void onMeasurementTypeChanged();
-    void updateActionIcons(int index);
+    void onMainPageChanged(int index);
 
     void buttonTableFluidsOnClicked();
     void buttonTableMatrialsOnClicked();
@@ -70,11 +70,14 @@ private:
     void finishMeasurement();
     void setProperty();
     void setIcons();
-    void fillDevicesCombo();
+    void fillDevicesCombo(bool keepActiveDevice = false);
     void fillSerialPortCombo();
     void fillFluidCombo();
     void fillMaterialCombo();
+    void updateActionIcons(int index);
     void updateStatusConnectionLabel(bool connectionStatus);
+
+     bool canEditDevice(std::shared_ptr<const Device> &device);
 
     Ui::MainWindow *ui;
     DeviceListModel devicesListModel;

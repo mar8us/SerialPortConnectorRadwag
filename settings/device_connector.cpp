@@ -24,11 +24,19 @@ bool DeviceConnector::connectDevice(const QString &portName)
 
 bool DeviceConnector::closeActiveConnection()
 {
-    if(!serialPort)
-        emit connectionResult(true);
+    if(!serialPort->isOpen())
+    {
+        emit connectionResult(false);
+        return false;
+    }
     bool connectionClosed = serialPort->closeConnection();
     emit connectionResult(!connectionClosed);
-    return connectionClosed;
+    return !connectionClosed;
+}
+
+bool DeviceConnector::connectionIsActive()
+{
+    return serialPort->isOpen();
 }
 
 std::shared_ptr<const Device> DeviceConnector::getActiveDevice()

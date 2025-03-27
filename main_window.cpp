@@ -3,6 +3,7 @@
 #include "fluid_tabels/fluid_tables_form.h"
 #include "material_tabels/material_tabels_dialog.h"
 #include "tooltip/tooltip_manager.h"
+#include <QMessageBox>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -31,13 +32,21 @@ MainWindow::~MainWindow()
 void MainWindow::onAddDeviceButtonClicked()
 {
     devicesListControler.beginNew();
-    fillDevicesCombo();
+    if(!deviceConnector.connectionIsActive())
+        fillDevicesCombo();
 }
 
 void MainWindow::onEditDeviceButtonClicked()
 {
-    devicesListControler.beginEdit(getSelectedDevice());
-    fillDevicesCombo();
+    auto selectedDeivce = getSelectedDevice();
+    if(!canEditDevice(selectedDeivce))
+    {
+        QMessageBox::warning(this, "Ostrzeżenie", QString("Nie możesz edytować urządzenia z aktywnym połączeniem"));
+        return;
+    }
+    devicesListControler.beginEdit(selectedDeivce);
+    if(!deviceConnector.connectionIsActive())
+        fillDevicesCombo();
 }
 
 void MainWindow::onRemoveDeviceButtonClicked()
@@ -59,6 +68,7 @@ void MainWindow::onConnectDeviceClicked()
 void MainWindow::onDisconnectDeviceClicked()
 {
     deviceConnector.closeActiveConnection();
+    fillDevicesCombo(true);
 }
 
 void MainWindow::navigateToToolBoxPage(QWidget* page)
@@ -204,6 +214,11 @@ void MainWindow::onMeasurementTypeChanged()
     updateStageLabels();
 }
 
+void MainWindow::onMainPageChanged(int index)
+{
+    updateActionIcons(index);
+}
+
 void MainWindow::updateActionIcons(int index)
 {
     ui->actionSettings->setIcon(ui->stackedWidget->widget(index) == ui->settingsPage ? activeSettingsIcon : defaultSettingsIcon);
@@ -277,7 +292,7 @@ void MainWindow::connectButtons()
         navigateToToolBoxPage(ui->measureDensityPage);
     });
 
-    connect(ui->stackedWidget, &QStackedWidget::currentChanged, this, &MainWindow::updateActionIcons);
+    connect(ui->stackedWidget, &QStackedWidget::currentChanged, this, &MainWindow::onMainPageChanged);
 
     // Połączenie przycisków nawigacji
     connect(ui->buttonNextData, &QPushButton::clicked, this, &MainWindow::goToNextMeasureStage);
@@ -519,7 +534,7 @@ void MainWindow::setIcons()
     activeRadwagIcon = QIcon(":/icons/balance_selected.png");
 }
 
-void MainWindow::fillDevicesCombo()
+void MainWindow::fillDevicesCombo(bool keepActiveDevice)
 {
     DeviceListModel* model = qobject_cast<DeviceListModel*>(ui->devicesListView->model());
     if(!model)
@@ -527,6 +542,10 @@ void MainWindow::fillDevicesCombo()
 
     ui->comboBoxSelectDevice->blockSignals(true);
     const QList<std::shared_ptr<const Device>>& devicesList = model->getDevicesList();
+
+    QString currentDeviceName;
+    if(keepActiveDevice)
+        currentDeviceName = ui->comboBoxSelectDevice->currentText();
     ui->comboBoxSelectDevice->clear();
 
     for(const auto& device : devicesList)
@@ -535,7 +554,10 @@ void MainWindow::fillDevicesCombo()
         deviceData.setValue(device);
         ui->comboBoxSelectDevice->addItem(device->getName(), deviceData);
     }
-    ui->comboBoxSelectDevice->setCurrentIndex(-1);
+    if(currentDeviceName.isEmpty())
+        ui->comboBoxSelectDevice->setCurrentIndex(-1);
+    else
+        ui->comboBoxSelectDevice->setCurrentText(currentDeviceName);
     onDeviceComboSelectionChanged();
     ui->comboBoxSelectDevice->blockSignals(false);
 }
@@ -577,4 +599,9 @@ void MainWindow::updateStatusConnectionLabel(bool connectionStatus)
         ui->labelEditStatusConnection->setText("Brak połączenia");
         ui->comboBoxSelectDevice->setEnabled(true);
     }
+}
+
+bool MainWindow::canEditDevice(std::shared_ptr<const Device> &device)
+{
+    return !deviceConnector.connectionIsActive() || (deviceConnector.connectionIsActive() && device != deviceConnector.getActiveDevice());
 }

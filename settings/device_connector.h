@@ -13,6 +13,7 @@ public:
 
     bool connectDevice(const QString &portName);
     bool closeActiveConnection();
+    bool connectionIsActive();
 
     std::shared_ptr<const Device> getActiveDevice();
     void setActiveDevice(const std::shared_ptr<const Device>& newActiveDevice);
