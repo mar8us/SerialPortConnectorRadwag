@@ -51,8 +51,15 @@ void MainWindow::onEditDeviceButtonClicked()
 
 void MainWindow::onRemoveDeviceButtonClicked()
 {
-    devicesListControler.beginRemove(getSelectedDevice());
-    fillDevicesCombo();
+    auto selectedDeivce = getSelectedDevice();
+    if(!canEditDevice(selectedDeivce))
+    {
+        QMessageBox::warning(this, "Ostrzeżenie", QString("Nie możesz usunąć urządzenia z aktywnym połączeniem"));
+        return;
+    }
+    devicesListControler.beginRemove(selectedDeivce);
+    if(!deviceConnector.connectionIsActive())
+        fillDevicesCombo();
 }
 
 void MainWindow::onDeviceComboSelectionChanged()
