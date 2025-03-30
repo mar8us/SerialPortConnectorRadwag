@@ -48,6 +48,7 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         tooltip/tooltip_manager.h tooltip/tooltip_manager.cpp
         sample/sample.h sample/sample.cpp
         sample/sample_manager.h sample/sample_manager.cpp
+        sample/sample_dialog.h sample/sample_dialog.cpp sample/sample_dialog.ui
 
     )
 # Define target properties for Android with Qt 6 as:

@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include "fluid_tabels/fluid_manager.h"
 #include "material_tabels/material_manager.h"
+#include "sample/sample_manager.h"
 #include "settings/device.h"
 #include "settings/device_connector.h"
 #include "settings/devices_list_model.h"
@@ -57,7 +58,9 @@ private slots:
     void onMainPageChanged(int index);
 
     void buttonTableFluidsOnClicked();
-    void buttonTableMatrialsOnClicked();
+    void buttonSamplesOnClicked();
+
+    void onMaterialsChanged(const QMap<QString, Material> &materials);
 
     void onMaterialComboBoxChanged(int index);
 
@@ -85,6 +88,7 @@ private:
     DeviceConnector deviceConnector;
     std::unique_ptr<FluidManager> fluidManager;
     std::unique_ptr<MaterialManager> materialManager;
+    std::unique_ptr<SampleManager> sampleManager;
 
     QIcon defaultSettingsIcon;
     QIcon activeSettingsIcon;

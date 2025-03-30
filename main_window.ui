@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1263</width>
-    <height>778</height>
+    <height>892</height>
    </rect>
   </property>
   <property name="minimumSize">
@@ -299,56 +299,46 @@
                 <item>
                  <widget class="QGroupBox" name="groupBoxAdditionalSettings">
                   <property name="title">
-                   <string>Ustawienia dodatkowe</string>
+                   <string>Katalogi</string>
                   </property>
-                  <layout class="QVBoxLayout" name="verticalLayout_11">
+                  <layout class="QVBoxLayout" name="verticalLayout_8">
                    <item>
-                    <layout class="QVBoxLayout" name="verticalLayout_8">
+                    <layout class="QHBoxLayout" name="horizontalLayout_6">
+                     <item>
+                      <widget class="QPushButton" name="buttonSamples">
+                       <property name="minimumSize">
+                        <size>
+                         <width>110</width>
+                         <height>30</height>
+                        </size>
+                       </property>
+                       <property name="maximumSize">
+                        <size>
+                         <width>110</width>
+                         <height>30</height>
+                        </size>
+                       </property>
+                       <property name="text">
+                        <string>Próbki</string>
+                       </property>
+                      </widget>
+                     </item>
                      <item>
                       <widget class="QPushButton" name="buttonTableFluids">
                        <property name="minimumSize">
                         <size>
-                         <width>140</width>
+                         <width>110</width>
                          <height>30</height>
                         </size>
                        </property>
                        <property name="maximumSize">
                         <size>
-                         <width>120</width>
+                         <width>110</width>
                          <height>30</height>
                         </size>
                        </property>
                        <property name="text">
-                        <string>Katalog cieczy</string>
-                       </property>
-                      </widget>
-                     </item>
-                     <item>
-                      <widget class="QPushButton" name="buttonTableMatrials">
-                       <property name="minimumSize">
-                        <size>
-                         <width>140</width>
-                         <height>30</height>
-                        </size>
-                       </property>
-                       <property name="maximumSize">
-                        <size>
-                         <width>130</width>
-                         <height>30</height>
-                        </size>
-                       </property>
-                       <property name="text">
-                        <string>Katalog materiałów</string>
-                       </property>
-                      </widget>
-                     </item>
-                     <item>
-                      <widget class="QCheckBox" name="showGuideComboBox">
-                       <property name="text">
-                        <string>Pokazuj poradnik</string>
-                       </property>
-                       <property name="checked">
-                        <bool>true</bool>
+                        <string>Ciecze</string>
                        </property>
                       </widget>
                      </item>
@@ -471,11 +461,6 @@ Odpowiedni dla materiałów wchłaniających wodę (ceramika, skały osadowe, be
                          <height>30</height>
                         </size>
                        </property>
-                       <item>
-                        <property name="text">
-                         <string>Nowa próbka</string>
-                        </property>
-                       </item>
                       </widget>
                      </item>
                      <item>
@@ -632,7 +617,7 @@ Odpowiedni dla materiałów wchłaniających wodę (ceramika, skały osadowe, be
                         </font>
                        </property>
                        <property name="text">
-                        <string> </string>
+                        <string/>
                        </property>
                       </widget>
                      </item>
@@ -657,7 +642,7 @@ Odpowiedni dla materiałów wchłaniających wodę (ceramika, skały osadowe, be
                 <item row="2" column="0" colspan="2">
                  <widget class="QGroupBox" name="groupBoxInitialData">
                   <property name="title">
-                   <string>Dane wstępne</string>
+                   <string>Dane wstępne pomiaru</string>
                   </property>
                   <layout class="QGridLayout" name="gridLayout_24">
                    <item row="0" column="0">
@@ -676,8 +661,8 @@ Odpowiedni dla materiałów wchłaniających wodę (ceramika, skały osadowe, be
                        <rect>
                         <x>0</x>
                         <y>0</y>
-                        <width>810</width>
-                        <height>311</height>
+                        <width>827</width>
+                        <height>339</height>
                        </rect>
                       </property>
                       <layout class="QGridLayout" name="gridLayout_17">
@@ -751,7 +736,7 @@ Odpowiedni dla materiałów wchłaniających wodę (ceramika, skały osadowe, be
                           </size>
                          </property>
                          <property name="text">
-                          <string>Materiał badany:</string>
+                          <string>Materiał:</string>
                          </property>
                         </widget>
                        </item>
@@ -946,6 +931,16 @@ Odpowiedni dla materiałów wchłaniających wodę (ceramika, skały osadowe, be
                      </size>
                     </property>
                    </spacer>
+                  </item>
+                  <item>
+                   <widget class="QCheckBox" name="showGuideComboBox">
+                    <property name="text">
+                     <string>Pokazuj poradnik</string>
+                    </property>
+                    <property name="checked">
+                     <bool>true</bool>
+                    </property>
+                   </widget>
                   </item>
                   <item>
                    <widget class="QPushButton" name="buttonNextData">

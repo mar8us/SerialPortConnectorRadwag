@@ -1,7 +1,7 @@
 #include "main_window.h"
 #include "./ui_main_window.h"
 #include "fluid_tabels/fluid_tables_form.h"
-#include "material_tabels/material_tabels_dialog.h"
+#include "sample/sample_dialog.h"
 #include "tooltip/tooltip_manager.h"
 #include <QMessageBox>
 
@@ -12,6 +12,7 @@ MainWindow::MainWindow(QWidget *parent)
     , devicesListControler(devicesListModel, this)
     , fluidManager(std::make_unique<FluidManager>(new FluidManager()))
     , materialManager(std::make_unique<MaterialManager>(new MaterialManager(this)))
+    , sampleManager(std::make_unique<SampleManager>(new SampleManager(this)))
 {
     initControls();
     connectButtons();
@@ -241,11 +242,18 @@ void MainWindow::buttonTableFluidsOnClicked()
     fillFluidCombo();
 }
 
-void MainWindow::buttonTableMatrialsOnClicked()
+void MainWindow::buttonSamplesOnClicked()
 {
+    QMap<QString, Sample> samples = sampleManager->getSamples();
     QMap<QString, Material> materials = materialManager->getMaterials();
-    auto dialog = new MaterialTablesDialog(materials, this);
+    auto dialog = new SampleDialog(samples, materials, this);
+    connect(dialog, &SampleDialog::materialsChanged, this, &MainWindow::onMaterialsChanged);
     dialog->exec();
+    sampleManager->setSamples(samples);
+}
+
+void MainWindow::onMaterialsChanged(const QMap<QString, Material> &materials)
+{
     materialManager->setMaterials(materials);
 }
 
@@ -347,7 +355,7 @@ void MainWindow::connectButtons()
     connect(ui->buttonDisconnectDevice, &QPushButton::clicked, this, &MainWindow::onDisconnectDeviceClicked);
 
     connect(ui->buttonTableFluids, &QPushButton::clicked, this, &MainWindow::buttonTableFluidsOnClicked);
-    connect(ui->buttonTableMatrials, &QPushButton::clicked, this, &MainWindow::buttonTableMatrialsOnClicked);
+    connect(ui->buttonSamples, &QPushButton::clicked, this, &MainWindow::buttonSamplesOnClicked);
 
     connect(ui->comboBoxMaterial, &QComboBox::currentIndexChanged, this, &MainWindow::onMaterialComboBoxChanged);
 

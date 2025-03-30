@@ -84,38 +84,6 @@ bool SampleManager::reloadSamples()
     return true;
 }
 
-QString SampleManager::generateSampleNumber() const
-{
-    QDateTime currentDate = QDateTime::currentDateTime();
-    QString dateSuffix = QString("%1-%2-%3")
-                             .arg(currentDate.date().day(), 2, 10, QChar('0'))
-                             .arg(currentDate.date().month(), 2, 10, QChar('0'))
-                             .arg(currentDate.date().year() % 100, 2, 10, QChar('0'));
-
-    int maxNumber = 0;
-    QString prefix = "PRB-";
-
-    for(auto it = samples.constBegin(); it != samples.constEnd(); it++)
-    {
-        QString sampleNumber = it.key();
-        if(sampleNumber.startsWith(prefix))
-        {
-            int dashPos = sampleNumber.indexOf('-', prefix.length());
-            if(dashPos > prefix.length())
-            {
-                QString numPart = sampleNumber.mid(prefix.length(), dashPos - prefix.length());
-                bool ok;
-                int sequentialNumber = numPart.toInt(&ok);
-                if(ok && sequentialNumber > maxNumber)
-                    maxNumber = sequentialNumber;
-
-            }
-        }
-    }
-
-    return QString("PRB-#%1 %2").arg(maxNumber + 1).arg(dateSuffix);
-}
-
 void SampleManager::loadSamples()
 {
     QString filePath = getSamplesFilePath();
