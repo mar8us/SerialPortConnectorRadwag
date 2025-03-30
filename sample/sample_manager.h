@@ -20,7 +20,6 @@ public:
     bool removeSample(const QString &number);
 
     bool reloadSamples();
-    QString generateSampleNumber() const;
 
 signals:
     void samplesChanged();

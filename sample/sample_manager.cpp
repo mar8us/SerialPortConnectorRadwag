@@ -37,7 +37,7 @@ bool SampleManager::sampleExists(const QString &number) const
 
 bool SampleManager::addSample(const Sample &sample)
 {
-    QString number = sample.getNumber();
+    QString number = sample.getId();
 
     if(samples.contains(number))
         return false;
@@ -52,7 +52,7 @@ bool SampleManager::addSample(const Sample &sample)
 
 bool SampleManager::updateSample(const Sample &sample)
 {
-    QString number = sample.getNumber();
+    QString number = sample.getId();
 
     if(!samples.contains(number))
         return false;
@@ -167,7 +167,7 @@ void SampleManager::loadSamples()
         QString materialDescription = sampleObj["materialDescription"].toString();
         double materialDensity = sampleObj["materialDensity"].toDouble();
 
-        Sample sample(number, name, materialName, materialCategory, materialDescription, materialDensity, description, author);
+        Sample sample(number, name, materialName, materialCategory, materialDescription, materialDensity, description);
         sample.setDate(date);
 
         samples.insert(number, sample);
@@ -198,10 +198,9 @@ bool SampleManager::saveSamples()
         const Sample &sample = it.value();
 
         QJsonObject sampleObj;
-        sampleObj["number"] = sample.getNumber();
+        sampleObj["number"] = sample.getId();
         sampleObj["name"] = sample.getName();
         sampleObj["description"] = sample.getDescription();
-        sampleObj["author"] = sample.getAuthor();
         sampleObj["date"] = sample.getDate().toString(Qt::ISODate);
         sampleObj["materialName"] = sample.getMaterialName();
         sampleObj["materialCategory"] = sample.getMaterialCategory();

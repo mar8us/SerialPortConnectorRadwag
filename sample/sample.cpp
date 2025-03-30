@@ -6,25 +6,24 @@ Sample::Sample()
     date = QDateTime::currentDateTime();
 }
 
-Sample::Sample(const QString &number, const QString &name,
+Sample::Sample(const QString &id, const QString &name,
                const QString &materialName, const QString &materialCategory,
                const QString &materialDescription, double materialDensity,
-               const QString &description, const QString &author)
-    : number(number)
+               const QString &description)
+    : id(id)
     , name(name)
     , materialName(materialName)
     , materialCategory(materialCategory)
     , materialDescription(materialDescription)
     , materialDensity(materialDensity)
     , description(description)
-    , author(author)
 {
     date = QDateTime::currentDateTime();
 }
 
-QString Sample::getNumber() const
+QString Sample::getId() const
 {
-    return number;
+    return id;
 }
 
 QString Sample::getName() const
@@ -35,11 +34,6 @@ QString Sample::getName() const
 QString Sample::getDescription() const
 {
     return description;
-}
-
-QString Sample::getAuthor() const
-{
-    return author;
 }
 
 QDateTime Sample::getDate() const
@@ -67,9 +61,9 @@ double Sample::getMaterialDensity() const
     return materialDensity;
 }
 
-void Sample::setNumber(const QString &newNumber)
+void Sample::setId(const QString &newId)
 {
-    number = newNumber;
+    id = newId;
 }
 
 void Sample::setName(const QString &newName)
@@ -80,11 +74,6 @@ void Sample::setName(const QString &newName)
 void Sample::setDescription(const QString &newDescription)
 {
     description = newDescription;
-}
-
-void Sample::setAuthor(const QString &newAuthor)
-{
-    author = newAuthor;
 }
 
 void Sample::setDate(const QDateTime &newDate)

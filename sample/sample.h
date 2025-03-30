@@ -9,15 +9,14 @@ class Sample
 {
 public:
     Sample();
-    Sample(const QString &number, const QString &name,
+    Sample(const QString &id, const QString &name,
            const QString &materialName, const QString &materialCategory,
            const QString &materialDescription, double materialDensity,
-           const QString &description, const QString &author);
+           const QString &description);
 
-    QString getNumber() const;
+    QString getId() const;
     QString getName() const;
     QString getDescription() const;
-    QString getAuthor() const;
     QDateTime getDate() const;
 
     QString getMaterialName() const;
@@ -25,10 +24,9 @@ public:
     QString getMaterialDescription() const;
     double getMaterialDensity() const;
 
-    void setNumber(const QString &newNumber);
+    void setId(const QString &newId);
     void setName(const QString &newName);
     void setDescription(const QString &newDescription);
-    void setAuthor(const QString &newAuthor);
     void setDate(const QDateTime &newDate);
 
     void setMaterialName(const QString &newMaterialName);
@@ -42,10 +40,9 @@ public:
     void setMaterial(const Material &material);
 
 private:
-    QString number;        // Unikalny numer próbki
+    QString id;        // Unikalne id próbki
     QString name;
     QString description;
-    QString author;
     QDateTime date;
 
     QString materialName;
