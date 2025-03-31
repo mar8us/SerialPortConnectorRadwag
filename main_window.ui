@@ -675,12 +675,12 @@ Odpowiedni dla materiałów wchłaniających wodę (ceramika, skały osadowe, be
                           </size>
                          </property>
                          <property name="text">
-                          <string>Numer próbki:</string>
+                          <string>ID próbki:</string>
                          </property>
                         </widget>
                        </item>
                        <item row="0" column="2" colspan="2">
-                        <widget class="QLineEdit" name="editSampleNumber">
+                        <widget class="QLineEdit" name="editSampleId">
                          <property name="minimumSize">
                           <size>
                            <width>0</width>
@@ -693,8 +693,8 @@ Odpowiedni dla materiałów wchłaniających wodę (ceramika, skały osadowe, be
                            <height>16777215</height>
                           </size>
                          </property>
-                         <property name="placeholderText">
-                          <string>Automatyczny jeśli puste</string>
+                         <property name="readOnly">
+                          <bool>true</bool>
                          </property>
                         </widget>
                        </item>
@@ -725,6 +725,9 @@ Odpowiedni dla materiałów wchłaniających wodę (ceramika, skały osadowe, be
                            <height>16777215</height>
                           </size>
                          </property>
+                         <property name="readOnly">
+                          <bool>true</bool>
+                         </property>
                         </widget>
                        </item>
                        <item row="2" column="0" colspan="2">
@@ -737,22 +740,6 @@ Odpowiedni dla materiałów wchłaniających wodę (ceramika, skały osadowe, be
                          </property>
                          <property name="text">
                           <string>Materiał:</string>
-                         </property>
-                        </widget>
-                       </item>
-                       <item row="2" column="2">
-                        <widget class="QComboBox" name="comboBoxMaterial">
-                         <property name="minimumSize">
-                          <size>
-                           <width>0</width>
-                           <height>30</height>
-                          </size>
-                         </property>
-                         <property name="maximumSize">
-                          <size>
-                           <width>250</width>
-                           <height>16777215</height>
-                          </size>
                          </property>
                         </widget>
                        </item>
@@ -778,7 +765,7 @@ Odpowiedni dla materiałów wchłaniających wodę (ceramika, skały osadowe, be
                           </size>
                          </property>
                          <property name="alignment">
-                          <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
+                          <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignVCenter</set>
                          </property>
                          <property name="readOnly">
                           <bool>true</bool>
@@ -817,6 +804,9 @@ Odpowiedni dla materiałów wchłaniających wodę (ceramika, skały osadowe, be
                            <width>250</width>
                            <height>80</height>
                           </size>
+                         </property>
+                         <property name="readOnly">
+                          <bool>true</bool>
                          </property>
                         </widget>
                        </item>
@@ -889,6 +879,9 @@ Odpowiedni dla materiałów wchłaniających wodę (ceramika, skały osadowe, be
                            <height>16777215</height>
                           </size>
                          </property>
+                         <property name="readOnly">
+                          <bool>true</bool>
+                         </property>
                          <property name="calendarPopup">
                           <bool>true</bool>
                          </property>
@@ -907,6 +900,25 @@ Odpowiedni dla materiałów wchłaniających wodę (ceramika, skały osadowe, be
                            <width>250</width>
                            <height>16777215</height>
                           </size>
+                         </property>
+                        </widget>
+                       </item>
+                       <item row="2" column="2">
+                        <widget class="QLineEdit" name="editMaterial">
+                         <property name="minimumSize">
+                          <size>
+                           <width>0</width>
+                           <height>30</height>
+                          </size>
+                         </property>
+                         <property name="maximumSize">
+                          <size>
+                           <width>250</width>
+                           <height>16777215</height>
+                          </size>
+                         </property>
+                         <property name="readOnly">
+                          <bool>true</bool>
                          </property>
                         </widget>
                        </item>

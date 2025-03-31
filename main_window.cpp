@@ -250,6 +250,8 @@ void MainWindow::buttonSamplesOnClicked()
     connect(dialog, &SampleDialog::materialsChanged, this, &MainWindow::onMaterialsChanged);
     dialog->exec();
     sampleManager->setSamples(samples);
+    fillSampleCombo();
+    upadteSampleEditors();
 }
 
 void MainWindow::onMaterialsChanged(const QMap<QString, Material> &materials)
@@ -257,9 +259,9 @@ void MainWindow::onMaterialsChanged(const QMap<QString, Material> &materials)
     materialManager->setMaterials(materials);
 }
 
-void MainWindow::onMaterialComboBoxChanged(int index)
+void MainWindow::onSampleComboBoxChanged(int index)
 {
-    ui->editMaterialDensity->setText(QString::number(materialManager->getMaterial(ui->comboBoxMaterial->currentText()).getDensity(), 'f', 3) + " g/cm³");
+    upadteSampleEditors();
 }
 
 std::shared_ptr<const Device> MainWindow::getSelectedDevice()
@@ -287,7 +289,7 @@ void MainWindow::initControls()
     fillDevicesCombo();
     fillSerialPortCombo();
     fillFluidCombo();
-    fillMaterialCombo();
+    fillSampleCombo();
     onMeasurementTypeChanged();
     updateStatusConnectionLabel(false);
 }
@@ -357,7 +359,7 @@ void MainWindow::connectButtons()
     connect(ui->buttonTableFluids, &QPushButton::clicked, this, &MainWindow::buttonTableFluidsOnClicked);
     connect(ui->buttonSamples, &QPushButton::clicked, this, &MainWindow::buttonSamplesOnClicked);
 
-    connect(ui->comboBoxMaterial, &QComboBox::currentIndexChanged, this, &MainWindow::onMaterialComboBoxChanged);
+    connect(ui->comboBoxSampleSelection, &QComboBox::currentIndexChanged, this, &MainWindow::onSampleComboBoxChanged);
 
     connect(&deviceConnector, &DeviceConnector::connectionResult, this, &MainWindow::onConnectResult);
 }
@@ -591,13 +593,17 @@ void MainWindow::fillFluidCombo()
     ui->comboBoxFluid->setCurrentIndex(-1);
 }
 
-void MainWindow::fillMaterialCombo()
+void MainWindow::fillSampleCombo()
 {
-    ui->comboBoxMaterial->clear();
-    const QMap<QString, Material> &materials = materialManager->getMaterials();
-    for(auto &material : materials)
-        ui->comboBoxMaterial->addItem(material.getName());
-    ui->comboBoxMaterial->setCurrentIndex(-1);
+    ui->comboBoxSampleSelection->clear();
+    const QMap<QString, Sample> &samples = sampleManager->getSamples();
+    for(auto it = samples.constBegin(); it != samples.constEnd(); it++)
+    {
+        QString id = it.value().getId();
+        QString name = it.value().getName();
+        ui->comboBoxSampleSelection->addItem(it.value().getName(), it.value().getId());
+    }
+    ui->comboBoxSampleSelection->setCurrentIndex(-1);
 }
 
 void MainWindow::updateStatusConnectionLabel(bool connectionStatus)
@@ -614,6 +620,31 @@ void MainWindow::updateStatusConnectionLabel(bool connectionStatus)
         ui->labelEditStatusConnection->setText("Brak połączenia");
         ui->comboBoxSelectDevice->setEnabled(true);
     }
+}
+
+void MainWindow::upadteSampleEditors()
+{
+    clearSampleEditors();
+
+    QString smapleId = ui->comboBoxSampleSelection->currentData().toString();
+    Sample sample = sampleManager->getSample(smapleId);
+    if(sample.getId().isEmpty())
+        return;
+
+    ui->editSampleId->setText(smapleId);
+    ui->editSampleName->setText(sample.getName());
+    ui->editMaterial->setText(sample.getMaterialName());
+    ui->editMaterialDensity->setText(QString::number(sample.getMaterialDensity(), 'f', 3) +  " g/cm³");
+    ui->editSampleDescription->setPlainText(sample.getDescription());
+}
+
+void MainWindow::clearSampleEditors()
+{
+    ui->editSampleId->clear();
+    ui->editSampleName->clear();
+    ui->editMaterial->clear();
+    ui->editMaterialDensity->clear();
+    ui->editSampleDescription->clear();
 }
 
 bool MainWindow::canEditDevice(std::shared_ptr<const Device> &device)

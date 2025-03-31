@@ -62,7 +62,7 @@ private slots:
 
     void onMaterialsChanged(const QMap<QString, Material> &materials);
 
-    void onMaterialComboBoxChanged(int index);
+    void onSampleComboBoxChanged(int index);
 
 private:
     std::shared_ptr<const Device> getSelectedDevice();
@@ -76,9 +76,11 @@ private:
     void fillDevicesCombo(bool keepActiveDevice = false);
     void fillSerialPortCombo();
     void fillFluidCombo();
-    void fillMaterialCombo();
+    void fillSampleCombo();
     void updateActionIcons(int index);
     void updateStatusConnectionLabel(bool connectionStatus);
+    void upadteSampleEditors();
+    void clearSampleEditors();
 
      bool canEditDevice(std::shared_ptr<const Device> &device);
 
