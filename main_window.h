@@ -23,17 +23,13 @@ class MainWindow : public QMainWindow
 public:
     enum class MeasurementStage
     {
-        InitialData = 0,       // pageInitialData
-        DryMeasure = 1,        // pageDryMeasure
-
-        // Etapy dla pomiaru dwustopniowego
-        PrepareSecond = 2,     // pagePrepareMeasureSecond
-        FinishSecond = 3,      // pageFinishMeasurementSecond
-
-        // Etapy dla pomiaru trzystopniowego
-        PrepareTriple = 4,     // pagePrepareMeasureTriple
-        SaturatedMass = 5,     // pageMeasureTriple
-        FinishTriple = 6       // pageFinishMeasurementTriple
+        InitialData = 0,
+        DryMeasure = 1,
+        PrepareSecond = 2,
+        PrepareTriple = 3,
+        FinishSecond = 4,
+        SaturationMass = 5,
+        FinishTriple = 6,
     };
     Q_ENUM(MeasurementStage)
 
@@ -69,6 +65,11 @@ private:
 
     void initControls();
     void connectButtons();
+    void connectMainNavButtons();
+    void connectNavMeasurementButtons();
+    void connectInitialDataPageButtons();
+    void connectCatalogsButtons();
+    void connectDevicesSettingsButtons();
     void updateStageLabels();
     void finishMeasurement();
     void setProperty();
