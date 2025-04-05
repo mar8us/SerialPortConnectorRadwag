@@ -7,7 +7,7 @@ Sample::Sample()
 }
 
 Sample::Sample(const QString &id, const QString &name,
-               const QString &materialName, const QString &materialCategory,
+               const QString &materialName, const Material::Category materialCategory,
                const QString &materialDescription, double materialDensity,
                const QString &description)
     : id(id)
@@ -58,7 +58,7 @@ QString Sample::getMaterialName() const
     return materialName;
 }
 
-QString Sample::getMaterialCategory() const
+Material::Category Sample::getMaterialCategory() const
 {
     return materialCategory;
 }
@@ -98,7 +98,7 @@ void Sample::setMaterialName(const QString &newMaterialName)
     materialName = newMaterialName;
 }
 
-void Sample::setMaterialCategory(const QString &newMaterialCategory)
+void Sample::setMaterialCategory(const Material::Category newMaterialCategory)
 {
     materialCategory = newMaterialCategory;
 }
@@ -113,7 +113,7 @@ void Sample::setMaterialDensity(double newMaterialDensity)
     materialDensity = newMaterialDensity;
 }
 
-void Sample::setMaterial(const QString &materialName, const QString &materialCategory, const QString &materialDescription, double materialDensity)
+void Sample::setMaterial(const QString &materialName, const Material::Category materialCategory, const QString &materialDescription, double materialDensity)
 {
     this->materialName = materialName;
     this->materialCategory = materialCategory;

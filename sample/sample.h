@@ -10,7 +10,7 @@ class Sample
 public:
     Sample();
     Sample(const QString &id, const QString &name,
-           const QString &materialName, const QString &materialCategory,
+           const QString &materialName, const Material::Category materialCategory,
            const QString &materialDescription, double materialDensity,
            const QString &description);
     Sample(const Sample &sourceSample);
@@ -21,7 +21,7 @@ public:
     QDateTime getDate() const;
 
     QString getMaterialName() const;
-    QString getMaterialCategory() const;
+    Material::Category getMaterialCategory() const;
     QString getMaterialDescription() const;
     double getMaterialDensity() const;
 
@@ -31,11 +31,11 @@ public:
     void setDate(const QDateTime &newDate);
 
     void setMaterialName(const QString &newMaterialName);
-    void setMaterialCategory(const QString &newMaterialCategory);
+    void setMaterialCategory(const Material::Category newMaterialCategory);
     void setMaterialDescription(const QString &newMaterialDescription);
     void setMaterialDensity(double newMaterialDensity);
 
-    void setMaterial(const QString &materialName, const QString &materialCategory,
+    void setMaterial(const QString &materialName, const Material::Category materialCategory,
                      const QString &materialDescription, double materialDensity);
 
     void setMaterial(const Material &material);
@@ -47,7 +47,7 @@ private:
     QDateTime date;
 
     QString materialName;
-    QString materialCategory;
+    Material::Category materialCategory;
     QString materialDescription;
     double materialDensity;
 };

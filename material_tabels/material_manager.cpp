@@ -62,7 +62,7 @@ void MaterialManager::loadMaterials()
     for(int i = 0; i < materialsArray.size(); i++)
     {
         QJsonObject materialObj = materialsArray[i].toObject();
-        Material material(materialObj["name"].toString(), materialObj["category"].toString(), materialObj["description"].toString(), materialObj["density"].toDouble());
+        Material material(materialObj["name"].toString(), static_cast<Material::Category>(materialObj["category"].toInt()), materialObj["description"].toString(), materialObj["density"].toDouble());
         materials[material.getName()] = material;
     }
 }
@@ -76,7 +76,7 @@ bool MaterialManager::saveMaterials()
         Material material = it.value();
         QJsonObject materialObj;
         materialObj["name"] = material.getName();
-        materialObj["category"] = material.getCategory();
+        materialObj["category"] = static_cast<int>(material.getCategory());
         materialObj["description"] = material.getDescription();
         materialObj["density"] = material.getDensity();
 

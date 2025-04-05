@@ -131,7 +131,7 @@ void SampleManager::loadSamples()
         QString author = sampleObj["author"].toString();
         QDateTime date = QDateTime::fromString(sampleObj["date"].toString(), Qt::ISODate);
         QString materialName = sampleObj["materialName"].toString();
-        QString materialCategory = sampleObj["materialCategory"].toString();
+        const Material::Category materialCategory = static_cast<Material::Category>(sampleObj["materialCategory"].toInt());
         QString materialDescription = sampleObj["materialDescription"].toString();
         double materialDensity = sampleObj["materialDensity"].toDouble();
 
@@ -171,7 +171,7 @@ bool SampleManager::saveSamples()
         sampleObj["description"] = sample.getDescription();
         sampleObj["date"] = sample.getDate().toString(Qt::ISODate);
         sampleObj["materialName"] = sample.getMaterialName();
-        sampleObj["materialCategory"] = sample.getMaterialCategory();
+        sampleObj["materialCategory"] = static_cast<int>(sample.getMaterialCategory());
         sampleObj["materialDescription"] = sample.getMaterialDescription();
         sampleObj["materialDensity"] = sample.getMaterialDensity();
 
