@@ -100,11 +100,9 @@ void SampleDialog::buttonSaveSampleOnClicked()
     QString id = ui->editSampleId->text().trimmed();
     QString name = ui->editSampleName->text().trimmed();
     QString materialName = ui->comboBoxMaterial->currentText();
-    double materialDensity = ui->editMaterialDensity->text().toDouble();
     QString description = ui->editSampleDescription->toPlainText();
 
-    auto material = materials.value(materialName);
-    Sample sample(id, name, material.getName(), material.getCategory(), material.getDescription(), material.getDensity(), description);
+    Sample sample(id, name, description, materials.value(materialName));
 
     if(editingSampleId.isEmpty())
     {

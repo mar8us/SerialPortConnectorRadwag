@@ -122,23 +122,9 @@ void SampleManager::loadSamples()
     {
         if (!value.isObject())
             continue;
-
-        QJsonObject sampleObj = value.toObject();
-
-        QString number = sampleObj["number"].toString();
-        QString name = sampleObj["name"].toString();
-        QString description = sampleObj["description"].toString();
-        QString author = sampleObj["author"].toString();
-        QDateTime date = QDateTime::fromString(sampleObj["date"].toString(), Qt::ISODate);
-        QString materialName = sampleObj["materialName"].toString();
-        const Material::Category materialCategory = static_cast<Material::Category>(sampleObj["materialCategory"].toInt());
-        QString materialDescription = sampleObj["materialDescription"].toString();
-        double materialDensity = sampleObj["materialDensity"].toDouble();
-
-        Sample sample(number, name, materialName, materialCategory, materialDescription, materialDensity, description);
-        sample.setDate(date);
-
-        samples.insert(number, sample);
+        Sample sample;
+        sample.fromJson(value.toObject());
+        samples.insert(sample.getId(), sample);
     }
 
     emit samplesChanged();
@@ -155,28 +141,14 @@ bool SampleManager::saveSamples()
     QFile file(filePath);
     if(!file.open(QIODevice::WriteOnly))
     {
-        qWarning("Couldn't open samples file for writing.");
+        qWarning("Nie można utworzyć pliku do zapisu próbek. Uruchom program ponownie z uprawnieniami administratora.");
         return false;
     }
 
     QJsonArray sampleArray;
 
     for(auto it = samples.constBegin(); it != samples.constEnd(); it++)
-    {
-        const Sample &sample = it.value();
-
-        QJsonObject sampleObj;
-        sampleObj["number"] = sample.getId();
-        sampleObj["name"] = sample.getName();
-        sampleObj["description"] = sample.getDescription();
-        sampleObj["date"] = sample.getDate().toString(Qt::ISODate);
-        sampleObj["materialName"] = sample.getMaterialName();
-        sampleObj["materialCategory"] = static_cast<int>(sample.getMaterialCategory());
-        sampleObj["materialDescription"] = sample.getMaterialDescription();
-        sampleObj["materialDensity"] = sample.getMaterialDensity();
-
-        sampleArray.append(sampleObj);
-    }
+        sampleArray.append(it.value().toJson());
 
     QJsonDocument doc(sampleArray);
     file.write(doc.toJson());

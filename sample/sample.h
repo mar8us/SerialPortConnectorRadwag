@@ -9,10 +9,7 @@ class Sample
 {
 public:
     Sample();
-    Sample(const QString &id, const QString &name,
-           const QString &materialName, const Material::Category materialCategory,
-           const QString &materialDescription, double materialDensity,
-           const QString &description);
+    Sample(const QString &id, const QString &name, const QString &description, const Material &material);
     Sample(const Sample &sourceSample);
 
     QString getId() const;
@@ -29,27 +26,18 @@ public:
     void setName(const QString &newName);
     void setDescription(const QString &newDescription);
     void setDate(const QDateTime &newDate);
-
-    void setMaterialName(const QString &newMaterialName);
-    void setMaterialCategory(const Material::Category newMaterialCategory);
-    void setMaterialDescription(const QString &newMaterialDescription);
-    void setMaterialDensity(double newMaterialDensity);
-
-    void setMaterial(const QString &materialName, const Material::Category materialCategory,
-                     const QString &materialDescription, double materialDensity);
-
     void setMaterial(const Material &material);
 
+    QJsonObject toJson() const;
+    void fromJson(const QJsonObject &json);
+
 private:
-    QString id;        // Unikalne id próbki
+    QString id;
     QString name;
     QString description;
     QDateTime date;
 
-    QString materialName;
-    Material::Category materialCategory;
-    QString materialDescription;
-    double materialDensity;
+    Material material;
 };
 
 #endif // SAMPLE_H
