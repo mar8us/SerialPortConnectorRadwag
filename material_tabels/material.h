@@ -2,6 +2,7 @@
 #define MATERIAL_H
 
 #include <QString>
+#include <qjsonobject.h>
 
 class Material
 {
@@ -25,6 +26,8 @@ public:
     QString getDescription() const;
     double getDensity() const;
 
+    QJsonObject toJson() const;
+    void fromJson(const QJsonObject &json);
 private:
     QString name;
     Category category;
