@@ -20,6 +20,7 @@ public:
     Fluid();
     Fluid(const QString &name, const QString &description, const QMap<double, double> &densityMap);
     Fluid(const QString &name, const QString &description, const QVector<DensityPoint> &densityTable);
+    Fluid(const Fluid &sourceFluid);
 
     QString getName() const;
     void setName(const QString &name);
@@ -32,14 +33,14 @@ public:
     void setDensityTable(const QVector<DensityPoint> &densityTable);
 
     double getDensity(double temperature) const;
-    bool setDensity(double temperature, double density);
+    bool addDensity(double temperature, double density);
     bool hasDensity(double temperature) const;
     void removeDensity(double temperature);
 
 private:
     QString name;
     QString description;
-    QMap<double, double> densityTable;
+    QMap<double, double> densityMap;
 };
 
 #endif // FLUID_H
