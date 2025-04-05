@@ -11,6 +11,12 @@ Material::Material(const QString &name, const QString &category, const QString &
 
 }
 
+Material::Material(const Material &sourceMaterial)
+    : name(sourceMaterial.name), category(sourceMaterial.category), description(sourceMaterial.description), density(sourceMaterial.density)
+{
+
+}
+
 QString Material::getName() const
 {
     return name;

@@ -8,6 +8,7 @@ class Material
 public:
     Material();
     Material(const QString &name, const QString &category, const QString &description, double density);
+    Material(const Material &sourceMaterial);
     QString getName() const;
     QString getCategory() const;
     QString getDescription() const;
