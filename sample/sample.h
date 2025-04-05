@@ -13,6 +13,7 @@ public:
            const QString &materialName, const QString &materialCategory,
            const QString &materialDescription, double materialDensity,
            const QString &description);
+    Sample(const Sample &sourceSample);
 
     QString getId() const;
     QString getName() const;

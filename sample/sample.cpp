@@ -21,6 +21,18 @@ Sample::Sample(const QString &id, const QString &name,
     date = QDateTime::currentDateTime();
 }
 
+Sample::Sample(const Sample &sourceSample)
+    : id(sourceSample.id)
+    , name(sourceSample.name)
+    , materialName(sourceSample.materialName)
+    , materialCategory(sourceSample.materialCategory)
+    , materialDescription(sourceSample.materialDescription)
+    , materialDensity(sourceSample.materialDensity)
+    , description(sourceSample.description)
+{
+    date = QDateTime::currentDateTime();
+}
+
 QString Sample::getId() const
 {
     return id;
