@@ -21,18 +21,6 @@ class MainWindow : public QMainWindow
     Q_OBJECT
 
 public:
-    enum class MeasurementStage
-    {
-        InitialData = 0,
-        DryMeasure = 1,
-        PrepareSecond = 2,
-        PrepareTriple = 3,
-        FinishSecond = 4,
-        SaturationMass = 5,
-        FinishTriple = 6,
-    };
-    Q_ENUM(MeasurementStage)
-
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 

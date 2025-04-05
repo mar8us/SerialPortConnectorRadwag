@@ -4,6 +4,7 @@
 #include "sample/sample_dialog.h"
 #include "tooltip/tooltip_manager.h"
 #include <QMessageBox>
+#include "radwag/measurement.h"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -115,36 +116,36 @@ void MainWindow::navigateToToolBoxPage(QWidget* page)
 
 void MainWindow::goToPreviousMeasureStage()
 {
-    MeasurementStage currentStage = ui->measureDensityStage->property("currentStage").value<MeasurementStage>();
+    MeasurementStages::Stage currentStage = ui->measureDensityStage->property("currentStage").value<MeasurementStages::Stage>();
     bool isTripleMeasurement = ui->radioMeasureTriple->isChecked();
 
     // Określenie poprzedniego etapu pomiaru
-    MeasurementStage prevStage;
+    MeasurementStages::Stage prevStage;
     switch (currentStage)
     {
-    case MeasurementStage::DryMeasure:
-        prevStage = MeasurementStage::InitialData;
+    case MeasurementStages::Stage::DryMeasure:
+        prevStage = MeasurementStages::Stage::InitialData;
         ui->measureDensityStage->setCurrentWidget(ui->pageInitialData);
         break;
 
-    case MeasurementStage::PrepareSecond:
-    case MeasurementStage::PrepareTriple:
-        prevStage = MeasurementStage::DryMeasure;
+    case MeasurementStages::Stage::PrepareSecond:
+    case MeasurementStages::Stage::PrepareTriple:
+        prevStage = MeasurementStages::Stage::DryMeasure;
         ui->measureDensityStage->setCurrentWidget(ui->pageDryMeasure);
         break;
 
-    case MeasurementStage::FinishSecond:
-        prevStage = MeasurementStage::PrepareSecond;
+    case MeasurementStages::Stage::FinishSecond:
+        prevStage = MeasurementStages::Stage::PrepareSecond;
         ui->measureDensityStage->setCurrentWidget(ui->pagePrepareMeasureSecond);
         break;
 
-    case MeasurementStage::SaturationMass:
-        prevStage = MeasurementStage::PrepareTriple;
+    case MeasurementStages::Stage::SaturationMass:
+        prevStage = MeasurementStages::Stage::PrepareTriple;
         ui->measureDensityStage->setCurrentWidget(ui->pagePrepareMeasureTriple);
         break;
 
-    case MeasurementStage::FinishTriple:
-        prevStage = MeasurementStage::SaturationMass;
+    case MeasurementStages::Stage::FinishTriple:
+        prevStage = MeasurementStages::Stage::SaturationMass;
         ui->measureDensityStage->setCurrentWidget(ui->pageSatruationMassTriple);
         break;
 
@@ -160,46 +161,46 @@ void MainWindow::goToPreviousMeasureStage()
 
 void MainWindow::goToNextMeasureStage()
 {
-    MeasurementStage currentStage = ui->measureDensityStage->property("currentStage").value<MeasurementStage>();
+    MeasurementStages::Stage currentStage = ui->measureDensityStage->property("currentStage").value<MeasurementStages::Stage>();
     bool isTripleMeasurement = ui->radioMeasureTriple->isChecked();
 
-    MeasurementStage nextStage;
+    MeasurementStages::Stage nextStage;
     switch (currentStage)
     {
-    case MeasurementStage::InitialData:
-        nextStage = MeasurementStage::DryMeasure;
+    case MeasurementStages::Stage::InitialData:
+        nextStage = MeasurementStages::Stage::DryMeasure;
         ui->measureDensityStage->setCurrentWidget(ui->pageDryMeasure);
         break;
 
-    case MeasurementStage::DryMeasure:
+    case MeasurementStages::Stage::DryMeasure:
         if(isTripleMeasurement)
         {
-            nextStage = MeasurementStage::PrepareTriple;
+            nextStage = MeasurementStages::Stage::PrepareTriple;
             ui->measureDensityStage->setCurrentWidget(ui->pagePrepareMeasureTriple);
         }
         else
         {
-            nextStage = MeasurementStage::PrepareSecond;
+            nextStage = MeasurementStages::Stage::PrepareSecond;
             ui->measureDensityStage->setCurrentWidget(ui->pagePrepareMeasureSecond);
         }
         break;
 
-    case MeasurementStage::PrepareSecond:
-        nextStage = MeasurementStage::FinishSecond;
+    case MeasurementStages::Stage::PrepareSecond:
+        nextStage = MeasurementStages::Stage::FinishSecond;
         ui->measureDensityStage->setCurrentWidget(ui->pageFinishMeasurementSecond);
         break;
 
-    case MeasurementStage::PrepareTriple:
-        nextStage = MeasurementStage::SaturationMass;
+    case MeasurementStages::Stage::PrepareTriple:
+        nextStage = MeasurementStages::Stage::SaturationMass;
         ui->measureDensityStage->setCurrentWidget(ui->pageSatruationMassTriple);
         break;
 
-    case MeasurementStage::SaturationMass:
-        nextStage = MeasurementStage::FinishTriple;
+    case MeasurementStages::Stage::SaturationMass:
+        nextStage = MeasurementStages::Stage::FinishTriple;
         ui->measureDensityStage->setCurrentWidget(ui->pageFinishSaturatedMassTriple);
         break;
 
-    // case MeasurementStage::SaturatedMass:
+    // case MeasurementStages::Stage::SaturatedMass:
     //     nextStage = MeasurementStage::SaturatedMass;
     //     ui->measureDensityStage->setCurrentWidget(ui->pageFinishMeasurementTriple);
     //     break;
@@ -226,7 +227,7 @@ void MainWindow::onMeasurementTypeChanged()
 
     // Resetowanie etapu pomiaru do strony początkowej
     ui->measureDensityStage->setCurrentWidget(ui->pageInitialData);
-    ui->measureDensityStage->setProperty("currentStage", QVariant::fromValue(MeasurementStage::InitialData));
+    ui->measureDensityStage->setProperty("currentStage", QVariant::fromValue(MeasurementStages::Stage::InitialData));
     updateStageLabels();
 }
 
@@ -387,7 +388,7 @@ void MainWindow::updateStageLabels()
     QPalette activePalette;
     activePalette.setColor(QPalette::WindowText, ACTIVE_LABEL_COLOR);
 
-    MeasurementStage currentStage = ui->measureDensityStage->property("currentStage").value<MeasurementStage>();
+    MeasurementStages::Stage currentStage = ui->measureDensityStage->property("currentStage").value<MeasurementStages::Stage>();
     bool isTripleMeasurement = ui->radioMeasureTriple->isChecked();
 
     if(isTripleMeasurement)
@@ -410,23 +411,23 @@ void MainWindow::updateStageLabels()
 
         switch (currentStage)
         {
-            case MeasurementStage::InitialData:
+            case MeasurementStages::Stage::InitialData:
                 ui->labelStageDataTriple->setFont(boldFont);
                 ui->labelStageDataTriple->setPalette(activePalette);
                 break;
-            case MeasurementStage::DryMeasure:
+            case MeasurementStages::Stage::DryMeasure:
                 ui->labelStageDryMassTriple->setFont(boldFont);
                 ui->labelStageDryMassTriple->setPalette(activePalette);
                 break;
-            case MeasurementStage::PrepareTriple:
+            case MeasurementStages::Stage::PrepareTriple:
                 ui->labelStagePrepareSaturation->setFont(boldFont);
                 ui->labelStagePrepareSaturation->setPalette(activePalette);
                 break;
-            case MeasurementStage::SaturationMass:
+            case MeasurementStages::Stage::SaturationMass:
                 ui->labelStageSaturationMass->setFont(boldFont);
                 ui->labelStageSaturationMass->setPalette(activePalette);
                 break;
-            case MeasurementStage::FinishTriple:
+            case MeasurementStages::Stage::FinishTriple:
                 ui->labelStageSaturatedMass->setFont(boldFont);
                 ui->labelStageSaturatedMass->setPalette(activePalette);
                 break;
@@ -453,23 +454,23 @@ void MainWindow::updateStageLabels()
 
         switch (currentStage)
         {
-            case MeasurementStage::InitialData:
+            case MeasurementStages::Stage::InitialData:
                 ui->labelStageData->setFont(boldFont);
                 ui->labelStageData->setPalette(activePalette);
                 break;
-            case MeasurementStage::DryMeasure:
+            case MeasurementStages::Stage::DryMeasure:
                 ui->labelStageDryMass->setFont(boldFont);
                 ui->labelStageDryMass->setPalette(activePalette);
                 break;
-            case MeasurementStage::PrepareSecond:
+            case MeasurementStages::Stage::PrepareSecond:
                 ui->labelStagePreparation->setFont(boldFont);
                 ui->labelStagePreparation->setPalette(activePalette);
                 break;
-            case MeasurementStage::SaturationMass:
+            case MeasurementStages::Stage::SaturationMass:
                 ui->labelStagePreparation->setFont(boldFont);
                 ui->labelStagePreparation->setPalette(activePalette);
                 break;
-            case MeasurementStage::FinishSecond:
+            case MeasurementStages::Stage::FinishSecond:
                 ui->labelStageFluidMass->setFont(boldFont);
                 ui->labelStageFluidMass->setPalette(activePalette);
                 break;
@@ -494,13 +495,13 @@ void MainWindow::finishMeasurement()
 
     // Powrót do pierwszej strony
     ui->measureDensityStage->setCurrentWidget(ui->pageInitialData);
-    ui->measureDensityStage->setProperty("currentStage", QVariant::fromValue(MeasurementStage::InitialData));
+    ui->measureDensityStage->setProperty("currentStage", QVariant::fromValue(MeasurementStages::Stage::InitialData));
     updateStageLabels();
 }
 
 void MainWindow::setProperty()
 {
-    ui->stackedWidget->setProperty("currentStage", QVariant::fromValue(MeasurementStage::InitialData));
+    ui->stackedWidget->setProperty("currentStage", QVariant::fromValue(MeasurementStages::Stage::InitialData));
     ui->scrollAreaInitialData->setBackgroundRole(QPalette::Base);
     ui->scrollArea->setBackgroundRole(QPalette::Base);
 }

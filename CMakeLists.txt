@@ -49,6 +49,7 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         sample/sample.h sample/sample.cpp
         sample/sample_manager.h sample/sample_manager.cpp
         sample/sample_dialog.h sample/sample_dialog.cpp sample/sample_dialog.ui
+        radwag/measurement.h radwag/measurement.cpp
 
     )
 # Define target properties for Android with Qt 6 as:
