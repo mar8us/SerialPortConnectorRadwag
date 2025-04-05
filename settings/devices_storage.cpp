@@ -2,7 +2,7 @@
 
 QString DeviceStorage::getStoragePath()
 {
-    QString path = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
+    QString path = QStandardPaths::writableLocation(QStandardPaths::AppLocalDataLocation);
     QDir dir(path);
 
     if(!dir.exists() || !dir.mkpath("."))

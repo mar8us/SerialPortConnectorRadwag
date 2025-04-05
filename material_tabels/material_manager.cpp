@@ -1,5 +1,7 @@
 #include "material_manager.h"
 #include <QDebug>
+#include <qdir.h>
+#include <qstandardpaths.h>
 
 MaterialManager::MaterialManager(QObject *parent) : QObject(parent)
 {
@@ -31,8 +33,11 @@ bool MaterialManager::materialExists(const QString &name) const
 
 QString MaterialManager::getMaterialsFilePath() const
 {
-    QSettings settings;
-    return settings.value("MaterialTablesPath", QCoreApplication::applicationDirPath() + "/materials.json").toString();
+    QString appDataPath = QStandardPaths::writableLocation(QStandardPaths::AppLocalDataLocation);
+    QDir dir(appDataPath);
+    if(!dir.exists())
+        dir.mkpath(".");
+    return dir.filePath("materials.json");
 }
 
 void MaterialManager::loadMaterials()

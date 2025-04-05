@@ -159,6 +159,6 @@ bool SampleManager::saveSamples()
 
 QString SampleManager::getSamplesFilePath() const
 {
-    QString dataLocation = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
+    QString dataLocation = QStandardPaths::writableLocation(QStandardPaths::AppLocalDataLocation);
     return QString("%1/samples.json").arg(dataLocation);
 }
