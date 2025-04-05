@@ -4,6 +4,7 @@
 #include <QString>
 #include <QVector>
 #include <QMap>
+#include <qjsonobject.h>
 
 struct DensityPoint
 {
@@ -30,12 +31,15 @@ public:
 
     QVector<DensityPoint> getDensityTableVector() const;
     QMap<double, double> getDensityTableMap() const;
-    void setDensityTable(const QVector<DensityPoint> &densityTable);
+    void setDensityTableMap(const QVector<DensityPoint> &densityTable);
 
     double getDensity(double temperature) const;
     bool addDensity(double temperature, double density);
     bool hasDensity(double temperature) const;
     void removeDensity(double temperature);
+
+    QJsonObject toJson() const;
+    void fromJson(const QJsonObject &json);
 
 private:
     QString name;

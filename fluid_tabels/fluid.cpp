@@ -1,5 +1,5 @@
 #include "fluid.h"
-#include <algorithm>
+#include <qjsonarray.h>
 
 Fluid::Fluid()
 {
@@ -14,7 +14,7 @@ Fluid::Fluid(const QString &name, const QString &description, const QMap<double,
 Fluid::Fluid(const QString &name, const QString &description, const QVector<DensityPoint> &densityTable)
     : name(name), description(description)
 {
-
+    setDensityTableMap(densityTable);
 }
 
 Fluid::Fluid(const Fluid &sourceFluid)
@@ -60,7 +60,7 @@ QMap<double, double> Fluid::getDensityTableMap() const
     return densityMap;
 }
 
-void Fluid::setDensityTable(const QVector<DensityPoint> &newDensityTable)
+void Fluid::setDensityTableMap(const QVector<DensityPoint> &newDensityTable)
 {
     densityMap.clear();
     for(const DensityPoint &point : newDensityTable)
@@ -88,4 +88,44 @@ bool Fluid::hasDensity(double temperature) const
 void Fluid::removeDensity(double temperature)
 {
     densityMap.remove(temperature);
+}
+
+QJsonObject Fluid::toJson() const
+{
+    QJsonObject obj;
+    obj["name"] = name;
+    obj["description"] = description;
+
+    QJsonArray densityArray;
+    for(auto it = densityMap.constBegin(); it != densityMap.constEnd(); it++)
+    {
+        QJsonObject densityPoint;
+        densityPoint["temperature"] = it.key();
+        densityPoint["density"] = it.value();
+        densityArray.append(densityPoint);
+    }
+    obj["densityMap"] = densityArray;
+
+    return obj;
+}
+
+void Fluid::fromJson(const QJsonObject &json)
+{
+    name = json["name"].toString();
+    description = json["description"].toString();
+
+    densityMap.clear();
+    if(json.contains("densityMap") && json["densityMap"].isArray())
+    {
+        QJsonArray densityArray = json["densityMap"].toArray();
+        for(const QJsonValue &value : densityArray)
+        {
+            if(!value.isObject())
+                continue;
+            QJsonObject densityPoint = value.toObject();
+            double temperature = densityPoint["temperature"].toDouble();
+            double density = densityPoint["density"].toDouble();
+            densityMap.insert(temperature, density);
+        }
+    }
 }
