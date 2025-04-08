@@ -20,8 +20,9 @@ Sample::Sample(const Sample &sourceSample)
     , name(sourceSample.name)
     , description(sourceSample.description)
     , material(sourceSample.material)
+    , date(sourceSample.date)
 {
-    date = QDateTime::currentDateTime();
+
 }
 
 QString Sample::getId() const

@@ -14,17 +14,17 @@ MeasurementManager::MeasurementManager(QObject *parent)
     loadResults();
 }
 
-const QMap<QString, Measurement>& MeasurementManager::getMeasurements() const
+const QMap<QString, std::shared_ptr<const Measurement>>& MeasurementManager::getMeasurements() const
 {
     return measurements;
 }
 
-const QMap<QString, MeasurementResults>& MeasurementManager::getResults() const
+const QMap<QString, const MeasurementResults>& MeasurementManager::getResults() const
 {
     return results;
 }
 
-Measurement MeasurementManager::getMeasurement(const QString& id) const
+std::shared_ptr<const Measurement> MeasurementManager::getMeasurement(const QString& id) const
 {
     return measurements.value(id);
 }
@@ -34,32 +34,18 @@ bool MeasurementManager::measurementExists(const QString& id) const
     return measurements.contains(id);
 }
 
-bool MeasurementManager::addMeasurement(const Measurement& measurement)
+bool MeasurementManager::addMeasurement(const std::shared_ptr<Measurement> &measurement)
 {
-    if(measurement.getId().isEmpty())
+    if(!measurement)
         return false;
 
-    if(measurementExists(measurement.getId()))
+    if(measurementExists(measurement->getId()))
         return false;
 
-    measurements.insert(measurement.getId(), measurement);
+    measurements.insert(measurement->getId(), measurement);
     saveMeasurements();
 
-    emit measurementAdded(measurement.getId());
-    emit measurementsChanged();
-
-    return true;
-}
-
-bool MeasurementManager::updateMeasurement(const Measurement& measurement)
-{
-    if(measurement.getId().isEmpty() || !measurementExists(measurement.getId()))
-        return false;
-
-    measurements[measurement.getId()] = measurement;
-    saveMeasurements();
-
-    emit measurementUpdated(measurement.getId());
+    emit measurementAdded(measurement->getId());
     emit measurementsChanged();
 
     return true;
@@ -100,25 +86,22 @@ bool MeasurementManager::calculateResults(const QString& measurementId)
     if(!measurementExists(measurementId))
         return false;
 
-    const Measurement& measurement = measurements[measurementId];
+    std::shared_ptr<const Measurement> measurement = measurements[measurementId];
 
-    if(!measurement.hasAllRequiredMeasurements())
+    if(!measurement->hasAllRequiredMeasurements())
         return false;
 
-    MeasurementResults measurementResults;
-    if(results.contains(measurementId))
-        measurementResults = results[measurementId];
-    else
+    const MeasurementResults &measurementResults = results[measurementId];
+    if(!hasResults(measurement->getId()))
         measurementResults.setMeasurementId(measurementId);
 
-    double materialDensity = measurement.getSampleMaterialDensity();
+    double materialDensity = measurement->getSampleMaterialDensity();
     if(materialDensity <= 0.0)
         return false;
 
-    if(!measurementResults.calculateResults(measurement, materialDensity))
+    if(!measurementResults.calculateResults(measurement))
         return false;
 
-    results[measurementId] = measurementResults;
     saveResults();
 
     emit resultsCalculated(measurementId);
@@ -126,12 +109,11 @@ bool MeasurementManager::calculateResults(const QString& measurementId)
     return true;
 }
 
-QList<Measurement> MeasurementManager::getMeasurementsForSample(const QString& sampleId) const
+QVector<std::shared_ptr<const Measurement>> MeasurementManager::getMeasurementsForSample(const QString& sampleId) const
 {
-    QList<Measurement> sampleMeasurements;
-
-    for(const Measurement& measurement : measurements)
-        if(measurement.getSampleId() == sampleId)
+    QVector<std::shared_ptr<const Measurement>> sampleMeasurements;
+    for(auto& measurement : measurements)
+        if(measurement->getSampleId() == sampleId)
             sampleMeasurements.append(measurement);
 
     return sampleMeasurements;
@@ -239,17 +221,20 @@ void MeasurementManager::loadMeasurements()
         if(!value.isObject())
             continue;
         QJsonObject obj = value.toObject();
-        Measurement measurement;
-        measurement.fromJson(obj);
-        measurements.insert(measurement.getId(), measurement);
+        auto measurement = std::make_shared<Measurement>();
+        measurement->fromJson(obj);
+        measurements.insert(measurement->getId(), measurement);
     }
 }
 
 bool MeasurementManager::saveMeasurements()
 {
     QJsonArray measurementsArray;
-    for(const Measurement& measurement : measurements)
-        measurementsArray.append(measurement.toJson());
+    for(const auto& pair : measurements.toStdMap())
+    {
+        const std::shared_ptr<const Measurement>& measurement = pair.second;
+        measurementsArray.append(measurement->toJson());
+    }
 
     QJsonDocument document(measurementsArray);
     QByteArray jsonData = document.toJson(QJsonDocument::Indented);

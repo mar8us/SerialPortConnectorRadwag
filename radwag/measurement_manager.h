@@ -12,20 +12,19 @@ class MeasurementManager : public QObject
 public:
     explicit MeasurementManager(QObject *parent = nullptr);
 
-    const QMap<QString, Measurement>& getMeasurements() const;
+    const QMap<QString, std::shared_ptr<const Measurement>>& getMeasurements() const;
     const QMap<QString, MeasurementResults>& getResults() const;
 
-    Measurement getMeasurement(const QString& id) const;
+    std::shared_ptr<const Measurement> getMeasurement(const QString& id) const;
     bool measurementExists(const QString& id) const;
-    bool addMeasurement(const Measurement& measurement);
-    bool updateMeasurement(const Measurement& measurement);
+    bool addMeasurement(const std::shared_ptr<Measurement> &measurement);
     bool removeMeasurement(const QString& id);
 
     MeasurementResults getResults(const QString& measurementId) const;
     bool hasResults(const QString& measurementId) const;
-    bool calculateAndSaveResults(const QString& measurementId);
+    bool calculateResults(const QString& measurementId);
 
-    QList<Measurement> getMeasurementsForSample(const QString& sampleId) const;
+    QVector<std::shared_ptr<const Measurement>> getMeasurementsForSample(const QString& sampleId) const;
 
     bool reloadData();
     QString generateMeasurementId() const;
@@ -38,7 +37,7 @@ signals:
     void resultsCalculated(const QString& measurementId);
 
 private:
-    QMap<QString, Measurement> measurements;
+    QMap<QString, std::shared_ptr<const Measurement>> measurements;
     QMap<QString, MeasurementResults> results;
 
     MeasurementManager(const MeasurementManager&) = delete;

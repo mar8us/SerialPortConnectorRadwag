@@ -30,7 +30,7 @@ public:
     void setDescription(const QString &description);
 
     QVector<DensityPoint> getDensityTableVector() const;
-    QMap<double, double> getDensityTableMap() const;
+    const QMap<double, double> &getDensityTableMap() const;
     void setDensityTableMap(const QVector<DensityPoint> &densityTable);
 
     double getDensity(double temperature) const;

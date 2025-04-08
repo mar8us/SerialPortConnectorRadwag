@@ -6,12 +6,42 @@ Measurement::Measurement()
     , sampleDryMass(0.0)
     , sampleInFluidMass(0.0)
     , sampleSaturatedMass(0.0)
+    , date(QDateTime::currentDateTime())
 {
     date = QDateTime::currentDateTime();
 }
 
-Measurement::Measurement(const QString& id, const Sample &sample, const Fluid &fluid)
-    : id(id), sample(sample), fluid(fluid)
+Measurement::Measurement(const QString& id, MeasurementType type, const Sample &sample, const Fluid &fluid, const QString &author)
+    : id(id)
+    , type(type)
+    , sample(sample)
+    , fluid(fluid)
+    , author(author)
+    , stage(MeasurementStages::Stage::InitialData)
+    , status(MeasurementStatus::InProgress)
+    , date(QDateTime::currentDateTime())
+    , fluidTemperature(0.0)
+    , sampleDryMass(0.0)
+    , sampleInFluidMass(0.0)
+    , sampleSaturatedMass(0.0)
+{
+
+}
+
+Measurement::Measurement(const Measurement& other)
+    : id(other.id)
+    , type(other.type)
+    , sample(other.sample)
+    , fluid(other.fluid)
+    , author(other.author)
+    , stage(other.stage)
+    , status(other.status)
+    , date(other.date)
+    , fluidTemperature(other.fluidTemperature)
+    , sampleDryMass(other.sampleDryMass)
+    , sampleInFluidMass(other.sampleInFluidMass)
+    , sampleSaturatedMass(other.sampleSaturatedMass)
+
 {
 
 }
@@ -76,6 +106,11 @@ void Measurement::setAuthor(QString authorName)
     author = authorName;
 }
 
+const Sample& Measurement::getSample()
+{
+    return sample;
+}
+
 QString Measurement::getSampleId() const
 {
     return sample.getId();
@@ -114,6 +149,11 @@ void Measurement::setSampleInFluidMass(double newSampleInFluidMass)
 void Measurement::setSampleSaturatedMass(double newSampleSaturatedMass)
 {
     sampleSaturatedMass = newSampleSaturatedMass;
+}
+
+const Fluid& Measurement::getFluid() const
+{
+    return fluid;
 }
 
 QString Measurement::getFluidName() const

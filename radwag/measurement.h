@@ -41,7 +41,8 @@ class Measurement
 {
 public:
     Measurement();
-    Measurement(const QString& id, const Sample &sample, const Fluid &fluid);
+    Measurement(const QString& id, MeasurementType type, const Sample &sample, const Fluid &fluid, const QString &author);
+    Measurement(const Measurement& other);
 
     QString getId() const;
     MeasurementType getType() const;
@@ -56,6 +57,7 @@ public:
     void setDate(const QDateTime& newDate);
     void setAuthor(QString authorName);
 
+    const Sample &getSample();
     QString getSampleId() const;
     double getSampleMaterialDensity() const;
     double getSampleDryMass() const;
@@ -65,6 +67,7 @@ public:
     void setSampleInFluidMass(double newSampleInFluidMass);
     void setSampleSaturatedMass(double newSampleSaturatedMass);
 
+    const Fluid& getFluid() const;
     QString getFluidName() const;
     double getFluidDensity() const;
     double getFluidTemperature() const;

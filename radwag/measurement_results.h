@@ -27,7 +27,7 @@ public:
     void setOpenPorosity(double newOpenPorosity);
     void setWaterAbsorption(double newWaterAbsorption);
 
-    bool calculateResults(const Measurement& measurement, double materialDensity);
+    bool calculateResults(std::shared_ptr<const Measurement> &measurement);
 
     QJsonObject toJson() const;
     void fromJson(const QJsonObject &json);
@@ -41,11 +41,11 @@ private:
     double openPorosity;         // Porowatość otwarta (dla trzystopniowych)
     double waterAbsorption;      // Nasiąkliwość wagowa (dla trzystopniowych)
 
-    double calculateApparentVolume(const Measurement& measurement);
-    double calculateApparentDensity(const Measurement& measurement);
+    double calculateApparentVolume(std::shared_ptr<const Measurement> &measurement);
+    double calculateApparentDensity(std::shared_ptr<const Measurement> &measurement);
     double calculateRelativeDensity(double apparentDensity, double materialDensity);
-    double calculateOpenPorosity(const Measurement& measurement);
-    double calculateWaterAbsorption(const Measurement& measurement);
+    double calculateOpenPorosity(std::shared_ptr<const Measurement> &measurement);
+    double calculateWaterAbsorption(std::shared_ptr<const Measurement> &measurement);
 };
 
 #endif // MEASUREMENT_RESULTS_H

@@ -55,7 +55,7 @@ QVector<DensityPoint> Fluid::getDensityTableVector() const
     return densityVecotr;
 }
 
-QMap<double, double> Fluid::getDensityTableMap() const
+const QMap<double, double>& Fluid::getDensityTableMap() const
 {
     return densityMap;
 }
