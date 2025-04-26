@@ -25,6 +25,7 @@ enum class Stage
     FinishSecond,
     SaturationMass,
     FinishTriple,
+    None
 };
 Q_ENUM_NS(Stage)
 

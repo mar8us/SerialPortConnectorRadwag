@@ -13,7 +13,7 @@ public:
     explicit MeasurementManager(QObject *parent = nullptr);
 
     const QMap<QString, std::shared_ptr<const Measurement>>& getMeasurements() const;
-    const QMap<QString, MeasurementResults>& getResults() const;
+    const QMap<QString, MeasurementResults>& getResultsMap() const;
 
     std::shared_ptr<const Measurement> getMeasurement(const QString& id) const;
     bool measurementExists(const QString& id) const;

@@ -19,7 +19,7 @@ const QMap<QString, std::shared_ptr<const Measurement>>& MeasurementManager::get
     return measurements;
 }
 
-const QMap<QString, const MeasurementResults>& MeasurementManager::getResults() const
+const QMap<QString, MeasurementResults>& MeasurementManager::getResultsMap() const
 {
     return results;
 }
@@ -91,7 +91,7 @@ bool MeasurementManager::calculateResults(const QString& measurementId)
     if(!measurement->hasAllRequiredMeasurements())
         return false;
 
-    const MeasurementResults &measurementResults = results[measurementId];
+    MeasurementResults &measurementResults = results[measurementId];
     if(!hasResults(measurement->getId()))
         measurementResults.setMeasurementId(measurementId);
 
