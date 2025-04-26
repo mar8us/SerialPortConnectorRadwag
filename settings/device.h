@@ -9,8 +9,9 @@
 enum class DeviceType
 {
     None,
-    RadwagScale,
-    Sifter
+    RadwagScaleAC220,
+    RadwagScaleAC350,
+    Own
 };
 
 struct DeviceCommand
@@ -20,6 +21,20 @@ struct DeviceCommand
 
     QString description;
     QString command;
+};
+
+static const QList<DeviceCommand> radwagCommands =
+{
+    DeviceCommand("Tarowanie", "T\r\n"),
+    DeviceCommand("Zerowanie", "Z\r\n"),
+    DeviceCommand("Pomiar natychmiastowy", "SI\r\n"),
+    DeviceCommand("Pomiar stabilny", "S\r\n"),
+    DeviceCommand("Pomiar stabilny w aktualnej jednostce", "SU\r\n"),
+    DeviceCommand("Pomiar natychmiastowy w aktualnej jednostce", "SUI\r\n"),
+    DeviceCommand("Rozpocznij transmisję ciągłą", "C1\r\n"),
+    DeviceCommand("Zatrzymaj transmisję ciągłą", "C0\r\n"),
+    DeviceCommand("Rozpocznij transmisję ciągłą w aktualnej jednostce", "CU1\r\n"),
+    DeviceCommand("Zatrzymaj transmisję ciągłą w aktualnej jednostce", "CU0\r\n")
 };
 
 class Device

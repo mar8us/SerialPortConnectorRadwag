@@ -546,6 +546,10 @@ void MainWindow::fillDevicesCombo(bool keepActiveDevice)
 
     for(const auto& device : devicesList)
     {
+        auto deviceType = device->getDeviceType();
+        if(deviceType != DeviceType::RadwagScaleAC220 && deviceType != DeviceType::RadwagScaleAC350)
+            continue;
+
         QVariant deviceData;
         deviceData.setValue(device);
         ui->comboBoxSelectDevice->addItem(device->getName(), deviceData);
