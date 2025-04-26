@@ -49,6 +49,7 @@ private slots:
     void onSampleComboBoxChanged(int index);
 
 private:
+    bool canEditDevice(std::shared_ptr<const Device> &device);
     std::shared_ptr<const Device> getSelectedDevice();
 
     void initControls();
@@ -71,7 +72,6 @@ private:
     void upadteSampleEditors();
     void clearSampleEditors();
 
-     bool canEditDevice(std::shared_ptr<const Device> &device);
 
     Ui::MainWindow *ui;
     DeviceListModel devicesListModel;

@@ -31,6 +31,8 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
+//----------------------------------------------- TAB DEVICE MANAGER ------------------------------------------
+
 void MainWindow::onAddDeviceButtonClicked()
 {
     devicesListControler.beginNew();
@@ -63,6 +65,26 @@ void MainWindow::onRemoveDeviceButtonClicked()
     if(!deviceConnector.connectionIsActive())
         fillDevicesCombo();
 }
+
+bool MainWindow::canEditDevice(std::shared_ptr<const Device> &device)
+{
+    return !deviceConnector.connectionIsActive() || (deviceConnector.connectionIsActive() && device != deviceConnector.getActiveDevice());
+}
+
+std::shared_ptr<const Device> MainWindow::getSelectedDevice()
+{
+    QModelIndex currentIndex = ui->devicesListView->currentIndex();
+    if (!currentIndex.isValid())
+        return nullptr;
+
+    DeviceListModel* model = qobject_cast<DeviceListModel*>(ui->devicesListView->model());
+    if (!model)
+        return nullptr;
+
+    return model->getDevice(currentIndex.row());
+}
+
+//----------------------------------------------- END TAB DEVICE MANAGER ------------------------------------------
 
 void MainWindow::onDeviceComboSelectionChanged()
 {
@@ -273,17 +295,7 @@ void MainWindow::onSampleComboBoxChanged(int index)
     upadteSampleEditors();
 }
 
-std::shared_ptr<const Device> MainWindow::getSelectedDevice()
 {
-    QModelIndex currentIndex = ui->devicesListView->currentIndex();
-    if (!currentIndex.isValid())
-        return nullptr;
-
-    DeviceListModel* model = qobject_cast<DeviceListModel*>(ui->devicesListView->model());
-    if (!model)
-        return nullptr;
-
-    return model->getDevice(currentIndex.row());
 }
 
 void MainWindow::initControls()
@@ -353,12 +365,12 @@ void MainWindow::connectInitialDataPageButtons()
     connect(ui->comboBoxSelectDevice, &QComboBox::currentIndexChanged, this, &MainWindow::onDeviceComboSelectionChanged);
     connect(ui->buttonConnectDevice, &QPushButton::clicked, this, &MainWindow::onConnectDeviceClicked);
     connect(ui->buttonDisconnectDevice, &QPushButton::clicked, this, &MainWindow::onDisconnectDeviceClicked);
+    connect(&deviceConnector, &DeviceConnector::connectionResult, this, &MainWindow::onConnectResult);
 
     connect(ui->radioMeasureSecond, &QRadioButton::toggled, this, &MainWindow::onMeasurementTypeChanged);
     connect(ui->radioMeasureTriple, &QRadioButton::toggled, this, &MainWindow::onMeasurementTypeChanged);
     connect(ui->comboBoxSampleSelection, &QComboBox::currentIndexChanged, this, &MainWindow::onSampleComboBoxChanged);
 
-    connect(&deviceConnector, &DeviceConnector::connectionResult, this, &MainWindow::onConnectResult);
 }
 
 void MainWindow::connectCatalogsButtons()
@@ -610,7 +622,5 @@ void MainWindow::clearSampleEditors()
     ui->editSampleDescription->clear();
 }
 
-bool MainWindow::canEditDevice(std::shared_ptr<const Device> &device)
 {
-    return !deviceConnector.connectionIsActive() || (deviceConnector.connectionIsActive() && device != deviceConnector.getActiveDevice());
 }
