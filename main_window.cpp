@@ -86,6 +86,9 @@ std::shared_ptr<const Device> MainWindow::getSelectedDevice()
 
 //----------------------------------------------- END TAB DEVICE MANAGER ------------------------------------------
 
+
+//----------------------------------------------- PAGE INITIAL DATA 0 ------------------------------------------
+
 void MainWindow::onDeviceComboSelectionChanged()
 {
     deviceConnector.setActiveDevice(ui->comboBoxSelectDevice->currentData().value<std::shared_ptr<const Device>>());
@@ -101,6 +104,22 @@ void MainWindow::onDisconnectDeviceClicked()
     deviceConnector.closeActiveConnection();
     fillDevicesCombo(true);
 }
+
+void MainWindow::onSampleComboBoxChanged(int index)
+{
+    upadteSampleEditors();
+}
+
+void MainWindow::onMeasurementTypeChanged()
+{
+    if(ui->radioMeasureSecond->isChecked())
+        ui->stackedWidgetStepsMeasure->setCurrentWidget(ui->stageSecondMeasure);
+    else
+        ui->stackedWidgetStepsMeasure->setCurrentWidget(ui->stageTripleMeasure);
+    updateStageLabels();
+}
+
+//----------------------------------------------- END PAGE 0 INITIAL DATA ------------------------------------------
 
 void MainWindow::navigateToToolBoxPage(QWidget* page)
 {
@@ -238,21 +257,6 @@ void MainWindow::goToNextMeasureStage()
     updateStageLabels();
 }
 
-void MainWindow::onMeasurementTypeChanged()
-{
-    // Aktualizacja panelu bocznego z etapami pomiaru
-    if (ui->radioMeasureSecond->isChecked()) {
-        ui->stackedWidgetStepsMeasure->setCurrentWidget(ui->stageSecondMeasure);
-    } else {
-        ui->stackedWidgetStepsMeasure->setCurrentWidget(ui->stageTripleMeasure);
-    }
-
-    // Resetowanie etapu pomiaru do strony początkowej
-    ui->measureDensityStage->setCurrentWidget(ui->pageInitialData);
-    ui->measureDensityStage->setProperty("currentStage", QVariant::fromValue(MeasurementStages::Stage::InitialData));
-    updateStageLabels();
-}
-
 void MainWindow::onMainPageChanged(int index)
 {
     updateActionIcons(index);
@@ -290,9 +294,7 @@ void MainWindow::onMaterialsChanged(const QMap<QString, Material> &materials)
     materialManager->setMaterials(materials);
 }
 
-void MainWindow::onSampleComboBoxChanged(int index)
 {
-    upadteSampleEditors();
 }
 
 {
@@ -526,6 +528,8 @@ void MainWindow::setIcons()
     activeRadwagIcon = QIcon(":/icons/balance_selected.png");
 }
 
+//----------------------------------------------- FILLING AND HELPER METHODS FOR PAGE 0 INITIAL DATA ------------------------------------------
+
 void MainWindow::fillDevicesCombo(bool keepActiveDevice)
 {
     DeviceListModel* model = qobject_cast<DeviceListModel*>(ui->devicesListView->model());
@@ -559,15 +563,6 @@ void MainWindow::fillSerialPortCombo()
     ui->comboBoxSelectPort->addItems(deviceConnector.getAvaiablePorts());
 }
 
-void MainWindow::fillFluidCombo()
-{
-    ui->comboBoxFluid->clear();
-    const QMap<QString, Fluid> &fluids = fluidManager->getFluids();
-    for(auto &fluid : fluids)
-        ui->comboBoxFluid->addItem(fluid.getName());
-    ui->comboBoxFluid->setCurrentIndex(-1);
-}
-
 void MainWindow::fillSampleCombo()
 {
     ui->comboBoxSampleSelection->clear();
@@ -579,6 +574,15 @@ void MainWindow::fillSampleCombo()
         ui->comboBoxSampleSelection->addItem(it.value().getName(), it.value().getId());
     }
     ui->comboBoxSampleSelection->setCurrentIndex(-1);
+}
+
+void MainWindow::fillFluidCombo()
+{
+    ui->comboBoxFluid->clear();
+    const QMap<QString, Fluid> &fluids = fluidManager->getFluids();
+    for(auto &fluid : fluids)
+        ui->comboBoxFluid->addItem(fluid.getName());
+    ui->comboBoxFluid->setCurrentIndex(-1);
 }
 
 void MainWindow::updateStatusConnectionLabel(bool connectionStatus)

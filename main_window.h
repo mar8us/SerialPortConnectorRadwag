@@ -35,10 +35,12 @@ private slots:
     void onDisconnectDeviceClicked();
     void onConnectResult(bool connected);
 
+    void onMeasurementTypeChanged();
+    void onSampleComboBoxChanged(int index);
+
     void navigateToToolBoxPage(QWidget* page);
     void goToPreviousMeasureStage();
     void goToNextMeasureStage();
-    void onMeasurementTypeChanged();
     void onMainPageChanged(int index);
 
     void buttonTableFluidsOnClicked();
@@ -46,7 +48,6 @@ private slots:
 
     void onMaterialsChanged(const QMap<QString, Material> &materials);
 
-    void onSampleComboBoxChanged(int index);
 
 private:
     bool canEditDevice(std::shared_ptr<const Device> &device);
@@ -65,8 +66,8 @@ private:
     void setIcons();
     void fillDevicesCombo(bool keepActiveDevice = false);
     void fillSerialPortCombo();
-    void fillFluidCombo();
     void fillSampleCombo();
+    void fillFluidCombo();
     void updateActionIcons(int index);
     void updateStatusConnectionLabel(bool connectionStatus);
     void upadteSampleEditors();
