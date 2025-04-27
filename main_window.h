@@ -75,6 +75,7 @@ private:
     void fillFluidCombo();
     void updateActionIcons(int index);
     void updateStatusConnectionLabel(bool connectionStatus);
+    void updateConnectonLabelsStatusBar(bool connectionStatus);
     void upadteSampleEditors();
     void clearSampleEditors();
 

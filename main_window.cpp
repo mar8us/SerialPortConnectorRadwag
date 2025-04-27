@@ -92,6 +92,7 @@ std::shared_ptr<const Device> MainWindow::getSelectedDevice()
 void MainWindow::onDeviceComboSelectionChanged()
 {
     deviceConnector.setActiveDevice(ui->comboBoxSelectDevice->currentData().value<std::shared_ptr<const Device>>());
+    updateConnectonLabelsStatusBar(false);
 }
 
 void MainWindow::onConnectDeviceClicked()
@@ -315,6 +316,8 @@ void MainWindow::onMaterialsChanged(const QMap<QString, Material> &materials)
 void MainWindow::initControls()
 {
     ui->setupUi(this);
+    ui->statusbar->addPermanentWidget(ui->labelDeviceNameStatusBar);
+    ui->statusbar->addPermanentWidget(ui->labelConnectionStatusStatusBar);
     setIcons();
     setProperty();
     navigateToToolBoxPage(ui->measureDensityPage);
@@ -327,6 +330,7 @@ void MainWindow::initControls()
     fillSampleCombo();
     onMeasurementTypeChanged();
     updateStatusConnectionLabel(false);
+    updateConnectonLabelsStatusBar(false);
 }
 
 void MainWindow::onConnectResult(bool connected)
@@ -695,6 +699,24 @@ void MainWindow::updateStatusConnectionLabel(bool connectionStatus)
     {
         ui->labelEditStatusConnection->setStyleSheet("color: red; font-weight: bold;");
         ui->labelEditStatusConnection->setText("Brak połączenia");
+        ui->comboBoxSelectDevice->setEnabled(true);
+    }
+    updateConnectonLabelsStatusBar(connectionStatus);
+}
+
+void MainWindow::updateConnectonLabelsStatusBar(bool connectionStatus)
+{
+    if(connectionStatus)
+    {
+        ui->labelDeviceNameStatusBar->setText("Urządzenie: " + deviceConnector.getActiveDevice()->getName());
+        ui->labelConnectionStatusStatusBar->setText("Status: <font color='green'><b>Połączono</b></font>");
+        ui->comboBoxSelectDevice->setEnabled(false);
+    }
+    else
+    {
+        QString deviceName = ui->comboBoxSelectDevice->currentText();
+        ui->labelDeviceNameStatusBar->setText("Urządzenie: " + (deviceName.isEmpty() ? "Nie wybrano" : ui->comboBoxSelectDevice->currentText()));
+        ui->labelConnectionStatusStatusBar->setText("Status: <font color='red'><b>Brak połączenia</b></font>");
         ui->comboBoxSelectDevice->setEnabled(true);
     }
 }

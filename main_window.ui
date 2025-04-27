@@ -824,8 +824,8 @@ a następnie wykonaj poniższe kroki:</string>
                            <rect>
                             <x>0</x>
                             <y>0</y>
-                            <width>805</width>
-                            <height>318</height>
+                            <width>386</width>
+                            <height>311</height>
                            </rect>
                           </property>
                           <layout class="QGridLayout" name="gridLayout_17">
@@ -5172,6 +5172,20 @@ umieszczając ją w komorze próźniowej na czas zaniku ostatniego pęcherzyka</
         </item>
        </layout>
       </widget>
+     </widget>
+    </item>
+    <item>
+     <widget class="QLabel" name="labelDeviceNameStatusBar">
+      <property name="text">
+       <string>deviceNameStatusBar</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QLabel" name="labelConnectionStatusStatusBar">
+      <property name="text">
+       <string>connectResultStatusBar</string>
+      </property>
      </widget>
     </item>
    </layout>
