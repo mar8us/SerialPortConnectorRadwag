@@ -162,8 +162,16 @@ void MainWindow::goToPreviousMeasureStage()
 
     // Określenie poprzedniego etapu pomiaru
     MeasurementStages::Stage prevStage;
-    switch (currentStage)
+    switch(currentStage)
     {
+    case MeasurementStages::Stage::None:
+        break;
+
+    case MeasurementStages::Stage::InitialData:
+        prevStage = MeasurementStages::Stage::None;
+        ui->stackedWidgetMainHydroMeasure->setCurrentWidget(ui->pageStartMeasure);
+        break;
+
     case MeasurementStages::Stage::DryMeasure:
         prevStage = MeasurementStages::Stage::InitialData;
         ui->measureDensityStage->setCurrentWidget(ui->pageInitialData);
@@ -206,12 +214,16 @@ void MainWindow::goToNextMeasureStage()
     bool isTripleMeasurement = ui->radioMeasureTriple->isChecked();
 
     MeasurementStages::Stage nextStage;
-    switch (currentStage)
+    switch(currentStage)
     {
     case MeasurementStages::Stage::InitialData:
         nextStage = MeasurementStages::Stage::DryMeasure;
         ui->measureDensityStage->setCurrentWidget(ui->pageDryMeasure);
         break;
+        case MeasurementStages::Stage::None:
+            nextStage = MeasurementStages::Stage::InitialData;
+            ui->measureDensityStage->setCurrentWidget(ui->pageInitialData);
+            break;
 
     case MeasurementStages::Stage::DryMeasure:
         if(isTripleMeasurement)
@@ -320,6 +332,79 @@ void MainWindow::initControls()
 void MainWindow::onConnectResult(bool connected)
 {
     updateStatusConnectionLabel(connected);
+
+void MainWindow::onStartMeasureButtonClicked()
+{
+    if(!checkDeviceConnectionWithMessage())
+        return;
+
+    if(!ui->checkBoxStep1PrepareWorkstation->isChecked() ||
+       !ui->checkBoxStep2PrepareWorkstation->isChecked() ||
+       !ui->checkBoxStep3PrepareWorkstation->isChecked() ||
+       !ui->checkBoxStep4PrepareWorkstation->isChecked() ||
+       !ui->checkBoxStep5PrepareWorkstation->isChecked())
+    {
+        QMessageBox::warning(this, "Niepełne przygotowanie", "Przed rozpoczęciem pomiaru wykonaj wszystkie kroki przygotowawcze.");
+        return;
+    }
+
+    ui->stackedWidgetMainHydroMeasure->setCurrentWidget(ui->pageMeasureProcess);
+    goToNextMeasureStage();
+}
+
+void MainWindow::onShowHydroSetSchemeButtonClicked()
+{
+    QDialog *schemeDialog = new QDialog(this);
+    schemeDialog->setWindowTitle("Schemat zestawu do wyznaczania gęstości ciał stałych");
+
+    QVBoxLayout *mainLayout = new QVBoxLayout(schemeDialog);
+
+    QLabel *imageLabel = new QLabel(schemeDialog);
+    QPixmap schemeImage(":/schema_img/schema_density_solids.png");
+    if (schemeImage.isNull())
+    {
+        imageLabel->setText("Nie można załadować obrazka!");
+    }
+    else
+    {
+        QLabel *noteLabel = new QLabel(schemeDialog);
+        noteLabel->setText("Elementy oznaczone <font color='yellow'>kolorem żółtym </font> są niezbędne do przeprowadzenia właściwego pomiaru.");
+        noteLabel->setAlignment(Qt::AlignCenter);
+
+        QPalette pal = noteLabel->palette();
+        pal.setColor(QPalette::Window, QColor(240, 240, 240));
+        noteLabel->setAutoFillBackground(false);
+        noteLabel->setPalette(pal);
+        noteLabel->setFrameShape(QFrame::Box);
+        noteLabel->setFrameShadow(QFrame::Sunken);
+        noteLabel->setLineWidth(1);
+        noteLabel->setMargin(8);
+
+        mainLayout->addWidget(noteLabel);
+
+        QScreen *screen = QGuiApplication::primaryScreen();
+        QRect screenGeometry = screen->geometry();
+        int maxWidth = screenGeometry.width() * 0.8;  // 80% szerokości ekranu
+        int maxHeight = screenGeometry.height() * 0.8;  // 80% wysokości ekranu
+        if(schemeImage.width() > maxWidth || schemeImage.height() > maxHeight)
+            schemeImage = schemeImage.scaled(maxWidth, maxHeight, Qt::KeepAspectRatio, Qt::SmoothTransformation);
+        imageLabel->setPixmap(schemeImage);
+    }
+
+    mainLayout->addWidget(imageLabel);
+    schemeDialog->setLayout(mainLayout);
+
+    schemeDialog->exec();
+    delete schemeDialog;
+}
+
+void MainWindow::onConfrimPrepareWorkstationButtonClicked()
+{
+    ui->checkBoxStep1PrepareWorkstation->setChecked(true);
+    ui->checkBoxStep2PrepareWorkstation->setChecked(true);
+    ui->checkBoxStep3PrepareWorkstation->setChecked(true);
+    ui->checkBoxStep4PrepareWorkstation->setChecked(true);
+    ui->checkBoxStep5PrepareWorkstation->setChecked(true);
 }
 
 void MainWindow::connectButtons()
@@ -327,6 +412,7 @@ void MainWindow::connectButtons()
     connectMainNavButtons();
     connectDevicesSettingsButtons();
     connectNavMeasurementButtons();
+    connectPrepareWorksationPageButtons();
     connectInitialDataPageButtons();
     connectCatalogsButtons();
 }
@@ -346,6 +432,7 @@ void MainWindow::connectMainNavButtons()
 
 void MainWindow::connectNavMeasurementButtons()
 {
+    connect(ui->buttonPrevData, &QPushButton::clicked, this, &MainWindow::goToPreviousMeasureStage);
     connect(ui->buttonNextData, &QPushButton::clicked, this, &MainWindow::goToNextMeasureStage);
     connect(ui->buttonNextDryMass, &QPushButton::clicked, this, &MainWindow::goToNextMeasureStage);
     connect(ui->buttonPrevDryMass, &QPushButton::clicked, this, &MainWindow::goToPreviousMeasureStage);
@@ -360,6 +447,13 @@ void MainWindow::connectNavMeasurementButtons()
     connect(ui->buttonPrevSaturation, &QPushButton::clicked, this, &MainWindow::goToPreviousMeasureStage);
     connect(ui->buttonFinishMeasurementTriple, &QPushButton::clicked, this, &MainWindow::finishMeasurement);
     connect(ui->buttonPrevSaturatedMass, &QPushButton::clicked, this, &MainWindow::goToPreviousMeasureStage);
+}
+
+void MainWindow::connectPrepareWorksationPageButtons()
+{
+    connect(ui->buttonShowHydroSetScheme, &QPushButton::clicked, this, &MainWindow::onShowHydroSetSchemeButtonClicked);
+    connect(ui->buttonConfrimPrepareWorkstation, &QPushButton::clicked, this, &MainWindow::onConfrimPrepareWorkstationButtonClicked);
+    connect(ui->buttonStartMeasure, &QPushButton::clicked, this, &MainWindow::onStartMeasureButtonClicked);
 }
 
 void MainWindow::connectInitialDataPageButtons()
@@ -509,13 +603,13 @@ void MainWindow::finishMeasurement()
 
     // Powrót do pierwszej strony
     ui->measureDensityStage->setCurrentWidget(ui->pageInitialData);
-    ui->measureDensityStage->setProperty("currentStage", QVariant::fromValue(MeasurementStages::Stage::InitialData));
+    ui->measureDensityStage->setProperty("currentStage", QVariant::fromValue(MeasurementStages::Stage::None));
     updateStageLabels();
 }
 
 void MainWindow::setProperty()
 {
-    ui->stackedWidget->setProperty("currentStage", QVariant::fromValue(MeasurementStages::Stage::InitialData));
+    ui->measureDensityStage->setProperty("currentStage", QVariant::fromValue(MeasurementStages::Stage::None));
     ui->scrollAreaInitialData->setBackgroundRole(QPalette::Base);
     ui->scrollArea->setBackgroundRole(QPalette::Base);
 }
@@ -630,5 +724,14 @@ void MainWindow::clearSampleEditors()
     ui->editSampleDescription->clear();
 }
 
+bool MainWindow::checkDeviceConnectionWithMessage()
 {
+    if(!deviceConnector.connectionIsActive())
+    {
+        QMessageBox::warning(this, tr("Brak połączenia"), "Brak połączenia z urządzeniem");
+        return false;
+    }
+    return true;
+}
+
 }

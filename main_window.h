@@ -35,6 +35,10 @@ private slots:
     void onDisconnectDeviceClicked();
     void onConnectResult(bool connected);
 
+    void onStartMeasureButtonClicked();
+    void onShowHydroSetSchemeButtonClicked();
+    void onConfrimPrepareWorkstationButtonClicked();
+
     void onMeasurementTypeChanged();
     void onSampleComboBoxChanged(int index);
 
@@ -57,6 +61,7 @@ private:
     void connectButtons();
     void connectMainNavButtons();
     void connectNavMeasurementButtons();
+    void connectPrepareWorksationPageButtons();
     void connectInitialDataPageButtons();
     void connectCatalogsButtons();
     void connectDevicesSettingsButtons();
@@ -73,6 +78,7 @@ private:
     void upadteSampleEditors();
     void clearSampleEditors();
 
+    bool checkDeviceConnectionWithMessage();
 
     Ui::MainWindow *ui;
     DeviceListModel devicesListModel;
