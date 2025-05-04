@@ -18,6 +18,8 @@ Q_NAMESPACE
 
 enum class Stage
 {
+    None,
+    StartMeasure,
     InitialData,
     DryMeasure,
     PrepareSecond,
@@ -25,8 +27,9 @@ enum class Stage
     FinishSecond,
     SaturationMass,
     FinishTriple,
-    None
+    Summary
 };
+
 Q_ENUM_NS(Stage)
 
 }
@@ -64,6 +67,7 @@ public:
     double getSampleDryMass() const;
     double getSampleInFluidMass() const;
     double getSampleSaturatedMass() const;
+    void setSample(const Sample &sample);
     void setSampleDryMass(double newSampleInDryMass);
     void setSampleInFluidMass(double newSampleInFluidMass);
     void setSampleSaturatedMass(double newSampleSaturatedMass);

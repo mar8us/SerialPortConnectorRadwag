@@ -10,10 +10,22 @@ MeasurementController::MeasurementController(const std::shared_ptr<MeasurementMa
 
 }
 
-bool MeasurementController::beginNewMeasure(MeasurementType type, const Sample &sample, const Fluid &fluid, const QString &author)
+bool MeasurementController::beginNewMeasure()
 {
-    measurement.reset(new Measurement(measurementManager->generateMeasurementId(), type, sample, fluid, author));
+    measurement.reset(new Measurement());
+    measurement->setId(measurementManager->generateMeasurementId());
     return measurementManager->addMeasurement(measurement);
+}
+
+bool MeasurementController::setInitialData(MeasurementType type, const Sample &sample, const Fluid &fluid, const QString &author)
+{
+    if(!hasActiveMeasurement())
+        return false;
+    measurement->setType(type);
+    measurement->setSample(sample);
+    measurement->setFluid(fluid);
+    measurement->setAuthor(author);
+    return true;
 }
 
 void MeasurementController::endMeasure()
@@ -35,8 +47,12 @@ MeasurementStages::Stage MeasurementController::getStage() const
 
 bool MeasurementController::setStage(MeasurementStages::Stage stage)
 {
-    if(!hasActiveMeasurement())
+    if(!hasActiveMeasurement() || static_cast<int>(stage) <= static_cast<int>(measurement->getCurrentStage()))
+    {
+        qDebug() << "setStage false";
         return false;
+    }
+    qDebug() << "setStage true";
     measurement->setStage(stage);
     return true;
 }

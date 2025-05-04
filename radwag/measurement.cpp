@@ -2,13 +2,15 @@
 
 Measurement::Measurement()
     : type(MeasurementType::TwoStage)
+    , stage(MeasurementStages::Stage::None)
     , status(MeasurementStatus::InProgress)
+    , fluidTemperature(0.0)
     , sampleDryMass(0.0)
     , sampleInFluidMass(0.0)
     , sampleSaturatedMass(0.0)
     , date(QDateTime::currentDateTime())
 {
-    date = QDateTime::currentDateTime();
+
 }
 
 Measurement::Measurement(const QString& id, MeasurementType type, const Sample &sample, const Fluid &fluid, const QString &author)
@@ -134,6 +136,11 @@ double Measurement::getSampleInFluidMass() const
 double Measurement::getSampleSaturatedMass() const
 {
     return sampleSaturatedMass;
+}
+
+void Measurement::setSample(const Sample &newSample)
+{
+    sample = newSample;
 }
 
 void Measurement::setSampleDryMass(double newSampleInDryMass)
