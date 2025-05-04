@@ -11,6 +11,8 @@
 #include "settings/device_connector.h"
 #include "settings/devices_list_model.h"
 #include "settings/devices_list_controler.h"
+#include "radwag/measurement_manager.h"
+#include "main_widow/measurement_controller.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -27,6 +29,8 @@ public:
     ~MainWindow();
 
 signals:
+    void beginNewMeasure();
+    void setMeasureInitialData();
 
 private slots:
     void onAddDeviceButtonClicked();
@@ -54,6 +58,25 @@ private slots:
 
     void onMaterialsChanged(const QMap<QString, Material> &materials);
 
+    void onBeginNewMeasure();
+    void onSetInitialData();
+
+    void onGetCurrentDryMeasureButtonClicked();
+    void onRadwagMeasueReady(const RadwagMeasure &data);
+    void onSaveCurrentDryMeasureButtonClicked();
+    void onClearSavedDryMeasureButtonClicked();
+
+    void onDryMassExecuteStepOneClicked();
+    void onDryMassExecuteStepTwoClicked();
+    void onDryMassExecuteStepThreeClicked();
+
+    void onGetCurrentFinishMeasureSecondButtonClicked();
+    void onSaveCurrentFinishMeasureSecondButtonClicked();
+    void onClearSavedFinishMeasureSecondButtonClicked();
+    void onCalculatelabelVolumeFinishMeasureSecondButtonClicked();
+
+    void onFinishMeasureSecondStepTwoClicked();
+    void onFinishMeasureSecondStepTreeClicked();
 
 private:
     bool canEditDevice(std::shared_ptr<const Device> &device);
@@ -67,6 +90,8 @@ private:
     void connectNavMeasurementButtons();
     void connectPrepareWorksationPageButtons();
     void connectInitialDataPageButtons();
+    void connectDryMassPageButtons();
+    void connectFinishSecondPageButtons();
     void connectCatalogsButtons();
     void connectDevicesSettingsButtons();
     void updateStageLabels();
@@ -83,7 +108,20 @@ private:
     void upadteSampleEditors();
     void clearSampleEditors();
 
+    // MeasurementRadwag
+    void fillPrepareDataLabels();
+    void fillSampleInfoLabels();
+    void fillFluidInfoLabels();
+    void fillTemperatureComboBox();
+    void updateFluidDensityLabel();
+    void fillFinishMeasureSecondLabels();
+
     bool checkDeviceConnectionWithMessage();
+    bool validateInitialData();
+    bool vaildateDryMeasureData();
+
+    void updateSaveCurrentDryMeasureButtonState();
+    void updateSaveFinishSecondButtonState();
 
     Ui::MainWindow *ui;
     DeviceListModel devicesListModel;
@@ -92,6 +130,8 @@ private:
     std::unique_ptr<FluidManager> fluidManager;
     std::unique_ptr<MaterialManager> materialManager;
     std::unique_ptr<SampleManager> sampleManager;
+    std::shared_ptr<MeasurementManager> measurememntManager;
+    std::unique_ptr<MeasurementController> radwagMeasureControler;
 
     QIcon defaultSettingsIcon;
     QIcon activeSettingsIcon;
@@ -99,6 +139,7 @@ private:
     QIcon activeRadwagIcon;
 
     static inline const QColor ACTIVE_LABEL_COLOR = QColor(0, 0, 255);
+    static inline const QColor MEASURE_LABEL_COLOR = QColor(0, 100, 255);
 };
 #endif // MAIN_WINDOW_H
 
