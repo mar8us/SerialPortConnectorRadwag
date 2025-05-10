@@ -240,11 +240,13 @@ void MainWindow::onSaveCurrentFinishMeasureSecondButtonClicked()
     if(!radwagMeasureControler->setMassInFluid(utils::getDouble(text)))
         QMessageBox::warning(this, tr("Błąd"), "Błąd zapisu pomiaru! FinishSecond");
     ui->editSavedValueFinishMeasureSecond->setText(text);
+    ui->editLiquidMeasureFinishMeasureSecond->setText(text);
 }
 
 void MainWindow::onClearSavedFinishMeasureSecondButtonClicked()
 {
     ui->editSavedValueFinishMeasureSecond->clear();
+    ui->editLiquidMeasureFinishMeasureSecond->clear();
     radwagMeasureControler->setMassInFluid(0.0);
 }
 
@@ -465,10 +467,7 @@ void MainWindow::onRadwagMeasueReady(const RadwagMeasure &data)
     if(currentStage == MeasurementStages::Stage::DryMeasure)
         ui->editCurrentDryMeasure->setText(QString::number(data.getValue()));
     else if(currentStage == MeasurementStages::Stage::FinishSecond)
-    {
         ui->editCurrentValueFinishSecond->setText(QString::number(data.getValue()));
-        ui->editLiquidMeasureFinishMeasureSecond->setText(QString::number(data.getValue()));
-    }
 }
 
 void MainWindow::initControls()
