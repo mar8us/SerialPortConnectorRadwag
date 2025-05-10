@@ -45,6 +45,9 @@ private slots:
     void onShowHydroSetSchemeButtonClicked();
     void onConfrimPrepareWorkstationButtonClicked();
 
+    void onConfrimPrepareMeasureSecondButtonClicked();
+    bool checkGuidePrepareMeasureSecondButton();
+
     void onMeasurementTypeChanged();
     void onSampleComboBoxChanged(int index);
 
@@ -90,6 +93,7 @@ private:
     void connectNavMeasurementButtons();
     void connectPrepareWorksationPageButtons();
     void connectInitialDataPageButtons();
+    void connectPrepareMeasureSecondPageButtons();
     void connectDryMassPageButtons();
     void connectFinishSecondPageButtons();
     void connectCatalogsButtons();

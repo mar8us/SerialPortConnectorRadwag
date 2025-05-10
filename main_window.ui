@@ -1752,7 +1752,7 @@ i wykonaj pomiar</string>
                       <property name="title">
                        <string>Przewodnik</string>
                       </property>
-                      <layout class="QVBoxLayout" name="verticalLayout_4">
+                      <layout class="QVBoxLayout" name="verticalLayout_32">
                        <item>
                         <widget class="QLabel" name="labelGuidePrepareMeasureSecond">
                          <property name="font">
@@ -1861,6 +1861,25 @@ umieszczając ją w komorze próźniowej na czas zaniku ostatniego pęcherzyka</
                            </layout>
                           </item>
                          </layout>
+                        </widget>
+                       </item>
+                       <item>
+                        <widget class="QPushButton" name="buttonConfrimPrepareMeasureSecond">
+                         <property name="minimumSize">
+                          <size>
+                           <width>150</width>
+                           <height>30</height>
+                          </size>
+                         </property>
+                         <property name="maximumSize">
+                          <size>
+                           <width>150</width>
+                           <height>16777215</height>
+                          </size>
+                         </property>
+                         <property name="text">
+                          <string>Potwierdź wykonanie</string>
+                         </property>
                         </widget>
                        </item>
                        <item>
@@ -3331,8 +3350,8 @@ umieszczając ją w komorze próźniowej na czas zaniku ostatniego pęcherzyka</
                        <property name="geometry">
                         <rect>
                          <x>0</x>
-                         <y>-118</y>
-                         <width>821</width>
+                         <y>0</y>
+                         <width>631</width>
                          <height>680</height>
                         </rect>
                        </property>
@@ -5555,7 +5574,7 @@ umieszczając ją w komorze próźniowej na czas zaniku ostatniego pęcherzyka</
                        <property name="geometry">
                         <rect>
                          <x>0</x>
-                         <y>-321</y>
+                         <y>0</y>
                          <width>821</width>
                          <height>1077</height>
                         </rect>

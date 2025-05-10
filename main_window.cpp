@@ -380,6 +380,9 @@ void MainWindow::goToNextMeasureStage()
             break;
         }
         case MeasurementStages::Stage::PrepareSecond:
+            if(!checkGuidePrepareMeasureSecondButton())
+                return;
+
             nextStage = MeasurementStages::Stage::FinishSecond;
             ui->measureDensityStage->setCurrentWidget(ui->pageFinishMeasurementSecond);
 
@@ -572,6 +575,29 @@ void MainWindow::onConfrimPrepareWorkstationButtonClicked()
     ui->checkBoxStep5PrepareWorkstation->setChecked(true);
 }
 
+void MainWindow::onConfrimPrepareMeasureSecondButtonClicked()
+{
+    ui->stepFirstPrepareMeasureSecond->setChecked(true);
+    ui->stepTwoPrepareMeasureSecond->setChecked(true);
+    ui->stepTreePrepareMeasureSecond->setChecked(true);
+    ui->stepFourPrepareMeasureSecond->setChecked(true);
+    ui->stepFivePrepareMeasureSecond->setChecked(true);
+}
+
+bool MainWindow::checkGuidePrepareMeasureSecondButton()
+{
+    if(!ui->stepFirstPrepareMeasureSecond->isChecked() ||
+        !ui->stepTwoPrepareMeasureSecond->isChecked() ||
+        !ui->stepTreePrepareMeasureSecond->isChecked() ||
+        !ui->stepFourPrepareMeasureSecond->isChecked() ||
+        !ui->stepFivePrepareMeasureSecond->isChecked())
+    {
+        QMessageBox::warning(this, "Niepełne przygotowanie", "Przed rozpoczęciem pomiaru wykonaj wszystkie kroki przygotowawcze (część druga).");
+        return false;
+    }
+    return true;
+}
+
 void MainWindow::connectButtons()
 {
     connectMainNavButtons();
@@ -580,6 +606,7 @@ void MainWindow::connectButtons()
     connectPrepareWorksationPageButtons();
     connectInitialDataPageButtons();
     connectDryMassPageButtons();
+    connectPrepareMeasureSecondPageButtons();
     connectFinishSecondPageButtons();
     connectCatalogsButtons();
 }
@@ -636,6 +663,11 @@ void MainWindow::connectInitialDataPageButtons()
 
     connect(this, &MainWindow::beginNewMeasure, this, &MainWindow::onBeginNewMeasure);
     connect(this, &MainWindow::setMeasureInitialData, this, &MainWindow::onSetInitialData);
+}
+
+void MainWindow::connectPrepareMeasureSecondPageButtons()
+{
+    connect(ui->buttonConfrimPrepareMeasureSecond, &QPushButton::clicked, this, &MainWindow::onConfrimPrepareMeasureSecondButtonClicked);
 }
 
 void MainWindow::connectDryMassPageButtons()
