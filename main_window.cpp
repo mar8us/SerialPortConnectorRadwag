@@ -288,6 +288,7 @@ void MainWindow::goToPreviousMeasureStage()
     case MeasurementStages::Stage::DryMeasure:
         prevStage = MeasurementStages::Stage::InitialData;
         ui->measureDensityStage->setCurrentWidget(ui->pageInitialData);
+        setEnableInitialDataPage(radwagMeasureControler->getStage() == prevStage);
         ui->groupBoxAdditionalSettings->setVisible(true);
         break;
 
@@ -295,11 +296,13 @@ void MainWindow::goToPreviousMeasureStage()
     case MeasurementStages::Stage::PrepareTriple:
         prevStage = MeasurementStages::Stage::DryMeasure;
         ui->measureDensityStage->setCurrentWidget(ui->pageDryMeasure);
+        setEnableDryMeasurePage(radwagMeasureControler->getStage() == prevStage);
         break;
 
     case MeasurementStages::Stage::FinishSecond:
         prevStage = MeasurementStages::Stage::PrepareSecond;
         ui->measureDensityStage->setCurrentWidget(ui->pagePrepareMeasureSecond);
+        setEnablePrepareMeasureSecondPage(radwagMeasureControler->getStage() == prevStage);
         break;
 
     case MeasurementStages::Stage::SaturationMass:
@@ -335,6 +338,7 @@ void MainWindow::goToNextMeasureStage()
             if(!radwagMeasureControler->hasActiveMeasurement())
                 emit beginNewMeasure();
             radwagMeasureControler->setStage(nextStage);
+            setEnableInitialDataPage(radwagMeasureControler->getStage() == nextStage);
             break;
 
         case MeasurementStages::Stage::InitialData:
@@ -348,6 +352,7 @@ void MainWindow::goToNextMeasureStage()
 
             if(radwagMeasureControler->setStage(nextStage))
                 emit setMeasureInitialData();
+            setEnableDryMeasurePage(radwagMeasureControler->getStage() == nextStage);
             break;
         }
         case MeasurementStages::Stage::DryMeasure:
@@ -368,7 +373,7 @@ void MainWindow::goToNextMeasureStage()
 
             fillPrepareDataLabels();
             radwagMeasureControler->setStage(nextStage);
-
+            setEnablePrepareMeasureSecondPage(radwagMeasureControler->getStage() == nextStage);
             break;
         }
         case MeasurementStages::Stage::PrepareSecond:
@@ -377,8 +382,8 @@ void MainWindow::goToNextMeasureStage()
 
             nextStage = MeasurementStages::Stage::FinishSecond;
             ui->measureDensityStage->setCurrentWidget(ui->pageFinishMeasurementSecond);
-
             radwagMeasureControler->setStage(nextStage);
+            setEnableFinishMeasureSecondPage(radwagMeasureControler->getStage() == nextStage);
             fillFinishMeasureSecondLabels();
             break;
 
@@ -1072,6 +1077,15 @@ void MainWindow::clearInitialDataPage()
     ui->comboBoxFluid->setCurrentIndex(-1);
 }
 
+void MainWindow::setEnableInitialDataPage(bool enabled)
+{
+    ui->comboBoxSampleSelection->setEnabled(enabled);
+    ui->editAuthor->setEnabled(enabled);
+    ui->comboBoxFluid->setEnabled(enabled);
+    ui->buttonSamples->setEnabled(enabled);
+    ui->buttonTableFluids->setEnabled(enabled);
+}
+
 //----------------------------------------------- END FILLING AND HELPER METHODS FOR PAGE 0 INITIAL DATA ------------------------------------------
 
 
@@ -1103,6 +1117,20 @@ void MainWindow::clearDryMeasurePage()
 
     ui->editCurrentDryMeasure->clear();
     ui->editSavedDryMeasure->clear();
+}
+
+void MainWindow::setEnableDryMeasurePage(bool enabled)
+{
+    ui->step1CheckBox->setEnabled(enabled);
+    ui->step2CheckBox->setEnabled(enabled);
+    ui->step3CheckBox->setEnabled(enabled);
+    ui->buttonDryMassExecuteStepOne->setEnabled(enabled);
+    ui->buttonDryMassExecuteStepTwo->setEnabled(enabled);
+    ui->buttonDryMassExecuteStepThree->setEnabled(enabled);
+
+    ui->buttonGetCurrentDryMeasure->setEnabled(enabled);
+    ui->buttonSaveCurrentDryMeasure->setEnabled(enabled);
+    ui->buttonClearEditSavedDryMeasure->setEnabled(enabled);
 }
 
 //----------------------------------------------- END FILLING AND HELPER METHODS FOR PAGE 1 DRY MASS ------------------------------------------
@@ -1202,6 +1230,17 @@ void MainWindow::clearPrepareMeasureSecondPage()
     ui->labelAirWeightValuePrepareMeasureSecond->clear();
 }
 
+void MainWindow::setEnablePrepareMeasureSecondPage(bool enabled)
+{
+    ui->stepFirstPrepareMeasureSecond->setEnabled(enabled);
+    ui->stepTwoPrepareMeasureSecond->setEnabled(enabled);
+    ui->stepTreePrepareMeasureSecond->setEnabled(enabled);
+    ui->stepFourPrepareMeasureSecond->setEnabled(enabled);
+    ui->stepFivePrepareMeasureSecond->setEnabled(enabled);
+    ui->buttonConfrimPrepareMeasureSecond->setEnabled(enabled);
+    ui->comboBoxTempFluidPrepareMeasureSecond->setEnabled(enabled);
+}
+
 //----------------------------------------------- END FILLING AND HELPER METHODS FOR PAGE 2 PREPARE MEASUREMENT ------------------------------------------
 
 
@@ -1245,6 +1284,19 @@ void MainWindow::clearFinishMeasureSecondPage()
     ui->editSampleMaterialValueFinishMeasureSecond->clear();
     ui->editLiquidFinishMeasureSecond->clear();
     ui->editDensityLiquidFinishMeasureSecond->clear();
+}
+
+void MainWindow::setEnableFinishMeasureSecondPage(bool enabled)
+{
+    ui->step3CheckBox_6->setEnabled(enabled);
+    ui->step2FinishMeasureSecondCheckBox->setEnabled(enabled);
+    ui->step3FinishMeasureSecondCheckBox->setEnabled(enabled);
+
+    ui->buttonFinishMeasureSecondExecuteStepTwo->setEnabled(enabled);
+    ui->buttonFinishMeasureSecondExecuteStepTree->setEnabled(enabled);
+    ui->buttonGetCurrentValueFinishMeasureSecond->setEnabled(enabled);
+    ui->buttonSaveCurrentFinishSecond->setEnabled(enabled);
+    ui->buttonClearSavedValueFinishMeasureSecond->setEnabled(enabled);
 }
 
 //----------------------------------------------- END FILLING AND HELPER METHODS FOR PAGE 3 FINISH SECOND ----------------------------------------------------

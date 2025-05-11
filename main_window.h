@@ -132,6 +132,11 @@ private:
     void clearPrepareMeasureSecondPage();
     void clearFinishMeasureSecondPage();
 
+    void setEnableInitialDataPage(bool enabled);
+    void setEnableDryMeasurePage(bool enabled);
+    void setEnablePrepareMeasureSecondPage(bool enabled);
+    void setEnableFinishMeasureSecondPage(bool enabled);
+
     void updateSaveCurrentDryMeasureButtonState();
     void updateSaveFinishSecondButtonState();
 
