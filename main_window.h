@@ -124,6 +124,11 @@ private:
     bool validateInitialData();
     bool vaildateDryMeasureData();
 
+    void clearInitialDataPage();
+    void clearDryMeasurePage();
+    void clearPrepareMeasureSecondPage();
+    void clearFinishMeasureSecondPage();
+
     void updateSaveCurrentDryMeasureButtonState();
     void updateSaveFinishSecondButtonState();
 

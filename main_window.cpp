@@ -863,7 +863,13 @@ void MainWindow::finishMeasurement()
     ui->measureDensityStage->setCurrentWidget(isTripleMeasurement ? ui->pageSummaryTriple : ui->pageSummarySecond);
     ui->measureDensityStage->setProperty("currentStage", QVariant::fromValue(MeasurementStages::Stage::Summary));
     if(!isTripleMeasurement)
+    {
         fillMeasureSecondLabelsSummary();
+        clearInitialDataPage();
+        clearDryMeasurePage();
+        clearPrepareMeasureSecondPage();
+        clearFinishMeasureSecondPage();
+    }
     radwagMeasureControler->setStage(MeasurementStages::Stage::Summary);
     updateStageLabels();
     radwagMeasureControler->endMeasure();
@@ -1037,6 +1043,18 @@ bool MainWindow::validateInitialData()
     return true;
 }
 
+void MainWindow::clearInitialDataPage()
+{
+    ui->comboBoxSampleSelection->setCurrentIndex(-1);
+    ui->editSampleId->clear();
+    ui->editSampleName->clear();
+    ui->editMaterial->clear();
+    ui->editMaterialDensity->clear();
+    ui->editAuthor->clear();
+    ui->editSampleDescription->clear();
+    ui->comboBoxFluid->setCurrentIndex(-1);
+}
+
 //----------------------------------------------- END FILLING AND HELPER METHODS FOR PAGE 0 INITIAL DATA ------------------------------------------
 
 
@@ -1058,6 +1076,16 @@ bool MainWindow::vaildateDryMeasureData()
     }
 
     return true;
+}
+
+void MainWindow::clearDryMeasurePage()
+{
+    ui->step1CheckBox->setChecked(false);
+    ui->step2CheckBox->setChecked(false);
+    ui->step3CheckBox->setChecked(false);
+
+    ui->editCurrentDryMeasure->clear();
+    ui->editSavedDryMeasure->clear();
 }
 
 //----------------------------------------------- END FILLING AND HELPER METHODS FOR PAGE 1 DRY MASS ------------------------------------------
@@ -1142,6 +1170,21 @@ void MainWindow::updateFluidDensityLabel()
     radwagMeasureControler->setFluidTemperature(selectedTemperature);
 }
 
+void MainWindow::clearPrepareMeasureSecondPage()
+{
+    ui->stepFirstPrepareMeasureSecond->setChecked(false);
+    ui->stepTwoPrepareMeasureSecond->setChecked(false);
+    ui->stepTreePrepareMeasureSecond->setChecked(false);
+    ui->stepFourPrepareMeasureSecond->setChecked(false);
+    ui->stepFivePrepareMeasureSecond->setChecked(false);
+    ui->comboBoxTempFluidPrepareMeasureSecond->setCurrentIndex(0);
+    ui->editSampleIdValuePrepareMeasureSecond->clear();
+    ui->editLiquidTypePrepareMeasureSecond->clear();
+    ui->editSampleMaterialValuePrepareMeasureSecond->clear();
+    ui->labelLiquidDensityValuePrepareMeasureSecond->clear();
+    ui->labelAirWeightValuePrepareMeasureSecond->clear();
+}
+
 //----------------------------------------------- END FILLING AND HELPER METHODS FOR PAGE 2 PREPARE MEASUREMENT ------------------------------------------
 
 
@@ -1169,6 +1212,22 @@ void MainWindow::fillFinishMeasureSecondLabels()
 
     ui->editDryMeasureFinishMeasureSecond->setText(QString::number(airMass, 'f', 3) + " g");
     ui->editDensityLiquidFinishMeasureSecond->setText(QString::number(fluidDensity, 'f', 3) + " g/cm³");
+}
+
+void MainWindow::clearFinishMeasureSecondPage()
+{
+    ui->step3CheckBox_6->setChecked(false);
+    ui->step2FinishMeasureSecondCheckBox->setChecked(false);
+    ui->step3FinishMeasureSecondCheckBox->setChecked(false);
+
+    ui->editCurrentValueFinishSecond->clear();
+    ui->editSavedValueFinishMeasureSecond->clear();
+    ui->editDryMeasureFinishMeasureSecond->clear();
+    ui->editLiquidMeasureFinishMeasureSecond->clear();
+    ui->editSampleIdValueFinishMeasureSecond->clear();
+    ui->editSampleMaterialValueFinishMeasureSecond->clear();
+    ui->editLiquidFinishMeasureSecond->clear();
+    ui->editDensityLiquidFinishMeasureSecond->clear();
 }
 
 //----------------------------------------------- END FILLING AND HELPER METHODS FOR PAGE 3 FINISH SECOND ----------------------------------------------------
