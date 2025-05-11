@@ -42,6 +42,11 @@ double MeasurementResults::getRelativeDensity() const
     return relativeDensity;
 }
 
+double MeasurementResults::getTotalPorosity() const
+{
+    return totalPorosity;
+}
+
 double MeasurementResults::getOpenPorosity() const
 {
     return openPorosity;
@@ -70,6 +75,11 @@ void MeasurementResults::setApparentDensity(double newApparentDensity)
 void MeasurementResults::setRelativeDensity(double newRelativeDensity)
 {
     relativeDensity = newRelativeDensity;
+}
+
+void MeasurementResults::setTotalPorosity(double newTotalPorosity)
+{
+    totalPorosity = newTotalPorosity;
 }
 
 void MeasurementResults::setOpenPorosity(double newOpenPorosity)
@@ -103,6 +113,7 @@ bool MeasurementResults::calculateResults(std::shared_ptr<const Measurement>& me
 
     // Obliczanie gęstości względnej
     relativeDensity = calculateRelativeDensity(apparentDensity, measurement->getSampleMaterialDensity());
+    totalPorosity = calculateTotalPorosity(apparentDensity, measurement->getSampleMaterialDensity());
 
     // Dla pomiarów trzystopniowych oblicz porowatość otwartą i nasiąkliwość
     if(measurement->isThreeType())
@@ -164,6 +175,13 @@ double MeasurementResults::calculateRelativeDensity(double apparentDensity, doub
 
     // Gęstość względna w %
     return (apparentDensity / materialDensity) * 100.0;
+}
+
+double MeasurementResults::calculateTotalPorosity(double apparentDensity, double materialDensity)
+{
+    if (materialDensity <= 0)
+            return 0.0;
+    return (1.0 - (apparentDensity / materialDensity)) * 100.0;
 }
 
 double MeasurementResults::calculateOpenPorosity(std::shared_ptr<const Measurement> &measurement)

@@ -16,6 +16,7 @@ public:
     double getApparentVolume() const;     // Objętość pozorna
     double getApparentDensity() const;    // Gęstość pozorna
     double getRelativeDensity() const;    // Gęstość względna
+    double getTotalPorosity() const;      // Porowatość całkowita
 
     // Wyniki dla pomiarów trzystopniowych
     double getOpenPorosity() const;       // Porowatość otwarta
@@ -24,6 +25,7 @@ public:
     void setApparentVolume(double newApparentVolume);
     void setApparentDensity(double newApparentDensity);
     void setRelativeDensity(double newRelativeDensity);
+    void setTotalPorosity(double newTotalPorosity);
     void setOpenPorosity(double newOpenPorosity);
     void setWaterAbsorption(double newWaterAbsorption);
 
@@ -38,12 +40,14 @@ private:
     double apparentVolume;       // Objętość pozorna
     double apparentDensity;      // Gęstość pozorna
     double relativeDensity;      // Gęstość względna
+    double totalPorosity;        // Porowatość całkowita
     double openPorosity;         // Porowatość otwarta (dla trzystopniowych)
     double waterAbsorption;      // Nasiąkliwość wagowa (dla trzystopniowych)
 
     double calculateApparentVolume(std::shared_ptr<const Measurement> &measurement);
     double calculateApparentDensity(std::shared_ptr<const Measurement> &measurement);
     double calculateRelativeDensity(double apparentDensity, double materialDensity);
+    double calculateTotalPorosity(double apparentDensity, double materialDensity);
     double calculateOpenPorosity(std::shared_ptr<const Measurement> &measurement);
     double calculateWaterAbsorption(std::shared_ptr<const Measurement> &measurement);
 };

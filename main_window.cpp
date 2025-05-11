@@ -882,6 +882,9 @@ void MainWindow::finishMeasurement()
 
     ui->measureDensityStage->setCurrentWidget(isTripleMeasurement ? ui->pageSummaryTriple : ui->pageSummarySecond);
     ui->measureDensityStage->setProperty("currentStage", QVariant::fromValue(MeasurementStages::Stage::Summary));
+    if(!isTripleMeasurement)
+        fillMeasureSecondLabelsSummary();
+    radwagMeasureControler->setStage(MeasurementStages::Stage::Summary);
     updateStageLabels();
     radwagMeasureControler->endMeasure();
 }
@@ -1189,6 +1192,50 @@ void MainWindow::fillFinishMeasureSecondLabels()
 }
 
 //----------------------------------------------- END FILLING AND HELPER METHODS FOR PAGE 3 FINISH SECOND ----------------------------------------------------
+
+
+void MainWindow::fillMeasureSecondLabelsSummary()
+{
+    if(!radwagMeasureControler->hasActiveMeasurement())
+        return;
+
+    auto measurement = radwagMeasureControler->getActiveMeasure();
+    auto results = radwagMeasureControler->calculateResults();
+
+    ui->valueSecondMeasureID->setText(measurement->getSampleId());
+    ui->valueSecondMeasureType->setText(measurement->getType() == MeasurementType::TwoStage ? "Dwustopniowy" : "Trzystopniowy");
+    ui->valueSecondMeasureOperator->setText(measurement->getAuthor());
+
+    QString dateTime = measurement->getDate().toString("dd-MM-yyyy HH:mm");
+    ui->valueSecondMeasureDateTime->setText(dateTime);
+
+    auto sample = measurement->getSample();
+    ui->valueSecondSampleName->setText(sample.getName());
+    ui->valueSecondMaterial->setText(sample.getMaterialName());
+    ui->valueSecondTheoreticalDensity->setText(QString::number(sample.getMaterialDensity(), 'f', 3) + " g/cm³");
+
+    Fluid fluid = measurement->getFluid();
+    ui->valueSecondLiquidType->setText(fluid.getName());
+    ui->valueSecondLiquidDensity->setText(QString::number(measurement->getFluidDensity(), 'f', 3) + " g/cm³");
+
+    double dryMass = measurement->getSampleDryMass();
+    ui->valueSecondMeasureDryMass->setText(QString::number(dryMass, 'f', 3) + " g");
+
+    double massInFluid = measurement->getSampleInFluidMass();
+    ui->valueSecondMeasureWetMass->setText(QString::number(massInFluid, 'f', 3) + " g");
+
+    double apparentVolume = results.getApparentVolume();
+    ui->valueSecondMeasureApparentVolume->setText(QString::number(apparentVolume, 'f', 3) + " cm³");
+
+    double apparentDensity = results.getApparentDensity();
+    ui->valueSecondMeasureApparentDensity->setText(QString::number(apparentDensity, 'f', 3) + " g/cm³");
+
+    double relativeDensity = results.getRelativeDensity();
+    ui->valueSecondMeasureRelativeDensity->setText(QString::number(relativeDensity, 'f', 3) + " %");
+
+    double totalPorosity = results.getTotalPorosity();
+    ui->valueSecondMeasureTotalPorosity->setText(QString::number(totalPorosity, 'f', 3) + " %");
+}
 
 
 // #include "main_window.h"

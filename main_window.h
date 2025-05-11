@@ -119,6 +119,7 @@ private:
     void fillTemperatureComboBox();
     void updateFluidDensityLabel();
     void fillFinishMeasureSecondLabels();
+    void fillMeasureSecondLabelsSummary();
 
     bool checkDeviceConnectionWithMessage();
     bool validateInitialData();

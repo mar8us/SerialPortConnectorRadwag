@@ -47,7 +47,7 @@
             <item>
              <widget class="QStackedWidget" name="stackedWidgetMainHydroMeasure">
               <property name="currentIndex">
-               <number>1</number>
+               <number>0</number>
               </property>
               <widget class="QWidget" name="pageStartMeasure">
                <layout class="QVBoxLayout" name="verticalLayout_57">
@@ -753,7 +753,7 @@ a następnie wykonaj poniższe kroki:</string>
                    </size>
                   </property>
                   <property name="currentIndex">
-                   <number>8</number>
+                   <number>0</number>
                   </property>
                   <widget class="QWidget" name="pageInitialData">
                    <layout class="QGridLayout" name="gridLayout_5">
@@ -865,21 +865,8 @@ a następnie wykonaj poniższe kroki:</string>
                            </rect>
                           </property>
                           <layout class="QGridLayout" name="gridLayout_17">
-                           <item row="0" column="0">
-                            <widget class="QLabel" name="labelSampleNumber">
-                             <property name="maximumSize">
-                              <size>
-                               <width>130</width>
-                               <height>16777215</height>
-                              </size>
-                             </property>
-                             <property name="text">
-                              <string>ID próbki:</string>
-                             </property>
-                            </widget>
-                           </item>
-                           <item row="0" column="2" colspan="2">
-                            <widget class="QLineEdit" name="editSampleId">
+                           <item row="1" column="2" colspan="2">
+                            <widget class="QLineEdit" name="editSampleName">
                              <property name="minimumSize">
                               <size>
                                <width>0</width>
@@ -897,8 +884,8 @@ a następnie wykonaj poniższe kroki:</string>
                              </property>
                             </widget>
                            </item>
-                           <item row="1" column="0">
-                            <widget class="QLabel" name="labelSampleName">
+                           <item row="6" column="0">
+                            <widget class="QLabel" name="labelAuthor">
                              <property name="maximumSize">
                               <size>
                                <width>130</width>
@@ -906,12 +893,28 @@ a następnie wykonaj poniższe kroki:</string>
                               </size>
                              </property>
                              <property name="text">
-                              <string>Nazwa próbki:</string>
+                              <string>Wykonujący:</string>
                              </property>
                             </widget>
                            </item>
-                           <item row="1" column="2" colspan="2">
-                            <widget class="QLineEdit" name="editSampleName">
+                           <item row="5" column="2">
+                            <widget class="QComboBox" name="comboBoxFluid">
+                             <property name="minimumSize">
+                              <size>
+                               <width>0</width>
+                               <height>30</height>
+                              </size>
+                             </property>
+                             <property name="maximumSize">
+                              <size>
+                               <width>250</width>
+                               <height>16777215</height>
+                              </size>
+                             </property>
+                            </widget>
+                           </item>
+                           <item row="0" column="2" colspan="2">
+                            <widget class="QLineEdit" name="editSampleId">
                              <property name="minimumSize">
                               <size>
                                <width>0</width>
@@ -942,13 +945,6 @@ a następnie wykonaj poniższe kroki:</string>
                              </property>
                             </widget>
                            </item>
-                           <item row="3" column="0" colspan="2">
-                            <widget class="QLabel" name="labelMaterialDensity">
-                             <property name="text">
-                              <string>Gęstość teoretyczna materiału:</string>
-                             </property>
-                            </widget>
-                           </item>
                            <item row="3" column="2" colspan="2">
                             <widget class="QLineEdit" name="editMaterialDensity">
                              <property name="minimumSize">
@@ -974,22 +970,6 @@ a następnie wykonaj poniższe kroki:</string>
                              </property>
                             </widget>
                            </item>
-                           <item row="4" column="0">
-                            <widget class="QLabel" name="labelSampleDescription">
-                             <property name="maximumSize">
-                              <size>
-                               <width>130</width>
-                               <height>16777215</height>
-                              </size>
-                             </property>
-                             <property name="text">
-                              <string>Opis próbki:</string>
-                             </property>
-                             <property name="alignment">
-                              <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignTop</set>
-                             </property>
-                            </widget>
-                           </item>
                            <item row="4" column="2" colspan="2">
                             <widget class="QPlainTextEdit" name="editSampleDescription">
                              <property name="minimumSize">
@@ -1009,6 +989,13 @@ a następnie wykonaj poniższe kroki:</string>
                              </property>
                             </widget>
                            </item>
+                           <item row="3" column="0" colspan="2">
+                            <widget class="QLabel" name="labelMaterialDensity">
+                             <property name="text">
+                              <string>Gęstość teoretyczna materiału:</string>
+                             </property>
+                            </widget>
+                           </item>
                            <item row="5" column="0">
                             <widget class="QLabel" name="labelFluid">
                              <property name="maximumSize">
@@ -1022,71 +1009,7 @@ a następnie wykonaj poniższe kroki:</string>
                              </property>
                             </widget>
                            </item>
-                           <item row="5" column="2">
-                            <widget class="QComboBox" name="comboBoxFluid">
-                             <property name="minimumSize">
-                              <size>
-                               <width>0</width>
-                               <height>30</height>
-                              </size>
-                             </property>
-                             <property name="maximumSize">
-                              <size>
-                               <width>250</width>
-                               <height>16777215</height>
-                              </size>
-                             </property>
-                            </widget>
-                           </item>
-                           <item row="6" column="0">
-                            <widget class="QLabel" name="labelDate">
-                             <property name="maximumSize">
-                              <size>
-                               <width>130</width>
-                               <height>16777215</height>
-                              </size>
-                             </property>
-                             <property name="text">
-                              <string>Data:</string>
-                             </property>
-                            </widget>
-                           </item>
-                           <item row="7" column="0">
-                            <widget class="QLabel" name="labelAuthor">
-                             <property name="maximumSize">
-                              <size>
-                               <width>130</width>
-                               <height>16777215</height>
-                              </size>
-                             </property>
-                             <property name="text">
-                              <string>Wykonujący:</string>
-                             </property>
-                            </widget>
-                           </item>
                            <item row="6" column="2">
-                            <widget class="QDateTimeEdit" name="dateTimeEditMeasurement">
-                             <property name="minimumSize">
-                              <size>
-                               <width>0</width>
-                               <height>30</height>
-                              </size>
-                             </property>
-                             <property name="maximumSize">
-                              <size>
-                               <width>250</width>
-                               <height>16777215</height>
-                              </size>
-                             </property>
-                             <property name="readOnly">
-                              <bool>true</bool>
-                             </property>
-                             <property name="calendarPopup">
-                              <bool>true</bool>
-                             </property>
-                            </widget>
-                           </item>
-                           <item row="7" column="2">
                             <widget class="QLineEdit" name="editAuthor">
                              <property name="minimumSize">
                               <size>
@@ -1099,6 +1022,48 @@ a następnie wykonaj poniższe kroki:</string>
                                <width>250</width>
                                <height>16777215</height>
                               </size>
+                             </property>
+                            </widget>
+                           </item>
+                           <item row="1" column="0">
+                            <widget class="QLabel" name="labelSampleName">
+                             <property name="maximumSize">
+                              <size>
+                               <width>130</width>
+                               <height>16777215</height>
+                              </size>
+                             </property>
+                             <property name="text">
+                              <string>Nazwa próbki:</string>
+                             </property>
+                            </widget>
+                           </item>
+                           <item row="0" column="0">
+                            <widget class="QLabel" name="labelSampleNumber">
+                             <property name="maximumSize">
+                              <size>
+                               <width>130</width>
+                               <height>16777215</height>
+                              </size>
+                             </property>
+                             <property name="text">
+                              <string>ID próbki:</string>
+                             </property>
+                            </widget>
+                           </item>
+                           <item row="4" column="0">
+                            <widget class="QLabel" name="labelSampleDescription">
+                             <property name="maximumSize">
+                              <size>
+                               <width>130</width>
+                               <height>16777215</height>
+                              </size>
+                             </property>
+                             <property name="text">
+                              <string>Opis próbki:</string>
+                             </property>
+                             <property name="alignment">
+                              <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignTop</set>
                              </property>
                             </widget>
                            </item>
@@ -1120,6 +1085,19 @@ a następnie wykonaj poniższe kroki:</string>
                               <bool>true</bool>
                              </property>
                             </widget>
+                           </item>
+                           <item row="7" column="2">
+                            <spacer name="verticalSpacer_13">
+                             <property name="orientation">
+                              <enum>Qt::Orientation::Vertical</enum>
+                             </property>
+                             <property name="sizeHint" stdset="0">
+                              <size>
+                               <width>20</width>
+                               <height>40</height>
+                              </size>
+                             </property>
+                            </spacer>
                            </item>
                           </layout>
                          </widget>
@@ -2596,7 +2574,7 @@ umieszczając ją w komorze próźniowej na czas zaniku ostatniego pęcherzyka</
                       <property name="minimumSize">
                        <size>
                         <width>0</width>
-                        <height>250</height>
+                        <height>0</height>
                        </size>
                       </property>
                       <property name="title">
@@ -2735,7 +2713,7 @@ umieszczając ją w komorze próźniowej na czas zaniku ostatniego pęcherzyka</
                         <property name="minimumSize">
                          <size>
                           <width>380</width>
-                          <height>220</height>
+                          <height>0</height>
                          </size>
                         </property>
                         <property name="title">
@@ -3351,7 +3329,7 @@ umieszczając ją w komorze próźniowej na czas zaniku ostatniego pęcherzyka</
                         <rect>
                          <x>0</x>
                          <y>0</y>
-                         <width>631</width>
+                         <width>821</width>
                          <height>680</height>
                         </rect>
                        </property>
@@ -3393,7 +3371,7 @@ umieszczając ją w komorze próźniowej na czas zaniku ostatniego pęcherzyka</
                               </font>
                              </property>
                              <property name="text">
-                              <string>PM-2025-001</string>
+                              <string>Q</string>
                              </property>
                             </widget>
                            </item>
@@ -3407,7 +3385,7 @@ umieszczając ją w komorze próźniowej na czas zaniku ostatniego pęcherzyka</
                                 </font>
                                </property>
                                <property name="text">
-                                <string>Dwustopniowy</string>
+                                <string>Q</string>
                                </property>
                               </widget>
                              </item>
@@ -3426,7 +3404,7 @@ umieszczając ją w komorze próźniowej na czas zaniku ostatniego pęcherzyka</
                                 </font>
                                </property>
                                <property name="text">
-                                <string>Jan Kowalski</string>
+                                <string>Q</string>
                                </property>
                               </widget>
                              </item>
@@ -3445,7 +3423,7 @@ umieszczając ją w komorze próźniowej na czas zaniku ostatniego pęcherzyka</
                                 </font>
                                </property>
                                <property name="text">
-                                <string>2025-05-03 10:15</string>
+                                <string>Q</string>
                                </property>
                               </widget>
                              </item>
@@ -3473,7 +3451,7 @@ umieszczając ją w komorze próźniowej na czas zaniku ostatniego pęcherzyka</
                               </font>
                              </property>
                              <property name="text">
-                              <string>Próbka testowa</string>
+                              <string>Q</string>
                              </property>
                             </widget>
                            </item>
@@ -3492,7 +3470,7 @@ umieszczając ją w komorze próźniowej na czas zaniku ostatniego pęcherzyka</
                               </font>
                              </property>
                              <property name="text">
-                              <string>Ceramika</string>
+                              <string>Q</string>
                              </property>
                             </widget>
                            </item>
@@ -3511,7 +3489,7 @@ umieszczając ją w komorze próźniowej na czas zaniku ostatniego pęcherzyka</
                               </font>
                              </property>
                              <property name="text">
-                              <string>2.65 g/cm³</string>
+                              <string>Q</string>
                              </property>
                             </widget>
                            </item>
@@ -3530,7 +3508,7 @@ umieszczając ją w komorze próźniowej na czas zaniku ostatniego pęcherzyka</
                               </font>
                              </property>
                              <property name="text">
-                              <string>Woda destylowana</string>
+                              <string>Q</string>
                              </property>
                             </widget>
                            </item>
@@ -3549,7 +3527,7 @@ umieszczając ją w komorze próźniowej na czas zaniku ostatniego pęcherzyka</
                               </font>
                              </property>
                              <property name="text">
-                              <string>0.998 g/cm³</string>
+                              <string>Q</string>
                              </property>
                             </widget>
                            </item>
@@ -3584,7 +3562,7 @@ umieszczając ją w komorze próźniowej na czas zaniku ostatniego pęcherzyka</
                               </font>
                              </property>
                              <property name="text">
-                              <string>15.2391 g</string>
+                              <string>Q</string>
                              </property>
                             </widget>
                            </item>
@@ -3596,7 +3574,7 @@ umieszczając ją w komorze próźniowej na czas zaniku ostatniego pęcherzyka</
                               </font>
                              </property>
                              <property name="text">
-                              <string>24.3678 g</string>
+                              <string>Q</string>
                              </property>
                             </widget>
                            </item>
@@ -3631,7 +3609,7 @@ umieszczając ją w komorze próźniowej na czas zaniku ostatniego pęcherzyka</
                               </font>
                              </property>
                              <property name="text">
-                              <string>2.6644 g/cm³</string>
+                              <string>Q</string>
                              </property>
                             </widget>
                            </item>
@@ -3660,7 +3638,7 @@ umieszczając ją w komorze próźniowej na czas zaniku ostatniego pęcherzyka</
                               </font>
                              </property>
                              <property name="text">
-                              <string>100.54 %</string>
+                              <string>Q</string>
                              </property>
                             </widget>
                            </item>
@@ -3689,7 +3667,7 @@ umieszczając ją w komorze próźniowej na czas zaniku ostatniego pęcherzyka</
                               </font>
                              </property>
                              <property name="text">
-                              <string>9.1456 cm³</string>
+                              <string>Q</string>
                              </property>
                             </widget>
                            </item>
@@ -3718,7 +3696,7 @@ umieszczając ją w komorze próźniowej na czas zaniku ostatniego pęcherzyka</
                               </font>
                              </property>
                              <property name="text">
-                              <string>-0.54 %</string>
+                              <string>Q</string>
                              </property>
                             </widget>
                            </item>
