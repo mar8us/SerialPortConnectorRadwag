@@ -80,6 +80,8 @@ private slots:
     void onFinishMeasureSecondStepTwoClicked();
     void onFinishMeasureSecondStepTreeClicked();
 
+    void onNewSecondMeasureSecondButtonClicked();
+
 private:
     bool canEditDevice(std::shared_ptr<const Device> &device);
     std::shared_ptr<const Device> getSelectedDevice();
@@ -95,6 +97,7 @@ private:
     void connectPrepareMeasureSecondPageButtons();
     void connectDryMassPageButtons();
     void connectFinishSecondPageButtons();
+    void connectSummaryMeasureSecondPageButtons();
     void connectCatalogsButtons();
     void connectDevicesSettingsButtons();
     void updateStageLabels();

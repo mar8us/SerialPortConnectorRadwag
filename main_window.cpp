@@ -252,6 +252,17 @@ void MainWindow::onClearSavedFinishMeasureSecondButtonClicked()
 
 //----------------------------------------------- END PAGE 3 FINISH SECOND -------------------------------------
 
+
+//----------------------------------------------- PAGE 4 SUMMARY SECOND ----------------------------------------
+
+void MainWindow::onNewSecondMeasureSecondButtonClicked()
+{
+    ui->measureDensityStage->setProperty("currentStage", QVariant::fromValue(MeasurementStages::Stage::StartMeasure));
+    goToNextMeasureStage();
+}
+
+//----------------------------------------------- END PAGE 4 SUMMARY SECOND -------------------------------------
+
 void MainWindow::navigateToToolBoxPage(QWidget* page)
 {
     if(page && ui->stackedWidget->indexOf(page) != -1)
@@ -589,6 +600,7 @@ void MainWindow::connectButtons()
     connectDryMassPageButtons();
     connectPrepareMeasureSecondPageButtons();
     connectFinishSecondPageButtons();
+    connectSummaryMeasureSecondPageButtons();
     connectCatalogsButtons();
 }
 
@@ -674,6 +686,11 @@ void MainWindow::connectFinishSecondPageButtons()
     connect(ui->buttonClearSavedValueFinishMeasureSecond, &QPushButton::clicked, this, &MainWindow::onClearSavedFinishMeasureSecondButtonClicked);
 
     connect(ui->editCurrentValueFinishSecond, &QLineEdit::textChanged, this, &MainWindow::updateSaveFinishSecondButtonState);
+}
+
+void MainWindow::connectSummaryMeasureSecondPageButtons()
+{
+    connect(ui->buttonNewSecondMeasure, &QPushButton::clicked, this, &MainWindow::onNewSecondMeasureSecondButtonClicked);
 }
 
 void MainWindow::connectCatalogsButtons()
