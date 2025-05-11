@@ -2962,7 +2962,7 @@ umieszczając ją w komorze próźniowej na czas zaniku ostatniego pęcherzyka</
                        </size>
                       </property>
                       <property name="title">
-                       <string>Obliczenia</string>
+                       <string>Informacje</string>
                       </property>
                       <layout class="QVBoxLayout" name="verticalLayout_5">
                        <item>
@@ -2970,7 +2970,7 @@ umieszczając ją w komorze próźniowej na czas zaniku ostatniego pęcherzyka</
                          <property name="title">
                           <string>Pomiar</string>
                          </property>
-                         <layout class="QFormLayout" name="formLayout_5">
+                         <layout class="QGridLayout" name="gridLayout_6">
                           <item row="0" column="0">
                            <widget class="QLabel" name="labelSampleFinishMeasureSecond">
                             <property name="text">
@@ -3028,6 +3028,31 @@ umieszczając ją w komorze próźniowej na czas zaniku ostatniego pęcherzyka</
                             </property>
                            </widget>
                           </item>
+                          <item row="3" column="0">
+                           <widget class="QLabel" name="labelDensityLiquidFinishMeasureSecond">
+                            <property name="minimumSize">
+                             <size>
+                              <width>0</width>
+                              <height>0</height>
+                             </size>
+                            </property>
+                            <property name="text">
+                             <string>Gęstość cieczy:</string>
+                            </property>
+                           </widget>
+                          </item>
+                          <item row="3" column="1">
+                           <widget class="QLabel" name="editDensityLiquidFinishMeasureSecond">
+                            <property name="font">
+                             <font>
+                              <bold>true</bold>
+                             </font>
+                            </property>
+                            <property name="text">
+                             <string>123</string>
+                            </property>
+                           </widget>
+                          </item>
                          </layout>
                         </widget>
                        </item>
@@ -3040,7 +3065,7 @@ umieszczając ją w komorze próźniowej na czas zaniku ostatniego pęcherzyka</
                           </size>
                          </property>
                          <property name="title">
-                          <string>Dane</string>
+                          <string>Dane pomiarowe</string>
                          </property>
                          <layout class="QFormLayout" name="formLayout_4">
                           <item row="0" column="0">
@@ -3100,201 +3125,6 @@ umieszczając ją w komorze próźniowej na czas zaniku ostatniego pęcherzyka</
                              <bool>true</bool>
                             </property>
                            </widget>
-                          </item>
-                          <item row="2" column="0">
-                           <widget class="QLabel" name="labelDensityLiquidFinishMeasureSecond">
-                            <property name="minimumSize">
-                             <size>
-                              <width>170</width>
-                              <height>0</height>
-                             </size>
-                            </property>
-                            <property name="text">
-                             <string>Gęstość cieczy:</string>
-                            </property>
-                           </widget>
-                          </item>
-                          <item row="2" column="1">
-                           <widget class="QLineEdit" name="editDensityLiquidFinishMeasureSecond">
-                            <property name="enabled">
-                             <bool>false</bool>
-                            </property>
-                            <property name="maximumSize">
-                             <size>
-                              <width>120</width>
-                              <height>16777215</height>
-                             </size>
-                            </property>
-                            <property name="alignment">
-                             <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
-                            </property>
-                            <property name="readOnly">
-                             <bool>true</bool>
-                            </property>
-                           </widget>
-                          </item>
-                         </layout>
-                        </widget>
-                       </item>
-                       <item>
-                        <widget class="QGroupBox" name="calculationHydroResultsGroupBox">
-                         <property name="minimumSize">
-                          <size>
-                           <width>250</width>
-                           <height>0</height>
-                          </size>
-                         </property>
-                         <property name="title">
-                          <string>Wyniki</string>
-                         </property>
-                         <layout class="QFormLayout" name="formLayout">
-                          <item row="0" column="0">
-                           <widget class="QLabel" name="labelVolumeFinishMeasureSecond">
-                            <property name="minimumSize">
-                             <size>
-                              <width>170</width>
-                              <height>0</height>
-                             </size>
-                            </property>
-                            <property name="text">
-                             <string>Objętość pozorna:</string>
-                            </property>
-                           </widget>
-                          </item>
-                          <item row="0" column="1">
-                           <widget class="QLineEdit" name="editVolumeFinishMeasureSecond">
-                            <property name="enabled">
-                             <bool>false</bool>
-                            </property>
-                            <property name="maximumSize">
-                             <size>
-                              <width>120</width>
-                              <height>16777215</height>
-                             </size>
-                            </property>
-                            <property name="alignment">
-                             <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
-                            </property>
-                            <property name="readOnly">
-                             <bool>true</bool>
-                            </property>
-                           </widget>
-                          </item>
-                          <item row="1" column="0">
-                           <widget class="QLabel" name="labelDensityApparentFinishMeasureSecond">
-                            <property name="minimumSize">
-                             <size>
-                              <width>170</width>
-                              <height>0</height>
-                             </size>
-                            </property>
-                            <property name="text">
-                             <string>Gęstość pozorna:</string>
-                            </property>
-                           </widget>
-                          </item>
-                          <item row="1" column="1">
-                           <widget class="QLineEdit" name="editDensityApparentFinishMeasureSecond">
-                            <property name="enabled">
-                             <bool>false</bool>
-                            </property>
-                            <property name="maximumSize">
-                             <size>
-                              <width>120</width>
-                              <height>16777215</height>
-                             </size>
-                            </property>
-                            <property name="alignment">
-                             <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
-                            </property>
-                            <property name="readOnly">
-                             <bool>true</bool>
-                            </property>
-                           </widget>
-                          </item>
-                          <item row="2" column="0">
-                           <widget class="QLabel" name="labelVolumeRelativeFinishMeasureSecond">
-                            <property name="minimumSize">
-                             <size>
-                              <width>170</width>
-                              <height>0</height>
-                             </size>
-                            </property>
-                            <property name="text">
-                             <string>Gęstość względna:</string>
-                            </property>
-                           </widget>
-                          </item>
-                          <item row="2" column="1">
-                           <widget class="QLineEdit" name="editVolumeRelativeFinishMeasureSecond">
-                            <property name="enabled">
-                             <bool>false</bool>
-                            </property>
-                            <property name="maximumSize">
-                             <size>
-                              <width>120</width>
-                              <height>16777215</height>
-                             </size>
-                            </property>
-                            <property name="alignment">
-                             <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
-                            </property>
-                            <property name="readOnly">
-                             <bool>true</bool>
-                            </property>
-                           </widget>
-                          </item>
-                          <item row="4" column="0" colspan="2">
-                           <layout class="QGridLayout" name="gridLayout_6">
-                            <item row="0" column="0">
-                             <spacer name="horizontalSpacer_13">
-                              <property name="orientation">
-                               <enum>Qt::Orientation::Horizontal</enum>
-                              </property>
-                              <property name="sizeHint" stdset="0">
-                               <size>
-                                <width>40</width>
-                                <height>20</height>
-                               </size>
-                              </property>
-                             </spacer>
-                            </item>
-                            <item row="0" column="1">
-                             <widget class="QPushButton" name="buttonCalculatelabelVolumeFinishMeasureSecond">
-                              <property name="minimumSize">
-                               <size>
-                                <width>110</width>
-                                <height>30</height>
-                               </size>
-                              </property>
-                              <property name="maximumSize">
-                               <size>
-                                <width>120</width>
-                                <height>16777215</height>
-                               </size>
-                              </property>
-                              <property name="text">
-                               <string>Oblicz</string>
-                              </property>
-                             </widget>
-                            </item>
-                            <item row="0" column="2">
-                             <spacer name="horizontalSpacer_14">
-                              <property name="orientation">
-                               <enum>Qt::Orientation::Horizontal</enum>
-                              </property>
-                              <property name="sizeType">
-                               <enum>QSizePolicy::Policy::Minimum</enum>
-                              </property>
-                              <property name="sizeHint" stdset="0">
-                               <size>
-                                <width>11</width>
-                                <height>11</height>
-                               </size>
-                              </property>
-                             </spacer>
-                            </item>
-                           </layout>
                           </item>
                          </layout>
                         </widget>

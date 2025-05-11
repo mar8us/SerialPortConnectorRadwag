@@ -76,7 +76,6 @@ private slots:
     void onGetCurrentFinishMeasureSecondButtonClicked();
     void onSaveCurrentFinishMeasureSecondButtonClicked();
     void onClearSavedFinishMeasureSecondButtonClicked();
-    void onCalculatelabelVolumeFinishMeasureSecondButtonClicked();
 
     void onFinishMeasureSecondStepTwoClicked();
     void onFinishMeasureSecondStepTreeClicked();

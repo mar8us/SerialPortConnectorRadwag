@@ -250,25 +250,6 @@ void MainWindow::onClearSavedFinishMeasureSecondButtonClicked()
     radwagMeasureControler->setMassInFluid(0.0);
 }
 
-void MainWindow::onCalculatelabelVolumeFinishMeasureSecondButtonClicked()
-{
-    if(!radwagMeasureControler->canCalculateResult())
-    {
-        QMessageBox::warning(this, tr("Błąd"), "Brak danych niezbędnych do wykonania obliczeń!");
-        return;
-    }
-
-    auto results = radwagMeasureControler->calculateResults();
-
-    double apparentVolume = results.getApparentVolume();
-    double apparentDensity = results.getApparentDensity();
-    double relativeDensity = results.getRelativeDensity();
-
-    ui->editVolumeFinishMeasureSecond->setText(QString::number(apparentVolume, 'f', 2) + " cm³");
-    ui->editDensityApparentFinishMeasureSecond->setText(QString::number(apparentDensity, 'f', 3) + " g/cm³");
-    ui->editVolumeRelativeFinishMeasureSecond->setText(QString::number(relativeDensity, 'f', 2) + " %");
-}
-
 //----------------------------------------------- END PAGE 3 FINISH SECOND -------------------------------------
 
 void MainWindow::navigateToToolBoxPage(QWidget* page)
@@ -691,7 +672,6 @@ void MainWindow::connectFinishSecondPageButtons()
     connect(ui->buttonGetCurrentValueFinishMeasureSecond, &QPushButton::clicked, this, &MainWindow::onGetCurrentFinishMeasureSecondButtonClicked);
     connect(ui->buttonSaveCurrentFinishSecond, &QPushButton::clicked, this, &MainWindow::onSaveCurrentFinishMeasureSecondButtonClicked);
     connect(ui->buttonClearSavedValueFinishMeasureSecond, &QPushButton::clicked, this, &MainWindow::onClearSavedFinishMeasureSecondButtonClicked);
-    connect(ui->buttonCalculatelabelVolumeFinishMeasureSecond, &QPushButton::clicked, this, &MainWindow::onCalculatelabelVolumeFinishMeasureSecondButtonClicked);
 
     connect(ui->editCurrentValueFinishSecond, &QLineEdit::textChanged, this, &MainWindow::updateSaveFinishSecondButtonState);
 }
