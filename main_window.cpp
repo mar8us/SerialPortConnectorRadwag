@@ -257,8 +257,36 @@ void MainWindow::onClearSavedFinishMeasureSecondButtonClicked()
 
 void MainWindow::onNewSecondMeasureSecondButtonClicked()
 {
+    radwagMeasureControler->endMeasure();
     ui->measureDensityStage->setProperty("currentStage", QVariant::fromValue(MeasurementStages::Stage::StartMeasure));
     goToNextMeasureStage();
+}
+
+void MainWindow::onReplySecondMeasureSecondButtonClicked()
+{
+    if(!radwagMeasureControler->replyActiveMeasure())
+        return;
+    fillInitialDataLabels();
+    ui->measureDensityStage->setProperty("currentStage", QVariant::fromValue(MeasurementStages::Stage::InitialData));
+    goToNextMeasureStage();
+}
+bool MainWindow::fillInitialDataLabels()
+{
+    if(!radwagMeasureControler->hasActiveMeasurement())
+        return false;
+
+    auto activeMeasure = radwagMeasureControler->getActiveMeasure();
+    ui->comboBoxSampleSelection->setCurrentText(activeMeasure->getSample().getName());
+
+    ui->editSampleId->setText(activeMeasure->getSample().getId());
+    ui->editSampleName->setText(activeMeasure->getSample().getName());
+    ui->editMaterial->setText(activeMeasure->getSample().getMaterialName());
+    ui->editMaterialDensity->setText(QString::number(activeMeasure->getSample().getMaterialDensity()));
+    ui->editSampleDescription->setPlainText(activeMeasure->getSample().getDescription());
+    ui->comboBoxFluid->setCurrentText(activeMeasure->getFluidName());
+    ui->editAuthor->setText(activeMeasure->getAuthor());
+
+    return true;
 }
 
 //----------------------------------------------- END PAGE 4 SUMMARY SECOND -------------------------------------
@@ -696,6 +724,7 @@ void MainWindow::connectFinishSecondPageButtons()
 void MainWindow::connectSummaryMeasureSecondPageButtons()
 {
     connect(ui->buttonNewSecondMeasure, &QPushButton::clicked, this, &MainWindow::onNewSecondMeasureSecondButtonClicked);
+    connect(ui->buttonReplySecondMeasure, &QPushButton::clicked, this, &MainWindow::onReplySecondMeasureSecondButtonClicked);
 }
 
 void MainWindow::connectCatalogsButtons()
@@ -894,7 +923,6 @@ void MainWindow::finishMeasurement()
     }
     radwagMeasureControler->setStage(MeasurementStages::Stage::Summary);
     updateStageLabels();
-    radwagMeasureControler->endMeasure();
 }
 
 void MainWindow::setProperty()

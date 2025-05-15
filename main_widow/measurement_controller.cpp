@@ -28,6 +28,16 @@ bool MeasurementController::setInitialData(MeasurementType type, const Sample &s
     return true;
 }
 
+bool MeasurementController::replyActiveMeasure()
+{
+    if(!hasActiveMeasurement())
+        return false;
+
+    auto activeMeasurement = getActiveMeasure();
+    beginNewMeasure();
+    return setInitialData(activeMeasurement->getType(), activeMeasurement->getSample(), activeMeasurement->getFluid(), activeMeasurement->getAuthor());
+}
+
 void MeasurementController::endMeasure()
 {
     measurement.reset();
@@ -48,11 +58,7 @@ MeasurementStages::Stage MeasurementController::getStage() const
 bool MeasurementController::setStage(MeasurementStages::Stage stage)
 {
     if(!hasActiveMeasurement() || static_cast<int>(stage) <= static_cast<int>(measurement->getCurrentStage()))
-    {
-        qDebug() << "setStage false";
         return false;
-    }
-    qDebug() << "setStage true";
     measurement->setStage(stage);
     return true;
 }

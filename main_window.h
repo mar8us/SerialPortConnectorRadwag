@@ -81,6 +81,7 @@ private slots:
     void onFinishMeasureSecondStepTreeClicked();
 
     void onNewSecondMeasureSecondButtonClicked();
+    void onReplySecondMeasureSecondButtonClicked();
 
 private:
     bool canEditDevice(std::shared_ptr<const Device> &device);
@@ -115,6 +116,7 @@ private:
     void clearSampleEditors();
 
     // MeasurementRadwag
+    bool fillInitialDataLabels();
     void fillPrepareDataLabels();
     void fillSampleInfoLabels();
     void fillFluidInfoLabels();

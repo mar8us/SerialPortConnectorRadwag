@@ -29,6 +29,9 @@ public:
     bool reloadData();
     QString generateMeasurementId() const;
 
+    void loadMeasurements();
+    bool saveMeasurements();
+
 signals:
     void measurementsChanged();
     void measurementAdded(const QString& id);
@@ -43,8 +46,6 @@ private:
     MeasurementManager(const MeasurementManager&) = delete;
     MeasurementManager& operator=(const MeasurementManager&) = delete;
 
-    void loadMeasurements();
-    bool saveMeasurements();
     void loadResults();
     bool saveResults();
     QString getMeasurementsFilePath() const;

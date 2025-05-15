@@ -15,6 +15,7 @@ public:
 
     bool beginNewMeasure();
     bool setInitialData(MeasurementType type, const Sample &sample, const Fluid &fluid, const QString &author);
+    bool replyActiveMeasure();
     void endMeasure();
     const std::shared_ptr<Measurement>& getActiveMeasure();
 
