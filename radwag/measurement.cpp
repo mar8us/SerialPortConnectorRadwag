@@ -48,6 +48,10 @@ Measurement::Measurement(const Measurement& other)
 
 }
 
+Measurement::~Measurement()
+{
+}
+
 QString Measurement::getId() const
 {
     return id;
@@ -103,12 +107,12 @@ void Measurement::setDate(const QDateTime& newDate)
     date = newDate;
 }
 
-void Measurement::setAuthor(QString authorName)
+void Measurement::setAuthor(const QString &authorName)
 {
     author = authorName;
 }
 
-const Sample& Measurement::getSample()
+const Sample& Measurement::getSample() const
 {
     return sample;
 }

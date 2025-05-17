@@ -56,6 +56,8 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         utils.h utils.cpp
         schema_img/schema_density_solids.png
         radwag/radwag_scale_connector.h radwag/radwag_scale_connector.cpp
+        radwag/view/measurement_tree_model.h radwag/view/measurement_tree_model.cpp
+        radwag/view/measurement_sort_filter_proxy_model.h radwag/view/measurement_sort_filter_proxy_model.cpp
 
     )
 # Define target properties for Android with Qt 6 as:

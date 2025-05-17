@@ -6,6 +6,8 @@
 #include "material_tabels/material_manager.h"
 #include "radwag/radwag_measure.h"
 #include "radwag/radwag_scale_connector.h"
+#include "radwag/view/measurement_tree_model.h"
+#include "radwag/view/measurement_sort_filter_proxy_model.h"
 #include "sample/sample_manager.h"
 #include "settings/device.h"
 #include "settings/device_connector.h"
@@ -82,6 +84,7 @@ private slots:
 
     void onNewSecondMeasureSecondButtonClicked();
     void onReplySecondMeasureSecondButtonClicked();
+    void onSaveSecondMeasureButtonClicked();
 
 private:
     bool canEditDevice(std::shared_ptr<const Device> &device);
@@ -149,7 +152,7 @@ private:
     std::unique_ptr<FluidManager> fluidManager;
     std::unique_ptr<MaterialManager> materialManager;
     std::unique_ptr<SampleManager> sampleManager;
-    std::shared_ptr<MeasurementManager> measurememntManager;
+    std::shared_ptr<MeasurementManager> measurementManager;
     std::unique_ptr<MeasurementController> radwagMeasureControler;
 
     QIcon defaultSettingsIcon;
@@ -159,6 +162,35 @@ private:
 
     static inline const QColor ACTIVE_LABEL_COLOR = QColor(0, 0, 255);
     static inline const QColor MEASURE_LABEL_COLOR = QColor(0, 100, 255);
+
+
+    // Dodaj te deklaracje w sekcji private klasy MainWindow
+private:
+    // Modele danych dla widoków drzewa
+    // MeasurementTreeModel* twoStageModel;
+    // MeasurementTreeModel* threeStageModel;
+    // MeasurementSortFilterProxyModel* twoStageProxyModel;
+    // MeasurementSortFilterProxyModel* threeStageProxyModel;
+
+    MeasurementTreeModel* measurementModel;
+    MeasurementSortFilterProxyModel* measurementProxyModel;
+
+    // Metody do obsługi widoku biblioteki pomiarów
+    void onSelectionChanged(const QItemSelection &selected, const QItemSelection &deselected);
+    void updateMeasurementCounter();
+    int countVisibleItems(QAbstractItemModel* model, const QModelIndex& parent);
+    void setupLibraryView();
+    void setupLibraryControls();
+    void setupLibraryModels();
+    void setupLibraryTreeView();
+    void refreshLibraryView();
+    void onMeasurementDoubleClicked(const QModelIndex& index);
+    void onLibrarySearchTextChanged(const QString& text);
+    void onLibrarySearchInChanged(int index);
+    void onLibraryGroupByChanged(int index);
+
+    void fillComboLibSearchIn();
+    void fillComboLibGroupBy();
 };
 #endif // MAIN_WINDOW_H
 

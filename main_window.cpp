@@ -16,8 +16,8 @@ MainWindow::MainWindow(QWidget *parent)
     , fluidManager(std::make_unique<FluidManager>(new FluidManager()))
     , materialManager(std::make_unique<MaterialManager>(new MaterialManager(this)))
     , sampleManager(std::make_unique<SampleManager>(new SampleManager(this)))
-    , measurememntManager(new MeasurementManager(this))
-    , radwagMeasureControler(std::make_unique<MeasurementController>(measurememntManager, this))
+    , measurementManager(new MeasurementManager(this))
+    , radwagMeasureControler(std::make_unique<MeasurementController>(measurementManager, this))
 {
     initControls();
     connectButtons();
@@ -28,6 +28,9 @@ MainWindow::MainWindow(QWidget *parent)
     tooltipManager.setGlobalStyle("QToolTip { background-color: #2C3E50; color: white; }");
     tooltipManager.registerImage("info", ":/icons/image.jpg", 424, 424);
     tooltipManager.registerTooltip(ui->buttonDryMassExecuteStepOne, ui->buttonDryMassExecuteStepOne->text(), "Wyzeruj wagę wskazanym na ilustracji przyciskiem", "info", TooltipManager::IMAGE_BOTTOM);
+
+    setupLibraryView();
+    connect(ui->treeViewLibMeasure->selectionModel(), &QItemSelectionModel::selectionChanged, this, &MainWindow::onSelectionChanged);
 }
 
 MainWindow::~MainWindow()
@@ -269,6 +272,12 @@ void MainWindow::onReplySecondMeasureSecondButtonClicked()
     ui->measureDensityStage->setProperty("currentStage", QVariant::fromValue(MeasurementStages::Stage::InitialData));
     goToNextMeasureStage();
 }
+
+void MainWindow::onSaveSecondMeasureButtonClicked()
+{
+    measurementManager->saveMeasurements();
+}
+
 bool MainWindow::fillInitialDataLabels()
 {
     if(!radwagMeasureControler->hasActiveMeasurement())
@@ -724,6 +733,7 @@ void MainWindow::connectSummaryMeasureSecondPageButtons()
 {
     connect(ui->buttonNewSecondMeasure, &QPushButton::clicked, this, &MainWindow::onNewSecondMeasureSecondButtonClicked);
     connect(ui->buttonReplySecondMeasure, &QPushButton::clicked, this, &MainWindow::onReplySecondMeasureSecondButtonClicked);
+    connect(ui->buttonSaveSecondMeasureToLibrary, &QPushButton::clicked, this, &MainWindow::onSaveSecondMeasureButtonClicked);
 }
 
 void MainWindow::connectCatalogsButtons()
@@ -933,6 +943,8 @@ void MainWindow::setProperty()
     ui->scrollArea->setBackgroundRole(QPalette::Base);
     ui->scrollAreaFinishSecond->setBackgroundRole(QPalette::Base);
     ui->scrollAreaFinishTriple->setBackgroundRole(QPalette::Base);
+    ui->scrollAreaLibrary->setBackgroundRole(QPalette::Base);
+    ui->scrollAreaLibrary->setBackgroundRole(QPalette::Base);
 }
 
 void MainWindow::setIcons()
@@ -1373,6 +1385,175 @@ void MainWindow::fillMeasureSecondLabelsSummary()
     double totalPorosity = results.getTotalPorosity();
     ui->valueSecondMeasureTotalPorosity->setText(QString::number(totalPorosity, 'f', 3) + " %");
 }
+
+void MainWindow::onSelectionChanged(const QItemSelection &selected, const QItemSelection &deselected)
+{
+    QItemSelectionModel *selectionModel = ui->treeViewLibMeasure->selectionModel();
+    int selectedCount = selectionModel->selectedRows().count();
+    ui->labelLibSelectedCount->setText(QString("Zaznaczone: %1").arg(selectedCount));
+    updateMeasurementCounter();
+}
+
+void MainWindow::updateMeasurementCounter()
+{
+    int allCount = measurementManager->getMeasurements().size();
+    ui->labelLibAllCount->setText(QString("Liczba pomiarów: %1").arg(allCount));
+
+    int visibleCount = 0;
+    if(measurementProxyModel)
+    {
+        visibleCount = countVisibleItems(measurementProxyModel, QModelIndex());
+    }
+    ui->labelLibVisibleCount->setText(QString("Widoczne: %1").arg(visibleCount));
+
+    int selectedCount = ui->treeViewLibMeasure->selectionModel()->selectedRows().count();
+    ui->labelLibSelectedCount->setText(QString("Wybrane: %1").arg(selectedCount));
+}
+
+int MainWindow::countVisibleItems(QAbstractItemModel* model, const QModelIndex& parent)
+{
+    int count = 0;
+    int rows = model->rowCount(parent);
+    for(int i = 0; i < rows; i++)
+    {
+        QModelIndex index = model->index(i, 0, parent);
+        if (model->hasChildren(index))
+            count += countVisibleItems(model, index);
+        else
+            count++;
+    }
+    return count;
+}
+
+void MainWindow::setupLibraryView()
+{
+    setupLibraryControls();
+    setupLibraryModels();
+    setupLibraryTreeView();
+    updateMeasurementCounter();
+}
+
+void MainWindow::setupLibraryControls()
+{
+    fillComboLibSearchIn();
+    fillComboLibGroupBy();
+}
+
+void MainWindow::setupLibraryModels()
+{
+    measurementModel = new MeasurementTreeModel(measurementManager.get(), this);
+    measurementProxyModel = new MeasurementSortFilterProxyModel(this);
+    measurementProxyModel->setSourceModel(measurementModel);
+    measurementProxyModel->setSortCaseSensitivity(Qt::CaseInsensitive);
+}
+
+void MainWindow::setupLibraryTreeView()
+{
+    ui->treeViewLibMeasure->setModel(measurementProxyModel);
+
+    const int defaultColumnWidth = 100;
+    for(int col = MeasurementTreeModel::MeasureType; col < MeasurementTreeModel::ColumnCount; col++)
+        ui->treeViewLibMeasure->setColumnWidth(col, defaultColumnWidth);
+
+    ui->treeViewLibMeasure->sortByColumn(MeasurementTreeModel::Date, Qt::DescendingOrder);
+    ui->treeViewLibMeasure->setStyleSheet("QTreeView::item:selected { background-color: #0064FF; }");
+    ui->treeViewLibMeasure->expandAll();
+
+    connect(ui->treeViewLibMeasure, &QTreeView::doubleClicked, this, &MainWindow::onMeasurementDoubleClicked);
+    connect(ui->searchLineEdit, &QLineEdit::textChanged, this, &MainWindow::onLibrarySearchTextChanged);
+    connect(ui->comboLibSearchIn, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &MainWindow::onLibrarySearchInChanged);
+    connect(ui->comboLibGroupBy, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &MainWindow::onLibraryGroupByChanged);
+    connect(measurementManager.get(), &MeasurementManager::measurementsChanged, this, &MainWindow::refreshLibraryView);
+}
+
+void MainWindow::fillComboLibSearchIn()
+{
+    ui->comboLibSearchIn->clear();
+    ui->comboLibSearchIn->addItem("Wszystkie pola", -1);
+    ui->comboLibSearchIn->addItem("ID próbki", MeasurementTreeModel::Columns::SampleId);
+    ui->comboLibSearchIn->addItem("Nazwa próbki", MeasurementTreeModel::Columns::SampleName);
+    ui->comboLibSearchIn->addItem("Materiał", MeasurementTreeModel::Columns::Material);
+    ui->comboLibSearchIn->addItem("Ciecz", MeasurementTreeModel::Columns::Fluid);
+    ui->comboLibSearchIn->addItem("Status", MeasurementTreeModel::Columns::Status);
+    ui->comboLibSearchIn->addItem("Wykonawca", MeasurementTreeModel::Columns::Author);
+    ui->comboLibSearchIn->addItem("Data", MeasurementTreeModel::Columns::Date);
+}
+
+void MainWindow::fillComboLibGroupBy()
+{
+    ui->comboLibGroupBy->clear();
+    ui->comboLibGroupBy->addItem("Brak grupowania", -1);
+    ui->comboLibGroupBy->addItem("Typ pomiaru", MeasurementTreeModel::Columns::MeasureType);
+    ui->comboLibGroupBy->addItem("ID próbki", MeasurementTreeModel::Columns::SampleId);
+    ui->comboLibGroupBy->addItem("Nazwa próbki", MeasurementTreeModel::Columns::SampleName);
+    ui->comboLibGroupBy->addItem("Materiał", MeasurementTreeModel::Columns::Material);
+    ui->comboLibGroupBy->addItem("Ciecz", MeasurementTreeModel::Columns::Fluid);
+    ui->comboLibGroupBy->addItem("Status", MeasurementTreeModel::Columns::Status);
+    ui->comboLibGroupBy->addItem("Wykonawca", MeasurementTreeModel::Columns::Author);
+    ui->comboLibGroupBy->addItem("Data", MeasurementTreeModel::Columns::Date);
+}
+
+void MainWindow::onLibrarySearchTextChanged(const QString& text)
+{
+    measurementModel->setFilterText(text);
+    ui->treeViewLibMeasure->expandAll();
+    updateMeasurementCounter();
+}
+
+void MainWindow::onLibrarySearchInChanged(int index)
+{
+    int columnEnum = ui->comboLibSearchIn->itemData(index).toInt();
+    measurementModel->setFilterColumn(columnEnum);
+    ui->treeViewLibMeasure->expandAll();
+}
+
+void MainWindow::onLibraryGroupByChanged(int index)
+{
+    int columnEnum = ui->comboLibGroupBy->itemData(index).toInt();
+    measurementModel->setGroupBy(columnEnum);
+    ui->treeViewLibMeasure->expandAll();
+}
+
+void MainWindow::refreshLibraryView()
+{
+    measurementModel->buildTree();
+    ui->treeViewLibMeasure->expandAll();
+}
+
+void MainWindow::onMeasurementDoubleClicked(const QModelIndex& index)
+{
+    // // Pobierz model source (bez proxy)
+    // QModelIndex sourceIndex = proxyModel->mapToSource(index);
+
+    // // Sprawdź, czy kliknięto na węzeł pomiarowy (a nie nagłówek grupy)
+    // MeasurementTreeModel* model = nullptr;
+
+    // if (ui->treeViewLibMeasure->model() == twoStageProxyModel)
+    //     model = twoStageModel;
+    // else
+    //     model = threeStageModel;
+
+    // // Pobierz ID pomiaru (implementacja zależy od szczegółów MeasurementTreeModel)
+    // QString measurementId = model->getMeasurementId(sourceIndex);
+
+    // if (!measurementId.isEmpty()) {
+    //     // Otwórz pomiar do edycji lub podglądu
+    //     openMeasurement(measurementId);
+    // }
+}
+
+// Metoda otwierająca pomiar
+// void MainWindow::openMeasurement(const QString& measurementId)
+// {
+//     // Tu implementacja otwierania pomiaru...
+//     // Na przykład:
+//     auto measurement = measurementManager->getMeasurement(measurementId);
+//     if (measurement) {
+//         // Otwórz okno edycji/widoku pomiaru
+//         // ...
+//     }
+// }
+
 
 
 // #include "main_window.h"

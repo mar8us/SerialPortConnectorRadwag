@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1263</width>
-    <height>845</height>
+    <height>721</height>
    </rect>
   </property>
   <property name="minimumSize">
@@ -397,7 +397,7 @@ a następnie wykonaj poniższe kroki:</string>
                      </size>
                     </property>
                     <property name="currentIndex">
-                     <number>0</number>
+                     <number>1</number>
                     </property>
                     <widget class="QWidget" name="stageSecondMeasure">
                      <layout class="QVBoxLayout" name="verticalLayout_9">
@@ -860,8 +860,8 @@ a następnie wykonaj poniższe kroki:</string>
                            <rect>
                             <x>0</x>
                             <y>0</y>
-                            <width>805</width>
-                            <height>335</height>
+                            <width>788</width>
+                            <height>281</height>
                            </rect>
                           </property>
                           <layout class="QGridLayout" name="gridLayout_17">
@@ -3159,7 +3159,7 @@ umieszczając ją w komorze próźniowej na czas zaniku ostatniego pęcherzyka</
                         <rect>
                          <x>0</x>
                          <y>0</y>
-                         <width>821</width>
+                         <width>480</width>
                          <height>680</height>
                         </rect>
                        </property>
@@ -6207,7 +6207,7 @@ umieszczając ją w komorze próźniowej na czas zaniku ostatniego pęcherzyka</
              <rect>
               <x>20</x>
               <y>20</y>
-              <width>955</width>
+              <width>61</width>
               <height>131</height>
              </rect>
             </property>
@@ -6334,17 +6334,12 @@ umieszczając ją w komorze próźniowej na czas zaniku ostatniego pęcherzyka</
              </item>
             </layout>
            </widget>
-          </widget>
-          <widget class="QWidget" name="tabMeasurementLibrary">
-           <attribute name="title">
-            <string>Biblioteka pomiarów</string>
-           </attribute>
            <widget class="QGroupBox" name="groupBoxVisualization">
             <property name="geometry">
              <rect>
-              <x>730</x>
-              <y>70</y>
-              <width>571</width>
+              <x>90</x>
+              <y>20</y>
+              <width>91</width>
               <height>321</height>
              </rect>
             </property>
@@ -6423,215 +6418,733 @@ umieszczając ją w komorze próźniowej na czas zaniku ostatniego pęcherzyka</
              </item>
             </layout>
            </widget>
-           <widget class="QGroupBox" name="groupBoxGeneralData_3">
+           <widget class="QWidget" name="verticalLayoutWidget">
             <property name="geometry">
              <rect>
-              <x>30</x>
-              <y>80</y>
-              <width>617</width>
-              <height>235</height>
+              <x>480</x>
+              <y>60</y>
+              <width>481</width>
+              <height>250</height>
              </rect>
             </property>
-            <property name="title">
-             <string>Dane ogólne</string>
-            </property>
-            <layout class="QGridLayout" name="gridLayout_26">
-             <item row="0" column="0">
-              <widget class="QLabel" name="labelMeasurementID_3">
-               <property name="text">
-                <string>ID pomiaru:</string>
-               </property>
-              </widget>
-             </item>
-             <item row="0" column="1">
-              <widget class="QLabel" name="valueMeasurementID_3">
+            <layout class="QVBoxLayout" name="verticalLayout_33">
+             <item>
+              <widget class="QLabel" name="labelAdvancedFilters_2">
                <property name="font">
                 <font>
                  <bold>true</bold>
                 </font>
                </property>
                <property name="text">
-                <string>PM-2025-002</string>
+                <string>Filtry zaawansowane:</string>
                </property>
               </widget>
              </item>
-             <item row="0" column="2" rowspan="3">
-              <layout class="QFormLayout" name="formLayout_13">
+             <item>
+              <layout class="QGridLayout" name="filtersGridLayout_2">
                <item row="0" column="0">
-                <widget class="QLabel" name="labelMeasurementType_3">
+                <widget class="QLabel" name="labelMeasurementType_5">
                  <property name="text">
                   <string>Typ pomiaru:</string>
                  </property>
                 </widget>
                </item>
                <item row="0" column="1">
-                <widget class="QLabel" name="valueMeasurementType_3">
-                 <property name="font">
-                  <font>
-                   <bold>true</bold>
-                  </font>
-                 </property>
+                <layout class="QHBoxLayout" name="measurementTypeLayout_2">
+                 <item>
+                  <widget class="QCheckBox" name="checkTwoStage_2">
+                   <property name="text">
+                    <string>Dwustopniowy</string>
+                   </property>
+                   <property name="checked">
+                    <bool>true</bool>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QCheckBox" name="checkThreeStage_2">
+                   <property name="text">
+                    <string>Trzystopniowy</string>
+                   </property>
+                   <property name="checked">
+                    <bool>true</bool>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </item>
+               <item row="1" column="0">
+                <widget class="QLabel" name="labelMaterial_3">
                  <property name="text">
-                  <string>Trzystopniowy</string>
+                  <string>Materiał:</string>
                  </property>
                 </widget>
                </item>
-               <item row="1" column="0">
-                <widget class="QLabel" name="labelOperator_4">
+               <item row="1" column="1">
+                <widget class="QComboBox" name="comboMaterial_2">
+                 <property name="minimumSize">
+                  <size>
+                   <width>200</width>
+                   <height>30</height>
+                  </size>
+                 </property>
+                 <property name="editable">
+                  <bool>true</bool>
+                 </property>
+                 <item>
+                  <property name="text">
+                   <string>Wszystkie materiały</string>
+                  </property>
+                 </item>
+                </widget>
+               </item>
+               <item row="2" column="0">
+                <widget class="QLabel" name="labelOperator_3">
                  <property name="text">
                   <string>Wykonawca:</string>
                  </property>
                 </widget>
                </item>
-               <item row="1" column="1">
-                <widget class="QLabel" name="valueOperator_3">
-                 <property name="font">
-                  <font>
-                   <bold>true</bold>
-                  </font>
-                 </property>
-                 <property name="text">
-                  <string>Jan Kowalski</string>
-                 </property>
-                </widget>
-               </item>
-               <item row="2" column="0">
-                <widget class="QLabel" name="labelDateTime_4">
-                 <property name="text">
-                  <string>Data/godzina:</string>
-                 </property>
-                </widget>
-               </item>
                <item row="2" column="1">
-                <widget class="QLabel" name="valueDateTime_3">
-                 <property name="font">
-                  <font>
-                   <bold>true</bold>
-                  </font>
+                <widget class="QComboBox" name="comboOperator_2">
+                 <property name="minimumSize">
+                  <size>
+                   <width>200</width>
+                   <height>30</height>
+                  </size>
+                 </property>
+                 <property name="editable">
+                  <bool>true</bool>
+                 </property>
+                 <item>
+                  <property name="text">
+                   <string>Wszyscy wykonawcy</string>
+                  </property>
+                 </item>
+                </widget>
+               </item>
+               <item row="3" column="0">
+                <widget class="QLabel" name="labelDateRange_2">
+                 <property name="text">
+                  <string>Zakres dat:</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="3" column="1">
+                <layout class="QHBoxLayout" name="dateRangeLayout_2">
+                 <item>
+                  <widget class="QLabel" name="labelFrom_2">
+                   <property name="text">
+                    <string>Od:</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QDateEdit" name="dateFrom_2">
+                   <property name="minimumSize">
+                    <size>
+                     <width>120</width>
+                     <height>30</height>
+                    </size>
+                   </property>
+                   <property name="calendarPopup">
+                    <bool>true</bool>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QLabel" name="labelTo_2">
+                   <property name="text">
+                    <string>Do:</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QDateEdit" name="dateTo_2">
+                   <property name="minimumSize">
+                    <size>
+                     <width>120</width>
+                     <height>30</height>
+                    </size>
+                   </property>
+                   <property name="calendarPopup">
+                    <bool>true</bool>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </item>
+               <item row="4" column="0">
+                <widget class="QLabel" name="labelDensityRange_2">
+                 <property name="text">
+                  <string>Gęstość pozorna:</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="4" column="1">
+                <layout class="QHBoxLayout" name="densityRangeLayout_2">
+                 <item>
+                  <widget class="QLabel" name="labelDensityFrom_2">
+                   <property name="text">
+                    <string>Od:</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QDoubleSpinBox" name="spinDensityFrom_2">
+                   <property name="minimumSize">
+                    <size>
+                     <width>120</width>
+                     <height>30</height>
+                    </size>
+                   </property>
+                   <property name="decimals">
+                    <number>4</number>
+                   </property>
+                   <property name="minimum">
+                    <double>0.000000000000000</double>
+                   </property>
+                   <property name="maximum">
+                    <double>30.000000000000000</double>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QLabel" name="labelDensityTo_2">
+                   <property name="text">
+                    <string>Do:</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QDoubleSpinBox" name="spinDensityTo_2">
+                   <property name="minimumSize">
+                    <size>
+                     <width>120</width>
+                     <height>30</height>
+                    </size>
+                   </property>
+                   <property name="decimals">
+                    <number>4</number>
+                   </property>
+                   <property name="minimum">
+                    <double>0.000000000000000</double>
+                   </property>
+                   <property name="maximum">
+                    <double>30.000000000000000</double>
+                   </property>
+                   <property name="value">
+                    <double>30.000000000000000</double>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QLabel" name="labelDensityUnit_2">
+                   <property name="text">
+                    <string>g/cm³</string>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </item>
+              </layout>
+             </item>
+             <item>
+              <layout class="QHBoxLayout" name="filterButtonsLayout_2">
+               <item>
+                <spacer name="horizontalSpacer2_2">
+                 <property name="orientation">
+                  <enum>Qt::Orientation::Horizontal</enum>
+                 </property>
+                 <property name="sizeHint" stdset="0">
+                  <size>
+                   <width>40</width>
+                   <height>20</height>
+                  </size>
+                 </property>
+                </spacer>
+               </item>
+               <item>
+                <widget class="QPushButton" name="buttonApplyFilters_2">
+                 <property name="minimumSize">
+                  <size>
+                   <width>150</width>
+                   <height>30</height>
+                  </size>
                  </property>
                  <property name="text">
-                  <string>2025-05-03 13:45</string>
+                  <string>Zastosuj filtry</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QPushButton" name="buttonResetFilters_2">
+                 <property name="minimumSize">
+                  <size>
+                   <width>150</width>
+                   <height>30</height>
+                  </size>
+                 </property>
+                 <property name="text">
+                  <string>Resetuj filtry</string>
                  </property>
                 </widget>
                </item>
               </layout>
              </item>
-             <item row="1" column="0">
-              <widget class="QLabel" name="labelSampleName_5">
-               <property name="text">
-                <string>Nazwa próbki:</string>
-               </property>
-              </widget>
-             </item>
-             <item row="1" column="1">
-              <widget class="QLabel" name="valueSampleName_3">
-               <property name="font">
-                <font>
-                 <bold>true</bold>
-                </font>
-               </property>
-               <property name="text">
-                <string>Próbka porowata</string>
-               </property>
-              </widget>
-             </item>
-             <item row="2" column="0">
-              <widget class="QLabel" name="labelMaterial_5">
-               <property name="text">
-                <string>Materiał:</string>
-               </property>
-              </widget>
-             </item>
-             <item row="2" column="1">
-              <widget class="QLabel" name="valueMaterial_3">
-               <property name="font">
-                <font>
-                 <bold>true</bold>
-                </font>
-               </property>
-               <property name="text">
-                <string>Ceramika porowata</string>
-               </property>
-              </widget>
-             </item>
-             <item row="3" column="0">
-              <widget class="QLabel" name="labelTheoreticalDensity_4">
-               <property name="text">
-                <string>Gęstość teoretyczna materiału:</string>
-               </property>
-              </widget>
-             </item>
-             <item row="3" column="1">
-              <widget class="QLabel" name="valueTheoreticalDensity_3">
-               <property name="font">
-                <font>
-                 <bold>true</bold>
-                </font>
-               </property>
-               <property name="text">
-                <string>2.20 g/cm³</string>
-               </property>
-              </widget>
-             </item>
-             <item row="4" column="0">
-              <widget class="QLabel" name="labelSaturationMethod_2">
-               <property name="text">
-                <string>Metoda nasycania:</string>
-               </property>
-              </widget>
-             </item>
-             <item row="4" column="1">
-              <widget class="QLabel" name="valueSaturationMethod_2">
-               <property name="font">
-                <font>
-                 <bold>true</bold>
-                </font>
-               </property>
-               <property name="text">
-                <string>Gotowanie (30 min)</string>
-               </property>
-              </widget>
-             </item>
-             <item row="5" column="0">
-              <widget class="QLabel" name="labelLiquidType_3">
-               <property name="text">
-                <string>Ciecz:</string>
-               </property>
-              </widget>
-             </item>
-             <item row="5" column="1">
-              <widget class="QLabel" name="valueLiquidType_3">
-               <property name="font">
-                <font>
-                 <bold>true</bold>
-                </font>
-               </property>
-               <property name="text">
-                <string>Woda destylowana</string>
-               </property>
-              </widget>
-             </item>
-             <item row="6" column="0">
-              <widget class="QLabel" name="labelLiquidDensity_3">
-               <property name="text">
-                <string>Gęstość cieczy:</string>
-               </property>
-              </widget>
-             </item>
-             <item row="6" column="1">
-              <widget class="QLabel" name="valueLiquidDensity_3">
-               <property name="font">
-                <font>
-                 <bold>true</bold>
-                </font>
-               </property>
-               <property name="text">
-                <string>0.998 g/cm³</string>
-               </property>
-              </widget>
-             </item>
             </layout>
            </widget>
+          </widget>
+          <widget class="QWidget" name="tabMeasurementLibrary">
+           <attribute name="title">
+            <string>Biblioteka pomiarów</string>
+           </attribute>
+           <layout class="QGridLayout" name="gridLayout_21">
+            <item row="4" column="1">
+             <layout class="QVBoxLayout" name="verticalLayout_39">
+              <item>
+               <widget class="QGroupBox" name="groupBoxLibMeasure">
+                <property name="title">
+                 <string>Pomiar</string>
+                </property>
+                <layout class="QVBoxLayout" name="verticalLayout_37">
+                 <item>
+                  <widget class="QPushButton" name="buttonLibNewMeasure">
+                   <property name="minimumSize">
+                    <size>
+                     <width>150</width>
+                     <height>30</height>
+                    </size>
+                   </property>
+                   <property name="maximumSize">
+                    <size>
+                     <width>16777215</width>
+                     <height>30</height>
+                    </size>
+                   </property>
+                   <property name="text">
+                    <string>Nowy</string>
+                   </property>
+                   <property name="icon">
+                    <iconset>
+                     <normaloff>icons/add_measurement.png</normaloff>icons/add_measurement.png</iconset>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QPushButton" name="buttonLibNewSelectedMeasure">
+                   <property name="minimumSize">
+                    <size>
+                     <width>0</width>
+                     <height>30</height>
+                    </size>
+                   </property>
+                   <property name="maximumSize">
+                    <size>
+                     <width>16777215</width>
+                     <height>30</height>
+                    </size>
+                   </property>
+                   <property name="text">
+                    <string>Nowy z zaznaczenia</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QPushButton" name="buttonLibDeleteMeasure">
+                   <property name="enabled">
+                    <bool>true</bool>
+                   </property>
+                   <property name="minimumSize">
+                    <size>
+                     <width>100</width>
+                     <height>30</height>
+                    </size>
+                   </property>
+                   <property name="maximumSize">
+                    <size>
+                     <width>16777215</width>
+                     <height>30</height>
+                    </size>
+                   </property>
+                   <property name="text">
+                    <string>Usuń</string>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </widget>
+              </item>
+              <item>
+               <widget class="QGroupBox" name="groupBoxLibTools">
+                <property name="title">
+                 <string>Narzędzia</string>
+                </property>
+                <layout class="QVBoxLayout" name="verticalLayout_38">
+                 <item>
+                  <widget class="QPushButton" name="buttonLibPreviewMeasure">
+                   <property name="enabled">
+                    <bool>true</bool>
+                   </property>
+                   <property name="minimumSize">
+                    <size>
+                     <width>120</width>
+                     <height>30</height>
+                    </size>
+                   </property>
+                   <property name="maximumSize">
+                    <size>
+                     <width>16777215</width>
+                     <height>30</height>
+                    </size>
+                   </property>
+                   <property name="text">
+                    <string>Podgląd</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QPushButton" name="buttonLibCompareMeasures">
+                   <property name="enabled">
+                    <bool>true</bool>
+                   </property>
+                   <property name="minimumSize">
+                    <size>
+                     <width>150</width>
+                     <height>30</height>
+                    </size>
+                   </property>
+                   <property name="maximumSize">
+                    <size>
+                     <width>16777215</width>
+                     <height>30</height>
+                    </size>
+                   </property>
+                   <property name="text">
+                    <string>Porównaj</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QPushButton" name="buttonLibGenerateRaport">
+                   <property name="minimumSize">
+                    <size>
+                     <width>0</width>
+                     <height>30</height>
+                    </size>
+                   </property>
+                   <property name="maximumSize">
+                    <size>
+                     <width>16777215</width>
+                     <height>30</height>
+                    </size>
+                   </property>
+                   <property name="text">
+                    <string>Generuj raport</string>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </widget>
+              </item>
+              <item>
+               <widget class="QGroupBox" name="groupBoxLib">
+                <property name="title">
+                 <string>Biblioteka</string>
+                </property>
+                <layout class="QVBoxLayout" name="verticalLayout_34">
+                 <item>
+                  <widget class="QPushButton" name="buttonImportLibraryMeasure">
+                   <property name="minimumSize">
+                    <size>
+                     <width>130</width>
+                     <height>30</height>
+                    </size>
+                   </property>
+                   <property name="maximumSize">
+                    <size>
+                     <width>16777215</width>
+                     <height>30</height>
+                    </size>
+                   </property>
+                   <property name="text">
+                    <string>Import</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QPushButton" name="buttonExportLibraryMeasure">
+                   <property name="enabled">
+                    <bool>true</bool>
+                   </property>
+                   <property name="minimumSize">
+                    <size>
+                     <width>130</width>
+                     <height>30</height>
+                    </size>
+                   </property>
+                   <property name="maximumSize">
+                    <size>
+                     <width>16777215</width>
+                     <height>30</height>
+                    </size>
+                   </property>
+                   <property name="text">
+                    <string>Eksport</string>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </widget>
+              </item>
+              <item>
+               <widget class="QGroupBox" name="groupBoxAdditionalSettings_2">
+                <property name="title">
+                 <string>Katalogi</string>
+                </property>
+                <layout class="QVBoxLayout" name="verticalLayout_43">
+                 <item>
+                  <widget class="QPushButton" name="buttonSamples_3">
+                   <property name="minimumSize">
+                    <size>
+                     <width>110</width>
+                     <height>30</height>
+                    </size>
+                   </property>
+                   <property name="maximumSize">
+                    <size>
+                     <width>16777215</width>
+                     <height>30</height>
+                    </size>
+                   </property>
+                   <property name="text">
+                    <string>Próbki</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QPushButton" name="buttonTableFluids_3">
+                   <property name="minimumSize">
+                    <size>
+                     <width>110</width>
+                     <height>30</height>
+                    </size>
+                   </property>
+                   <property name="maximumSize">
+                    <size>
+                     <width>16777215</width>
+                     <height>30</height>
+                    </size>
+                   </property>
+                   <property name="text">
+                    <string>Ciecze</string>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </widget>
+              </item>
+              <item>
+               <spacer name="verticalSpacer_22">
+                <property name="orientation">
+                 <enum>Qt::Orientation::Vertical</enum>
+                </property>
+                <property name="sizeHint" stdset="0">
+                 <size>
+                  <width>20</width>
+                  <height>40</height>
+                 </size>
+                </property>
+               </spacer>
+              </item>
+             </layout>
+            </item>
+            <item row="4" column="0">
+             <widget class="QScrollArea" name="scrollAreaLibrary">
+              <property name="widgetResizable">
+               <bool>true</bool>
+              </property>
+              <widget class="QWidget" name="scrollAreaWidgetContents_3">
+               <property name="geometry">
+                <rect>
+                 <x>0</x>
+                 <y>0</y>
+                 <width>1004</width>
+                 <height>468</height>
+                </rect>
+               </property>
+               <layout class="QGridLayout" name="gridLayout_26">
+                <item row="0" column="0">
+                 <layout class="QGridLayout" name="gridLayout_29">
+                  <item row="0" column="5">
+                   <widget class="QLabel" name="label">
+                    <property name="text">
+                     <string>Grupuj według:</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item row="0" column="0">
+                   <widget class="QLabel" name="labelSearch_2">
+                    <property name="text">
+                     <string>Szukaj:</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item row="0" column="3">
+                   <widget class="QComboBox" name="comboLibSearchIn">
+                    <property name="minimumSize">
+                     <size>
+                      <width>100</width>
+                      <height>30</height>
+                     </size>
+                    </property>
+                    <property name="editable">
+                     <bool>false</bool>
+                    </property>
+                   </widget>
+                  </item>
+                  <item row="0" column="1">
+                   <widget class="QLineEdit" name="searchLineEdit">
+                    <property name="minimumSize">
+                     <size>
+                      <width>100</width>
+                      <height>30</height>
+                     </size>
+                    </property>
+                    <property name="placeholderText">
+                     <string>Wprowadź tekst do wyszukania...</string>
+                    </property>
+                    <property name="clearButtonEnabled">
+                     <bool>true</bool>
+                    </property>
+                   </widget>
+                  </item>
+                  <item row="0" column="4">
+                   <widget class="QPushButton" name="buttonLibSearch">
+                    <property name="minimumSize">
+                     <size>
+                      <width>30</width>
+                      <height>30</height>
+                     </size>
+                    </property>
+                    <property name="text">
+                     <string/>
+                    </property>
+                    <property name="icon">
+                     <iconset theme="QIcon::ThemeIcon::EditFind"/>
+                    </property>
+                   </widget>
+                  </item>
+                  <item row="0" column="6">
+                   <widget class="QComboBox" name="comboLibGroupBy">
+                    <property name="minimumSize">
+                     <size>
+                      <width>150</width>
+                      <height>30</height>
+                     </size>
+                    </property>
+                    <property name="maximumSize">
+                     <size>
+                      <width>130</width>
+                      <height>16777215</height>
+                     </size>
+                    </property>
+                   </widget>
+                  </item>
+                  <item row="1" column="0" colspan="8">
+                   <widget class="QTreeView" name="treeViewLibMeasure">
+                    <property name="minimumSize">
+                     <size>
+                      <width>0</width>
+                      <height>0</height>
+                     </size>
+                    </property>
+                    <property name="editTriggers">
+                     <set>QAbstractItemView::EditTrigger::EditKeyPressed|QAbstractItemView::EditTrigger::SelectedClicked</set>
+                    </property>
+                    <property name="alternatingRowColors">
+                     <bool>false</bool>
+                    </property>
+                    <property name="selectionMode">
+                     <enum>QAbstractItemView::SelectionMode::ExtendedSelection</enum>
+                    </property>
+                    <property name="selectionBehavior">
+                     <enum>QAbstractItemView::SelectionBehavior::SelectRows</enum>
+                    </property>
+                    <property name="rootIsDecorated">
+                     <bool>true</bool>
+                    </property>
+                    <property name="uniformRowHeights">
+                     <bool>false</bool>
+                    </property>
+                    <property name="sortingEnabled">
+                     <bool>true</bool>
+                    </property>
+                    <property name="animated">
+                     <bool>true</bool>
+                    </property>
+                    <property name="allColumnsShowFocus">
+                     <bool>true</bool>
+                    </property>
+                   </widget>
+                  </item>
+                  <item row="0" column="2">
+                   <widget class="QLabel" name="label_3">
+                    <property name="text">
+                     <string>Szukaj w:</string>
+                    </property>
+                   </widget>
+                  </item>
+                 </layout>
+                </item>
+                <item row="1" column="0">
+                 <layout class="QHBoxLayout" name="statisticsLayout_2">
+                  <item>
+                   <widget class="QLabel" name="labelLibAllCount">
+                    <property name="text">
+                     <string>Liczba pomiarów: 25</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QLabel" name="labelLibVisibleCount">
+                    <property name="text">
+                     <string>Widoczne: 12</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QLabel" name="labelLibSelectedCount">
+                    <property name="text">
+                     <string>Zaznaczone: 0</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <spacer name="horizontalSpacer3_2">
+                    <property name="orientation">
+                     <enum>Qt::Orientation::Horizontal</enum>
+                    </property>
+                    <property name="sizeHint" stdset="0">
+                     <size>
+                      <width>40</width>
+                      <height>20</height>
+                     </size>
+                    </property>
+                   </spacer>
+                  </item>
+                 </layout>
+                </item>
+               </layout>
+              </widget>
+             </widget>
+            </item>
+           </layout>
+          </widget>
+          <widget class="QWidget" name="tab">
+           <attribute name="title">
+            <string>Strona</string>
+           </attribute>
           </widget>
          </widget>
         </item>
@@ -6772,6 +7285,31 @@ umieszczając ją w komorze próźniowej na czas zaniku ostatniego pęcherzyka</
    </property>
    <property name="menuRole">
     <enum>QAction::MenuRole::NoRole</enum>
+   </property>
+  </action>
+  <action name="actionExportSelected">
+   <property name="text">
+    <string>Eksportuj zaznaczone</string>
+   </property>
+  </action>
+  <action name="actionExportGroup">
+   <property name="text">
+    <string>Eksportuj grupę</string>
+   </property>
+  </action>
+  <action name="actionExportAll">
+   <property name="text">
+    <string>Eksportuj wszystkie</string>
+   </property>
+  </action>
+  <action name="actionImportMeasurements">
+   <property name="text">
+    <string>Importuj pomiary</string>
+   </property>
+  </action>
+  <action name="actionExportWholeLibrary">
+   <property name="text">
+    <string>Eksportuj całą bibliotekę</string>
    </property>
   </action>
  </widget>

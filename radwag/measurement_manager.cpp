@@ -43,7 +43,6 @@ bool MeasurementManager::addMeasurement(const std::shared_ptr<Measurement> &meas
         return false;
 
     measurements.insert(measurement->getId(), measurement);
-    saveMeasurements();
 
     emit measurementAdded(measurement->getId());
     emit measurementsChanged();

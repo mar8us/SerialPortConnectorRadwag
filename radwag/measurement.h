@@ -5,6 +5,7 @@
 #include <QDateTime>
 #include "../fluid_tabels/fluid.h"
 #include "../sample/sample.h"
+#include <QDebug>
 
 enum class MeasurementType
 {
@@ -47,6 +48,7 @@ public:
     Measurement();
     Measurement(const QString& id, MeasurementType type, const Sample &sample, const Fluid &fluid, const QString &author);
     Measurement(const Measurement& other);
+    ~Measurement();
 
     QString getId() const;
     MeasurementType getType() const;
@@ -59,9 +61,9 @@ public:
     void setStage(MeasurementStages::Stage);
     void setStatus(MeasurementStatus newStatus);
     void setDate(const QDateTime& newDate);
-    void setAuthor(QString authorName);
+    void setAuthor(const QString &authorName);
 
-    const Sample &getSample();
+    const Sample &getSample() const;
     QString getSampleId() const;
     double getSampleMaterialDensity() const;
     double getSampleDryMass() const;
