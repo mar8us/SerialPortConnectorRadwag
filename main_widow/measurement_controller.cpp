@@ -30,17 +30,22 @@ bool MeasurementController::setInitialData(MeasurementType type, const Sample &s
 
 bool MeasurementController::replyActiveMeasure()
 {
-    if(!hasActiveMeasurement())
+    auto lastMeasurement = measurementManager->getMeasurement(lastMeasureId);
+    if(!lastMeasurement.get())
         return false;
-
-    auto activeMeasurement = getActiveMeasure();
     beginNewMeasure();
-    return setInitialData(activeMeasurement->getType(), activeMeasurement->getSample(), activeMeasurement->getFluid(), activeMeasurement->getAuthor());
+    return setInitialData(lastMeasurement->getType(), lastMeasurement->getSample(), lastMeasurement->getFluid(), lastMeasurement->getAuthor());
 }
 
 void MeasurementController::endMeasure()
 {
+    lastMeasureId = measurement->getId();
     measurement.reset();
+}
+
+QString MeasurementController::getLastMeasureId()
+{
+    return lastMeasureId;
 }
 
 const std::shared_ptr<Measurement>& MeasurementController::getActiveMeasure()
@@ -60,6 +65,13 @@ bool MeasurementController::setStage(MeasurementStages::Stage stage)
     if(!hasActiveMeasurement() || static_cast<int>(stage) <= static_cast<int>(measurement->getCurrentStage()))
         return false;
     measurement->setStage(stage);
+    return true;
+}
+bool MeasurementController::setMeasureStatus(MeasurementStatus status)
+{
+    if(!hasActiveMeasurement() || static_cast<int>(status) <= static_cast<int>(measurement->getStatus()))
+        return false;
+    measurement->setStatus(status);
     return true;
 }
 

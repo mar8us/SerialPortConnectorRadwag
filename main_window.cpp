@@ -257,7 +257,6 @@ void MainWindow::onClearSavedFinishMeasureSecondButtonClicked()
 
 void MainWindow::onNewSecondMeasureSecondButtonClicked()
 {
-    radwagMeasureControler->endMeasure();
     ui->measureDensityStage->setProperty("currentStage", QVariant::fromValue(MeasurementStages::Stage::StartMeasure));
     goToNextMeasureStage();
 }
@@ -922,6 +921,8 @@ void MainWindow::finishMeasurement()
         clearFinishMeasureSecondPage();
     }
     radwagMeasureControler->setStage(MeasurementStages::Stage::Summary);
+    radwagMeasureControler->setMeasureStatus(MeasurementStatus::Completed);
+    radwagMeasureControler->endMeasure();
     updateStageLabels();
 }
 

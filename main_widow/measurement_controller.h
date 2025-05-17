@@ -17,10 +17,12 @@ public:
     bool setInitialData(MeasurementType type, const Sample &sample, const Fluid &fluid, const QString &author);
     bool replyActiveMeasure();
     void endMeasure();
+    QString getLastMeasureId();
     const std::shared_ptr<Measurement>& getActiveMeasure();
 
     MeasurementStages::Stage getStage() const;
     bool setStage(MeasurementStages::Stage stage);
+    bool setMeasureStatus(MeasurementStatus status);
 
     double getDryMass() const;
     bool setDryMass(double value);
@@ -46,6 +48,7 @@ signals:
 private:
     std::shared_ptr<Measurement> measurement;
     std::shared_ptr<MeasurementManager> measurementManager;
+    QString lastMeasureId;
 };
 
 #endif // MEASUREMENTCONTROLLER_H
