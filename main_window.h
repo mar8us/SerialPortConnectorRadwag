@@ -86,6 +86,14 @@ private slots:
     void onReplySecondMeasureSecondButtonClicked();
     void onSaveSecondMeasureButtonClicked();
 
+    void onGetTripleCurrentFinishMeasureButtonClicked();
+    void onSaveTripleCurrentFinishMeasureButtonClicked();
+    void onClearTripleSavedFinishMeasureButtonClicked();
+
+    void onGetTripleCurrentSaturatedMeasureButtonClicked();
+    void onSaveTripleCurrentSaturatedMeasureButtonClicked();
+    void onClearTripleSavedSaturatedMeasureButtonClicked();
+
 private:
     bool canEditDevice(std::shared_ptr<const Device> &device);
     std::shared_ptr<const Device> getSelectedDevice();
@@ -101,6 +109,8 @@ private:
     void connectPrepareMeasureSecondPageButtons();
     void connectDryMassPageButtons();
     void connectFinishSecondPageButtons();
+    void connectFinishTriplePageButtons();
+    void connectSaturatedTriplePageButtons();
     void connectSummaryMeasureSecondPageButtons();
     void connectCatalogsButtons();
     void connectDevicesSettingsButtons();
@@ -144,6 +154,9 @@ private:
 
     void updateSaveCurrentDryMeasureButtonState();
     void updateSaveFinishSecondButtonState();
+
+    void updateSaveFinishTripleButtonState();
+    void updateSaveSaturatedTripleButtonState();
 
     Ui::MainWindow *ui;
     DeviceListModel devicesListModel;

@@ -12,8 +12,8 @@
   </property>
   <property name="minimumSize">
    <size>
-    <width>1024</width>
-    <height>645</height>
+    <width>150</width>
+    <height>30</height>
    </size>
   </property>
   <property name="windowTitle">
@@ -47,7 +47,7 @@
             <item>
              <widget class="QStackedWidget" name="stackedWidgetMainHydroMeasure">
               <property name="currentIndex">
-               <number>0</number>
+               <number>1</number>
               </property>
               <widget class="QWidget" name="pageStartMeasure">
                <layout class="QVBoxLayout" name="verticalLayout_57">
@@ -753,7 +753,7 @@ a następnie wykonaj poniższe kroki:</string>
                    </size>
                   </property>
                   <property name="currentIndex">
-                   <number>0</number>
+                   <number>3</number>
                   </property>
                   <widget class="QWidget" name="pageInitialData">
                    <layout class="QGridLayout" name="gridLayout_5">
@@ -2105,9 +2105,9 @@ umieszczając ją w komorze próźniowej na czas zaniku ostatniego pęcherzyka</
                    </layout>
                   </widget>
                   <widget class="QWidget" name="pagePrepareMeasureTriple">
-                   <layout class="QVBoxLayout" name="verticalLayout_24">
+                   <layout class="QVBoxLayout" name="verticalLayout_40">
                     <item>
-                     <widget class="QGroupBox" name="guideGroupBoxPrepareMeasureTriple">
+                     <widget class="QGroupBox" name="groupBoxGuideGPrepareSaturation">
                       <property name="minimumSize">
                        <size>
                         <width>0</width>
@@ -2117,9 +2117,9 @@ umieszczając ją w komorze próźniowej na czas zaniku ostatniego pęcherzyka</
                       <property name="title">
                        <string>Przewodnik</string>
                       </property>
-                      <layout class="QVBoxLayout" name="verticalLayout_4">
+                      <layout class="QVBoxLayout" name="verticalLayout_24">
                        <item>
-                        <widget class="QLabel" name="guideDescriptionLabel">
+                        <widget class="QLabel" name="guideDescPrepareSaturation">
                          <property name="font">
                           <font>
                            <pointsize>9</pointsize>
@@ -2134,33 +2134,18 @@ umieszczając ją w komorze próźniowej na czas zaniku ostatniego pęcherzyka</
                         </widget>
                        </item>
                        <item>
-                        <widget class="QFrame" name="stepsFrame">
+                        <widget class="QFrame" name="stepsFrame_2">
                          <property name="frameShape">
                           <enum>QFrame::Shape::StyledPanel</enum>
                          </property>
                          <property name="frameShadow">
                           <enum>QFrame::Shadow::Raised</enum>
                          </property>
-                         <layout class="QVBoxLayout" name="stepsLayout">
-                          <property name="spacing">
-                           <number>10</number>
-                          </property>
-                          <property name="leftMargin">
-                           <number>10</number>
-                          </property>
-                          <property name="topMargin">
-                           <number>10</number>
-                          </property>
-                          <property name="rightMargin">
-                           <number>10</number>
-                          </property>
-                          <property name="bottomMargin">
-                           <number>10</number>
-                          </property>
+                         <layout class="QVBoxLayout" name="verticalLayout_4">
                           <item>
-                           <layout class="QHBoxLayout" name="step1Layout">
+                           <layout class="QHBoxLayout" name="step1Layout_2">
                             <item>
-                             <widget class="QCheckBox" name="step1CheckBox">
+                             <widget class="QCheckBox" name="step1CheckBoxPrepareSaturation">
                               <property name="font">
                                <font>
                                 <pointsize>9</pointsize>
@@ -2178,9 +2163,9 @@ umieszczając ją w komorze próźniowej na czas zaniku ostatniego pęcherzyka</
                            </layout>
                           </item>
                           <item>
-                           <layout class="QHBoxLayout" name="step2Layout">
+                           <layout class="QHBoxLayout" name="step2Layout_2">
                             <item>
-                             <widget class="QCheckBox" name="step2CheckBox">
+                             <widget class="QCheckBox" name="step2CheckBoxPrepareSaturation">
                               <property name="text">
                                <string>2. Umieść próbkę w naczyniu z cieczą pomiarową</string>
                               </property>
@@ -2192,9 +2177,9 @@ umieszczając ją w komorze próźniowej na czas zaniku ostatniego pęcherzyka</
                            </layout>
                           </item>
                           <item>
-                           <layout class="QHBoxLayout" name="step3Layout">
+                           <layout class="QHBoxLayout" name="step3Layout_2">
                             <item>
-                             <widget class="QCheckBox" name="step3CheckBox">
+                             <widget class="QCheckBox" name="step3CheckBoxPrepareSaturation">
                               <property name="text">
                                <string>3. Przeprowadź proces nasycania zgodnie z wybraną metodą</string>
                               </property>
@@ -2203,9 +2188,9 @@ umieszczając ją w komorze próźniowej na czas zaniku ostatniego pęcherzyka</
                            </layout>
                           </item>
                           <item>
-                           <layout class="QHBoxLayout" name="step4Layout">
+                           <layout class="QHBoxLayout" name="step4Layout_3">
                             <item>
-                             <widget class="QCheckBox" name="step4CheckBox">
+                             <widget class="QCheckBox" name="step4CheckBoxPrepareSaturation">
                               <property name="text">
                                <string>4. Kontroluj poziom cieczy i uzupełniaj w razie potrzeby</string>
                               </property>
@@ -2214,9 +2199,9 @@ umieszczając ją w komorze próźniowej na czas zaniku ostatniego pęcherzyka</
                            </layout>
                           </item>
                           <item>
-                           <layout class="QHBoxLayout" name="step5Layout">
+                           <layout class="QHBoxLayout" name="step5Layout_3">
                             <item>
-                             <widget class="QCheckBox" name="step5CheckBox">
+                             <widget class="QCheckBox" name="step5CheckBoxPrepareSaturation">
                               <property name="text">
                                <string>5. Po zakończeniu głównego etapu nasycania, doprowadź układ do temperatury pokojowej</string>
                               </property>
@@ -2227,7 +2212,7 @@ umieszczając ją w komorze próźniowej na czas zaniku ostatniego pęcherzyka</
                           <item>
                            <layout class="QHBoxLayout" name="step6Layout">
                             <item>
-                             <widget class="QCheckBox" name="step6CheckBox">
+                             <widget class="QCheckBox" name="step6CheckBoxPrepareSaturation">
                               <property name="text">
                                <string>6. Pozostaw próbkę zanurzoną przez czas wymagany dla danego materiału i metody</string>
                               </property>
@@ -2235,21 +2220,27 @@ umieszczając ją w komorze próźniowej na czas zaniku ostatniego pęcherzyka</
                             </item>
                            </layout>
                           </item>
+                          <item>
+                           <widget class="QPushButton" name="buttonConfirmPrepareSaturation">
+                            <property name="minimumSize">
+                             <size>
+                              <width>150</width>
+                              <height>30</height>
+                             </size>
+                            </property>
+                            <property name="maximumSize">
+                             <size>
+                              <width>130</width>
+                              <height>16777215</height>
+                             </size>
+                            </property>
+                            <property name="text">
+                             <string>Potwierdź wykonanie</string>
+                            </property>
+                           </widget>
+                          </item>
                          </layout>
                         </widget>
-                       </item>
-                       <item>
-                        <spacer name="verticalSpacer_7">
-                         <property name="orientation">
-                          <enum>Qt::Orientation::Vertical</enum>
-                         </property>
-                         <property name="sizeHint" stdset="0">
-                          <size>
-                           <width>20</width>
-                           <height>40</height>
-                          </size>
-                         </property>
-                        </spacer>
                        </item>
                       </layout>
                      </widget>
@@ -2257,7 +2248,7 @@ umieszczając ją w komorze próźniowej na czas zaniku ostatniego pęcherzyka</
                     <item>
                      <layout class="QHBoxLayout" name="horizontalLayout_9">
                       <item>
-                       <widget class="QGroupBox" name="liquidInfoGroupBox_2">
+                       <widget class="QGroupBox" name="groupBoxLiquidInfoGPrepareSaturation">
                         <property name="sizePolicy">
                          <sizepolicy hsizetype="Preferred" vsizetype="MinimumExpanding">
                           <horstretch>0</horstretch>
@@ -2274,14 +2265,14 @@ umieszczając ją w komorze próźniowej na czas zaniku ostatniego pęcherzyka</
                          <string>Informacje o procesie nasycania</string>
                         </property>
                         <layout class="QFormLayout" name="formLayout_7">
-                         <item row="0" column="0">
+                         <item row="1" column="0">
                           <widget class="QLabel" name="labelSaturationMethodPrepareMeasureTriple">
                            <property name="text">
                             <string>Metoda nasycania:</string>
                            </property>
                           </widget>
                          </item>
-                         <item row="0" column="1">
+                         <item row="1" column="1">
                           <widget class="QComboBox" name="comboBoxSaturationMethodPrepareMeasureTriple">
                            <property name="minimumSize">
                             <size>
@@ -2306,7 +2297,7 @@ umieszczając ją w komorze próźniowej na czas zaniku ostatniego pęcherzyka</
                            </item>
                           </widget>
                          </item>
-                         <item row="1" column="0">
+                         <item row="2" column="0">
                           <widget class="QLabel" name="saturationTimeLabel">
                            <property name="maximumSize">
                             <size>
@@ -2319,7 +2310,7 @@ umieszczając ją w komorze próźniowej na czas zaniku ostatniego pęcherzyka</
                            </property>
                           </widget>
                          </item>
-                         <item row="1" column="1">
+                         <item row="2" column="1">
                           <widget class="QSpinBox" name="spinSaturationTimePrepareMeasureTriple">
                            <property name="minimumSize">
                             <size>
@@ -2341,14 +2332,14 @@ umieszczając ją w komorze próźniowej na czas zaniku ostatniego pęcherzyka</
                            </property>
                           </widget>
                          </item>
-                         <item row="2" column="0">
+                         <item row="3" column="0">
                           <widget class="QLabel" name="labelSaturationTempPrepareMeasureTriple">
                            <property name="text">
                             <string>Temperatura:</string>
                            </property>
                           </widget>
                          </item>
-                         <item row="2" column="1">
+                         <item row="3" column="1">
                           <widget class="QSpinBox" name="spinSaturationTempPrepareMeasureTriple">
                            <property name="minimumSize">
                             <size>
@@ -3159,7 +3150,7 @@ umieszczając ją w komorze próźniowej na czas zaniku ostatniego pęcherzyka</
                         <rect>
                          <x>0</x>
                          <y>0</y>
-                         <width>480</width>
+                         <width>821</width>
                          <height>680</height>
                         </rect>
                        </property>
@@ -3905,6 +3896,9 @@ umieszczając ją w komorze próźniowej na czas zaniku ostatniego pęcherzyka</
                              <property name="styleSheet">
                               <string notr="true">background-color: #f0f0f0;</string>
                              </property>
+                             <property name="text">
+                              <string/>
+                             </property>
                              <property name="alignment">
                               <set>Qt::AlignmentFlag::AlignCenter</set>
                              </property>
@@ -3975,6 +3969,9 @@ umieszczając ją w komorze próźniowej na czas zaniku ostatniego pęcherzyka</
                                <pointsize>9</pointsize>
                                <bold>true</bold>
                               </font>
+                             </property>
+                             <property name="text">
+                              <string/>
                              </property>
                              <property name="alignment">
                               <set>Qt::AlignmentFlag::AlignCenter</set>
@@ -4168,7 +4165,7 @@ umieszczając ją w komorze próźniowej na czas zaniku ostatniego pęcherzyka</
                        <item>
                         <widget class="QGroupBox" name="groupBox_7">
                          <property name="title">
-                          <string>Informacje o próbce</string>
+                          <string>Pomiar</string>
                          </property>
                          <layout class="QFormLayout" name="formLayout_10">
                           <item row="0" column="0">
@@ -4277,7 +4274,7 @@ umieszczając ją w komorze próźniowej na czas zaniku ostatniego pęcherzyka</
                            </widget>
                           </item>
                           <item row="0" column="1">
-                           <widget class="QLineEdit" name="editDryMeasureSaturated_2">
+                           <widget class="QLineEdit" name="editDryFinishMeasurementTriple">
                             <property name="enabled">
                              <bool>false</bool>
                             </property>
@@ -4304,7 +4301,7 @@ umieszczając ją w komorze próźniowej na czas zaniku ostatniego pęcherzyka</
                            </widget>
                           </item>
                           <item row="1" column="1">
-                           <widget class="QLineEdit" name="editMeasureSaturated_2">
+                           <widget class="QLineEdit" name="editLiquidMeasureFinishMeasurementTriple">
                             <property name="enabled">
                              <bool>false</bool>
                             </property>
@@ -4336,7 +4333,7 @@ umieszczając ją w komorze próźniowej na czas zaniku ostatniego pęcherzyka</
                            </widget>
                           </item>
                           <item row="2" column="1">
-                           <widget class="QLineEdit" name="editDensityLiquidMeasureSaturated_2">
+                           <widget class="QLineEdit" name="editDensityFinishMeasurementTriple">
                             <property name="enabled">
                              <bool>false</bool>
                             </property>
@@ -4723,7 +4720,7 @@ umieszczając ją w komorze próźniowej na czas zaniku ostatniego pęcherzyka</
                                </widget>
                               </item>
                               <item row="0" column="1">
-                               <widget class="QLineEdit" name="editDryMeasureFinishMeasurementTriple">
+                               <widget class="QLineEdit" name="editDryMeasureSaturatedTriple">
                                 <property name="enabled">
                                  <bool>false</bool>
                                 </property>
@@ -4756,7 +4753,7 @@ umieszczając ją w komorze próźniowej na czas zaniku ostatniego pęcherzyka</
                                </widget>
                               </item>
                               <item row="1" column="1">
-                               <widget class="QLineEdit" name="editMeasureSaturatedFinishMeasurementTriple">
+                               <widget class="QLineEdit" name="editMeasureSaturatedTriple">
                                 <property name="enabled">
                                  <bool>false</bool>
                                 </property>
@@ -4789,7 +4786,7 @@ umieszczając ją w komorze próźniowej na czas zaniku ostatniego pęcherzyka</
                                </widget>
                               </item>
                               <item row="2" column="1">
-                               <widget class="QLineEdit" name="editLiquidMeasureFinishMeasurementTriple">
+                               <widget class="QLineEdit" name="editLiquidMeasureSaturatedTriple">
                                 <property name="enabled">
                                  <bool>false</bool>
                                 </property>
@@ -4821,7 +4818,7 @@ umieszczając ją w komorze próźniowej na czas zaniku ostatniego pęcherzyka</
                                </widget>
                               </item>
                               <item row="3" column="1">
-                               <widget class="QLineEdit" name="editDensityLiquidFinishMeasurementTriple">
+                               <widget class="QLineEdit" name="editDensityLiquidSaturatedTriple">
                                 <property name="enabled">
                                  <bool>false</bool>
                                 </property>
@@ -6421,8 +6418,8 @@ umieszczając ją w komorze próźniowej na czas zaniku ostatniego pęcherzyka</
            <widget class="QWidget" name="verticalLayoutWidget">
             <property name="geometry">
              <rect>
-              <x>480</x>
-              <y>60</y>
+              <x>210</x>
+              <y>50</y>
               <width>481</width>
               <height>250</height>
              </rect>
@@ -6693,6 +6690,176 @@ umieszczając ją w komorze próźniowej na czas zaniku ostatniego pęcherzyka</
               </layout>
              </item>
             </layout>
+           </widget>
+           <widget class="QGroupBox" name="guideGroupBoxPrepareMeasureTriple_2">
+            <property name="geometry">
+             <rect>
+              <x>400</x>
+              <y>40</y>
+              <width>840</width>
+              <height>250</height>
+             </rect>
+            </property>
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>250</height>
+             </size>
+            </property>
+            <property name="title">
+             <string>Przewodnik</string>
+            </property>
+            <widget class="QLabel" name="guideDescriptionLabel_3">
+             <property name="geometry">
+              <rect>
+               <x>14</x>
+               <y>37</y>
+               <width>812</width>
+               <height>20</height>
+              </rect>
+             </property>
+             <property name="font">
+              <font>
+               <pointsize>9</pointsize>
+              </font>
+             </property>
+             <property name="text">
+              <string>Przygotuj próbkę nasyconą według poniższych kroków:</string>
+             </property>
+             <property name="wordWrap">
+              <bool>true</bool>
+             </property>
+            </widget>
+            <widget class="QFrame" name="stepsFrame_3">
+             <property name="geometry">
+              <rect>
+               <x>10</x>
+               <y>60</y>
+               <width>812</width>
+               <height>165</height>
+              </rect>
+             </property>
+             <property name="frameShape">
+              <enum>QFrame::Shape::StyledPanel</enum>
+             </property>
+             <property name="frameShadow">
+              <enum>QFrame::Shadow::Raised</enum>
+             </property>
+             <layout class="QVBoxLayout" name="stepsLayout_3">
+              <property name="spacing">
+               <number>10</number>
+              </property>
+              <property name="leftMargin">
+               <number>10</number>
+              </property>
+              <property name="topMargin">
+               <number>10</number>
+              </property>
+              <property name="rightMargin">
+               <number>10</number>
+              </property>
+              <property name="bottomMargin">
+               <number>10</number>
+              </property>
+              <item>
+               <layout class="QHBoxLayout" name="step1Layout_3">
+                <item>
+                 <widget class="QCheckBox" name="step1CheckBox_4">
+                  <property name="font">
+                   <font>
+                    <pointsize>9</pointsize>
+                    <hintingpreference>PreferDefaultHinting</hintingpreference>
+                   </font>
+                  </property>
+                  <property name="layoutDirection">
+                   <enum>Qt::LayoutDirection::LeftToRight</enum>
+                  </property>
+                  <property name="text">
+                   <string>1. Wybierz odpowiednią metodę nasycania dla badanego materiału</string>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </item>
+              <item>
+               <layout class="QHBoxLayout" name="step2Layout_3">
+                <item>
+                 <widget class="QCheckBox" name="step2CheckBox_4">
+                  <property name="text">
+                   <string>2. Umieść próbkę w naczyniu z cieczą pomiarową</string>
+                  </property>
+                  <property name="tristate">
+                   <bool>false</bool>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </item>
+              <item>
+               <layout class="QHBoxLayout" name="step3Layout_3">
+                <item>
+                 <widget class="QCheckBox" name="step3CheckBox_4">
+                  <property name="text">
+                   <string>3. Przeprowadź proces nasycania zgodnie z wybraną metodą</string>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </item>
+              <item>
+               <layout class="QHBoxLayout" name="step4Layout_4">
+                <item>
+                 <widget class="QCheckBox" name="step4CheckBox_3">
+                  <property name="text">
+                   <string>4. Kontroluj poziom cieczy i uzupełniaj w razie potrzeby</string>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </item>
+              <item>
+               <layout class="QHBoxLayout" name="step5Layout_4">
+                <item>
+                 <widget class="QCheckBox" name="step5CheckBox_3">
+                  <property name="text">
+                   <string>5. Po zakończeniu głównego etapu nasycania, doprowadź układ do temperatury pokojowej</string>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </item>
+              <item>
+               <layout class="QHBoxLayout" name="step6Layout_2">
+                <item>
+                 <widget class="QCheckBox" name="step6CheckBox_2">
+                  <property name="text">
+                   <string>6. Pozostaw próbkę zanurzoną przez czas wymagany dla danego materiału i metody</string>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </item>
+              <item>
+               <widget class="QPushButton" name="pushButton_2">
+                <property name="minimumSize">
+                 <size>
+                  <width>150</width>
+                  <height>30</height>
+                 </size>
+                </property>
+                <property name="maximumSize">
+                 <size>
+                  <width>130</width>
+                  <height>16777215</height>
+                 </size>
+                </property>
+                <property name="text">
+                 <string>Potwierdź wykonanie</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </widget>
            </widget>
           </widget>
           <widget class="QWidget" name="tabMeasurementLibrary">

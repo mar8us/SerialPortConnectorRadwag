@@ -253,6 +253,54 @@ void MainWindow::onClearSavedFinishMeasureSecondButtonClicked()
     radwagMeasureControler->setMassInFluid(0.0);
 }
 
+void MainWindow::onGetTripleCurrentFinishMeasureButtonClicked()
+{
+    if(!radwagScaleConnector.get() || !radwagScaleConnector->connectionIsActive())
+        QMessageBox::warning(this, "Błąd", "Brak aktywnego połączenia z wagą.");
+    radwagScaleConnector->sendImmediateWeightCommand();
+}
+
+void MainWindow::onSaveTripleCurrentFinishMeasureButtonClicked()
+{
+    QString text = ui->editCurrentValueFinishMeasurementTriple->text().trimmed();
+    if(!radwagMeasureControler->setMassInFluid(utils::getDouble(text)))
+        QMessageBox::warning(this, tr("Błąd"), "Błąd zapisu pomiaru! FinishTriple");
+    ui->editSavedValueFinishMeasurementTriple->setText(text);
+    ui->editLiquidMeasureFinishMeasurementTriple->setText(text);
+}
+
+void MainWindow::onClearTripleSavedFinishMeasureButtonClicked()
+{
+    ui->editSavedValueFinishMeasurementTriple->clear();
+    ui->editLiquidMeasureFinishMeasurementTriple->clear();
+    radwagMeasureControler->setMassInFluid(0.0);
+}
+
+void MainWindow::onGetTripleCurrentSaturatedMeasureButtonClicked()
+{
+    if(!radwagScaleConnector.get() || !radwagScaleConnector->connectionIsActive())
+        QMessageBox::warning(this, "Błąd", "Brak aktywnego połączenia z wagą.");
+    radwagScaleConnector->sendImmediateWeightCommand();
+}
+
+void MainWindow::onSaveTripleCurrentSaturatedMeasureButtonClicked()
+{
+    QString text = ui->editCurrentMeasureSaturated->text().trimmed();
+    if(!radwagMeasureControler->setSaturatedMass(utils::getDouble(text)))
+        QMessageBox::warning(this, tr("Błąd"), "Błąd zapisu pomiaru! SaturatedTriple");
+    ui->editSavedMeasureSaturated->setText(text);
+    ui->editLiquidMeasureSaturatedTriple->setText(text);
+}
+
+void MainWindow::onClearTripleSavedSaturatedMeasureButtonClicked()
+{
+    ui->editSavedMeasureSaturated->clear();
+    ui->editLiquidMeasureSaturatedTriple->clear();
+    radwagMeasureControler->setSaturatedMass(0.0);
+}
+
+
+
 //----------------------------------------------- END PAGE 3 FINISH SECOND -------------------------------------
 
 
@@ -504,6 +552,10 @@ void MainWindow::onRadwagMeasueReady(const RadwagMeasure &data)
         ui->editCurrentDryMeasure->setText(QString::number(data.getValue()));
     else if(currentStage == MeasurementStages::Stage::FinishSecond)
         ui->editCurrentValueFinishSecond->setText(QString::number(data.getValue()));
+    else if(currentStage == MeasurementStages::Stage::SaturationMass)
+        ui->editCurrentValueFinishMeasurementTriple->setText(QString::number(data.getValue()));
+    else if(currentStage == MeasurementStages::Stage::FinishTriple)
+        ui->editCurrentMeasureSaturated->setText(QString::number(data.getValue()));
 }
 
 void MainWindow::initControls()
@@ -641,6 +693,8 @@ void MainWindow::connectButtons()
     connectDryMassPageButtons();
     connectPrepareMeasureSecondPageButtons();
     connectFinishSecondPageButtons();
+    connectFinishTriplePageButtons();
+    connectSaturatedTriplePageButtons();
     connectSummaryMeasureSecondPageButtons();
     connectCatalogsButtons();
 }
@@ -727,6 +781,23 @@ void MainWindow::connectFinishSecondPageButtons()
     connect(ui->buttonClearSavedValueFinishMeasureSecond, &QPushButton::clicked, this, &MainWindow::onClearSavedFinishMeasureSecondButtonClicked);
 
     connect(ui->editCurrentValueFinishSecond, &QLineEdit::textChanged, this, &MainWindow::updateSaveFinishSecondButtonState);
+
+void MainWindow::connectFinishTriplePageButtons()
+{
+    connect(ui->buttonGetCurrentMeasureFinishMeasurementTriple, &QPushButton::clicked, this, &MainWindow::onGetTripleCurrentFinishMeasureButtonClicked);
+    connect(ui->buttonSaveMeasureFinishMeasurementTriple, &QPushButton::clicked, this, &MainWindow::onSaveTripleCurrentFinishMeasureButtonClicked);
+    connect(ui->buttonClearSavedMeasureFinishMeasurementTriple, &QPushButton::clicked, this, &MainWindow::onClearTripleSavedFinishMeasureButtonClicked);
+
+    connect(ui->editCurrentValueFinishMeasurementTriple, &QLineEdit::textChanged, this, &MainWindow::updateSaveFinishSecondButtonState);
+}
+
+void MainWindow::connectSaturatedTriplePageButtons()
+{
+    connect(ui->buttonGetMeasureSaturated, &QPushButton::clicked, this, &MainWindow::onGetTripleCurrentSaturatedMeasureButtonClicked);
+    connect(ui->buttonSaveCurrentMeasureSaturated, &QPushButton::clicked, this, &MainWindow::onSaveTripleCurrentSaturatedMeasureButtonClicked);
+    connect(ui->buttonClearSavedMeasureSaturated, &QPushButton::clicked, this, &MainWindow::onClearTripleSavedSaturatedMeasureButtonClicked);
+
+    connect(ui->editCurrentMeasureSaturated, &QLineEdit::textChanged, this, &MainWindow::updateSaveSaturatedTripleButtonState);
 }
 
 void MainWindow::connectSummaryMeasureSecondPageButtons()
@@ -1290,6 +1361,16 @@ void MainWindow::setEnablePrepareMeasureSecondPage(bool enabled)
 void MainWindow::updateSaveFinishSecondButtonState()
 {
     ui->buttonSaveCurrentFinishSecond->setEnabled(utils::getDouble(ui->editCurrentValueFinishSecond->text()) > 0.0);
+}
+
+void MainWindow::updateSaveFinishTripleButtonState()
+{
+    ui->buttonSaveMeasureFinishMeasurementTriple->setEnabled(utils::getDouble(ui->editCurrentValueFinishMeasurementTriple->text()) > 0.0);
+}
+
+void MainWindow::updateSaveSaturatedTripleButtonState()
+{
+    ui->buttonSaveCurrentMeasureSaturated->setEnabled(utils::getDouble(ui->editCurrentMeasureSaturated->text()) > 0.0);
 }
 
 void MainWindow::fillFinishMeasureSecondLabels()
