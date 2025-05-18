@@ -29,6 +29,8 @@ public:
     double getMassInFluid() const;
     bool setMassInFluid(double value);
 
+    bool setSaturatedMass(double value);
+
     double getFluidTemperature();
     void setFluidTemperature(double temperature);
     double getFluidDensity();

@@ -110,6 +110,18 @@ bool MeasurementController::setMassInFluid(double value)
     return true;
 }
 
+bool MeasurementController::setSaturatedMass(double value)
+{
+    if(value < 0.0)
+        return false;
+
+    if(!hasActiveMeasurement() || measurement->isCompleted())
+        return false;
+
+    measurement->setSampleSaturatedMass(value);
+    return true;
+}
+
 double MeasurementController::getFluidTemperature()
 {
     return measurement->getFluidTemperature();
