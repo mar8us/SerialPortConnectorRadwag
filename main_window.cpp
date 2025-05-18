@@ -482,7 +482,7 @@ void MainWindow::onMaterialsChanged(const QMap<QString, Material> &materials)
 
 void MainWindow::onBeginNewMeasure()
 {
-    radwagMeasureControler->beginNewMeasure();
+    radwagMeasureControler->beginNewMeasure(ui->radioMeasureSecond->isChecked() ? MeasurementType::TwoStage : MeasurementType::ThreeStage);
 }
 
 void MainWindow::onSetInitialData()

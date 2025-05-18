@@ -10,10 +10,11 @@ MeasurementController::MeasurementController(const std::shared_ptr<MeasurementMa
 
 }
 
-bool MeasurementController::beginNewMeasure()
+bool MeasurementController::beginNewMeasure(MeasurementType type)
 {
     measurement.reset(new Measurement());
     measurement->setId(measurementManager->generateMeasurementId());
+    measurement->setType(type);
     return measurementManager->addMeasurement(measurement);
 }
 
@@ -33,7 +34,7 @@ bool MeasurementController::replyActiveMeasure()
     auto lastMeasurement = measurementManager->getMeasurement(lastMeasureId);
     if(!lastMeasurement.get())
         return false;
-    beginNewMeasure();
+    beginNewMeasure(lastMeasurement->getType());
     return setInitialData(lastMeasurement->getType(), lastMeasurement->getSample(), lastMeasurement->getFluid(), lastMeasurement->getAuthor());
 }
 
