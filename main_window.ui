@@ -53,7 +53,7 @@
             <item>
              <widget class="QStackedWidget" name="stackedWidgetMainHydroMeasure">
               <property name="currentIndex">
-               <number>1</number>
+               <number>0</number>
               </property>
               <widget class="QWidget" name="pageStartMeasure">
                <layout class="QVBoxLayout" name="verticalLayout_57">
@@ -759,7 +759,7 @@ a następnie wykonaj poniższe kroki:</string>
                    </size>
                   </property>
                   <property name="currentIndex">
-                   <number>0</number>
+                   <number>3</number>
                   </property>
                   <widget class="QWidget" name="pageInitialData">
                    <layout class="QGridLayout" name="gridLayout_5">
@@ -866,8 +866,8 @@ a następnie wykonaj poniższe kroki:</string>
                            <rect>
                             <x>0</x>
                             <y>0</y>
-                            <width>805</width>
-                            <height>299</height>
+                            <width>320</width>
+                            <height>281</height>
                            </rect>
                           </property>
                           <layout class="QGridLayout" name="gridLayout_17">
@@ -2286,24 +2286,9 @@ umieszczając ją w komorze próźniowej na czas zaniku ostatniego pęcherzyka</
                              <height>30</height>
                             </size>
                            </property>
-                           <item>
-                            <property name="text">
-                             <string>Gotowanie w wodzie</string>
-                            </property>
-                           </item>
-                           <item>
-                            <property name="text">
-                             <string>Próżniowa</string>
-                            </property>
-                           </item>
-                           <item>
-                            <property name="text">
-                             <string>Długotrwałe nasączanie</string>
-                            </property>
-                           </item>
                           </widget>
                          </item>
-                         <item row="2" column="0">
+                         <item row="1" column="0">
                           <widget class="QLabel" name="saturationTimeLabel">
                            <property name="maximumSize">
                             <size>
@@ -2316,7 +2301,7 @@ umieszczając ją w komorze próźniowej na czas zaniku ostatniego pęcherzyka</
                            </property>
                           </widget>
                          </item>
-                         <item row="2" column="1">
+                         <item row="1" column="1">
                           <widget class="QSpinBox" name="spinSaturationTimePrepareMeasureTriple">
                            <property name="minimumSize">
                             <size>
@@ -2324,28 +2309,48 @@ umieszczając ją w komorze próźniowej na czas zaniku ostatniego pęcherzyka</
                              <height>30</height>
                             </size>
                            </property>
+                           <property name="inputMethodHints">
+                            <set>Qt::InputMethodHint::ImhDigitsOnly</set>
+                           </property>
                            <property name="suffix">
-                            <string> godz.</string>
+                            <string> min.</string>
                            </property>
                            <property name="minimum">
-                            <number>1</number>
+                            <number>10</number>
                            </property>
                            <property name="maximum">
-                            <number>24</number>
+                            <number>1440</number>
+                           </property>
+                           <property name="singleStep">
+                            <number>5</number>
                            </property>
                            <property name="value">
-                            <number>24</number>
+                            <number>60</number>
                            </property>
                           </widget>
                          </item>
-                         <item row="6" column="0">
+                         <item row="2" column="0">
+                          <widget class="QLabel" name="labelLiquidTypePrepareSaturationTriple">
+                           <property name="text">
+                            <string>Ciecz:</string>
+                           </property>
+                          </widget>
+                         </item>
+                         <item row="2" column="1">
+                          <widget class="QLabel" name="editLiquidTypePrepareSaturationTriple">
+                           <property name="text">
+                            <string>Woda#</string>
+                           </property>
+                          </widget>
+                         </item>
+                         <item row="3" column="0">
                           <widget class="QLabel" name="labelSaturationTempPrepareMeasureTriple">
                            <property name="text">
                             <string>Temperatura:</string>
                            </property>
                           </widget>
                          </item>
-                         <item row="6" column="1">
+                         <item row="3" column="1">
                           <widget class="QComboBox" name="comboBoxTempFluidPrepareSaturationTrilpe">
                            <property name="maximumSize">
                             <size>
@@ -2355,14 +2360,14 @@ umieszczając ją w komorze próźniowej na czas zaniku ostatniego pęcherzyka</
                            </property>
                           </widget>
                          </item>
-                         <item row="8" column="0">
+                         <item row="4" column="0">
                           <widget class="QLabel" name="labeLiquidDensityPrepareMeasureSecond_2">
                            <property name="text">
                             <string>Gęstość cieczy:</string>
                            </property>
                           </widget>
                          </item>
-                         <item row="8" column="1">
+                         <item row="4" column="1">
                           <widget class="QLabel" name="labelFluidDensityPrepareSaturationTrilpe">
                            <property name="font">
                             <font>
@@ -2371,20 +2376,6 @@ umieszczając ją w komorze próźniowej na czas zaniku ostatniego pęcherzyka</
                            </property>
                            <property name="text">
                             <string>0.9976 g/cm³</string>
-                           </property>
-                          </widget>
-                         </item>
-                         <item row="4" column="0">
-                          <widget class="QLabel" name="labelLiquidTypePrepareSaturationTriple">
-                           <property name="text">
-                            <string>Ciecz:</string>
-                           </property>
-                          </widget>
-                         </item>
-                         <item row="4" column="1">
-                          <widget class="QLabel" name="editLiquidTypePrepareSaturationTriple">
-                           <property name="text">
-                            <string>Woda#</string>
                            </property>
                           </widget>
                          </item>
@@ -3177,7 +3168,7 @@ umieszczając ją w komorze próźniowej na czas zaniku ostatniego pęcherzyka</
                         <rect>
                          <x>0</x>
                          <y>0</y>
-                         <width>480</width>
+                         <width>821</width>
                          <height>680</height>
                         </rect>
                        </property>
@@ -5190,7 +5181,7 @@ umieszczając ją w komorze próźniowej na czas zaniku ostatniego pęcherzyka</
                         <rect>
                          <x>0</x>
                          <y>0</y>
-                         <width>821</width>
+                         <width>634</width>
                          <height>1077</height>
                         </rect>
                        </property>

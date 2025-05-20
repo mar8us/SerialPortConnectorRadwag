@@ -168,6 +168,15 @@ private:
     void updateSaveFinishTripleButtonState();
     void updateSaveSaturatedTripleButtonState();
 
+    void fillPrepareSaturationDataLabels();
+    void fillSaturationSampleInfoLabels();
+    void fillSaturationMethodsCombo();
+    void fillPrepareSaturationFluidInfoLabels();
+    void fillPrepareSaturationTemperatureCombo();
+    void updateSaturationMethodPrepareTriple();
+    void updatePrepareSaturationFluidDensityLabel();
+    void onSpinSaturationTimeChanged();
+
     void setEnablePrepareSaturationPage(bool enabled);
     void setEnableSaturationTrilpePage(bool enabled);
     Ui::MainWindow *ui;

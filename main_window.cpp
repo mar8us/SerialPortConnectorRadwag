@@ -494,21 +494,22 @@ void MainWindow::goToNextMeasureStage()
                 return;
 
             nextStage = isTripleMeasurement ? MeasurementStages::Stage::PrepareTriple : MeasurementStages::Stage::PrepareSecond;
+            bool setStageResult = radwagMeasureControler->setStage(nextStage);
+
             if(isTripleMeasurement)
             {
-                nextStage = MeasurementStages::Stage::PrepareTriple;
+                if(setStageResult)
+                    fillPrepareSaturationDataLabels();
                 setEnablePrepareSaturationPage(radwagMeasureControler->getStage() == nextStage);
                 ui->measureDensityStage->setCurrentWidget(ui->pagePrepareMeasureTriple);
             }
             else
             {
-                nextStage = MeasurementStages::Stage::PrepareSecond;
+                if(setStageResult)
+                    fillPrepareDataLabels();
                 setEnablePrepareMeasureSecondPage(radwagMeasureControler->getStage() == nextStage);
                 ui->measureDensityStage->setCurrentWidget(ui->pagePrepareMeasureSecond);
             }
-
-            fillPrepareDataLabels();
-            radwagMeasureControler->setStage(nextStage);
             break;
         }
         case MeasurementStages::Stage::PrepareSecond:
@@ -839,6 +840,8 @@ void MainWindow::connectPrepareMeasureSecondPageButtons()
 void MainWindow::connectPrepareSaturationButton()
 {
     connect(ui->buttonConfirmPrepareSaturation, &QPushButton::clicked, this, &MainWindow::onConfirmSampleSaturationPreparationClicked);
+    connect(ui->comboBoxSaturationMethodPrepareMeasureTriple, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &MainWindow::updateSaturationMethodPrepareTriple);
+    connect(ui->spinSaturationTimePrepareMeasureTriple, &QSpinBox::valueChanged, this, &MainWindow::onSpinSaturationTimeChanged);
 }
 
 void MainWindow::connectDryMassPageButtons()
@@ -1417,6 +1420,115 @@ void MainWindow::updateFluidDensityLabel()
     radwagMeasureControler->setFluidTemperature(selectedTemperature);
 }
 
+void MainWindow::fillPrepareSaturationDataLabels()
+{
+    fillSaturationSampleInfoLabels();
+    fillSaturationMethodsCombo();
+    fillPrepareSaturationFluidInfoLabels();
+}
+
+void MainWindow::fillSaturationSampleInfoLabels()
+{
+    if(!radwagMeasureControler->hasActiveMeasurement())
+        return;
+
+    const Sample &currentSample = radwagMeasureControler->getActiveMeasure()->getSample();
+    ui->ediSampleIdValuePrepareMeasureTriple->setText(currentSample.getId());
+    ui->editSampleMaterialValuePrepareMeasureTriple->setText(currentSample.getMaterialName());
+
+    double airMass = radwagMeasureControler->getDryMass();
+    QString formattedAirMass = QString::number(airMass, 'f', 3) + " g";
+    ui->editAirWeightValuePrepareMeasureTriple->setText(formattedAirMass);
+
+    ui->editStartSaturationDateTimePrepareMeasureTriple->setMinimumDate(QDate::currentDate());
+    ui->editStartSaturationDateTimePrepareMeasureTriple->setDateTime(QDateTime::currentDateTime());
+}
+
+void MainWindow::fillSaturationMethodsCombo()
+{
+    ui->comboBoxSaturationMethodPrepareMeasureTriple->clear();
+    ui->comboBoxSaturationMethodPrepareMeasureTriple->addItem(utils::getSaturationMethodName(SaturationMethod::BoilingInWater), static_cast<int>(SaturationMethod::BoilingInWater));
+    ui->comboBoxSaturationMethodPrepareMeasureTriple->addItem(utils::getSaturationMethodName(SaturationMethod::VacuumMethod), static_cast<int>(SaturationMethod::VacuumMethod));
+    ui->comboBoxSaturationMethodPrepareMeasureTriple->addItem(utils::getSaturationMethodName(SaturationMethod::LongTermSoaking), static_cast<int>(SaturationMethod::LongTermSoaking));
+    ui->comboBoxSaturationMethodPrepareMeasureTriple->setCurrentIndex(0);
+}
+
+void MainWindow::fillPrepareSaturationFluidInfoLabels()
+{
+    if(!radwagMeasureControler->hasActiveMeasurement())
+        return;
+
+    const Fluid &currentFluid = radwagMeasureControler->getActiveMeasure()->getFluid();
+    ui->editLiquidTypePrepareSaturationTriple->setText(currentFluid.getName());
+    fillPrepareSaturationTemperatureComboBox();
+    updatePrepareSaturationFluidDensityLabel();
+
+    connect(ui->comboBoxTempFluidPrepareSaturationTrilpe, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &MainWindow::updatePrepareSaturationFluidDensityLabel);
+}
+
+void MainWindow::fillPrepareSaturationTemperatureComboBox()
+{
+    if(!radwagMeasureControler->hasActiveMeasurement())
+        return;
+
+    ui->comboBoxTempFluidPrepareSaturationTrilpe->clear();
+
+    const Fluid &currentFluid = radwagMeasureControler->getActiveMeasure()->getFluid();
+    const QMap<double, double> &densityTableMap = currentFluid.getDensityTableMap();
+
+    for(auto it = densityTableMap.keyBegin(); it != densityTableMap.keyEnd(); it++)
+        ui->comboBoxTempFluidPrepareSaturationTrilpe->addItem(QString::number(*it) + " °C", *it);
+
+    int defaultIndex = ui->comboBoxTempFluidPrepareSaturationTrilpe->findText("20 °C");
+    if(defaultIndex != -1)
+        ui->comboBoxTempFluidPrepareSaturationTrilpe->setCurrentIndex(defaultIndex);
+    else if(!densityTableMap.isEmpty())
+        ui->comboBoxTempFluidPrepareSaturationTrilpe->setCurrentIndex(0);
+}
+
+void MainWindow::updateSaturationMethodPrepareTriple()
+{
+    if(!radwagMeasureControler->hasActiveMeasurement())
+        return;
+
+    int currentIndex = ui->comboBoxSaturationMethodPrepareMeasureTriple->currentIndex();
+    if(currentIndex == -1)
+        return;
+
+    SaturationMethod selectedMethod = static_cast<SaturationMethod>(currentIndex);
+    radwagMeasureControler->setSaturationMethod(selectedMethod);
+}
+
+void MainWindow::updatePrepareSaturationFluidDensityLabel()
+{
+    if(!radwagMeasureControler->hasActiveMeasurement())
+        return;
+
+    int currentIndex = ui->comboBoxTempFluidPrepareSaturationTrilpe->currentIndex();
+    if(currentIndex == -1)
+        return;
+
+    double selectedTemperature = ui->comboBoxTempFluidPrepareSaturationTrilpe->itemData(currentIndex).toDouble();
+
+    Fluid currentFluid = radwagMeasureControler->getActiveMeasure()->getFluid();
+    const QMap<double, double>& densityTableMap = currentFluid.getDensityTableMap();
+
+    if(!densityTableMap.contains(selectedTemperature))
+        return;
+
+    double density = densityTableMap.value(selectedTemperature);
+    QString formattedDensity = QString::number(density, 'f', 4) + " g/cm³";
+    ui->labelFluidDensityPrepareSaturationTrilpe->setText(formattedDensity);
+    radwagMeasureControler->setFluidTemperature(selectedTemperature);
+}
+
+void MainWindow::onSpinSaturationTimeChanged()
+{
+    if(!radwagMeasureControler->hasActiveMeasurement())
+        return;
+    radwagMeasureControler->setSaturationTime(ui->spinSaturationTimePrepareMeasureTriple->value());
+}
+
 void MainWindow::clearPrepareMeasureSecondPage()
 {
     ui->stepFirstPrepareMeasureSecond->setChecked(false);
@@ -1445,10 +1557,10 @@ void MainWindow::setEnablePrepareMeasureSecondPage(bool enabled)
 
 void MainWindow::setEnablePrepareSaturationPage(bool enabled)
 {
-    ui->editStartSaturationDateTimePrepareMeasureTriple->setEnabled(enabled);
-    ui->spinSaturationTimePrepareMeasureTriple->setEnabled(enabled);
-    ui->spinSaturationTimePrepareMeasureTriple->setEnabled(enabled);
     ui->comboBoxSaturationMethodPrepareMeasureTriple->setEnabled(enabled);
+    ui->spinSaturationTimePrepareMeasureTriple->setEnabled(enabled);
+    ui->editStartSaturationDateTimePrepareMeasureTriple->setEnabled(enabled);
+    ui->comboBoxTempFluidPrepareSaturationTrilpe->setEnabled(enabled);
 
     ui->step1CheckBoxPrepareSaturation->setEnabled(enabled);
     ui->step2CheckBoxPrepareSaturation->setEnabled(enabled);
