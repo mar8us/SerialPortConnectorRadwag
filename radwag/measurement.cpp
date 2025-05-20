@@ -9,6 +9,7 @@ Measurement::Measurement()
     , sampleInFluidMass(0.0)
     , sampleSaturatedMass(0.0)
     , date(QDateTime::currentDateTime())
+    , saturationTimeMin(0)
 {
 
 }
@@ -26,6 +27,7 @@ Measurement::Measurement(const QString& id, MeasurementType type, const Sample &
     , sampleDryMass(0.0)
     , sampleInFluidMass(0.0)
     , sampleSaturatedMass(0.0)
+    , saturationTimeMin(0)
 {
 
 }
@@ -43,6 +45,7 @@ Measurement::Measurement(const Measurement& other)
     , sampleDryMass(other.sampleDryMass)
     , sampleInFluidMass(other.sampleInFluidMass)
     , sampleSaturatedMass(other.sampleSaturatedMass)
+    , saturationTimeMin(0)
 
 {
 
@@ -70,6 +73,16 @@ MeasurementStages::Stage Measurement::getCurrentStage() const
 MeasurementStatus Measurement::getStatus() const
 {
     return status;
+}
+
+SaturationMethod Measurement::getSaturationMethod() const
+{
+    return saturationMethod;
+}
+
+int Measurement::getSaturationTime() const
+{
+    return saturationTimeMin;
 }
 
 QDateTime Measurement::getDate() const
@@ -100,6 +113,16 @@ void Measurement::setStage(MeasurementStages::Stage newStage)
 void Measurement::setStatus(MeasurementStatus newStatus)
 {
     status = newStatus;
+}
+
+void Measurement::setSaturationMethod(SaturationMethod method)
+{
+    saturationMethod = method;
+}
+
+void Measurement::setSaturationTime(int saturationTimeMiuntes)
+{
+    saturationTimeMin = saturationTimeMiuntes;
 }
 
 void Measurement::setDate(const QDateTime& newDate)
@@ -231,6 +254,8 @@ QJsonObject Measurement::toJson() const
     obj["sampleSaturatedMass"] = sampleSaturatedMass;
     obj["sample"] = sample.toJson();
     obj["fluid"] = fluid.toJson();
+    obj["saturationMethod"] = static_cast<int>(saturationMethod);
+    obj["saturationTimeMin"] = saturationTimeMin;
 
     return obj;
 }
@@ -247,6 +272,8 @@ void Measurement::fromJson(const QJsonObject &json)
     sampleDryMass = json["sampleDryMass"].toDouble();
     sampleInFluidMass = json["sampleInFluidMass"].toDouble();
     sampleSaturatedMass = json["sampleSaturatedMass"].toDouble();
+    saturationMethod = static_cast<SaturationMethod>(json["saturationMethod"].toInt());
+    saturationTimeMin = json["saturationTimeMin"].toInt();
 
     if(json.contains("sample") && json["sample"].isObject())
         sample.fromJson(json["sample"].toObject());

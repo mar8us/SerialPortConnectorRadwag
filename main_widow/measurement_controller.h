@@ -29,11 +29,15 @@ public:
     double getMassInFluid() const;
     bool setMassInFluid(double value);
 
-    bool setSaturatedMass(double value);
-
     double getFluidTemperature();
     void setFluidTemperature(double temperature);
     double getFluidDensity();
+
+    bool setSaturatedMass(double value);
+    double getSaturatedMass();
+    void setSaturationMethod(SaturationMethod method);
+    void setSaturationTime(int saturationTimeMinutes);
+    int getSaturationTime();
 
     bool hasActiveMeasurement() const;
     bool canCalculateResult() const;

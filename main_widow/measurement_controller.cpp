@@ -122,6 +122,16 @@ bool MeasurementController::setSaturatedMass(double value)
     return true;
 }
 
+double MeasurementController::getSaturatedMass()
+{
+    return measurement->getSampleSaturatedMass();
+}
+
+void MeasurementController::setSaturationMethod(SaturationMethod method)
+{
+    measurement->setSaturationMethod(method);
+}
+
 double MeasurementController::getFluidTemperature()
 {
     return measurement->getFluidTemperature();
@@ -135,6 +145,16 @@ void MeasurementController::setFluidTemperature(double temperature)
 double MeasurementController::getFluidDensity()
 {
     return measurement->getFluidDensity();
+}
+
+void MeasurementController::setSaturationTime(int saturationTimeMinutes)
+{
+    measurement->setSaturationTime(saturationTimeMinutes);
+}
+
+int MeasurementController::getSaturationTime()
+{
+    return measurement->getSaturationTime();
 }
 
 bool MeasurementController::hasActiveMeasurement() const

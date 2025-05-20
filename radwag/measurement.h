@@ -42,6 +42,13 @@ enum class MeasurementStatus
     Error
 };
 
+enum class SaturationMethod
+{
+    BoilingInWater,
+    VacuumMethod,
+    LongTermSoaking
+};
+
 class Measurement
 {
 public:
@@ -54,12 +61,16 @@ public:
     MeasurementType getType() const;
     MeasurementStages::Stage getCurrentStage() const;
     MeasurementStatus getStatus() const;
+    SaturationMethod getSaturationMethod() const;
+    int getSaturationTime() const;
     QDateTime getDate() const;
     QString getAuthor() const;
     void setId(const QString& newId);
     void setType(MeasurementType newType);
     void setStage(MeasurementStages::Stage);
     void setStatus(MeasurementStatus newStatus);
+    void setSaturationMethod(SaturationMethod method);
+    void setSaturationTime(int saturationTimeMiuntes);
     void setDate(const QDateTime& newDate);
     void setAuthor(const QString &authorName);
 
@@ -93,6 +104,8 @@ private:
     MeasurementType type;
     MeasurementStages::Stage stage;
     MeasurementStatus status;
+    SaturationMethod saturationMethod;
+    int saturationTimeMin;
     QDateTime date;
     QString author;
 
