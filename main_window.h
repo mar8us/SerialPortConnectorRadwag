@@ -168,6 +168,8 @@ private:
     void updateSaveFinishTripleButtonState();
     void updateSaveSaturatedTripleButtonState();
 
+    void setEnablePrepareSaturationPage(bool enabled);
+    void setEnableSaturationTrilpePage(bool enabled);
     Ui::MainWindow *ui;
     DeviceListModel devicesListModel;
     DeviceControler devicesListControler;

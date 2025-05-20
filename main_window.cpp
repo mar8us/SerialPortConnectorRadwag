@@ -355,6 +355,7 @@ void MainWindow::onClearTripleSavedSaturatedMeasureButtonClicked()
 void MainWindow::onNewSecondMeasureSecondButtonClicked()
 {
     ui->measureDensityStage->setProperty("currentStage", QVariant::fromValue(MeasurementStages::Stage::StartMeasure));
+    ui->groupBoxAdditionalSettings->setVisible(true);
     goToNextMeasureStage();
 }
 
@@ -438,11 +439,13 @@ void MainWindow::goToPreviousMeasureStage()
     case MeasurementStages::Stage::SaturationMass:
         prevStage = MeasurementStages::Stage::PrepareTriple;
         ui->measureDensityStage->setCurrentWidget(ui->pagePrepareMeasureTriple);
+        setEnablePrepareSaturationPage(radwagMeasureControler->getStage() == prevStage);
         break;
 
     case MeasurementStages::Stage::FinishTriple:
         prevStage = MeasurementStages::Stage::SaturationMass;
         ui->measureDensityStage->setCurrentWidget(ui->pageSatruationMassTriple);
+        setEnableSaturationTrilpePage(radwagMeasureControler->getStage() == prevStage);
         break;
 
     default:
@@ -490,20 +493,22 @@ void MainWindow::goToNextMeasureStage()
             if(!vaildateDryMeasureData())
                 return;
 
+            nextStage = isTripleMeasurement ? MeasurementStages::Stage::PrepareTriple : MeasurementStages::Stage::PrepareSecond;
             if(isTripleMeasurement)
             {
                 nextStage = MeasurementStages::Stage::PrepareTriple;
+                setEnablePrepareSaturationPage(radwagMeasureControler->getStage() == nextStage);
                 ui->measureDensityStage->setCurrentWidget(ui->pagePrepareMeasureTriple);
             }
             else
             {
                 nextStage = MeasurementStages::Stage::PrepareSecond;
+                setEnablePrepareMeasureSecondPage(radwagMeasureControler->getStage() == nextStage);
                 ui->measureDensityStage->setCurrentWidget(ui->pagePrepareMeasureSecond);
             }
 
             fillPrepareDataLabels();
             radwagMeasureControler->setStage(nextStage);
-            setEnablePrepareMeasureSecondPage(radwagMeasureControler->getStage() == nextStage);
             break;
         }
         case MeasurementStages::Stage::PrepareSecond:
@@ -519,6 +524,7 @@ void MainWindow::goToNextMeasureStage()
 
         case MeasurementStages::Stage::PrepareTriple:
             nextStage = MeasurementStages::Stage::SaturationMass;
+            setEnableSaturationTrilpePage(radwagMeasureControler->getStage() == nextStage);
             ui->measureDensityStage->setCurrentWidget(ui->pageSatruationMassTriple);
             radwagMeasureControler->setStage(nextStage);
             break;
@@ -1437,6 +1443,22 @@ void MainWindow::setEnablePrepareMeasureSecondPage(bool enabled)
     ui->comboBoxTempFluidPrepareMeasureSecond->setEnabled(enabled);
 }
 
+void MainWindow::setEnablePrepareSaturationPage(bool enabled)
+{
+    ui->editStartSaturationDateTimePrepareMeasureTriple->setEnabled(enabled);
+    ui->spinSaturationTimePrepareMeasureTriple->setEnabled(enabled);
+    ui->spinSaturationTimePrepareMeasureTriple->setEnabled(enabled);
+    ui->comboBoxSaturationMethodPrepareMeasureTriple->setEnabled(enabled);
+
+    ui->step1CheckBoxPrepareSaturation->setEnabled(enabled);
+    ui->step2CheckBoxPrepareSaturation->setEnabled(enabled);
+    ui->step3CheckBoxPrepareSaturation->setEnabled(enabled);
+    ui->step4CheckBoxPrepareSaturation->setEnabled(enabled);
+    ui->step5CheckBoxPrepareSaturation->setEnabled(enabled);
+    ui->step6CheckBoxPrepareSaturation->setEnabled(enabled);
+    ui->buttonConfirmPrepareSaturation->setEnabled(enabled);
+}
+
 //----------------------------------------------- END FILLING AND HELPER METHODS FOR PAGE 2 PREPARE MEASUREMENT ------------------------------------------
 
 
@@ -1503,6 +1525,20 @@ void MainWindow::setEnableFinishMeasureSecondPage(bool enabled)
     ui->buttonGetCurrentValueFinishMeasureSecond->setEnabled(enabled);
     ui->buttonSaveCurrentFinishSecond->setEnabled(enabled);
     ui->buttonClearSavedValueFinishMeasureSecond->setEnabled(enabled);
+}
+
+void MainWindow::setEnableSaturationTrilpePage(bool enabled)
+{
+    ui->step1FinishTriple->setEnabled(enabled);
+    ui->step2FinishTriple->setEnabled(enabled);
+    ui->step3FinishTriple->setEnabled(enabled);
+
+    ui->buttonFinishMeasureTripleExecuteStepTwo->setEnabled(enabled);
+    ui->buttonFinishMeasureTripleExecuteStepThree->setEnabled(enabled);
+
+    ui->buttonGetCurrentMeasureFinishMeasurementTriple->setEnabled(enabled);
+    ui->buttonSaveMeasureFinishMeasurementTriple->setEnabled(enabled);
+    ui->buttonClearSavedMeasureFinishMeasurementTriple->setEnabled(enabled);
 }
 
 //----------------------------------------------- END FILLING AND HELPER METHODS FOR PAGE 3 FINISH SECOND ----------------------------------------------------
