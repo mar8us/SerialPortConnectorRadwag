@@ -50,6 +50,9 @@ private slots:
     void onConfrimPrepareMeasureSecondButtonClicked();
     bool checkGuidePrepareMeasureSecondButton();
 
+    void onConfirmSampleSaturationPreparationClicked();
+    bool checkGuideSampleSaturationPreparation();
+
     void onMeasurementTypeChanged();
     void onSampleComboBoxChanged(int index);
 
@@ -82,6 +85,12 @@ private slots:
     void onFinishMeasureSecondStepTwoClicked();
     void onFinishMeasureSecondStepTreeClicked();
 
+    void onFinishMeasureTripleStepTwoClicked();
+    void onFinishMeasureTripleExecuteStepTreeClicked();
+
+    void onSaturatedMassTripleStepFourClicked();
+    void onSaturatedMassTripleStepFiveClicked();
+
     void onNewSecondMeasureSecondButtonClicked();
     void onReplySecondMeasureSecondButtonClicked();
     void onSaveSecondMeasureButtonClicked();
@@ -107,6 +116,7 @@ private:
     void connectPrepareWorksationPageButtons();
     void connectInitialDataPageButtons();
     void connectPrepareMeasureSecondPageButtons();
+    void connectPrepareSaturationButton();
     void connectDryMassPageButtons();
     void connectFinishSecondPageButtons();
     void connectFinishTriplePageButtons();

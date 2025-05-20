@@ -230,6 +230,52 @@ void MainWindow::onFinishMeasureSecondStepTreeClicked()
         QMessageBox::warning(this, "Błąd", "Brak wartości do zapisania.");
 }
 
+void MainWindow::onFinishMeasureTripleStepTwoClicked()
+{
+    if(!radwagScaleConnector.get() || !radwagScaleConnector->connectionIsActive())
+    {
+        QMessageBox::warning(this, "Błąd", "Brak aktywnego połączenia z wagą.");
+        return;
+    }
+
+    radwagScaleConnector->sendImmediateWeightCommand();
+    ui->step2FinishTriple->setChecked(true);
+}
+
+void MainWindow::onFinishMeasureTripleExecuteStepTreeClicked()
+{
+    if(!ui->editCurrentValueFinishMeasurementTriple->text().isEmpty())
+    {
+        onSaveTripleCurrentFinishMeasureButtonClicked();
+        ui->step3FinishTriple->setChecked(true);
+    }
+    else
+        QMessageBox::warning(this, "Błąd", "Brak wartości do zapisania.");
+}
+
+void MainWindow::onSaturatedMassTripleStepFourClicked()
+{
+    if(!radwagScaleConnector.get() || !radwagScaleConnector->connectionIsActive())
+    {
+        QMessageBox::warning(this, "Błąd", "Brak aktywnego połączenia z wagą.");
+        return;
+    }
+
+    radwagScaleConnector->sendImmediateWeightCommand();
+    ui->step4CheckBoxSaturatedTriple->setChecked(true);
+}
+
+void MainWindow::onSaturatedMassTripleStepFiveClicked()
+{
+    if(!ui->editCurrentMeasureSaturated->text().isEmpty())
+    {
+        onSaveTripleCurrentSaturatedMeasureButtonClicked();
+        ui->step5CheckBoxSaturatedTriple->setChecked(true);
+    }
+    else
+        QMessageBox::warning(this, "Błąd", "Brak wartości do zapisania.");
+}
+
 void MainWindow::onGetCurrentFinishMeasureSecondButtonClicked()
 {
     if(!radwagScaleConnector.get() || !radwagScaleConnector->connectionIsActive())
@@ -289,13 +335,13 @@ void MainWindow::onSaveTripleCurrentSaturatedMeasureButtonClicked()
     if(!radwagMeasureControler->setSaturatedMass(utils::getDouble(text)))
         QMessageBox::warning(this, tr("Błąd"), "Błąd zapisu pomiaru! SaturatedTriple");
     ui->editSavedMeasureSaturated->setText(text);
-    ui->editLiquidMeasureSaturatedTriple->setText(text);
+    ui->editAirSaturatedTriple->setText(text);
 }
 
 void MainWindow::onClearTripleSavedSaturatedMeasureButtonClicked()
 {
     ui->editSavedMeasureSaturated->clear();
-    ui->editLiquidMeasureSaturatedTriple->clear();
+    ui->editAirSaturatedTriple->clear();
     radwagMeasureControler->setSaturatedMass(0.0);
 }
 
@@ -683,6 +729,31 @@ bool MainWindow::checkGuidePrepareMeasureSecondButton()
     return true;
 }
 
+void MainWindow::onConfirmSampleSaturationPreparationClicked()
+{
+    ui->step1CheckBoxPrepareSaturation->setChecked(true);
+    ui->step2CheckBoxPrepareSaturation->setChecked(true);
+    ui->step3CheckBoxPrepareSaturation->setChecked(true);
+    ui->step4CheckBoxPrepareSaturation->setChecked(true);
+    ui->step5CheckBoxPrepareSaturation->setChecked(true);
+    ui->step6CheckBoxPrepareSaturation->setChecked(true);
+}
+
+bool MainWindow::checkGuideSampleSaturationPreparation()
+{
+    if(!ui->step1CheckBoxPrepareSaturation->isChecked() ||
+        !ui->step2CheckBoxPrepareSaturation->isChecked() ||
+        !ui->step3CheckBoxPrepareSaturation->isChecked() ||
+        !ui->step4CheckBoxPrepareSaturation->isChecked() ||
+        !ui->step5CheckBoxPrepareSaturation->isChecked() ||
+        !ui->step6CheckBoxPrepareSaturation->isChecked())
+    {
+        QMessageBox::warning(this, "Niepełne przygotowanie", "Przed kontynuacją pomiaru wykonaj wszystkie wymagane kroki.");
+        return false;
+    }
+    return true;
+}
+
 void MainWindow::connectButtons()
 {
     connectMainNavButtons();
@@ -692,6 +763,7 @@ void MainWindow::connectButtons()
     connectInitialDataPageButtons();
     connectDryMassPageButtons();
     connectPrepareMeasureSecondPageButtons();
+    connectPrepareSaturationButton();
     connectFinishSecondPageButtons();
     connectFinishTriplePageButtons();
     connectSaturatedTriplePageButtons();
@@ -758,6 +830,11 @@ void MainWindow::connectPrepareMeasureSecondPageButtons()
     connect(ui->buttonConfrimPrepareMeasureSecond, &QPushButton::clicked, this, &MainWindow::onConfrimPrepareMeasureSecondButtonClicked);
 }
 
+void MainWindow::connectPrepareSaturationButton()
+{
+    connect(ui->buttonConfirmPrepareSaturation, &QPushButton::clicked, this, &MainWindow::onConfirmSampleSaturationPreparationClicked);
+}
+
 void MainWindow::connectDryMassPageButtons()
 {
     connect(ui->buttonDryMassExecuteStepOne, &QPushButton::clicked, this, &MainWindow::onDryMassExecuteStepOneClicked);
@@ -781,9 +858,13 @@ void MainWindow::connectFinishSecondPageButtons()
     connect(ui->buttonClearSavedValueFinishMeasureSecond, &QPushButton::clicked, this, &MainWindow::onClearSavedFinishMeasureSecondButtonClicked);
 
     connect(ui->editCurrentValueFinishSecond, &QLineEdit::textChanged, this, &MainWindow::updateSaveFinishSecondButtonState);
+}
 
 void MainWindow::connectFinishTriplePageButtons()
 {
+    connect(ui->buttonFinishMeasureTripleExecuteStepTwo, &QPushButton::clicked, this, &MainWindow::onFinishMeasureTripleStepTwoClicked);
+    connect(ui->buttonFinishMeasureTripleExecuteStepThree, &QPushButton::clicked, this, &MainWindow::onFinishMeasureTripleExecuteStepTreeClicked);
+
     connect(ui->buttonGetCurrentMeasureFinishMeasurementTriple, &QPushButton::clicked, this, &MainWindow::onGetTripleCurrentFinishMeasureButtonClicked);
     connect(ui->buttonSaveMeasureFinishMeasurementTriple, &QPushButton::clicked, this, &MainWindow::onSaveTripleCurrentFinishMeasureButtonClicked);
     connect(ui->buttonClearSavedMeasureFinishMeasurementTriple, &QPushButton::clicked, this, &MainWindow::onClearTripleSavedFinishMeasureButtonClicked);
@@ -793,6 +874,9 @@ void MainWindow::connectFinishTriplePageButtons()
 
 void MainWindow::connectSaturatedTriplePageButtons()
 {
+    connect(ui->buttonSaturatedMassExecuteStepFour, &QPushButton::clicked, this, &MainWindow::onSaturatedMassTripleStepFourClicked);
+    connect(ui->buttonSaturatedMassExecuteStepFive, &QPushButton::clicked, this, &MainWindow::onSaturatedMassTripleStepFiveClicked);
+
     connect(ui->buttonGetMeasureSaturated, &QPushButton::clicked, this, &MainWindow::onGetTripleCurrentSaturatedMeasureButtonClicked);
     connect(ui->buttonSaveCurrentMeasureSaturated, &QPushButton::clicked, this, &MainWindow::onSaveTripleCurrentSaturatedMeasureButtonClicked);
     connect(ui->buttonClearSavedMeasureSaturated, &QPushButton::clicked, this, &MainWindow::onClearTripleSavedSaturatedMeasureButtonClicked);
