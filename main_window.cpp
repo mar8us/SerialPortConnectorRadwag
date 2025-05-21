@@ -517,17 +517,21 @@ void MainWindow::goToNextMeasureStage()
                 return;
 
             nextStage = MeasurementStages::Stage::FinishSecond;
-            ui->measureDensityStage->setCurrentWidget(ui->pageFinishMeasurementSecond);
-            radwagMeasureControler->setStage(nextStage);
+            if(radwagMeasureControler->setStage(nextStage))
+                fillFinishMeasureSecondLabels();
             setEnableFinishMeasureSecondPage(radwagMeasureControler->getStage() == nextStage);
-            fillFinishMeasureSecondLabels();
+            ui->measureDensityStage->setCurrentWidget(ui->pageFinishMeasurementSecond);
             break;
 
         case MeasurementStages::Stage::PrepareTriple:
+            if(!checkGuideSampleSaturationPreparation())
+                return;
+
             nextStage = MeasurementStages::Stage::SaturationMass;
+            if(radwagMeasureControler->setStage(nextStage))
+                fillFinishMeasureTripleLabels();
             setEnableSaturationTrilpePage(radwagMeasureControler->getStage() == nextStage);
             ui->measureDensityStage->setCurrentWidget(ui->pageSatruationMassTriple);
-            radwagMeasureControler->setStage(nextStage);
             break;
 
         case MeasurementStages::Stage::SaturationMass:
@@ -841,6 +845,7 @@ void MainWindow::connectPrepareSaturationButton()
 {
     connect(ui->buttonConfirmPrepareSaturation, &QPushButton::clicked, this, &MainWindow::onConfirmSampleSaturationPreparationClicked);
     connect(ui->comboBoxSaturationMethodPrepareMeasureTriple, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &MainWindow::updateSaturationMethodPrepareTriple);
+    connect(ui->comboBoxTempFluidPrepareSaturationTrilpe, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &MainWindow::updatePrepareSaturationFluidDensityLabel);
     connect(ui->spinSaturationTimePrepareMeasureTriple, &QSpinBox::valueChanged, this, &MainWindow::onSpinSaturationTimeChanged);
 }
 
@@ -1460,13 +1465,11 @@ void MainWindow::fillPrepareSaturationFluidInfoLabels()
 
     const Fluid &currentFluid = radwagMeasureControler->getActiveMeasure()->getFluid();
     ui->editLiquidTypePrepareSaturationTriple->setText(currentFluid.getName());
-    fillPrepareSaturationTemperatureComboBox();
+    fillPrepareSaturationTemperatureCombo();
     updatePrepareSaturationFluidDensityLabel();
-
-    connect(ui->comboBoxTempFluidPrepareSaturationTrilpe, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &MainWindow::updatePrepareSaturationFluidDensityLabel);
 }
 
-void MainWindow::fillPrepareSaturationTemperatureComboBox()
+void MainWindow::fillPrepareSaturationTemperatureCombo()
 {
     if(!radwagMeasureControler->hasActiveMeasurement())
         return;
@@ -1608,6 +1611,27 @@ void MainWindow::fillFinishMeasureSecondLabels()
 
     ui->editDryMeasureFinishMeasureSecond->setText(QString::number(airMass, 'f', 3) + " g");
     ui->editDensityLiquidFinishMeasureSecond->setText(QString::number(fluidDensity, 'f', 3) + " g/cm³");
+}
+
+void MainWindow::fillFinishMeasureTripleLabels()
+{
+    if(!radwagMeasureControler->hasActiveMeasurement())
+        return;
+
+    const Sample &currentSample = radwagMeasureControler->getActiveMeasure()->getSample();
+    const Fluid &currentFluid = radwagMeasureControler->getActiveMeasure()->getFluid();
+
+    double airMass = radwagMeasureControler->getDryMass();
+    double fluidDensity = radwagMeasureControler->getFluidDensity();
+
+    radwagMeasureControler->setSaturationMethod(static_cast<SaturationMethod>(ui->comboBoxSaturationMethodPrepareMeasureTriple->currentData().toInt()));
+
+    ui->editSampleIdValueSaturationTriple->setText(currentSample.getId());
+    ui->editMaterialNameSaturationTriple->setText(currentSample.getMaterialName());
+    ui->editFluidNameSaturationTriple->setText(currentFluid.getName());
+    ui->editSaturationMethodSaturationTriple->setText(utils::getSaturationMethodName(static_cast<SaturationMethod>(radwagMeasureControler->getActiveMeasure()->getSaturationMethod())));
+    ui->editFluidDensitySaturationTriple->setText(QString::number(fluidDensity, 'f', 5) + " g");
+    ui->editDryMassSaturationTriple->setText(QString::number(airMass, 'f', 3) + " g");
 }
 
 void MainWindow::clearFinishMeasureSecondPage()
