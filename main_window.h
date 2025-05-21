@@ -181,6 +181,8 @@ private:
     void setEnableSaturationTrilpePage(bool enabled);
 
     void fillFinishMeasureTripleLabels();
+    void fillAirSaturatedTripleLabels();
+
     Ui::MainWindow *ui;
     DeviceListModel devicesListModel;
     DeviceControler devicesListControler;

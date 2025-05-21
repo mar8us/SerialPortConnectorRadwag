@@ -536,8 +536,9 @@ void MainWindow::goToNextMeasureStage()
 
         case MeasurementStages::Stage::SaturationMass:
             nextStage = MeasurementStages::Stage::FinishTriple;
+            if(radwagMeasureControler->setStage(nextStage))
+                fillAirSaturatedTripleLabels();
             ui->measureDensityStage->setCurrentWidget(ui->pageFinishSaturatedMassTriple);
-            radwagMeasureControler->setStage(nextStage);
             break;
 
         default:
@@ -1632,6 +1633,29 @@ void MainWindow::fillFinishMeasureTripleLabels()
     ui->editSaturationMethodSaturationTriple->setText(utils::getSaturationMethodName(static_cast<SaturationMethod>(radwagMeasureControler->getActiveMeasure()->getSaturationMethod())));
     ui->editFluidDensitySaturationTriple->setText(QString::number(fluidDensity, 'f', 5) + " g");
     ui->editDryMassSaturationTriple->setText(QString::number(airMass, 'f', 3) + " g");
+}
+
+void MainWindow::fillAirSaturatedTripleLabels()
+{
+    if(!radwagMeasureControler->hasActiveMeasurement())
+        return;
+
+    const Sample &currentSample = radwagMeasureControler->getActiveMeasure()->getSample();
+    const Fluid &currentFluid = radwagMeasureControler->getActiveMeasure()->getFluid();
+
+    ui->editSampleIdAirSaturatedTriple->setText(currentSample.getId());
+    ui->editMaterialAirSaturatedTriple->setText(currentSample.getMaterialName());
+    ui->editFluidAirSaturatedTriple->setText(currentFluid.getName());
+    ui->editSaturationAirSaturatedTriple->setText(utils::getSaturationMethodName(static_cast<SaturationMethod>(radwagMeasureControler->getActiveMeasure()->getSaturationMethod())));
+
+    double airMass = radwagMeasureControler->getDryMass();
+    ui->editDryAirSaturatedTriple->setText(QString::number(airMass, 'f', 3) + " g");
+
+    double fluidDensity = radwagMeasureControler->getFluidDensity();
+    ui->editDensityAirSaturatedTriple->setText(QString::number(fluidDensity, 'f', 3) + " g/cm³");
+
+    double saturationMassInFluid = radwagMeasureControler->getMassInFluid();
+    ui->editLiquidAirSaturatedTriple->setText(QString::number(saturationMassInFluid, 'f', 3) + " g");
 }
 
 void MainWindow::clearFinishMeasureSecondPage()
