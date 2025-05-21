@@ -289,7 +289,7 @@ void MainWindow::onSaveCurrentFinishMeasureSecondButtonClicked()
     if(!radwagMeasureControler->setMassInFluid(utils::getDouble(text)))
         QMessageBox::warning(this, tr("Błąd"), "Błąd zapisu pomiaru! FinishSecond");
     ui->editSavedValueFinishMeasureSecond->setText(text);
-    ui->editLiquidMeasureFinishMeasureSecond->setText(text);
+    ui->editLiquidMeasureFinishMeasureSecond->setText(text + " g");
 }
 
 void MainWindow::onClearSavedFinishMeasureSecondButtonClicked()
@@ -312,7 +312,7 @@ void MainWindow::onSaveTripleCurrentFinishMeasureButtonClicked()
     if(!radwagMeasureControler->setMassInFluid(utils::getDouble(text)))
         QMessageBox::warning(this, tr("Błąd"), "Błąd zapisu pomiaru! FinishTriple");
     ui->editSavedValueFinishMeasurementTriple->setText(text);
-    ui->editLiquidMeasureFinishMeasurementTriple->setText(text);
+    ui->editLiquidMeasureFinishMeasurementTriple->setText(text + " g");
 }
 
 void MainWindow::onClearTripleSavedFinishMeasureButtonClicked()
@@ -335,7 +335,7 @@ void MainWindow::onSaveTripleCurrentSaturatedMeasureButtonClicked()
     if(!radwagMeasureControler->setSaturatedMass(utils::getDouble(text)))
         QMessageBox::warning(this, tr("Błąd"), "Błąd zapisu pomiaru! SaturatedTriple");
     ui->editSavedMeasureSaturated->setText(text);
-    ui->editAirSaturatedTriple->setText(text);
+    ui->editAirSaturatedTriple->setText(text + " g");
 }
 
 void MainWindow::onClearTripleSavedSaturatedMeasureButtonClicked()
@@ -384,7 +384,7 @@ bool MainWindow::fillInitialDataLabels()
     ui->editSampleId->setText(activeMeasure->getSample().getId());
     ui->editSampleName->setText(activeMeasure->getSample().getName());
     ui->editMaterial->setText(activeMeasure->getSample().getMaterialName());
-    ui->editMaterialDensity->setText(QString::number(activeMeasure->getSample().getMaterialDensity()));
+    ui->editMaterialDensity->setText(QString::number(activeMeasure->getSample().getMaterialDensity()) + " g/cm³");
     ui->editSampleDescription->setPlainText(activeMeasure->getSample().getDescription());
     ui->comboBoxFluid->setCurrentText(activeMeasure->getFluidName());
     ui->editAuthor->setText(activeMeasure->getAuthor());
@@ -607,13 +607,13 @@ void MainWindow::onRadwagMeasueReady(const RadwagMeasure &data)
 {
     MeasurementStages::Stage currentStage = ui->measureDensityStage->property("currentStage").value<MeasurementStages::Stage>();
     if(currentStage == MeasurementStages::Stage::DryMeasure)
-        ui->editCurrentDryMeasure->setText(QString::number(data.getValue()));
+        ui->editCurrentDryMeasure->setText(QString::number(data.getValue(), 'f', 3) );
     else if(currentStage == MeasurementStages::Stage::FinishSecond)
-        ui->editCurrentValueFinishSecond->setText(QString::number(data.getValue()));
+        ui->editCurrentValueFinishSecond->setText(QString::number(data.getValue(), 'f', 3));
     else if(currentStage == MeasurementStages::Stage::SaturationMass)
-        ui->editCurrentValueFinishMeasurementTriple->setText(QString::number(data.getValue()));
+        ui->editCurrentValueFinishMeasurementTriple->setText(QString::number(data.getValue(), 'f', 3));
     else if(currentStage == MeasurementStages::Stage::FinishTriple)
-        ui->editCurrentMeasureSaturated->setText(QString::number(data.getValue()));
+        ui->editCurrentMeasureSaturated->setText(QString::number(data.getValue(), 'f', 3));
 }
 
 void MainWindow::initControls()
@@ -631,6 +631,7 @@ void MainWindow::initControls()
     fillSerialPortCombo();
     fillFluidCombo();
     fillSampleCombo();
+
     onMeasurementTypeChanged();
     updateStatusConnectionLabel(false);
     updateConnectonLabelsStatusBar(false);
@@ -1233,7 +1234,7 @@ void MainWindow::upadteSampleEditors()
     ui->editSampleId->setText(smapleId);
     ui->editSampleName->setText(sample.getName());
     ui->editMaterial->setText(sample.getMaterialName());
-    ui->editMaterialDensity->setText(QString::number(sample.getMaterialDensity(), 'f', 3) +  " g/cm³");
+    ui->editMaterialDensity->setText(QString::number(sample.getMaterialDensity(), 'f', 4) +  " g/cm³");
     ui->editSampleDescription->setPlainText(sample.getDescription());
 }
 
@@ -1421,7 +1422,7 @@ void MainWindow::updateFluidDensityLabel()
         return;
 
     double density = densityTableMap.value(selectedTemperature);
-    QString formattedDensity = QString::number(density, 'f', 4) + " g/cm³";
+    QString formattedDensity = QString::number(density, 'f', 5) + " g/cm³";
     ui->labelLiquidDensityValuePrepareMeasureSecond->setText(formattedDensity);
     radwagMeasureControler->setFluidTemperature(selectedTemperature);
 }
@@ -1611,7 +1612,7 @@ void MainWindow::fillFinishMeasureSecondLabels()
     double fluidDensity = radwagMeasureControler->getFluidDensity();
 
     ui->editDryMeasureFinishMeasureSecond->setText(QString::number(airMass, 'f', 3) + " g");
-    ui->editDensityLiquidFinishMeasureSecond->setText(QString::number(fluidDensity, 'f', 3) + " g/cm³");
+    ui->editDensityLiquidFinishMeasureSecond->setText(QString::number(fluidDensity, 'f', 5) + " g/cm³");
 }
 
 void MainWindow::fillFinishMeasureTripleLabels()
@@ -1652,7 +1653,7 @@ void MainWindow::fillAirSaturatedTripleLabels()
     ui->editDryAirSaturatedTriple->setText(QString::number(airMass, 'f', 3) + " g");
 
     double fluidDensity = radwagMeasureControler->getFluidDensity();
-    ui->editDensityAirSaturatedTriple->setText(QString::number(fluidDensity, 'f', 3) + " g/cm³");
+    ui->editDensityAirSaturatedTriple->setText(QString::number(fluidDensity, 'f', 5) + " g/cm³");
 
     double saturationMassInFluid = radwagMeasureControler->getMassInFluid();
     ui->editLiquidAirSaturatedTriple->setText(QString::number(saturationMassInFluid, 'f', 3) + " g");
@@ -1703,7 +1704,6 @@ void MainWindow::setEnableSaturationTrilpePage(bool enabled)
 
 //----------------------------------------------- END FILLING AND HELPER METHODS FOR PAGE 3 FINISH SECOND ----------------------------------------------------
 
-
 void MainWindow::fillMeasureSecondLabelsSummary()
 {
     if(!radwagMeasureControler->hasActiveMeasurement())
@@ -1726,7 +1726,7 @@ void MainWindow::fillMeasureSecondLabelsSummary()
 
     Fluid fluid = measurement->getFluid();
     ui->valueSecondLiquidType->setText(fluid.getName());
-    ui->valueSecondLiquidDensity->setText(QString::number(measurement->getFluidDensity(), 'f', 3) + " g/cm³");
+    ui->valueSecondLiquidDensity->setText(QString::number(measurement->getFluidDensity(), 'f', 5) + " g/cm³");
 
     double dryMass = measurement->getSampleDryMass();
     ui->valueSecondMeasureDryMass->setText(QString::number(dryMass, 'f', 3) + " g");

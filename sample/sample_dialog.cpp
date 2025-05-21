@@ -208,7 +208,7 @@ void SampleDialog::updateSampleDetails(const QString &sampleId)
     if(materialIndex >= 0)
         ui->comboBoxMaterial->setCurrentIndex(materialIndex);
 
-    ui->editMaterialDensity->setText(QString::number(sample.getMaterialDensity(), 'f', 4));
+    ui->editMaterialDensity->setText(QString::number(sample.getMaterialDensity(), 'f', 3));
     ui->editSampleDescription->setPlainText(sample.getDescription());
 }
 
