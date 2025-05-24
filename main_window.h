@@ -91,8 +91,9 @@ private slots:
     void onSaturatedMassTripleStepFourClicked();
     void onSaturatedMassTripleStepFiveClicked();
 
-    void onNewSecondMeasureSecondButtonClicked();
-    void onReplySecondMeasureSecondButtonClicked();
+    void onNewMeasureButtonClicked();
+    void onReplyMeasureButtonClicked();
+
     void onSaveSecondMeasureButtonClicked();
 
     void onGetTripleCurrentFinishMeasureButtonClicked();
@@ -122,6 +123,7 @@ private:
     void connectFinishTriplePageButtons();
     void connectSaturatedTriplePageButtons();
     void connectSummaryMeasureSecondPageButtons();
+    void connectSummaryMeasureTriplePageButtons();
     void connectCatalogsButtons();
     void connectDevicesSettingsButtons();
     void updateStageLabels();
