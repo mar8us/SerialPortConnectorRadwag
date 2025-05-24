@@ -157,10 +157,20 @@ private:
     void clearPrepareMeasureSecondPage();
     void clearFinishMeasureSecondPage();
 
+    void clearPrepareMeasureTriplePage();
+    void clearFinishMeasureTriplePage();
+    void clearAirSaturatedTriplePage();
+
+    void clearSecondMeasurePages();
+    void clearTripleMeasurePages();
+
     void setEnableInitialDataPage(bool enabled);
     void setEnableDryMeasurePage(bool enabled);
     void setEnablePrepareMeasureSecondPage(bool enabled);
     void setEnableFinishMeasureSecondPage(bool enabled);
+
+    void setEnablePrepareSaturationPage(bool enabled);
+    void setEnableSaturationTrilpePage(bool enabled);
 
     void updateSaveCurrentDryMeasureButtonState();
     void updateSaveFinishSecondButtonState();
@@ -173,15 +183,13 @@ private:
     void fillSaturationMethodsCombo();
     void fillPrepareSaturationFluidInfoLabels();
     void fillPrepareSaturationTemperatureCombo();
+    void fillFinishMeasureTripleLabels();
+    void fillAirSaturatedTripleLabels();
+    void fillMeasureTripleLabelsSummary();
+
     void updateSaturationMethodPrepareTriple();
     void updatePrepareSaturationFluidDensityLabel();
     void onSpinSaturationTimeChanged();
-
-    void setEnablePrepareSaturationPage(bool enabled);
-    void setEnableSaturationTrilpePage(bool enabled);
-
-    void fillFinishMeasureTripleLabels();
-    void fillAirSaturatedTripleLabels();
 
     Ui::MainWindow *ui;
     DeviceListModel devicesListModel;

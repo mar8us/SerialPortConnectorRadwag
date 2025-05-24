@@ -53,7 +53,7 @@
             <item>
              <widget class="QStackedWidget" name="stackedWidgetMainHydroMeasure">
               <property name="currentIndex">
-               <number>1</number>
+               <number>0</number>
               </property>
               <widget class="QWidget" name="pageStartMeasure">
                <layout class="QVBoxLayout" name="verticalLayout_57">
@@ -759,7 +759,7 @@ a następnie wykonaj poniższe kroki:</string>
                    </size>
                   </property>
                   <property name="currentIndex">
-                   <number>6</number>
+                   <number>0</number>
                   </property>
                   <widget class="QWidget" name="pageInitialData">
                    <layout class="QGridLayout" name="gridLayout_5">
@@ -4746,6 +4746,11 @@ umieszczając ją w komorze próźniowej na czas zaniku ostatniego pęcherzyka</
                               </item>
                               <item row="5" column="1">
                                <widget class="QLabel" name="editDensityAirSaturatedTriple">
+                                <property name="font">
+                                 <font>
+                                  <bold>true</bold>
+                                 </font>
+                                </property>
                                 <property name="text">
                                  <string>TextLabel</string>
                                 </property>
@@ -5185,7 +5190,7 @@ umieszczając ją w komorze próźniowej na czas zaniku ostatniego pęcherzyka</
                        <property name="geometry">
                         <rect>
                          <x>0</x>
-                         <y>0</y>
+                         <y>-20</y>
                          <width>821</width>
                          <height>1077</height>
                         </rect>
@@ -5228,7 +5233,7 @@ umieszczając ją w komorze próźniowej na czas zaniku ostatniego pęcherzyka</
                               </font>
                              </property>
                              <property name="text">
-                              <string>PM-2025-002</string>
+                              <string>QQ</string>
                              </property>
                             </widget>
                            </item>
@@ -5249,7 +5254,7 @@ umieszczając ją w komorze próźniowej na czas zaniku ostatniego pęcherzyka</
                                 </font>
                                </property>
                                <property name="text">
-                                <string>Trzystopniowy</string>
+                                <string>QQ</string>
                                </property>
                               </widget>
                              </item>
@@ -5268,7 +5273,7 @@ umieszczając ją w komorze próźniowej na czas zaniku ostatniego pęcherzyka</
                                 </font>
                                </property>
                                <property name="text">
-                                <string>Jan Kowalski</string>
+                                <string>QQ</string>
                                </property>
                               </widget>
                              </item>
@@ -5287,7 +5292,7 @@ umieszczając ją w komorze próźniowej na czas zaniku ostatniego pęcherzyka</
                                 </font>
                                </property>
                                <property name="text">
-                                <string>2025-05-03 13:45</string>
+                                <string>QQ</string>
                                </property>
                               </widget>
                              </item>
@@ -5308,7 +5313,7 @@ umieszczając ją w komorze próźniowej na czas zaniku ostatniego pęcherzyka</
                               </font>
                              </property>
                              <property name="text">
-                              <string>Próbka porowata</string>
+                              <string>QQ</string>
                              </property>
                             </widget>
                            </item>
@@ -5320,14 +5325,14 @@ umieszczając ją w komorze próźniowej na czas zaniku ostatniego pęcherzyka</
                             </widget>
                            </item>
                            <item row="2" column="1">
-                            <widget class="QLabel" name="valueTripleMaterial">
+                            <widget class="QLabel" name="valueTripleMaterialName">
                              <property name="font">
                               <font>
                                <bold>true</bold>
                               </font>
                              </property>
                              <property name="text">
-                              <string>Ceramika porowata</string>
+                              <string>QQ</string>
                              </property>
                             </widget>
                            </item>
@@ -5346,7 +5351,7 @@ umieszczając ją w komorze próźniowej na czas zaniku ostatniego pęcherzyka</
                               </font>
                              </property>
                              <property name="text">
-                              <string>2.20 g/cm³</string>
+                              <string>QQ</string>
                              </property>
                             </widget>
                            </item>
@@ -5358,14 +5363,14 @@ umieszczając ją w komorze próźniowej na czas zaniku ostatniego pęcherzyka</
                             </widget>
                            </item>
                            <item row="4" column="1">
-                            <widget class="QLabel" name="valueTripleMeasureLiquidType">
+                            <widget class="QLabel" name="valueTripleMeasureLiquidName">
                              <property name="font">
                               <font>
                                <bold>true</bold>
                               </font>
                              </property>
                              <property name="text">
-                              <string>Woda destylowana</string>
+                              <string>QQ</string>
                              </property>
                             </widget>
                            </item>
@@ -5384,7 +5389,7 @@ umieszczając ją w komorze próźniowej na czas zaniku ostatniego pęcherzyka</
                               </font>
                              </property>
                              <property name="text">
-                              <string>0.998 g/cm³</string>
+                              <string>QQ</string>
                              </property>
                             </widget>
                            </item>
@@ -5403,7 +5408,7 @@ umieszczając ją w komorze próźniowej na czas zaniku ostatniego pęcherzyka</
                               </font>
                              </property>
                              <property name="text">
-                              <string>Gotowanie</string>
+                              <string>QQ</string>
                              </property>
                             </widget>
                            </item>
@@ -5422,7 +5427,7 @@ umieszczając ją w komorze próźniowej na czas zaniku ostatniego pęcherzyka</
                               </font>
                              </property>
                              <property name="text">
-                              <string>24 godz.</string>
+                              <string>QQ</string>
                              </property>
                             </widget>
                            </item>
@@ -5443,7 +5448,7 @@ umieszczając ją w komorze próźniowej na czas zaniku ostatniego pęcherzyka</
                               </font>
                              </property>
                              <property name="text">
-                              <string>10.1235 g</string>
+                              <string>QQ</string>
                              </property>
                             </widget>
                            </item>
@@ -5462,7 +5467,7 @@ umieszczając ją w komorze próźniowej na czas zaniku ostatniego pęcherzyka</
                               </font>
                              </property>
                              <property name="text">
-                              <string>18.4567 g</string>
+                              <string>QQ</string>
                              </property>
                             </widget>
                            </item>
@@ -5474,7 +5479,7 @@ umieszczając ją w komorze próźniowej na czas zaniku ostatniego pęcherzyka</
                               </font>
                              </property>
                              <property name="text">
-                              <string>21.5689 g</string>
+                              <string>QQ</string>
                              </property>
                             </widget>
                            </item>
@@ -5508,6 +5513,16 @@ umieszczając ją w komorze próźniowej na czas zaniku ostatniego pęcherzyka</
                            <string>Obliczenia</string>
                           </property>
                           <layout class="QGridLayout" name="gridLayout_22">
+                           <item row="1" column="2">
+                            <widget class="QLabel" name="labelFormula3_4">
+                             <property name="text">
+                              <string>(ρp / ρteor) · 100%</string>
+                             </property>
+                             <property name="alignment">
+                              <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
+                             </property>
+                            </widget>
+                           </item>
                            <item row="0" column="0">
                             <widget class="QLabel" name="labelApparentDensity_2">
                              <property name="text">
@@ -5515,22 +5530,51 @@ umieszczając ją w komorze próźniowej na czas zaniku ostatniego pęcherzyka</
                              </property>
                             </widget>
                            </item>
-                           <item row="0" column="1">
-                            <widget class="QLabel" name="valueTripleMeasureApparentDensity">
+                           <item row="9" column="2">
+                            <widget class="QLabel" name="labelFormula7_3">
+                             <property name="text">
+                              <string>Porowatość całkowita - Porowatość otwarta</string>
+                             </property>
+                             <property name="alignment">
+                              <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
+                             </property>
+                            </widget>
+                           </item>
+                           <item row="2" column="1">
+                            <widget class="QLabel" name="valueTripleMeasureApparentVolume">
                              <property name="font">
                               <font>
                                <bold>true</bold>
                               </font>
                              </property>
                              <property name="text">
-                              <string>2.2104 g/cm³</string>
+                              <string>QQ cm³</string>
                              </property>
                             </widget>
                            </item>
-                           <item row="0" column="2">
-                            <widget class="QLabel" name="labelFormula2_4">
+                           <item row="10" column="1">
+                            <widget class="QLabel" name="valueTripleMeasureWaterAbsorbability">
+                             <property name="font">
+                              <font>
+                               <bold>true</bold>
+                              </font>
+                             </property>
                              <property name="text">
-                              <string>ρp = ms / Vp</string>
+                              <string>QQ %</string>
+                             </property>
+                            </widget>
+                           </item>
+                           <item row="9" column="0">
+                            <widget class="QLabel" name="labelClosedPorosity_3">
+                             <property name="text">
+                              <string>Porowatość zamknięta:</string>
+                             </property>
+                            </widget>
+                           </item>
+                           <item row="2" column="2">
+                            <widget class="QLabel" name="labelFormula1_4">
+                             <property name="text">
+                              <string>Vp = (ms - mw) / ρcieczy</string>
                              </property>
                              <property name="alignment">
                               <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
@@ -5552,65 +5596,7 @@ umieszczając ją w komorze próźniowej na czas zaniku ostatniego pęcherzyka</
                               </font>
                              </property>
                              <property name="text">
-                              <string>100.47 %</string>
-                             </property>
-                            </widget>
-                           </item>
-                           <item row="1" column="2">
-                            <widget class="QLabel" name="labelFormula3_4">
-                             <property name="text">
-                              <string>(ρp / ρteor) · 100%</string>
-                             </property>
-                             <property name="alignment">
-                              <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
-                             </property>
-                            </widget>
-                           </item>
-                           <item row="2" column="0">
-                            <widget class="QLabel" name="labelApparentVolume_5">
-                             <property name="text">
-                              <string>Objętość pozorna (Vp):</string>
-                             </property>
-                            </widget>
-                           </item>
-                           <item row="2" column="1">
-                            <widget class="QLabel" name="valueTripleMeasureApparentVolume">
-                             <property name="font">
-                              <font>
-                               <bold>true</bold>
-                              </font>
-                             </property>
-                             <property name="text">
-                              <string>8.3498 cm³</string>
-                             </property>
-                            </widget>
-                           </item>
-                           <item row="2" column="2">
-                            <widget class="QLabel" name="labelFormula1_4">
-                             <property name="text">
-                              <string>Vp = (ms - mw) / ρcieczy</string>
-                             </property>
-                             <property name="alignment">
-                              <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
-                             </property>
-                            </widget>
-                           </item>
-                           <item row="3" column="0">
-                            <widget class="QLabel" name="labelOpenPoresVolume_3">
-                             <property name="text">
-                              <string>Objętość porów otwartych:</string>
-                             </property>
-                            </widget>
-                           </item>
-                           <item row="3" column="1">
-                            <widget class="QLabel" name="valueTripleMeasureOpenPoresVolume">
-                             <property name="font">
-                              <font>
-                               <bold>true</bold>
-                              </font>
-                             </property>
-                             <property name="text">
-                              <string>3.1122 cm³</string>
+                              <string>QQ %</string>
                              </property>
                             </widget>
                            </item>
@@ -5624,26 +5610,17 @@ umieszczając ją w komorze próźniowej na czas zaniku ostatniego pęcherzyka</
                              </property>
                             </widget>
                            </item>
-                           <item row="4" column="0">
-                            <widget class="QLabel" name="labelOpenPorosity_3">
+                           <item row="0" column="2">
+                            <widget class="QLabel" name="labelFormula2_4">
                              <property name="text">
-                              <string>Porowatość otwarta:</string>
+                              <string>ρp = ms / Vp</string>
+                             </property>
+                             <property name="alignment">
+                              <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
                              </property>
                             </widget>
                            </item>
-                           <item row="4" column="1">
-                            <widget class="QLabel" name="valueTripleMeasureOpenPorosity">
-                             <property name="font">
-                              <font>
-                               <bold>true</bold>
-                              </font>
-                             </property>
-                             <property name="text">
-                              <string>37.28 %</string>
-                             </property>
-                            </widget>
-                           </item>
-                           <item row="4" column="2">
+                           <item row="7" column="2">
                             <widget class="QLabel" name="labelFormula5_3">
                              <property name="text">
                               <string>[(mn - ms) / (mn - mw)] · 100%</string>
@@ -5653,43 +5630,50 @@ umieszczając ją w komorze próźniowej na czas zaniku ostatniego pęcherzyka</
                              </property>
                             </widget>
                            </item>
-                           <item row="5" column="0">
-                            <widget class="QLabel" name="labelTotalPorosity_5">
+                           <item row="7" column="0">
+                            <widget class="QLabel" name="labelOpenPorosity_3">
                              <property name="text">
-                              <string>Porowatość całkowita:</string>
+                              <string>Porowatość otwarta:</string>
                              </property>
                             </widget>
                            </item>
-                           <item row="5" column="1">
-                            <widget class="QLabel" name="valueTripleMeasureTotalPorosity">
+                           <item row="0" column="1">
+                            <widget class="QLabel" name="valueTripleMeasureApparentDensity">
                              <property name="font">
                               <font>
                                <bold>true</bold>
                               </font>
                              </property>
                              <property name="text">
-                              <string>37.42 %</string>
+                              <string>QQ</string>
                              </property>
                             </widget>
                            </item>
-                           <item row="5" column="2">
-                            <widget class="QLabel" name="labelFormula6_3">
+                           <item row="10" column="2">
+                            <widget class="QLabel" name="labelFormula4_4">
                              <property name="text">
-                              <string>(1 - ρp / ρteor) · 100%</string>
+                              <string>[(mn - ms) / ms] · 100%</string>
                              </property>
                              <property name="alignment">
                               <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
                              </property>
                             </widget>
                            </item>
-                           <item row="6" column="0">
-                            <widget class="QLabel" name="labelClosedPorosity_3">
+                           <item row="10" column="0">
+                            <widget class="QLabel" name="labelWaterAbsorbability_3">
                              <property name="text">
-                              <string>Porowatość zamknięta:</string>
+                              <string>Nasiąkliwość wagowa:</string>
                              </property>
                             </widget>
                            </item>
-                           <item row="6" column="1">
+                           <item row="3" column="0">
+                            <widget class="QLabel" name="labelOpenPoresVolume_3">
+                             <property name="text">
+                              <string>Objętość porów otwartych:</string>
+                             </property>
+                            </widget>
+                           </item>
+                           <item row="9" column="1">
                             <widget class="QLabel" name="valueTripleMeasureClosedPorosity">
                              <property name="font">
                               <font>
@@ -5697,43 +5681,64 @@ umieszczając ją w komorze próźniowej na czas zaniku ostatniego pęcherzyka</
                               </font>
                              </property>
                              <property name="text">
-                              <string>0.14 %</string>
+                              <string>QQ %</string>
                              </property>
                             </widget>
                            </item>
-                           <item row="6" column="2">
-                            <widget class="QLabel" name="labelFormula7_3">
-                             <property name="text">
-                              <string>Porowatość całkowita - Porowatość otwarta</string>
-                             </property>
-                             <property name="alignment">
-                              <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
-                             </property>
-                            </widget>
-                           </item>
-                           <item row="7" column="0">
-                            <widget class="QLabel" name="labelWaterAbsorbability_3">
-                             <property name="text">
-                              <string>Nasiąkliwość wagowa:</string>
-                             </property>
-                            </widget>
-                           </item>
-                           <item row="7" column="1">
-                            <widget class="QLabel" name="valueTripleMeasureWaterAbsorbability">
+                           <item row="3" column="1">
+                            <widget class="QLabel" name="valueTripleMeasureOpenPoresVolume">
                              <property name="font">
                               <font>
                                <bold>true</bold>
                               </font>
                              </property>
                              <property name="text">
-                              <string>16.86 %</string>
+                              <string>QQ cm³</string>
                              </property>
                             </widget>
                            </item>
-                           <item row="7" column="2">
-                            <widget class="QLabel" name="labelFormula4_4">
+                           <item row="7" column="1">
+                            <widget class="QLabel" name="valueTripleMeasureOpenPorosity">
+                             <property name="font">
+                              <font>
+                               <bold>true</bold>
+                              </font>
+                             </property>
                              <property name="text">
-                              <string>[(mn - ms) / ms] · 100%</string>
+                              <string>QQ %</string>
+                             </property>
+                            </widget>
+                           </item>
+                           <item row="2" column="0">
+                            <widget class="QLabel" name="labelApparentVolume_5">
+                             <property name="text">
+                              <string>Objętość pozorna (Vp):</string>
+                             </property>
+                            </widget>
+                           </item>
+                           <item row="4" column="0">
+                            <widget class="QLabel" name="labelTotalPorosity_5">
+                             <property name="text">
+                              <string>Porowatość całkowita:</string>
+                             </property>
+                            </widget>
+                           </item>
+                           <item row="4" column="1">
+                            <widget class="QLabel" name="valueTripleMeasureTotalPorosity">
+                             <property name="font">
+                              <font>
+                               <bold>true</bold>
+                              </font>
+                             </property>
+                             <property name="text">
+                              <string>QQ %</string>
+                             </property>
+                            </widget>
+                           </item>
+                           <item row="4" column="2">
+                            <widget class="QLabel" name="labelFormula6_3">
+                             <property name="text">
+                              <string>(1 - ρp / ρteor) · 100%</string>
                              </property>
                              <property name="alignment">
                               <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>

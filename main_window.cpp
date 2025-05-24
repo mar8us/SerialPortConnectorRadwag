@@ -1090,17 +1090,20 @@ void MainWindow::updateStageLabels()
 void MainWindow::finishMeasurement()
 {
     bool isTripleMeasurement = ui->radioMeasureTriple->isChecked();
-
     ui->measureDensityStage->setCurrentWidget(isTripleMeasurement ? ui->pageSummaryTriple : ui->pageSummarySecond);
     ui->measureDensityStage->setProperty("currentStage", QVariant::fromValue(MeasurementStages::Stage::Summary));
-    if(!isTripleMeasurement)
+
+    if(isTripleMeasurement)
     {
+        clearTripleMeasurePages();
         fillMeasureSecondLabelsSummary();
-        clearInitialDataPage();
-        clearDryMeasurePage();
-        clearPrepareMeasureSecondPage();
-        clearFinishMeasureSecondPage();
     }
+    else
+    {
+        clearSecondMeasurePages();
+        fillMeasureTripleLabelsSummary();
+    }
+
     radwagMeasureControler->setStage(MeasurementStages::Stage::Summary);
     radwagMeasureControler->setMeasureStatus(MeasurementStatus::Completed);
     radwagMeasureControler->endMeasure();
@@ -1289,6 +1292,124 @@ void MainWindow::clearInitialDataPage()
     ui->comboBoxFluid->setCurrentIndex(-1);
 }
 
+void MainWindow::clearDryMeasurePage()
+{
+    ui->step1CheckBox->setChecked(false);
+    ui->step2CheckBox->setChecked(false);
+    ui->step3CheckBox->setChecked(false);
+
+    ui->editCurrentDryMeasure->clear();
+    ui->editSavedDryMeasure->clear();
+}
+
+void MainWindow::clearPrepareMeasureSecondPage()
+{
+    ui->stepFirstPrepareMeasureSecond->setChecked(false);
+    ui->stepTwoPrepareMeasureSecond->setChecked(false);
+    ui->stepTreePrepareMeasureSecond->setChecked(false);
+    ui->stepFourPrepareMeasureSecond->setChecked(false);
+    ui->stepFivePrepareMeasureSecond->setChecked(false);
+    ui->comboBoxTempFluidPrepareMeasureSecond->setCurrentIndex(0);
+    ui->editSampleIdValuePrepareMeasureSecond->clear();
+    ui->editLiquidTypePrepareMeasureSecond->clear();
+    ui->editSampleMaterialValuePrepareMeasureSecond->clear();
+    ui->labelLiquidDensityValuePrepareMeasureSecond->clear();
+    ui->labelAirWeightValuePrepareMeasureSecond->clear();
+}
+
+void MainWindow::clearFinishMeasureSecondPage()
+{
+    ui->step3CheckBox_6->setChecked(false);
+    ui->step2FinishMeasureSecondCheckBox->setChecked(false);
+    ui->step3FinishMeasureSecondCheckBox->setChecked(false);
+
+    ui->editCurrentValueFinishSecond->clear();
+    ui->editSavedValueFinishMeasureSecond->clear();
+    ui->editDryMeasureFinishMeasureSecond->clear();
+    ui->editLiquidMeasureFinishMeasureSecond->clear();
+    ui->editSampleIdValueFinishMeasureSecond->clear();
+    ui->editSampleMaterialValueFinishMeasureSecond->clear();
+    ui->editLiquidFinishMeasureSecond->clear();
+    ui->editDensityLiquidFinishMeasureSecond->clear();
+}
+
+void MainWindow::clearPrepareMeasureTriplePage()
+{
+    ui->step1CheckBoxPrepareSaturation->setChecked(false);
+    ui->step2CheckBoxPrepareSaturation->setChecked(false);
+    ui->step3CheckBoxPrepareSaturation->setChecked(false);
+    ui->step4CheckBoxPrepareSaturation->setChecked(false);
+    ui->step5CheckBoxPrepareSaturation->setChecked(false);
+    ui->step6CheckBoxPrepareSaturation->setChecked(false);
+
+    ui->comboBoxTempFluidPrepareSaturationTrilpe->setCurrentIndex(0);
+    ui->comboBoxSaturationMethodPrepareMeasureTriple->setCurrentIndex(0);
+    ui->spinSaturationTimePrepareMeasureTriple->setValue(60);
+    ui->editStartSaturationDateTimePrepareMeasureTriple->setDateTime(QDateTime::currentDateTime());
+
+    ui->ediSampleIdValuePrepareMeasureTriple->clear();
+    ui->editSampleMaterialValuePrepareMeasureTriple->clear();
+    ui->editLiquidTypePrepareSaturationTriple->clear();
+    ui->labelFluidDensityPrepareSaturationTrilpe->clear();
+    ui->editAirWeightValuePrepareMeasureTriple->clear();
+}
+
+void MainWindow::clearFinishMeasureTriplePage()
+{
+    ui->step1FinishTriple->setChecked(false);
+    ui->step2FinishTriple->setChecked(false);
+    ui->step3FinishTriple->setChecked(false);
+
+    ui->editCurrentValueFinishMeasurementTriple->clear();
+    ui->editSavedValueFinishMeasurementTriple->clear();
+    ui->editDryMassSaturationTriple->clear();
+    ui->editLiquidMeasureFinishMeasurementTriple->clear();
+
+    ui->editSampleIdValueSaturationTriple->clear();
+    ui->editMaterialNameSaturationTriple->clear();
+    ui->editFluidNameSaturationTriple->clear();
+    ui->editSaturationMethodSaturationTriple->clear();
+    ui->editFluidDensitySaturationTriple->clear();
+}
+
+void MainWindow::clearAirSaturatedTriplePage()
+{
+    ui->step1CheckBox_2->setChecked(false);
+    ui->step2CheckBox_2->setChecked(false);
+    ui->step3CheckBox_2->setChecked(false);
+    ui->step4CheckBoxSaturatedTriple->setChecked(false);
+    ui->step5CheckBoxSaturatedTriple->setChecked(false);
+
+    ui->editCurrentMeasureSaturated->clear();
+    ui->editSavedMeasureSaturated->clear();
+    ui->editDryAirSaturatedTriple->clear();
+    ui->editLiquidAirSaturatedTriple->clear();
+    ui->editAirSaturatedTriple->clear();
+
+    ui->editSampleIdAirSaturatedTriple->clear();
+    ui->editMaterialAirSaturatedTriple->clear();
+    ui->editFluidAirSaturatedTriple->clear();
+    ui->editSaturationAirSaturatedTriple->clear();
+    ui->editDensityAirSaturatedTriple->clear();
+}
+
+void MainWindow::clearSecondMeasurePages()
+{
+    clearInitialDataPage();
+    clearDryMeasurePage();
+    clearPrepareMeasureSecondPage();
+    clearFinishMeasureSecondPage();
+}
+
+void MainWindow::clearTripleMeasurePages()
+{
+    clearInitialDataPage();
+    clearDryMeasurePage();
+    clearPrepareMeasureTriplePage();
+    clearFinishMeasureTriplePage();
+    clearAirSaturatedTriplePage();
+}
+
 void MainWindow::setEnableInitialDataPage(bool enabled)
 {
     ui->comboBoxSampleSelection->setEnabled(enabled);
@@ -1319,16 +1440,6 @@ bool MainWindow::vaildateDryMeasureData()
     }
 
     return true;
-}
-
-void MainWindow::clearDryMeasurePage()
-{
-    ui->step1CheckBox->setChecked(false);
-    ui->step2CheckBox->setChecked(false);
-    ui->step3CheckBox->setChecked(false);
-
-    ui->editCurrentDryMeasure->clear();
-    ui->editSavedDryMeasure->clear();
 }
 
 void MainWindow::setEnableDryMeasurePage(bool enabled)
@@ -1491,64 +1602,6 @@ void MainWindow::fillPrepareSaturationTemperatureCombo()
         ui->comboBoxTempFluidPrepareSaturationTrilpe->setCurrentIndex(0);
 }
 
-void MainWindow::updateSaturationMethodPrepareTriple()
-{
-    if(!radwagMeasureControler->hasActiveMeasurement())
-        return;
-
-    int currentIndex = ui->comboBoxSaturationMethodPrepareMeasureTriple->currentIndex();
-    if(currentIndex == -1)
-        return;
-
-    SaturationMethod selectedMethod = static_cast<SaturationMethod>(currentIndex);
-    radwagMeasureControler->setSaturationMethod(selectedMethod);
-}
-
-void MainWindow::updatePrepareSaturationFluidDensityLabel()
-{
-    if(!radwagMeasureControler->hasActiveMeasurement())
-        return;
-
-    int currentIndex = ui->comboBoxTempFluidPrepareSaturationTrilpe->currentIndex();
-    if(currentIndex == -1)
-        return;
-
-    double selectedTemperature = ui->comboBoxTempFluidPrepareSaturationTrilpe->itemData(currentIndex).toDouble();
-
-    Fluid currentFluid = radwagMeasureControler->getActiveMeasure()->getFluid();
-    const QMap<double, double>& densityTableMap = currentFluid.getDensityTableMap();
-
-    if(!densityTableMap.contains(selectedTemperature))
-        return;
-
-    double density = densityTableMap.value(selectedTemperature);
-    QString formattedDensity = QString::number(density, 'f', 4) + " g/cm³";
-    ui->labelFluidDensityPrepareSaturationTrilpe->setText(formattedDensity);
-    radwagMeasureControler->setFluidTemperature(selectedTemperature);
-}
-
-void MainWindow::onSpinSaturationTimeChanged()
-{
-    if(!radwagMeasureControler->hasActiveMeasurement())
-        return;
-    radwagMeasureControler->setSaturationTime(ui->spinSaturationTimePrepareMeasureTriple->value());
-}
-
-void MainWindow::clearPrepareMeasureSecondPage()
-{
-    ui->stepFirstPrepareMeasureSecond->setChecked(false);
-    ui->stepTwoPrepareMeasureSecond->setChecked(false);
-    ui->stepTreePrepareMeasureSecond->setChecked(false);
-    ui->stepFourPrepareMeasureSecond->setChecked(false);
-    ui->stepFivePrepareMeasureSecond->setChecked(false);
-    ui->comboBoxTempFluidPrepareMeasureSecond->setCurrentIndex(0);
-    ui->editSampleIdValuePrepareMeasureSecond->clear();
-    ui->editLiquidTypePrepareMeasureSecond->clear();
-    ui->editSampleMaterialValuePrepareMeasureSecond->clear();
-    ui->labelLiquidDensityValuePrepareMeasureSecond->clear();
-    ui->labelAirWeightValuePrepareMeasureSecond->clear();
-}
-
 void MainWindow::setEnablePrepareMeasureSecondPage(bool enabled)
 {
     ui->stepFirstPrepareMeasureSecond->setEnabled(enabled);
@@ -1558,22 +1611,6 @@ void MainWindow::setEnablePrepareMeasureSecondPage(bool enabled)
     ui->stepFivePrepareMeasureSecond->setEnabled(enabled);
     ui->buttonConfrimPrepareMeasureSecond->setEnabled(enabled);
     ui->comboBoxTempFluidPrepareMeasureSecond->setEnabled(enabled);
-}
-
-void MainWindow::setEnablePrepareSaturationPage(bool enabled)
-{
-    ui->comboBoxSaturationMethodPrepareMeasureTriple->setEnabled(enabled);
-    ui->spinSaturationTimePrepareMeasureTriple->setEnabled(enabled);
-    ui->editStartSaturationDateTimePrepareMeasureTriple->setEnabled(enabled);
-    ui->comboBoxTempFluidPrepareSaturationTrilpe->setEnabled(enabled);
-
-    ui->step1CheckBoxPrepareSaturation->setEnabled(enabled);
-    ui->step2CheckBoxPrepareSaturation->setEnabled(enabled);
-    ui->step3CheckBoxPrepareSaturation->setEnabled(enabled);
-    ui->step4CheckBoxPrepareSaturation->setEnabled(enabled);
-    ui->step5CheckBoxPrepareSaturation->setEnabled(enabled);
-    ui->step6CheckBoxPrepareSaturation->setEnabled(enabled);
-    ui->buttonConfirmPrepareSaturation->setEnabled(enabled);
 }
 
 //----------------------------------------------- END FILLING AND HELPER METHODS FOR PAGE 2 PREPARE MEASUREMENT ------------------------------------------
@@ -1659,20 +1696,106 @@ void MainWindow::fillAirSaturatedTripleLabels()
     ui->editLiquidAirSaturatedTriple->setText(QString::number(saturationMassInFluid, 'f', 3) + " g");
 }
 
-void MainWindow::clearFinishMeasureSecondPage()
+void MainWindow::fillMeasureTripleLabelsSummary()
 {
-    ui->step3CheckBox_6->setChecked(false);
-    ui->step2FinishMeasureSecondCheckBox->setChecked(false);
-    ui->step3FinishMeasureSecondCheckBox->setChecked(false);
+    if(!radwagMeasureControler->hasActiveMeasurement())
+        return;
 
-    ui->editCurrentValueFinishSecond->clear();
-    ui->editSavedValueFinishMeasureSecond->clear();
-    ui->editDryMeasureFinishMeasureSecond->clear();
-    ui->editLiquidMeasureFinishMeasureSecond->clear();
-    ui->editSampleIdValueFinishMeasureSecond->clear();
-    ui->editSampleMaterialValueFinishMeasureSecond->clear();
-    ui->editLiquidFinishMeasureSecond->clear();
-    ui->editDensityLiquidFinishMeasureSecond->clear();
+    auto measurement = radwagMeasureControler->getActiveMeasure();
+    auto results = radwagMeasureControler->calculateResults();
+    auto sample = measurement->getSample();
+    Fluid fluid = measurement->getFluid();
+
+    ui->valueTripleMeasureID->setText(measurement->getSampleId());
+    ui->valueTripleSampleName->setText(sample.getName());
+    ui->valueTripleMaterialName->setText(sample.getMaterialName());
+    ui->valueTripleTheoreticalDensity->setText(QString::number(sample.getMaterialDensity(), 'f', 4) + " g/cm³");
+
+    ui->valueTripleMeasureLiquidName->setText(fluid.getName());
+    ui->valueTripleMeasureLiquidDensity->setText(QString::number(measurement->getFluidDensity(), 'f', 5) + " g/cm³");
+    ui->valueTripleMeasureSaturationMethod->setText(utils::getSaturationMethodName(measurement->getSaturationMethod()));
+    ui->valueTripleMeasureSaturationTime->setText(QString::number(measurement->getSaturationTime()));
+
+    ui->valueTripleMeasureType->setText(measurement->getType() == MeasurementType::TwoStage ? "Dwustopniowy" : "Trzystopniowy");
+    ui->valueTripleMeasureOperator->setText(measurement->getAuthor());
+    QString dateTime = measurement->getDate().toString("dd-MM-yyyy HH:mm");
+    ui->valueTripleMeasureDateTime->setText(dateTime);
+
+    double dryMass = measurement->getSampleDryMass();
+    ui->valueTripleMeasureDryMass->setText(QString::number(dryMass, 'f', 3) + " g");
+
+    double massInFluid = measurement->getSampleInFluidMass();
+    ui->valueTripleMeasureWetMass->setText(QString::number(massInFluid, 'f', 3) + " g");
+
+    double saturatedMass = measurement->getSampleSaturatedMass();
+    ui->valueTripleMeasureSaturatedMass->setText(QString::number(saturatedMass, 'f', 3) + " g");
+
+    double apparentDensity = results.getApparentDensity();
+    ui->valueTripleMeasureApparentDensity->setText(QString::number(apparentDensity, 'f', 3) + " g/cm³");
+
+    double relativeDensity = results.getRelativeDensity();
+    ui->valueTripleMeasureRelativeDensity->setText(QString::number(relativeDensity, 'f', 2) + " %");
+
+    double apparentVolume = results.getApparentVolume();
+    ui->valueTripleMeasureApparentVolume->setText(QString::number(apparentVolume, 'f', 3) + " cm³");
+
+    double openPoresVolume = results.getOpenPoresVolume();
+    ui->valueTripleMeasureOpenPoresVolume->setText(QString::number(openPoresVolume, 'f', 3) + " cm³");
+
+    double totalPorosity = results.getTotalPorosity();
+    ui->valueTripleMeasureTotalPorosity->setText(QString::number(totalPorosity, 'f', 2) + " %");
+
+    double openPorosity = results.getOpenPorosity();
+    ui->valueTripleMeasureOpenPorosity->setText(QString::number(openPorosity, 'f', 2) + " %");
+
+    double closedPorosity = results.getClosedPorosity();
+    ui->valueTripleMeasureClosedPorosity->setText(QString::number(closedPorosity, 'f', 2) + " %");
+
+    double waterAbsorption = results.getWaterAbsorption();
+    ui->valueTripleMeasureWaterAbsorbability->setText(QString::number(waterAbsorption, 'f', 2) + " %");
+}
+
+void MainWindow::updateSaturationMethodPrepareTriple()
+{
+    if(!radwagMeasureControler->hasActiveMeasurement())
+        return;
+
+    int currentIndex = ui->comboBoxSaturationMethodPrepareMeasureTriple->currentIndex();
+    if(currentIndex == -1)
+        return;
+
+    SaturationMethod selectedMethod = static_cast<SaturationMethod>(currentIndex);
+    radwagMeasureControler->setSaturationMethod(selectedMethod);
+}
+
+void MainWindow::updatePrepareSaturationFluidDensityLabel()
+{
+    if(!radwagMeasureControler->hasActiveMeasurement())
+        return;
+
+    int currentIndex = ui->comboBoxTempFluidPrepareSaturationTrilpe->currentIndex();
+    if(currentIndex == -1)
+        return;
+
+    double selectedTemperature = ui->comboBoxTempFluidPrepareSaturationTrilpe->itemData(currentIndex).toDouble();
+
+    Fluid currentFluid = radwagMeasureControler->getActiveMeasure()->getFluid();
+    const QMap<double, double>& densityTableMap = currentFluid.getDensityTableMap();
+
+    if(!densityTableMap.contains(selectedTemperature))
+        return;
+
+    double density = densityTableMap.value(selectedTemperature);
+    QString formattedDensity = QString::number(density, 'f', 4) + " g/cm³";
+    ui->labelFluidDensityPrepareSaturationTrilpe->setText(formattedDensity);
+    radwagMeasureControler->setFluidTemperature(selectedTemperature);
+}
+
+void MainWindow::onSpinSaturationTimeChanged()
+{
+    if(!radwagMeasureControler->hasActiveMeasurement())
+        return;
+    radwagMeasureControler->setSaturationTime(ui->spinSaturationTimePrepareMeasureTriple->value());
 }
 
 void MainWindow::setEnableFinishMeasureSecondPage(bool enabled)
@@ -1686,6 +1809,22 @@ void MainWindow::setEnableFinishMeasureSecondPage(bool enabled)
     ui->buttonGetCurrentValueFinishMeasureSecond->setEnabled(enabled);
     ui->buttonSaveCurrentFinishSecond->setEnabled(enabled);
     ui->buttonClearSavedValueFinishMeasureSecond->setEnabled(enabled);
+}
+
+void MainWindow::setEnablePrepareSaturationPage(bool enabled)
+{
+    ui->comboBoxSaturationMethodPrepareMeasureTriple->setEnabled(enabled);
+    ui->spinSaturationTimePrepareMeasureTriple->setEnabled(enabled);
+    ui->editStartSaturationDateTimePrepareMeasureTriple->setEnabled(enabled);
+    ui->comboBoxTempFluidPrepareSaturationTrilpe->setEnabled(enabled);
+
+    ui->step1CheckBoxPrepareSaturation->setEnabled(enabled);
+    ui->step2CheckBoxPrepareSaturation->setEnabled(enabled);
+    ui->step3CheckBoxPrepareSaturation->setEnabled(enabled);
+    ui->step4CheckBoxPrepareSaturation->setEnabled(enabled);
+    ui->step5CheckBoxPrepareSaturation->setEnabled(enabled);
+    ui->step6CheckBoxPrepareSaturation->setEnabled(enabled);
+    ui->buttonConfirmPrepareSaturation->setEnabled(enabled);
 }
 
 void MainWindow::setEnableSaturationTrilpePage(bool enabled)

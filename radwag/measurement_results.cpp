@@ -5,7 +5,9 @@ MeasurementResults::MeasurementResults()
     : apparentVolume(0.0)
     , apparentDensity(0.0)
     , relativeDensity(0.0)
+    , openPoresVolume(0.0)
     , openPorosity(0.0)
+    , closedPorosity(0.0)
     , waterAbsorption(0.0)
 {
 
@@ -16,7 +18,9 @@ MeasurementResults::MeasurementResults(const QString& id, const QString& measure
     , apparentVolume(0.0)
     , apparentDensity(0.0)
     , relativeDensity(0.0)
+    , openPoresVolume(0.0)
     , openPorosity(0.0)
+    , closedPorosity(0.0)
     , waterAbsorption(0.0)
 {
 
@@ -42,6 +46,11 @@ double MeasurementResults::getRelativeDensity() const
     return relativeDensity;
 }
 
+double MeasurementResults::getOpenPoresVolume() const
+{
+    return openPoresVolume;
+}
+
 double MeasurementResults::getTotalPorosity() const
 {
     return totalPorosity;
@@ -50,6 +59,11 @@ double MeasurementResults::getTotalPorosity() const
 double MeasurementResults::getOpenPorosity() const
 {
     return openPorosity;
+}
+
+double MeasurementResults::getClosedPorosity() const
+{
+    return closedPorosity;
 }
 
 double MeasurementResults::getWaterAbsorption() const
@@ -77,6 +91,11 @@ void MeasurementResults::setRelativeDensity(double newRelativeDensity)
     relativeDensity = newRelativeDensity;
 }
 
+void MeasurementResults::setOpenPoresVolume(double newOpenPoresVolume)
+{
+    openPoresVolume = newOpenPoresVolume;
+}
+
 void MeasurementResults::setTotalPorosity(double newTotalPorosity)
 {
     totalPorosity = newTotalPorosity;
@@ -85,6 +104,11 @@ void MeasurementResults::setTotalPorosity(double newTotalPorosity)
 void MeasurementResults::setOpenPorosity(double newOpenPorosity)
 {
     openPorosity = newOpenPorosity;
+}
+
+void MeasurementResults::setClosedPorosity(double newClosedPorosity)
+{
+    closedPorosity = newClosedPorosity;
 }
 
 void MeasurementResults::setWaterAbsorption(double newWaterAbsorption)
@@ -118,7 +142,9 @@ bool MeasurementResults::calculateResults(std::shared_ptr<const Measurement>& me
     // Dla pomiarów trzystopniowych oblicz porowatość otwartą i nasiąkliwość
     if(measurement->isThreeType())
     {
+        openPoresVolume = calculateOpenPoresVolume(measurement);
         openPorosity = calculateOpenPorosity(measurement);
+        closedPorosity = calculateClosedPorosity();
         waterAbsorption = calculateWaterAbsorption(measurement);
     }
 
@@ -139,18 +165,19 @@ double MeasurementResults::calculateApparentVolume(std::shared_ptr<const Measure
     return (sampleDryMass - sampleInFluidMass) / fluidDensity;
 }
 
-// double MeasurementResults::calculateApparentDensity(std::shared_ptr<const Measurement> &measurement)
+// double MeasurementResults::calculateApparentVolume(std::shared_ptr<const Measurement> &measurement)
 // {
-//     // Obliczenie gęstości pozornej: ρ_p = m_s / V = m_s * ρ_cieczy / (m_s - m_w)
-//     double sampleDryMass = measurement->getSampleDryMass();
-//     double sampleInFluidMass = measurement->getSampleInFluidMass();
-//     double fluidDensity = measurement->getFluidDensity();
+//     // Obliczenie objętości pozornej: V = (m_n - m_w) / ρ_cieczy
+//     // Zgodnie z wzorem laboratoryjnym z dokumentacji
+//     double saturatedMass = measurement->getSampleSaturatedMass();      // m_n
+//     double sampleInFluidMass = measurement->getSampleInFluidMass();    // m_w
+//     double fluidDensity = measurement->getFluidDensity();              // ρ_cieczy
 
-//     if(sampleDryMass <= 0.0 || (sampleDryMass - sampleInFluidMass) <= 0.0)
+//     if(fluidDensity <= 0.0 || saturatedMass <= sampleInFluidMass)
 //         return 0.0;
 
-//     // Gęstość pozorna w g/cm³
-//     return (sampleDryMass * sampleInFluidMass) / (sampleDryMass - sampleInFluidMass);
+//     // Objętość pozorna w cm³ (zgodnie z dokumentacją laboratoryjną)
+//     return (saturatedMass - sampleInFluidMass) / fluidDensity;
 // }
 
 double MeasurementResults::calculateApparentDensity(std::shared_ptr<const Measurement> &measurement)
@@ -177,6 +204,20 @@ double MeasurementResults::calculateRelativeDensity(double apparentDensity, doub
     return (apparentDensity / materialDensity) * 100.0;
 }
 
+double MeasurementResults::calculateOpenPoresVolume(std::shared_ptr<const Measurement> &measurement)
+{
+    // Obliczenie objętości porów otwartych: V_porów = (m_n - m_s) / ρ_cieczy
+    double sampleDryMass = measurement->getSampleDryMass();         // m_s
+    double saturatedMass = measurement->getSampleSaturatedMass();   // m_n
+    double fluidDensity = measurement->getFluidDensity();           // ρ_cieczy
+
+    if(saturatedMass <= sampleDryMass || fluidDensity <= 0.0)
+        return 0.0;
+
+    // Objętość porów otwartych w cm³ (przy masach w g i gęstości w g/cm³)
+    return (saturatedMass - sampleDryMass) / fluidDensity;
+}
+
 double MeasurementResults::calculateTotalPorosity(double apparentDensity, double materialDensity)
 {
     if (materialDensity <= 0)
@@ -196,6 +237,18 @@ double MeasurementResults::calculateOpenPorosity(std::shared_ptr<const Measureme
 
     // Porowatość otwarta w %
     return ((saturatedMass - sampleDryMass) / (saturatedMass - sampleInFluidMass)) * 100.0;
+}
+
+double MeasurementResults::calculateClosedPorosity()
+{
+    if(totalPorosity < 0.0 || openPorosity < 0.0)
+        return 0.0;
+
+    if(openPorosity > totalPorosity + 0.001)
+        return 0.0;
+
+    double result = totalPorosity - openPorosity;
+    return std::max(0.0, result);
 }
 
 double MeasurementResults::calculateWaterAbsorption(std::shared_ptr<const Measurement> &measurement)
@@ -218,7 +271,10 @@ QJsonObject MeasurementResults::toJson() const
     resultsObj["apparentVolume"] = apparentVolume;
     resultsObj["apparentDensity"] = apparentDensity;
     resultsObj["relativeDensity"] = relativeDensity;
+    resultsObj["openPoresVolume"] = openPoresVolume;
+    resultsObj["totalPorosity"] = totalPorosity;
     resultsObj["openPorosity"] = openPorosity;
+    resultsObj["closedPorosity"] = closedPorosity;
     resultsObj["waterAbsorption"] = waterAbsorption;
     return resultsObj;
 }
@@ -233,8 +289,14 @@ void MeasurementResults::fromJson(const QJsonObject &json)
         apparentDensity = json["apparentDensity"].toDouble();
     if(json.contains("relativeDensity"))
         relativeDensity = json["relativeDensity"].toDouble();
+    if(json.contains("openPoresVolume"))
+        openPoresVolume = json["openPoresVolume"].toDouble();
+    if(json.contains("totalPorosity"))
+        totalPorosity = json["totalPorosity"].toDouble();
     if(json.contains("openPorosity"))
         openPorosity = json["openPorosity"].toDouble();
+    if(json.contains("closedPorosity"))
+        closedPorosity = json["closedPorosity"].toDouble();
     if(json.contains("waterAbsorption"))
         waterAbsorption = json["waterAbsorption"].toDouble();
 }
