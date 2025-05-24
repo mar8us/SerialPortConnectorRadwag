@@ -36,6 +36,55 @@ void DeviceForm::onCancelButtonClicked()
     close();
 }
 
+
+void DeviceForm::onComboTypeChanged()
+{
+    ui->commandTableWidget->setRowCount(0);
+    DeviceType selectedType = static_cast<DeviceType>(ui->deviceTypeCombo->currentData().toInt());
+    if(selectedType == DeviceType::None)
+        return;
+
+    if(selectedType == DeviceType::RadwagScaleAC220 || selectedType == DeviceType::RadwagScaleAC350)
+    {
+        ui->commandTableWidget->setRowCount(radwagCommands.size());
+
+        for(int i = 0; i < radwagCommands.size(); i++)
+        {
+            QTableWidgetItem *nameItem = new QTableWidgetItem(radwagCommands[i].description);
+            ui->commandTableWidget->setItem(i, 0, nameItem);
+
+            QTableWidgetItem *commandItem = new QTableWidgetItem(radwagCommands[i].command);
+            ui->commandTableWidget->setItem(i, 1, commandItem);
+        }
+        setEnableDeviceCommandButtons(false);
+    }
+    else if(selectedType == DeviceType::Own)
+    {
+        setEnableDeviceCommandButtons(true);
+        return;
+    }
+}
+
+void DeviceForm::setEnableDeviceCommandButtons(bool enabled)
+{
+    if(enabled)
+    {
+        ui->commandTableWidget->setEditTriggers(QAbstractItemView::EditTrigger::DoubleClicked);
+        ui->commandDescEdit->setEnabled(true);
+        ui->commandEdit->setEnabled(true);
+        ui->addCommandButton->setEnabled(true);
+        ui->removeCommandButton->setEnabled(true);
+    }
+    else
+    {
+        ui->commandTableWidget->setEditTriggers(QAbstractItemView::EditTrigger::NoEditTriggers);
+        ui->commandDescEdit->setEnabled(false);
+        ui->commandEdit->setEnabled(false);
+        ui->addCommandButton->setEnabled(false);
+        ui->removeCommandButton->setEnabled(false);
+    }
+}
+
 void DeviceForm::onAddDeviceSuccess()
 {
     accept();
@@ -122,6 +171,7 @@ void DeviceForm::initControls()
 
 void DeviceForm::connectButtons()
 {
+    connect(ui->deviceTypeCombo, &QComboBox::currentIndexChanged, this, &DeviceForm::onComboTypeChanged);
     connect(ui->addDiviceButton, &QPushButton::clicked, this, &DeviceForm::onAcceptButtonClicked);
     connect(ui->cancelButton, &QPushButton::clicked, this, &DeviceForm::onCancelButtonClicked);
 
@@ -132,13 +182,22 @@ void DeviceForm::connectButtons()
 
 void DeviceForm::setButtonsState()
 {
-    ui->removeCommandButton->setEnabled(!ui->commandTableWidget->selectionModel()->selectedRows().isEmpty());
+    ui->removeCommandButton->setEnabled(canEditCommands());
+}
+
+bool DeviceForm::canEditCommands()
+{
+    DeviceType deviceType = static_cast<DeviceType>(ui->deviceTypeCombo->currentData().toInt());
+    return deviceType != DeviceType::RadwagScaleAC220 && deviceType != DeviceType::RadwagScaleAC350 && !ui->commandTableWidget->selectionModel()->selectedRows().isEmpty();
 }
 
 void DeviceForm::fillDeviceTypeCombo()
 {
-    ui->deviceTypeCombo->addItem("Waga RADWAG", static_cast<int>(DeviceType::RadwagScale));
-    ui->deviceTypeCombo->addItem("Przesiewacz", static_cast<int>(DeviceType::Sifter));
+    ui->deviceTypeCombo->addItem("Waga RADWAG AC220", static_cast<int>(DeviceType::RadwagScaleAC220));
+    ui->deviceTypeCombo->addItem("Waga RADWAG AC350", static_cast<int>(DeviceType::RadwagScaleAC350));
+    ui->deviceTypeCombo->addItem("Własne", static_cast<int>(DeviceType::Own));
+
+    ui->deviceTypeCombo->setCurrentIndex(0);
 }
 
 void DeviceForm::fillBaudRateCombo()
@@ -192,6 +251,7 @@ void DeviceForm::setupCommandTable()
     ui->commandTableWidget->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
     ui->commandTableWidget->horizontalHeader()->setStyleSheet("QHeaderView::section { font-weight: bold; }");
 
+    onComboTypeChanged();
     setButtonsState();
 }
 

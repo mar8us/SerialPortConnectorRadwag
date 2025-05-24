@@ -78,6 +78,10 @@ bool DeviceControler::handleModelOperationResult(DeviceListModel::OperationResul
             emit operationFailed("Urządzenie jest puste!");
             return false;
 
+        case DeviceListModel::OperationResult::DeviceNoneType:
+            emit operationFailed("Typ urządzenia nie może być puste!");
+            return false;
+
         case DeviceListModel::OperationResult::DeviceNameIsEmpty:
             emit operationFailed("Nazwa urządzenia nie może być pusta!");
             return false;

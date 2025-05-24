@@ -1,5 +1,7 @@
 #include "material_manager.h"
 #include <QDebug>
+#include <qdir.h>
+#include <qstandardpaths.h>
 
 MaterialManager::MaterialManager(QObject *parent) : QObject(parent)
 {
@@ -31,8 +33,11 @@ bool MaterialManager::materialExists(const QString &name) const
 
 QString MaterialManager::getMaterialsFilePath() const
 {
-    QSettings settings;
-    return settings.value("MaterialTablesPath", QCoreApplication::applicationDirPath() + "/materials.json").toString();
+    QString appDataPath = QStandardPaths::writableLocation(QStandardPaths::AppLocalDataLocation);
+    QDir dir(appDataPath);
+    if(!dir.exists())
+        dir.mkpath(".");
+    return dir.filePath("materials.json");
 }
 
 void MaterialManager::loadMaterials()
@@ -62,7 +67,8 @@ void MaterialManager::loadMaterials()
     for(int i = 0; i < materialsArray.size(); i++)
     {
         QJsonObject materialObj = materialsArray[i].toObject();
-        Material material(materialObj["name"].toString(), materialObj["category"].toString(), materialObj["description"].toString(), materialObj["density"].toDouble());
+        Material material;
+        material.fromJson(materialObj);
         materials[material.getName()] = material;
     }
 }
@@ -74,20 +80,15 @@ bool MaterialManager::saveMaterials()
     for (auto it = materials.begin(); it != materials.end(); ++it)
     {
         Material material = it.value();
-        QJsonObject materialObj;
-        materialObj["name"] = material.getName();
-        materialObj["category"] = material.getCategory();
-        materialObj["description"] = material.getDescription();
-        materialObj["density"] = material.getDensity();
-
-        materialsArray.append(materialObj);
+        materialsArray.append(material.toJson());
     }
 
     QJsonDocument doc(materialsArray);
     QString filePath = getMaterialsFilePath();
 
     QFile file(filePath);
-    if (!file.open(QIODevice::WriteOnly)) {
+    if(!file.open(QIODevice::WriteOnly))
+    {
         qWarning() << "Nie można zapisać materiałów do pliku:" << filePath;
         return false;
     }

@@ -1,12 +1,12 @@
 #include "fluid.h"
-#include <algorithm>
+#include <qjsonarray.h>
 
 Fluid::Fluid()
 {
 }
 
 Fluid::Fluid(const QString &name, const QString &description, const QMap<double, double> &densityMap)
-    : name(name), description(description), densityTable(densityMap)
+    : name(name), description(description), densityMap(densityMap)
 {
 
 }
@@ -14,7 +14,13 @@ Fluid::Fluid(const QString &name, const QString &description, const QMap<double,
 Fluid::Fluid(const QString &name, const QString &description, const QVector<DensityPoint> &densityTable)
     : name(name), description(description)
 {
-    setDensityTable(densityTable);
+    setDensityTableMap(densityTable);
+}
+
+Fluid::Fluid(const Fluid &sourceFluid)
+    : name(sourceFluid.name), description(sourceFluid.description)
+{
+    densityMap = sourceFluid.densityMap ;
 }
 
 QString Fluid::getName() const
@@ -40,7 +46,7 @@ void Fluid::setDescription(const QString &newDescription)
 QVector<DensityPoint> Fluid::getDensityTableVector() const
 {
     QVector<DensityPoint> densityVecotr;
-    QMapIterator<double, double> i(densityTable);
+    QMapIterator<double, double> i(densityMap);
     while(i.hasNext())
     {
         i.next();
@@ -49,37 +55,77 @@ QVector<DensityPoint> Fluid::getDensityTableVector() const
     return densityVecotr;
 }
 
-QMap<double, double> Fluid::getDensityTableMap() const
+const QMap<double, double>& Fluid::getDensityTableMap() const
 {
-    return densityTable;
+    return densityMap;
 }
 
-void Fluid::setDensityTable(const QVector<DensityPoint> &newDensityTable)
+void Fluid::setDensityTableMap(const QVector<DensityPoint> &newDensityTable)
 {
-    densityTable.clear();
+    densityMap.clear();
     for(const DensityPoint &point : newDensityTable)
-        densityTable.insert(point.temperature, point.density);
+        densityMap.insert(point.temperature, point.density);
 }
 
 double Fluid::getDensity(double temperature) const
 {
-    return densityTable.value(temperature, 0.0);
+    return densityMap.value(temperature, 0.0);
 }
 
-bool Fluid::setDensity(double temperature, double density)
+bool Fluid::addDensity(double temperature, double density)
 {
     if(hasDensity(temperature))
         return false;
-    densityTable[temperature] = density;
+    densityMap[temperature] = density;
     return true;
 }
 
 bool Fluid::hasDensity(double temperature) const
 {
-    return densityTable.contains(temperature);
+    return densityMap.contains(temperature);
 }
 
 void Fluid::removeDensity(double temperature)
 {
-    densityTable.remove(temperature);
+    densityMap.remove(temperature);
+}
+
+QJsonObject Fluid::toJson() const
+{
+    QJsonObject obj;
+    obj["name"] = name;
+    obj["description"] = description;
+
+    QJsonArray densityArray;
+    for(auto it = densityMap.constBegin(); it != densityMap.constEnd(); it++)
+    {
+        QJsonObject densityPoint;
+        densityPoint["temperature"] = it.key();
+        densityPoint["density"] = it.value();
+        densityArray.append(densityPoint);
+    }
+    obj["densityMap"] = densityArray;
+
+    return obj;
+}
+
+void Fluid::fromJson(const QJsonObject &json)
+{
+    name = json["name"].toString();
+    description = json["description"].toString();
+
+    densityMap.clear();
+    if(json.contains("densityMap") && json["densityMap"].isArray())
+    {
+        QJsonArray densityArray = json["densityMap"].toArray();
+        for(const QJsonValue &value : densityArray)
+        {
+            if(!value.isObject())
+                continue;
+            QJsonObject densityPoint = value.toObject();
+            double temperature = densityPoint["temperature"].toDouble();
+            double density = densityPoint["density"].toDouble();
+            densityMap.insert(temperature, density);
+        }
+    }
 }

@@ -16,6 +16,7 @@ public:
         DeviceAdded,
         DeviceEdited,
         DeviceRemoved,
+        DeviceNoneType,
         DeviceNameIsEmpty,
         DeviceNameIsNotUnique,
         DeviceNotFound,

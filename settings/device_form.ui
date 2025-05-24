@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>661</width>
+    <width>854</width>
     <height>408</height>
    </rect>
   </property>
@@ -16,7 +16,7 @@
   <widget class="QPushButton" name="addDiviceButton">
    <property name="geometry">
     <rect>
-     <x>550</x>
+     <x>745</x>
      <y>360</y>
      <width>91</width>
      <height>29</height>
@@ -29,7 +29,7 @@
   <widget class="QPushButton" name="cancelButton">
    <property name="geometry">
     <rect>
-     <x>457</x>
+     <x>652</x>
      <y>360</y>
      <width>83</width>
      <height>29</height>
@@ -47,7 +47,7 @@
     <rect>
      <x>178</x>
      <y>70</y>
-     <width>131</width>
+     <width>161</width>
      <height>28</height>
     </rect>
    </property>
@@ -112,7 +112,7 @@
     <rect>
      <x>178</x>
      <y>190</y>
-     <width>131</width>
+     <width>161</width>
      <height>28</height>
     </rect>
    </property>
@@ -133,9 +133,9 @@
   <widget class="QTableWidget" name="commandTableWidget">
    <property name="geometry">
     <rect>
-     <x>390</x>
+     <x>410</x>
      <y>40</y>
-     <width>256</width>
+     <width>421</width>
      <height>161</height>
     </rect>
    </property>
@@ -149,8 +149,8 @@
   <widget class="QPushButton" name="addCommandButton">
    <property name="geometry">
     <rect>
-     <x>500</x>
-     <y>290</y>
+     <x>688</x>
+     <y>282</y>
      <width>141</width>
      <height>29</height>
     </rect>
@@ -162,8 +162,8 @@
   <widget class="QLineEdit" name="commandDescEdit">
    <property name="geometry">
     <rect>
-     <x>470</x>
-     <y>220</y>
+     <x>660</x>
+     <y>212</y>
      <width>171</width>
      <height>28</height>
     </rect>
@@ -175,8 +175,8 @@
   <widget class="QLabel" name="commandDescLabel">
    <property name="geometry">
     <rect>
-     <x>390</x>
-     <y>220</y>
+     <x>578</x>
+     <y>212</y>
      <width>71</width>
      <height>20</height>
     </rect>
@@ -188,8 +188,8 @@
   <widget class="QLabel" name="commandLabel">
    <property name="geometry">
     <rect>
-     <x>390</x>
-     <y>250</y>
+     <x>577</x>
+     <y>242</y>
      <width>81</width>
      <height>20</height>
     </rect>
@@ -201,8 +201,8 @@
   <widget class="QLineEdit" name="commandEdit">
    <property name="geometry">
     <rect>
-     <x>470</x>
-     <y>250</y>
+     <x>659</x>
+     <y>242</y>
      <width>171</width>
      <height>28</height>
     </rect>
@@ -214,8 +214,8 @@
   <widget class="QLabel" name="stopBitLabel_4">
    <property name="geometry">
     <rect>
-     <x>390</x>
-     <y>20</y>
+     <x>410</x>
+     <y>15</y>
      <width>211</width>
      <height>20</height>
     </rect>
@@ -226,7 +226,7 @@
     </font>
    </property>
    <property name="text">
-    <string>Zapisane komendy urządzenia</string>
+    <string>Komendy urządzenia</string>
    </property>
   </widget>
   <widget class="QComboBox" name="baudRateCombo">
@@ -234,7 +234,7 @@
     <rect>
      <x>178</x>
      <y>110</y>
-     <width>131</width>
+     <width>161</width>
      <height>28</height>
     </rect>
    </property>
@@ -244,7 +244,7 @@
     <rect>
      <x>178</x>
      <y>150</y>
-     <width>131</width>
+     <width>161</width>
      <height>28</height>
     </rect>
    </property>
@@ -254,7 +254,7 @@
     <rect>
      <x>178</x>
      <y>230</y>
-     <width>131</width>
+     <width>161</width>
      <height>28</height>
     </rect>
    </property>
@@ -262,8 +262,8 @@
   <widget class="QPushButton" name="removeCommandButton">
    <property name="geometry">
     <rect>
-     <x>410</x>
-     <y>290</y>
+     <x>598</x>
+     <y>282</y>
      <width>83</width>
      <height>29</height>
     </rect>
@@ -290,7 +290,7 @@
     <rect>
      <x>178</x>
      <y>30</y>
-     <width>131</width>
+     <width>161</width>
      <height>28</height>
     </rect>
    </property>

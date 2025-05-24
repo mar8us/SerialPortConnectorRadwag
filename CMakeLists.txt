@@ -46,6 +46,18 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         material_tabels/material.h material_tabels/material.cpp
         material_tabels/material_manager.h material_tabels/material_manager.cpp
         tooltip/tooltip_manager.h tooltip/tooltip_manager.cpp
+        sample/sample.h sample/sample.cpp
+        sample/sample_manager.h sample/sample_manager.cpp
+        sample/sample_dialog.h sample/sample_dialog.cpp sample/sample_dialog.ui
+        radwag/measurement.h radwag/measurement.cpp
+        radwag/measurement_results.h radwag/measurement_results.cpp
+        radwag/measurement_manager.h radwag/measurement_manager.cpp
+        main_widow/measurement_controller.h main_widow/measurement_controller.cpp
+        utils.h utils.cpp
+        schema_img/schema_density_solids.png
+        radwag/radwag_scale_connector.h radwag/radwag_scale_connector.cpp
+        radwag/view/measurement_tree_model.h radwag/view/measurement_tree_model.cpp
+        radwag/view/measurement_sort_filter_proxy_model.h radwag/view/measurement_sort_filter_proxy_model.cpp
 
     )
 # Define target properties for Android with Qt 6 as:

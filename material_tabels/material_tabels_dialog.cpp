@@ -9,6 +9,7 @@ MaterialTablesDialog::MaterialTablesDialog(QMap<QString, Material> &materials, Q
 {
     ui->setupUi(this);
     ui->groupBoxMaterialDetails->setEnabled(false);
+    fillComboMaterialCategory();
 
     connectSignalsAndSlots();
     connectSignalsForModification();
@@ -82,7 +83,7 @@ void MaterialTablesDialog::buttonSaveMaterialOnClicked()
         return;
 
     QString name = ui->editMaterialName->text().trimmed();
-    QString category = ui->comboMaterialCategory->currentText();
+    Material::Category category = static_cast<Material::Category>(ui->comboMaterialCategory->currentData().toInt());
     QString description = ui->editMaterialDescription->toPlainText();
     double density = ui->spinTheoreticalDensity->value();
 
@@ -164,8 +165,8 @@ void MaterialTablesDialog::updateMaterialDetails(const QString &materialName)
 
     ui->editMaterialName->setText(material.getName());
 
-    int categoryIndex = ui->comboMaterialCategory->findText(material.getCategory());
-    if(categoryIndex >= 0)
+    int categoryIndex = ui->comboMaterialCategory->findData(static_cast<int>(material.getCategory()));
+    if (categoryIndex >= 0)
         ui->comboMaterialCategory->setCurrentIndex(categoryIndex);
 
     ui->editMaterialDescription->setPlainText(material.getDescription());
@@ -288,7 +289,7 @@ void MaterialTablesDialog::loadMaterials()
 
             Material material(
                 materialObj["name"].toString(),
-                materialObj["category"].toString(),
+                static_cast<Material::Category>(materialObj["category"].toInt()),
                 materialObj["description"].toString(),
                 materialObj["density"].toDouble()
                 );
@@ -311,7 +312,7 @@ void MaterialTablesDialog::saveMaterials()
         Material material = it.value();
         QJsonObject materialObj;
         materialObj["name"] = material.getName();
-        materialObj["category"] = material.getCategory();
+        materialObj["category"] = static_cast<int>(material.getCategory());
         materialObj["description"] = material.getDescription();
         materialObj["density"] = material.getDensity();
 
@@ -331,4 +332,16 @@ void MaterialTablesDialog::saveMaterials()
     }
     else
         QMessageBox::warning(this, "Błąd zapisu", "Nie można zapisać danych materiałów do pliku.");
+}
+
+void MaterialTablesDialog::fillComboMaterialCategory()
+{
+    ui->comboMaterialCategory->clear();
+    ui->comboMaterialCategory->addItem("Metal", static_cast<int>(Material::Category::Metal));
+    ui->comboMaterialCategory->addItem("Ceramika", static_cast<int>(Material::Category::Ceramic));
+    ui->comboMaterialCategory->addItem("Polimer", static_cast<int>(Material::Category::Polymer));
+    ui->comboMaterialCategory->addItem("Kompozyt", static_cast<int>(Material::Category::Composite));
+    ui->comboMaterialCategory->addItem("Szkło", static_cast<int>(Material::Category::Glass));
+    ui->comboMaterialCategory->addItem("Skała", static_cast<int>(Material::Category::Rock));
+    ui->comboMaterialCategory->addItem("Inny", static_cast<int>(Material::Category::Other));
 }
