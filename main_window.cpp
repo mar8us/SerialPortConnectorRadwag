@@ -1096,12 +1096,12 @@ void MainWindow::finishMeasurement()
     if(isTripleMeasurement)
     {
         clearTripleMeasurePages();
-        fillMeasureSecondLabelsSummary();
+        fillMeasureTripleLabelsSummary();
     }
     else
     {
         clearSecondMeasurePages();
-        fillMeasureTripleLabelsSummary();
+        fillMeasureSecondLabelsSummary();
     }
 
     radwagMeasureControler->setStage(MeasurementStages::Stage::Summary);
