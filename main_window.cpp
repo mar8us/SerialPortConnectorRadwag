@@ -352,14 +352,14 @@ void MainWindow::onClearTripleSavedSaturatedMeasureButtonClicked()
 
 //----------------------------------------------- PAGE 4 SUMMARY SECOND ----------------------------------------
 
-void MainWindow::onNewSecondMeasureSecondButtonClicked()
+void MainWindow::onNewMeasureButtonClicked()
 {
     ui->measureDensityStage->setProperty("currentStage", QVariant::fromValue(MeasurementStages::Stage::StartMeasure));
     ui->groupBoxAdditionalSettings->setVisible(true);
     goToNextMeasureStage();
 }
 
-void MainWindow::onReplySecondMeasureSecondButtonClicked()
+void MainWindow::onReplyMeasureButtonClicked()
 {
     if(!radwagMeasureControler->replyActiveMeasure())
         return;
@@ -781,6 +781,7 @@ void MainWindow::connectButtons()
     connectFinishTriplePageButtons();
     connectSaturatedTriplePageButtons();
     connectSummaryMeasureSecondPageButtons();
+    connectSummaryMeasureTriplePageButtons();
     connectCatalogsButtons();
 }
 
@@ -902,9 +903,15 @@ void MainWindow::connectSaturatedTriplePageButtons()
 
 void MainWindow::connectSummaryMeasureSecondPageButtons()
 {
-    connect(ui->buttonNewSecondMeasure, &QPushButton::clicked, this, &MainWindow::onNewSecondMeasureSecondButtonClicked);
-    connect(ui->buttonReplySecondMeasure, &QPushButton::clicked, this, &MainWindow::onReplySecondMeasureSecondButtonClicked);
+    connect(ui->buttonNewSecondMeasure, &QPushButton::clicked, this, &MainWindow::onNewMeasureButtonClicked);
+    connect(ui->buttonReplySecondMeasure, &QPushButton::clicked, this, &MainWindow::onReplyMeasureButtonClicked);
     connect(ui->buttonSaveSecondMeasureToLibrary, &QPushButton::clicked, this, &MainWindow::onSaveSecondMeasureButtonClicked);
+}
+
+void MainWindow::connectSummaryMeasureTriplePageButtons()
+{
+    connect(ui->buttonNewTripleMeasure, &QPushButton::clicked, this, &MainWindow::onNewMeasureButtonClicked);
+    connect(ui->buttonReplyTripleMeasure, &QPushButton::clicked, this, &MainWindow::onReplyMeasureButtonClicked);
 }
 
 void MainWindow::connectCatalogsButtons()
