@@ -1872,6 +1872,7 @@ void MainWindow::fillMeasureSecondLabelsSummary()
 
     Fluid fluid = measurement->getFluid();
     ui->valueSecondLiquidType->setText(fluid.getName());
+    ui->valueSecondFluidTemp->setText(QString::number(measurement->getFluidTemperature()));
     ui->valueSecondLiquidDensity->setText(QString::number(measurement->getFluidDensity(), 'f', 5) + " g/cm³");
 
     double dryMass = measurement->getSampleDryMass();

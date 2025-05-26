@@ -759,7 +759,7 @@ a następnie wykonaj poniższe kroki:</string>
                    </size>
                   </property>
                   <property name="currentIndex">
-                   <number>0</number>
+                   <number>2</number>
                   </property>
                   <widget class="QWidget" name="pageInitialData">
                    <layout class="QGridLayout" name="gridLayout_5">
@@ -3169,7 +3169,7 @@ umieszczając ją w komorze próźniowej na czas zaniku ostatniego pęcherzyka</
                          <x>0</x>
                          <y>0</y>
                          <width>821</width>
-                         <height>680</height>
+                         <height>709</height>
                         </rect>
                        </property>
                        <layout class="QGridLayout" name="gridLayout_10">
@@ -3194,7 +3194,7 @@ umieszczając ją w komorze próźniowej na czas zaniku ostatniego pęcherzyka</
                           <property name="title">
                            <string>Dane ogólne</string>
                           </property>
-                          <layout class="QGridLayout" name="gridLayout_25">
+                          <layout class="QGridLayout" name="gridLayout_16">
                            <item row="0" column="0">
                             <widget class="QLabel" name="labelMeasurementID">
                              <property name="text">
@@ -3214,7 +3214,7 @@ umieszczając ją w komorze próźniowej na czas zaniku ostatniego pęcherzyka</
                              </property>
                             </widget>
                            </item>
-                           <item row="0" column="2" rowspan="4">
+                           <item row="0" column="2" rowspan="3">
                             <layout class="QFormLayout" name="formLayout_15">
                              <item row="0" column="1">
                               <widget class="QLabel" name="valueSecondMeasureType">
@@ -3352,13 +3352,32 @@ umieszczając ją w komorze próźniowej na czas zaniku ostatniego pęcherzyka</
                             </widget>
                            </item>
                            <item row="5" column="0">
+                            <widget class="QLabel" name="labelFluidTemp">
+                             <property name="text">
+                              <string>Temperatura cieczy:</string>
+                             </property>
+                            </widget>
+                           </item>
+                           <item row="5" column="1">
+                            <widget class="QLabel" name="valueSecondFluidTemp">
+                             <property name="font">
+                              <font>
+                               <bold>true</bold>
+                              </font>
+                             </property>
+                             <property name="text">
+                              <string>Q</string>
+                             </property>
+                            </widget>
+                           </item>
+                           <item row="6" column="0">
                             <widget class="QLabel" name="labelLiquidDensity">
                              <property name="text">
                               <string>Gęstość cieczy:</string>
                              </property>
                             </widget>
                            </item>
-                           <item row="5" column="1">
+                           <item row="6" column="1">
                             <widget class="QLabel" name="valueSecondLiquidDensity">
                              <property name="font">
                               <font>
@@ -5190,7 +5209,7 @@ umieszczając ją w komorze próźniowej na czas zaniku ostatniego pęcherzyka</
                        <property name="geometry">
                         <rect>
                          <x>0</x>
-                         <y>-20</y>
+                         <y>0</y>
                          <width>821</width>
                          <height>1077</height>
                         </rect>
