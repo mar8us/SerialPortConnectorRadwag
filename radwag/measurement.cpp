@@ -1,7 +1,8 @@
 #include "measurement.h"
 
 Measurement::Measurement()
-    : type(MeasurementType::TwoStage)
+    : id(QUuid::createUuid().toString(QUuid::WithoutBraces))
+    , type(MeasurementType::TwoStage)
     , stage(MeasurementStages::Stage::None)
     , status(MeasurementStatus::InProgress)
     , fluidTemperature(0.0)
@@ -14,13 +15,13 @@ Measurement::Measurement()
 
 }
 
-Measurement::Measurement(const QString& id, MeasurementType type, const Sample &sample, const Fluid &fluid, const QString &author)
-    : id(id)
+Measurement::Measurement(MeasurementType type, const Sample &sample, const Fluid &fluid, const QString &author)
+    : id(QUuid::createUuid().toString(QUuid::WithoutBraces))
     , type(type)
     , sample(sample)
     , fluid(fluid)
     , author(author)
-    , stage(MeasurementStages::Stage::InitialData)
+    , stage(MeasurementStages::Stage::None)
     , status(MeasurementStatus::InProgress)
     , date(QDateTime::currentDateTime())
     , fluidTemperature(0.0)
@@ -93,11 +94,6 @@ QDateTime Measurement::getDate() const
 QString Measurement::getAuthor() const
 {
     return author;
-}
-
-void Measurement::setId(const QString& newId)
-{
-    id = newId;
 }
 
 void Measurement::setType(MeasurementType newType)

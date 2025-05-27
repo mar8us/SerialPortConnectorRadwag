@@ -13,7 +13,6 @@ MeasurementController::MeasurementController(const std::shared_ptr<MeasurementMa
 bool MeasurementController::beginNewMeasure(MeasurementType type)
 {
     measurement.reset(new Measurement());
-    measurement->setId(measurementManager->generateMeasurementId());
     measurement->setType(type);
     return measurementManager->addMeasurement(measurement);
 }

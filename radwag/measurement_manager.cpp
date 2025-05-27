@@ -126,26 +126,6 @@ bool MeasurementManager::reloadData()
     return true;
 }
 
-QString MeasurementManager::generateMeasurementId() const
-{
-    int currentYear = QDate::currentDate().year();
-    int maxNumber = 0;
-
-    QString yearPrefix = QString("MSR-%1-").arg(currentYear);
-    for(const QString& id : measurements.keys())
-    {
-        if(id.startsWith(yearPrefix))
-        {
-            bool ok;
-            int number = id.mid(yearPrefix.length()).toInt(&ok);
-            if(ok && number > maxNumber)
-                maxNumber = number;
-        }
-    }
-
-    return QString("%1%2").arg(yearPrefix).arg(maxNumber + 1, 3, 10, QChar('0'));
-}
-
 void MeasurementManager::loadResults()
 {
     results.clear();

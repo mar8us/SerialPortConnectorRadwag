@@ -53,7 +53,7 @@ class Measurement
 {
 public:
     Measurement();
-    Measurement(const QString& id, MeasurementType type, const Sample &sample, const Fluid &fluid, const QString &author);
+    Measurement(MeasurementType type, const Sample &sample, const Fluid &fluid, const QString &author);
     Measurement(const Measurement& other);
     ~Measurement();
 
@@ -65,7 +65,6 @@ public:
     int getSaturationTime() const;
     QDateTime getDate() const;
     QString getAuthor() const;
-    void setId(const QString& newId);
     void setType(MeasurementType newType);
     void setStage(MeasurementStages::Stage);
     void setStatus(MeasurementStatus newStatus);

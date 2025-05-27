@@ -27,7 +27,6 @@ public:
     QVector<std::shared_ptr<const Measurement>> getMeasurementsForSample(const QString& sampleId) const;
 
     bool reloadData();
-    QString generateMeasurementId() const;
 
     void loadMeasurements();
     bool saveMeasurements();
