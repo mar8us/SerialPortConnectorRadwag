@@ -13,7 +13,7 @@ class MeasurementController : public QObject
 public:
     MeasurementController(const std::shared_ptr<MeasurementManager> &measurementManager, QObject* parent = nullptr);
 
-    bool beginNewMeasure(MeasurementType type);
+    bool beginNewMeasure();
     bool setInitialData(MeasurementType type, const Sample &sample, const Fluid &fluid, const QString &author);
     bool replyActiveMeasure();
     void endMeasure();
@@ -21,6 +21,9 @@ public:
     const std::shared_ptr<Measurement>& getActiveMeasure();
 
     MeasurementStages::Stage getStage() const;
+    MeasurementStages::Stage getPrevStage(MeasurementStages::Stage basedStage = MeasurementStages::Stage::None) const;
+    MeasurementStages::Stage getNextStage(MeasurementStages::Stage basedStage = MeasurementStages::Stage::None) const;
+
     bool setStage(MeasurementStages::Stage stage);
     bool setMeasureStatus(MeasurementStatus status);
 
