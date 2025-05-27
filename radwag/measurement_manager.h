@@ -11,6 +11,10 @@ class MeasurementManager : public QObject
     Q_OBJECT
 public:
     explicit MeasurementManager(QObject *parent = nullptr);
+    ~MeasurementManager()
+    {
+        saveMeasurements();
+    }
 
     const QMap<QString, std::shared_ptr<const Measurement>>& getMeasurements() const;
     const QMap<QString, MeasurementResults>& getResultsMap() const;
@@ -27,7 +31,6 @@ public:
     QVector<std::shared_ptr<const Measurement>> getMeasurementsForSample(const QString& sampleId) const;
 
     bool reloadData();
-    QString generateMeasurementId() const;
 
     void loadMeasurements();
     bool saveMeasurements();

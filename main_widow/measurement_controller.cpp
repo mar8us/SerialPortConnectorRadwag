@@ -10,11 +10,10 @@ MeasurementController::MeasurementController(const std::shared_ptr<MeasurementMa
 
 }
 
-bool MeasurementController::beginNewMeasure(MeasurementType type)
+bool MeasurementController::beginNewMeasure()
 {
     measurement.reset(new Measurement());
-    measurement->setId(measurementManager->generateMeasurementId());
-    measurement->setType(type);
+    measurement->setStage(MeasurementStages::Stage::StartMeasure);
     return measurementManager->addMeasurement(measurement);
 }
 
@@ -26,6 +25,7 @@ bool MeasurementController::setInitialData(MeasurementType type, const Sample &s
     measurement->setSample(sample);
     measurement->setFluid(fluid);
     measurement->setAuthor(author);
+    setStage(MeasurementStages::Stage::InitialData);
     return true;
 }
 
@@ -34,7 +34,7 @@ bool MeasurementController::replyActiveMeasure()
     auto lastMeasurement = measurementManager->getMeasurement(lastMeasureId);
     if(!lastMeasurement.get())
         return false;
-    beginNewMeasure(lastMeasurement->getType());
+    beginNewMeasure();
     return setInitialData(lastMeasurement->getType(), lastMeasurement->getSample(), lastMeasurement->getFluid(), lastMeasurement->getAuthor());
 }
 
@@ -59,6 +59,77 @@ MeasurementStages::Stage MeasurementController::getStage() const
     if(!hasActiveMeasurement())
         return MeasurementStages::Stage::None;
     return measurement->getCurrentStage();
+}
+
+MeasurementStages::Stage MeasurementController::getPrevStage(MeasurementStages::Stage basedStage) const
+{
+    if(!hasActiveMeasurement())
+        return MeasurementStages::Stage::None;
+
+    MeasurementStages::Stage stage = basedStage != MeasurementStages::Stage::None ? basedStage : getStage();
+
+    switch(stage)
+    {
+        case MeasurementStages::Stage::StartMeasure:
+            return MeasurementStages::Stage::StartMeasure;
+
+        case MeasurementStages::Stage::InitialData:
+            return MeasurementStages::Stage::StartMeasure;
+
+        case MeasurementStages::Stage::DryMeasure:
+            return MeasurementStages::Stage::InitialData;
+
+        case MeasurementStages::Stage::PrepareSecond:
+        case MeasurementStages::Stage::PrepareTriple:
+            return MeasurementStages::Stage::DryMeasure;
+
+        case MeasurementStages::Stage::FinishSecond:
+            return MeasurementStages::Stage::PrepareSecond;
+
+        case MeasurementStages::Stage::SaturationMass:
+            return MeasurementStages::Stage::PrepareTriple;
+
+        case MeasurementStages::Stage::FinishTriple:
+            return MeasurementStages::Stage::SaturationMass;
+
+        default:
+            return stage;
+    }
+}
+
+MeasurementStages::Stage MeasurementController::getNextStage(MeasurementStages::Stage basedStage) const
+{
+    if(!hasActiveMeasurement())
+        return MeasurementStages::Stage::None;
+
+    MeasurementStages::Stage stage = basedStage != MeasurementStages::Stage::None ? basedStage : getStage();
+    switch(stage)
+    {
+        case MeasurementStages::Stage::StartMeasure:
+            return MeasurementStages::Stage::InitialData;
+
+        case MeasurementStages::Stage::InitialData:
+            return MeasurementStages::Stage::DryMeasure;
+
+        case MeasurementStages::Stage::DryMeasure:
+            return measurement->isThreeType() ? MeasurementStages::Stage::PrepareTriple : MeasurementStages::Stage::PrepareSecond;
+
+        case MeasurementStages::Stage::PrepareSecond:
+            return MeasurementStages::Stage::FinishSecond;
+
+        case MeasurementStages::Stage::PrepareTriple:
+            return MeasurementStages::Stage::SaturationMass;
+
+        case MeasurementStages::Stage::SaturationMass:
+            return MeasurementStages::Stage::FinishTriple;
+
+        case MeasurementStages::Stage::FinishSecond:
+        case MeasurementStages::Stage::FinishTriple:
+            return MeasurementStages::Stage::Summary;
+
+        default:
+            return stage;
+    }
 }
 
 bool MeasurementController::setStage(MeasurementStages::Stage stage)
