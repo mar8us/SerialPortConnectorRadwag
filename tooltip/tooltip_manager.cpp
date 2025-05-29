@@ -84,6 +84,16 @@ void TooltipManager::registerTooltip(QWidget* widget, const QString& title, cons
     applyTooltip(widget);
 }
 
+void TooltipManager::unregisterTooltip(QWidget* widget)
+{
+    if(!widget)
+        return;
+
+    tooltips.remove(widget);
+    widget->setToolTip("");
+}
+
+
 void TooltipManager::updateTooltipText(QWidget* widget, const QString& text)
 {
     if(!widget || !tooltips.contains(widget))

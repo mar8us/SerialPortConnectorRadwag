@@ -2,6 +2,7 @@
 #define MAIN_WINDOW_H
 
 #include <QMainWindow>
+#include "charts/porosity_chart.h"
 #include "fluid_tabels/fluid_manager.h"
 #include "material_tabels/material_manager.h"
 #include "radwag/radwag_measure.h"
@@ -241,5 +242,11 @@ private:
 
     void fillComboLibSearchIn();
     void fillComboLibGroupBy();
+
+    PorosityChartWidget *porosityChart;
+
+    void setupCharts();
+    void updatePorosityChart();
+    void testPorosityChart();
 };
 #endif // MAIN_WINDOW_H

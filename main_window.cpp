@@ -161,7 +161,7 @@ void MainWindow::fillDevicesCombo(bool keepActiveDevice)
 void MainWindow::fillSerialPortCombo()
 {
     foreach(auto &port, QSerialPortInfo::availablePorts())
-    ui->comboBoxSelectPort->addItem(port.portName());
+        ui->comboBoxSelectPort->addItem(port.portName());
 }
 
 void MainWindow::fillSampleCombo()
@@ -709,6 +709,7 @@ void MainWindow::initControls()
     fillSerialPortCombo();
     fillFluidCombo();
     fillSampleCombo();
+    setupCharts();
 
     onMeasurementTypeChanged();
     updateStatusConnectionLabel(false);
@@ -1836,6 +1837,8 @@ void MainWindow::fillMeasureTripleLabelsSummary()
 
     double waterAbsorption = results.getWaterAbsorption();
     ui->valueTripleMeasureWaterAbsorbability->setText(QString::number(waterAbsorption, 'f', 2) + " %");
+
+    updatePorosityChart();
 }
 
 void MainWindow::updateSaturationMethodPrepareTriple()
@@ -2155,3 +2158,31 @@ void MainWindow::onMeasurementDoubleClicked(const QModelIndex& index)
 //         // ...
 //     }
 // }
+
+void MainWindow::setupCharts()
+{
+    if(ui->framePorosityChart)
+    {
+        porosityChart.reset(new PorosityChartWidget(this));
+        porosityChart->setChartType(BaseChartType::PieChart);
+
+        auto layout = new QVBoxLayout(ui->framePorosityChart);
+        layout->setContentsMargins(0, 0, 0, 0);
+        layout->addWidget(porosityChart.get());
+    }
+
+void MainWindow::updatePorosityChart()
+{
+    if(!porosityChart)
+        return;
+
+    auto activeMeasure = radwagMeasureControler->getActiveMeasure();
+    if(activeMeasure)
+    {
+        auto results = measurementManager->getResults(activeMeasure->getId());
+        porosityChart->updateChart(results);
+    }
+    else
+        porosityChart->clearChart();
+}
+

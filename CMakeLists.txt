@@ -10,7 +10,7 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets SerialPort)
-find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets SerialPort)
+find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets SerialPort Charts)
 
 set(PROJECT_SOURCES
         main.cpp
@@ -58,6 +58,9 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         radwag/radwag_scale_connector.h radwag/radwag_scale_connector.cpp
         radwag/view/measurement_tree_model.h radwag/view/measurement_tree_model.cpp
         radwag/view/measurement_sort_filter_proxy_model.h radwag/view/measurement_sort_filter_proxy_model.cpp
+        charts/porosity_chart.h charts/porosity_chart.cpp
+        charts/base_chart_widget.h charts/base_chart_widget.cpp
+
 
     )
 # Define target properties for Android with Qt 6 as:
@@ -81,6 +84,7 @@ endif()
 target_link_libraries(SerialPortConnectorRadwag PRIVATE
     Qt${QT_VERSION_MAJOR}::Widgets
     Qt${QT_VERSION_MAJOR}::SerialPort
+    Qt${QT_VERSION_MAJOR}::Charts
 )
 
 # Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.

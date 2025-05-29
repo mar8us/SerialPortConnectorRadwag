@@ -866,8 +866,8 @@ a następnie wykonaj poniższe kroki:</string>
                            <rect>
                             <x>0</x>
                             <y>0</y>
-                            <width>805</width>
-                            <height>299</height>
+                            <width>320</width>
+                            <height>281</height>
                            </rect>
                           </property>
                           <layout class="QGridLayout" name="gridLayout_17">
@@ -5209,9 +5209,9 @@ umieszczając ją w komorze próźniowej na czas zaniku ostatniego pęcherzyka</
                        <property name="geometry">
                         <rect>
                          <x>0</x>
-                         <y>0</y>
+                         <y>-369</y>
                          <width>821</width>
-                         <height>1077</height>
+                         <height>1447</height>
                         </rect>
                        </property>
                        <layout class="QVBoxLayout" name="verticalLayout_35">
@@ -5778,7 +5778,7 @@ umieszczając ją w komorze próźniowej na czas zaniku ostatniego pęcherzyka</
                              <property name="minimumSize">
                               <size>
                                <width>0</width>
-                               <height>180</height>
+                               <height>550</height>
                               </size>
                              </property>
                              <property name="currentIndex">
@@ -5794,7 +5794,7 @@ umieszczając ją w komorze próźniowej na czas zaniku ostatniego pęcherzyka</
                                  <property name="minimumSize">
                                   <size>
                                    <width>0</width>
-                                   <height>140</height>
+                                   <height>450</height>
                                   </size>
                                  </property>
                                  <property name="frameShape">
