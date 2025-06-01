@@ -2163,12 +2163,12 @@ void MainWindow::setupCharts()
 {
     if(ui->framePorosityChart)
     {
-        porosityChart.reset(new PorosityChartWidget(this));
+        porosityChart = new PorosityChartWidget(this);
         porosityChart->setChartType(BaseChartType::PieChart);
 
         auto layout = new QVBoxLayout(ui->framePorosityChart);
         layout->setContentsMargins(0, 0, 0, 0);
-        layout->addWidget(porosityChart.get());
+        layout->addWidget(porosityChart);
     }
 
 void MainWindow::updatePorosityChart()
