@@ -1839,6 +1839,7 @@ void MainWindow::fillMeasureTripleLabelsSummary()
     ui->valueTripleMeasureWaterAbsorbability->setText(QString::number(waterAbsorption, 'f', 2) + " %");
 
     updatePorosityChart();
+    updateDenistyChart();
 }
 
 void MainWindow::updateSaturationMethodPrepareTriple()
@@ -2170,6 +2171,15 @@ void MainWindow::setupCharts()
         layout->setContentsMargins(0, 0, 0, 0);
         layout->addWidget(porosityChart);
     }
+    if(ui->frameDensityChart)
+    {
+        denistyChart = new DensityChartWidget(this);
+        denistyChart->setChartType(BaseChartType::BarChart);
+
+        auto layoutDensity = new QVBoxLayout(ui->frameDensityChart);
+        layoutDensity->addWidget(denistyChart);
+    }
+}
 
 void MainWindow::updatePorosityChart()
 {
@@ -2184,5 +2194,20 @@ void MainWindow::updatePorosityChart()
     }
     else
         porosityChart->clearChart();
+}
+
+void MainWindow::updateDenistyChart()
+{
+    if(!denistyChart)
+        return;
+
+    auto activeMeasure = radwagMeasureControler->getActiveMeasure();
+    if(activeMeasure && activeMeasure->isCompleted())
+    {
+        auto results = measurementManager->getResults(activeMeasure->getId());
+        denistyChart->updateChart(results);
+    }
+    else
+        denistyChart->clearChart();
 }
 

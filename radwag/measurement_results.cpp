@@ -9,6 +9,8 @@ MeasurementResults::MeasurementResults()
     , openPorosity(0.0)
     , closedPorosity(0.0)
     , waterAbsorption(0.0)
+    , materialTheoreticalDensity(0.0)
+    , fluidDensity(0.0)
 {
 
 }
@@ -71,6 +73,16 @@ double MeasurementResults::getWaterAbsorption() const
     return waterAbsorption;
 }
 
+double MeasurementResults::getTheoreticalDensity() const
+{
+    return materialTheoreticalDensity;
+}
+
+double MeasurementResults::getFluidDensity() const
+{
+    return fluidDensity;
+}
+
 void MeasurementResults::setMeasurementId(const QString& newMeasurementId)
 {
     measurementId = newMeasurementId;
@@ -125,7 +137,9 @@ bool MeasurementResults::calculateResults(std::shared_ptr<const Measurement>& me
     if(!measurement->hasAllRequiredMeasurements())
         return false;
 
-    // Obliczanie objętości pozornej
+    materialTheoreticalDensity = measurement->getSampleMaterialDensity();
+    fluidDensity = measurement->getFluidDensity();
+
     apparentVolume = calculateApparentVolume(measurement);
     if(apparentVolume <= 0.0)
         return false;
@@ -136,8 +150,8 @@ bool MeasurementResults::calculateResults(std::shared_ptr<const Measurement>& me
         return false;
 
     // Obliczanie gęstości względnej
-    relativeDensity = calculateRelativeDensity(apparentDensity, measurement->getSampleMaterialDensity());
-    totalPorosity = calculateTotalPorosity(apparentDensity, measurement->getSampleMaterialDensity());
+    relativeDensity = calculateRelativeDensity(apparentDensity, materialTheoreticalDensity);
+    totalPorosity = calculateTotalPorosity(apparentDensity, materialTheoreticalDensity);
 
     // Dla pomiarów trzystopniowych oblicz porowatość otwartą i nasiąkliwość
     if(measurement->isThreeType())
@@ -156,7 +170,6 @@ double MeasurementResults::calculateApparentVolume(std::shared_ptr<const Measure
     // Obliczenie objętości pozornej: V = (m_s - m_w) / ρ_cieczy
     double sampleDryMass = measurement->getSampleDryMass();
     double sampleInFluidMass = measurement->getSampleInFluidMass();
-    double fluidDensity = measurement->getFluidDensity();
 
     if(fluidDensity <= 0.0)
         return 0.0;
@@ -185,7 +198,6 @@ double MeasurementResults::calculateApparentDensity(std::shared_ptr<const Measur
     // Obliczenie gęstości pozornej: ρ_p = m_s / V = m_s * ρ_cieczy / (m_s - m_w)
     double sampleDryMass = measurement->getSampleDryMass();
     double sampleInFluidMass = measurement->getSampleInFluidMass();
-    double fluidDensity = measurement->getFluidDensity();
 
     if(sampleDryMass <= 0.0 || (sampleDryMass - sampleInFluidMass) <= 0.0)
         return 0.0;
@@ -209,7 +221,6 @@ double MeasurementResults::calculateOpenPoresVolume(std::shared_ptr<const Measur
     // Obliczenie objętości porów otwartych: V_porów = (m_n - m_s) / ρ_cieczy
     double sampleDryMass = measurement->getSampleDryMass();         // m_s
     double saturatedMass = measurement->getSampleSaturatedMass();   // m_n
-    double fluidDensity = measurement->getFluidDensity();           // ρ_cieczy
 
     if(saturatedMass <= sampleDryMass || fluidDensity <= 0.0)
         return 0.0;
@@ -221,7 +232,7 @@ double MeasurementResults::calculateOpenPoresVolume(std::shared_ptr<const Measur
 double MeasurementResults::calculateTotalPorosity(double apparentDensity, double materialDensity)
 {
     if (materialDensity <= 0)
-            return 0.0;
+        return 0.0;
     return (1.0 - (apparentDensity / materialDensity)) * 100.0;
 }
 
@@ -276,6 +287,8 @@ QJsonObject MeasurementResults::toJson() const
     resultsObj["openPorosity"] = openPorosity;
     resultsObj["closedPorosity"] = closedPorosity;
     resultsObj["waterAbsorption"] = waterAbsorption;
+    resultsObj["materialTheoreticalDensity"] = materialTheoreticalDensity;
+    resultsObj["fluidDensity"] = fluidDensity;
     return resultsObj;
 }
 
@@ -299,4 +312,8 @@ void MeasurementResults::fromJson(const QJsonObject &json)
         closedPorosity = json["closedPorosity"].toDouble();
     if(json.contains("waterAbsorption"))
         waterAbsorption = json["waterAbsorption"].toDouble();
+    if(json.contains("materialTheoreticalDensity"))
+        materialTheoreticalDensity = json["materialTheoreticalDensity"].toDouble();
+    if(json.contains("fluidDensity"))
+        fluidDensity = json["fluidDensity"].toDouble();
 }

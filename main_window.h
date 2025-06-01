@@ -2,6 +2,7 @@
 #define MAIN_WINDOW_H
 
 #include <QMainWindow>
+#include "charts/denisty_chart.h"
 #include "charts/porosity_chart.h"
 #include "fluid_tabels/fluid_manager.h"
 #include "material_tabels/material_manager.h"
@@ -244,9 +245,12 @@ private:
     void fillComboLibGroupBy();
 
     PorosityChartWidget *porosityChart;
+    DensityChartWidget *denistyChart;
 
     void setupCharts();
     void updatePorosityChart();
+    void updateDenistyChart();
     void testPorosityChart();
+    void testDenistyChart();
 };
 #endif // MAIN_WINDOW_H

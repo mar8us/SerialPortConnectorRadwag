@@ -60,6 +60,8 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         radwag/view/measurement_sort_filter_proxy_model.h radwag/view/measurement_sort_filter_proxy_model.cpp
         charts/porosity_chart.h charts/porosity_chart.cpp
         charts/base_chart_widget.h charts/base_chart_widget.cpp
+        charts/denisty_chart.h charts/denisty_chart.cpp
+
 
 
     )

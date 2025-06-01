@@ -5813,7 +5813,7 @@ umieszczając ją w komorze próźniowej na czas zaniku ostatniego pęcherzyka</
                               </attribute>
                               <layout class="QVBoxLayout" name="verticalLayoutDensity_2">
                                <item>
-                                <widget class="QFrame" name="frameDensityChart_2">
+                                <widget class="QFrame" name="frameDensityChart">
                                  <property name="minimumSize">
                                   <size>
                                    <width>0</width>
@@ -6158,90 +6158,6 @@ umieszczając ją w komorze próźniowej na czas zaniku ostatniego pęcherzyka</
                 </spacer>
                </item>
               </layout>
-             </item>
-            </layout>
-           </widget>
-           <widget class="QGroupBox" name="groupBoxVisualization">
-            <property name="geometry">
-             <rect>
-              <x>90</x>
-              <y>20</y>
-              <width>91</width>
-              <height>321</height>
-             </rect>
-            </property>
-            <property name="title">
-             <string>Wizualizacja wyników</string>
-            </property>
-            <layout class="QVBoxLayout" name="verticalLayoutVisualization">
-             <item>
-              <widget class="QTabWidget" name="tabWidgetCharts">
-               <property name="minimumSize">
-                <size>
-                 <width>0</width>
-                 <height>200</height>
-                </size>
-               </property>
-               <property name="currentIndex">
-                <number>1</number>
-               </property>
-               <widget class="QWidget" name="tabDensityComparison">
-                <attribute name="title">
-                 <string>Porównanie gęstości</string>
-                </attribute>
-                <layout class="QVBoxLayout" name="verticalLayoutDensity">
-                 <item>
-                  <widget class="QFrame" name="frameDensityChart">
-                   <property name="minimumSize">
-                    <size>
-                     <width>0</width>
-                     <height>150</height>
-                    </size>
-                   </property>
-                   <property name="frameShape">
-                    <enum>QFrame::Shape::StyledPanel</enum>
-                   </property>
-                   <property name="frameShadow">
-                    <enum>QFrame::Shadow::Raised</enum>
-                   </property>
-                  </widget>
-                 </item>
-                </layout>
-               </widget>
-               <widget class="QWidget" name="tabHistoricalData">
-                <attribute name="title">
-                 <string>Dane historyczne</string>
-                </attribute>
-                <layout class="QVBoxLayout" name="verticalLayoutHistory">
-                 <item>
-                  <widget class="QFrame" name="frameHistoryChart">
-                   <property name="minimumSize">
-                    <size>
-                     <width>0</width>
-                     <height>150</height>
-                    </size>
-                   </property>
-                   <property name="frameShape">
-                    <enum>QFrame::Shape::StyledPanel</enum>
-                   </property>
-                   <property name="frameShadow">
-                    <enum>QFrame::Shadow::Raised</enum>
-                   </property>
-                  </widget>
-                 </item>
-                </layout>
-               </widget>
-              </widget>
-             </item>
-             <item>
-              <widget class="QLabel" name="labelChartDescription">
-               <property name="text">
-                <string>Wykres przedstawia porównanie gęstości pozornej badanej próbki z wartościami referencyjnymi dla podobnych materiałów.</string>
-               </property>
-               <property name="wordWrap">
-                <bool>true</bool>
-               </property>
-              </widget>
              </item>
             </layout>
            </widget>
