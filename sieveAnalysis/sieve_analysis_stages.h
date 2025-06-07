@@ -1,0 +1,104 @@
+#ifndef SIEVE_ANALYSIS_STAGES_H
+#define SIEVE_ANALYSIS_STAGES_H
+#include <QString>
+
+// Enum reprezentujący etapy analizy sitowej
+namespace SieveAnalysisStages
+{
+
+enum class Stage
+{
+    None = -1,              // Brak aktywnego etapu
+    Configuration = 0,       // Dane wstępne i konfiguracja
+    InitialWeighing = 1,    // Ważenie wstępne (pustych sit i próbki)
+    Sieving = 2,            // Przesiewanie
+    FinalWeighing = 3,      // Ważenie końcowe (sit z materiałem)
+    Summary = 4             // Podsumowanie i raport
+};
+
+inline QString stageToString(Stage stage)
+{
+    switch (stage)
+    {
+        case Stage::None:
+            return "None";
+
+        case Stage::Configuration:
+            return "Configuration";
+
+        case Stage::InitialWeighing:
+            return "InitialWeighing";
+
+        case Stage::Sieving:
+            return "Sieving";
+
+        case Stage::FinalWeighing:
+            return "FinalWeighing";
+
+        case Stage::Summary:
+            return "Summary";
+
+        default:
+            return "Unknown";
+    }
+}
+
+// Nazwa etapu po polsku
+inline QString stageDisplayName(Stage stage)
+{
+    switch (stage)
+    {
+        case Stage::None:
+            return "Brak";
+
+        case Stage::Configuration:
+            return "Dane wstępne";
+
+        case Stage::InitialWeighing:
+            return "Ważenie wstępne";
+
+        case Stage::Sieving:
+            return "Przesiewanie";
+
+        case Stage::FinalWeighing:
+            return "Ważenie końcowe";
+
+        case Stage::Summary:
+            return "Podsumowanie";
+
+        default:
+            return "Nieznany";
+    }
+}
+
+
+inline bool isValidStage(Stage stage)
+{
+    return stage >= Stage::Configuration && stage <= Stage::Summary;
+}
+
+
+inline Stage nextStage(Stage current)
+{
+    int next = static_cast<int>(current) + 1;
+    if(next <= static_cast<int>(Stage::Summary))
+    {
+        return static_cast<Stage>(next);
+    }
+    return Stage::Summary;
+}
+
+
+inline Stage previousStage(Stage current)
+{
+    int prev = static_cast<int>(current) - 1;
+    if(prev >= static_cast<int>(Stage::Configuration))
+    {
+        return static_cast<Stage>(prev);
+    }
+    return Stage::Configuration;
+}
+
+}
+
+#endif // SIEVE_ANALYSIS_STAGES_H

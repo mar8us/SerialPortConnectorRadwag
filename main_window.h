@@ -215,6 +215,15 @@ private:
     static inline const QColor ACTIVE_LABEL_COLOR = QColor(0, 0, 255);
     static inline const QColor MEASURE_LABEL_COLOR = QColor(0, 100, 255);
 
+    //SieveAnalysis
+
+    void goToPreviousSieveStage();
+    void goToNextSieveStage();
+    void updateSieveStageLabels();
+
+    void connectNavSieveButtons();
+    void resizeAllTablesColumnsToContents();
+
 
     // Dodaj te deklaracje w sekcji private klasy MainWindow
 private:

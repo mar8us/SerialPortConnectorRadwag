@@ -6,6 +6,7 @@
 #include <QMessageBox>
 #include "radwag/measurement.h"
 #include "utils.h"
+#include "sieveAnalysis/sieve_analysis_stages.h"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -31,6 +32,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     setupLibraryView();
     connect(ui->treeViewLibMeasure->selectionModel(), &QItemSelectionModel::selectionChanged, this, &MainWindow::onSelectionChanged);
+    QTimer::singleShot(0, this, &MainWindow::resizeAllTablesColumnsToContents);
 }
 
 MainWindow::~MainWindow()
@@ -865,6 +867,8 @@ void MainWindow::connectButtons()
     connectSummaryMeasureSecondPageButtons();
     connectSummaryMeasureTriplePageButtons();
     connectCatalogsButtons();
+
+    connectNavSieveButtons();
 }
 
 void MainWindow::connectMainNavButtons()
@@ -875,6 +879,12 @@ void MainWindow::connectMainNavButtons()
 
     connect(ui->actionMeasureDensity, &QAction::triggered, this, [this]() {
         navigateToToolBoxPage(ui->measureDensityPage);
+    });
+
+    connect(ui->actionSieveAnalysis, &QAction::triggered, this, [this]() {
+        navigateToToolBoxPage(ui->sieveAnalysisPage);
+        ui->stackedWidgetSieveAnalysis->setCurrentWidget(ui->pageConfiguration);
+        ui->stackedWidgetSieveAnalysis->setProperty("currentStage", QVariant::fromValue(SieveAnalysisStages::Stage::Configuration));
     });
 
     connect(ui->stackedWidget, &QStackedWidget::currentChanged, this, &MainWindow::onMainPageChanged);
@@ -1184,6 +1194,12 @@ void MainWindow::setProperty()
     ui->scrollAreaFinishTriple->setBackgroundRole(QPalette::Base);
     ui->scrollAreaLibrary->setBackgroundRole(QPalette::Base);
     ui->scrollAreaLibrary->setBackgroundRole(QPalette::Base);
+    ui->scrollAreaSieveMain->setBackgroundRole(QPalette::Base);
+    ui->scrollAreaSieveProcess->setBackgroundRole(QPalette::Base);
+    ui->scrollAreaFinalWeighting->setBackgroundRole(QPalette::Base);
+    ui->scrollAreaSummarySieve->setBackgroundRole(QPalette::Base);
+
+    ui->stackedWidgetSieveAnalysis->setProperty("currentStage", QVariant::fromValue(SieveAnalysisStages::Stage::None));
 }
 
 void MainWindow::setIcons()
@@ -2211,3 +2227,176 @@ void MainWindow::updateDenistyChart()
         denistyChart->clearChart();
 }
 
+
+
+//SieveAnalysis
+
+void MainWindow::goToPreviousSieveStage()
+{
+    SieveAnalysisStages::Stage currentStage = ui->stackedWidgetSieveAnalysis->property("currentStage").value<SieveAnalysisStages::Stage>();
+    SieveAnalysisStages::Stage prevStage = SieveAnalysisStages::previousStage(currentStage);
+    switch(currentStage)
+    {
+        case SieveAnalysisStages::Stage::Configuration:
+        {
+            return;
+        }
+        case SieveAnalysisStages::Stage::InitialWeighing:
+        {
+            ui->stackedWidgetSieveAnalysis->setCurrentWidget(ui->pageConfiguration);
+            break;
+        }
+        case SieveAnalysisStages::Stage::Sieving:
+        {
+            ui->stackedWidgetSieveAnalysis->setCurrentWidget(ui->pageInitialWeighing);
+            break;
+        }
+        case SieveAnalysisStages::Stage::FinalWeighing:
+        {
+            ui->stackedWidgetSieveAnalysis->setCurrentWidget(ui->pageSieving);
+            break;
+        }
+        case SieveAnalysisStages::Stage::Summary:
+        {
+            ui->stackedWidgetSieveAnalysis->setCurrentWidget(ui->pageFinalWeighing);
+            break;
+        }
+        default:
+            return;
+    }
+    ui->stackedWidgetSieveAnalysis->setProperty("currentStage", QVariant::fromValue(prevStage));
+    updateSieveStageLabels();
+}
+
+void MainWindow::goToNextSieveStage()
+{
+    SieveAnalysisStages::Stage currentStage = ui->stackedWidgetSieveAnalysis->property("currentStage").value<SieveAnalysisStages::Stage>();
+    SieveAnalysisStages::Stage nextStage = SieveAnalysisStages::nextStage(currentStage);
+
+    switch(currentStage)
+    {
+        case SieveAnalysisStages::Stage::Configuration:
+        {
+            ui->stackedWidgetSieveAnalysis->setCurrentWidget(ui->pageInitialWeighing);
+            break;
+        }
+
+        case SieveAnalysisStages::Stage::InitialWeighing:
+        {
+            ui->stackedWidgetSieveAnalysis->setCurrentWidget(ui->pageSieving);
+            break;
+        }
+
+        case SieveAnalysisStages::Stage::Sieving:
+        {
+            ui->stackedWidgetSieveAnalysis->setCurrentWidget(ui->pageFinalWeighing);
+            break;
+        }
+
+        case SieveAnalysisStages::Stage::FinalWeighing:
+        {
+            ui->stackedWidgetSieveAnalysis->setCurrentWidget(ui->pageSummarySieve);
+            break;
+        }
+
+        case SieveAnalysisStages::Stage::Summary:
+        {
+            ui->stackedWidgetSieveAnalysis->setCurrentWidget(ui->pageConfiguration);
+            break;
+        }
+
+        default:
+            return;
+    }
+
+    ui->stackedWidgetSieveAnalysis->setProperty("currentStage", QVariant::fromValue(nextStage));
+    updateSieveStageLabels();
+}
+
+void MainWindow::updateSieveStageLabels()
+{
+    QFont normalFont;
+    normalFont.setBold(false);
+    normalFont.setPixelSize(12);
+
+    QFont boldFont = normalFont;
+    boldFont.setBold(true);
+    boldFont.setPixelSize(13);
+
+    QPalette normalPalette;
+    QPalette activePalette;
+    activePalette.setColor(QPalette::WindowText, ACTIVE_LABEL_COLOR);
+
+    SieveAnalysisStages::Stage currentStage = ui->stackedWidgetSieveAnalysis->property("currentStage").value<SieveAnalysisStages::Stage>();
+
+    QList<QLabel*> sieveLabels =
+    {
+        ui->labelSieveStageConfigrationData,
+        ui->labelSieveStageInitialWeighting,
+        ui->labelSieveStageSieving,
+        ui->labelSieveStageFinalWeighting,
+        ui->labelStageSummary
+    };
+
+    for(QLabel* label : sieveLabels)
+    {
+        label->setFont(normalFont);
+        label->setPalette(normalPalette);
+    }
+
+    switch (currentStage)
+    {
+        case SieveAnalysisStages::Stage::Configuration:
+            ui->labelSieveStageConfigrationData->setFont(boldFont);
+            ui->labelSieveStageConfigrationData->setPalette(activePalette);
+            break;
+
+        case SieveAnalysisStages::Stage::InitialWeighing:
+            ui->labelSieveStageInitialWeighting->setFont(boldFont);
+            ui->labelSieveStageInitialWeighting->setPalette(activePalette);
+            break;
+
+        case SieveAnalysisStages::Stage::Sieving:
+            ui->labelSieveStageSieving->setFont(boldFont);
+            ui->labelSieveStageSieving->setPalette(activePalette);
+            break;
+
+        case SieveAnalysisStages::Stage::FinalWeighing:
+            ui->labelSieveStageFinalWeighting->setFont(boldFont);
+            ui->labelSieveStageFinalWeighting->setPalette(activePalette);
+            break;
+
+        case SieveAnalysisStages::Stage::Summary:
+            ui->labelStageSummary->setFont(boldFont);
+            ui->labelStageSummary->setPalette(activePalette);
+            break;
+
+        default:
+            break;
+    }
+}
+
+void MainWindow::connectNavSieveButtons()
+{
+    connect(ui->buttonStartAnalysis, &QPushButton::clicked, this, &MainWindow::goToNextSieveStage);
+
+    connect(ui->buttonNextInitialSieveMeasure, &QPushButton::clicked, this, &MainWindow::goToNextSieveStage);
+    connect(ui->buttonBackInitialSieveMeasure, &QPushButton::clicked, this, &MainWindow::goToPreviousSieveStage);
+
+    connect(ui->buttonNextSieveProcess, &QPushButton::clicked, this, &MainWindow::goToNextSieveStage);
+    connect(ui->buttonBackSieveProcess, &QPushButton::clicked, this, &MainWindow::goToPreviousSieveStage);
+
+    connect(ui->buttonNextEndSieveMeasure, &QPushButton::clicked, this, &MainWindow::goToNextSieveStage);
+    connect(ui->buttonBackEndSieveMeasure, &QPushButton::clicked, this, &MainWindow::goToPreviousSieveStage);
+
+    connect(ui->buttonNewAnalysisSummarySieve, &QPushButton::clicked, this, &MainWindow::goToNextSieveStage);
+    connect(ui->buttonBackSummarySieve, &QPushButton::clicked, this, &MainWindow::goToPreviousSieveStage);
+}
+
+void MainWindow::resizeAllTablesColumnsToContents()
+{
+    QList<QTableWidget*> tables = this->findChildren<QTableWidget*>();
+
+    for(QTableWidget* table : tables)
+        table->resizeColumnsToContents();
+}
