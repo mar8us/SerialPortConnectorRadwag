@@ -2202,7 +2202,7 @@ void MainWindow::updateDenistyChart()
         return;
 
     auto activeMeasure = radwagMeasureControler->getActiveMeasure();
-    if(activeMeasure && activeMeasure->isCompleted())
+    if(activeMeasure)
     {
         auto results = measurementManager->getResults(activeMeasure->getId());
         denistyChart->updateChart(results);

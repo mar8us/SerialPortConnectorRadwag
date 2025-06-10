@@ -53,7 +53,7 @@
             <item>
              <widget class="QStackedWidget" name="stackedWidgetMainHydroMeasure">
               <property name="currentIndex">
-               <number>1</number>
+               <number>0</number>
               </property>
               <widget class="QWidget" name="pageStartMeasure">
                <layout class="QVBoxLayout" name="verticalLayout_57">
@@ -759,7 +759,7 @@ a następnie wykonaj poniższe kroki:</string>
                    </size>
                   </property>
                   <property name="currentIndex">
-                   <number>3</number>
+                   <number>0</number>
                   </property>
                   <widget class="QWidget" name="pageInitialData">
                    <layout class="QGridLayout" name="gridLayout_5">
@@ -866,8 +866,8 @@ a następnie wykonaj poniższe kroki:</string>
                            <rect>
                             <x>0</x>
                             <y>0</y>
-                            <width>320</width>
-                            <height>281</height>
+                            <width>805</width>
+                            <height>299</height>
                            </rect>
                           </property>
                           <layout class="QGridLayout" name="gridLayout_17">
@@ -3167,7 +3167,7 @@ umieszczając ją w komorze próźniowej na czas zaniku ostatniego pęcherzyka</
                        <property name="geometry">
                         <rect>
                          <x>0</x>
-                         <y>0</y>
+                         <y>-236</y>
                          <width>821</width>
                          <height>709</height>
                         </rect>
@@ -3589,7 +3589,7 @@ umieszczając ją w komorze próźniowej na czas zaniku ostatniego pęcherzyka</
                               <bool>false</bool>
                              </property>
                              <property name="plainText">
-                              <string>Ujemna wartość porowatości całkowitej sugeruje, że gęstość teoretyczna materiału może być niedokładna lub zmierzona masa próbki zanurzonej jest obarczona błędem. Zaleca się powtórzenie pomiaru lub weryfikację danych teoretycznych.</string>
+                              <string>To do</string>
                              </property>
                             </widget>
                            </item>
@@ -5209,7 +5209,7 @@ umieszczając ją w komorze próźniowej na czas zaniku ostatniego pęcherzyka</
                        <property name="geometry">
                         <rect>
                          <x>0</x>
-                         <y>-369</y>
+                         <y>-536</y>
                          <width>821</width>
                          <height>1447</height>
                         </rect>
@@ -5876,7 +5876,7 @@ umieszczając ją w komorze próźniowej na czas zaniku ostatniego pęcherzyka</
                               <bool>false</bool>
                              </property>
                              <property name="plainText">
-                              <string>Badany materiał charakteryzuje się wysoką porowatością otwartą (37.28%) i bardzo niską porowatością zamkniętą (0.14%). Wskazuje to na dobrą podatność materiału na procesy nasącania i impregnacji.</string>
+                              <string>To do</string>
                              </property>
                             </widget>
                            </item>
