@@ -38,9 +38,10 @@ bool MeasurementController::replyActiveMeasure()
     return setInitialData(lastMeasurement->getType(), lastMeasurement->getSample(), lastMeasurement->getFluid(), lastMeasurement->getAuthor());
 }
 
-void MeasurementController::endMeasure()
+void MeasurementController::endMeasure(bool reset)
 {
-    lastMeasureId = measurement->getId();
+    if(!reset)
+        lastMeasureId = measurement->getId();
     measurement.reset();
 }
 

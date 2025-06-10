@@ -24,7 +24,7 @@
     <item>
      <widget class="QStackedWidget" name="stackedWidget">
       <property name="currentIndex">
-       <number>1</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="measureDensityPage">
        <layout class="QHBoxLayout" name="horizontalLayoutMeasureDensity">
@@ -508,44 +508,50 @@ a następnie wykonaj poniższe kroki:</string>
                            </property>
                           </spacer>
                          </item>
+                         <item>
+                          <layout class="QHBoxLayout" name="horizontalLayout_21">
+                           <item>
+                            <widget class="QPushButton" name="buttonResetMeasureStagesSecond">
+                             <property name="minimumSize">
+                              <size>
+                               <width>110</width>
+                               <height>30</height>
+                              </size>
+                             </property>
+                             <property name="maximumSize">
+                              <size>
+                               <width>110</width>
+                               <height>16777215</height>
+                              </size>
+                             </property>
+                             <property name="text">
+                              <string>Resetuj</string>
+                             </property>
+                            </widget>
+                           </item>
+                           <item>
+                            <widget class="QPushButton" name="buttonSaveMeasureToLibraryStagesSecond">
+                             <property name="minimumSize">
+                              <size>
+                               <width>110</width>
+                               <height>30</height>
+                              </size>
+                             </property>
+                             <property name="maximumSize">
+                              <size>
+                               <width>110</width>
+                               <height>16777215</height>
+                              </size>
+                             </property>
+                             <property name="text">
+                              <string>Zapisz</string>
+                             </property>
+                            </widget>
+                           </item>
+                          </layout>
+                         </item>
                         </layout>
                        </widget>
-                      </item>
-                      <item>
-                       <layout class="QHBoxLayout" name="horizontalLayout_10">
-                        <item>
-                         <widget class="QPushButton" name="buttonResetMeasure">
-                          <property name="minimumSize">
-                           <size>
-                            <width>110</width>
-                            <height>30</height>
-                           </size>
-                          </property>
-                          <property name="maximumSize">
-                           <size>
-                            <width>16777215</width>
-                            <height>16777215</height>
-                           </size>
-                          </property>
-                          <property name="text">
-                           <string>Resetuj</string>
-                          </property>
-                         </widget>
-                        </item>
-                        <item>
-                         <widget class="QPushButton" name="buttonSaveMeasureToLibrary">
-                          <property name="minimumSize">
-                           <size>
-                            <width>110</width>
-                            <height>30</height>
-                           </size>
-                          </property>
-                          <property name="text">
-                           <string>Zapisz</string>
-                          </property>
-                         </widget>
-                        </item>
-                       </layout>
                       </item>
                      </layout>
                     </widget>
@@ -663,6 +669,48 @@ a następnie wykonaj poniższe kroki:</string>
                             </size>
                            </property>
                           </spacer>
+                         </item>
+                         <item>
+                          <layout class="QHBoxLayout" name="horizontalLayout_10">
+                           <item>
+                            <widget class="QPushButton" name="buttonResetMeasureStagesTriple">
+                             <property name="minimumSize">
+                              <size>
+                               <width>110</width>
+                               <height>30</height>
+                              </size>
+                             </property>
+                             <property name="maximumSize">
+                              <size>
+                               <width>110</width>
+                               <height>16777215</height>
+                              </size>
+                             </property>
+                             <property name="text">
+                              <string>Resetuj</string>
+                             </property>
+                            </widget>
+                           </item>
+                           <item>
+                            <widget class="QPushButton" name="buttonSaveMeasureToLibraryStagesTriple">
+                             <property name="minimumSize">
+                              <size>
+                               <width>110</width>
+                               <height>30</height>
+                              </size>
+                             </property>
+                             <property name="maximumSize">
+                              <size>
+                               <width>110</width>
+                               <height>16777215</height>
+                              </size>
+                             </property>
+                             <property name="text">
+                              <string>Zapisz</string>
+                             </property>
+                            </widget>
+                           </item>
+                          </layout>
                          </item>
                         </layout>
                        </widget>
@@ -7999,8 +8047,8 @@ QPushButton:disabled {
                     <rect>
                      <x>0</x>
                      <y>0</y>
-                     <width>903</width>
-                     <height>623</height>
+                     <width>644</width>
+                     <height>397</height>
                     </rect>
                    </property>
                    <layout class="QVBoxLayout" name="verticalLayout_55">
@@ -8644,8 +8692,8 @@ QPushButton:disabled {
                     <rect>
                      <x>0</x>
                      <y>0</y>
-                     <width>903</width>
-                     <height>579</height>
+                     <width>508</width>
+                     <height>547</height>
                     </rect>
                    </property>
                    <layout class="QVBoxLayout" name="verticalLayout_61">
@@ -9088,7 +9136,7 @@ QPushButton:disabled {
                     <rect>
                      <x>0</x>
                      <y>0</y>
-                     <width>886</width>
+                     <width>711</width>
                      <height>625</height>
                     </rect>
                    </property>
@@ -9718,7 +9766,7 @@ QPushButton:disabled {
                     <rect>
                      <x>0</x>
                      <y>0</y>
-                     <width>886</width>
+                     <width>532</width>
                      <height>1009</height>
                     </rect>
                    </property>

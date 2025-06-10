@@ -726,6 +726,21 @@ void MainWindow::onConnectResult(bool connected)
         radwagScaleConnector->startContinuousTransmissionCurrentUnit();
 }
 
+void MainWindow::onResetMeasureButtonClicked()
+{
+    radwagMeasureControler->endMeasure(true);
+    clearSecondMeasurePages();
+    clearTripleMeasurePages();
+    ui->stackedWidgetMainHydroMeasure->setCurrentWidget(ui->pageStartMeasure);
+    ui->measureDensityStage->setProperty("currentStage", QVariant::fromValue(MeasurementStages::Stage::StartMeasure));
+}
+
+void MainWindow::onSaveMeasureButtonClicekd()
+{
+    if(measurementManager->addMeasurement(radwagMeasureControler->getActiveMeasure()))
+       QMessageBox::warning(this, tr("Zapis pomiaru"), "Pomyślnie zapisano dane aktywnego pomiaru.");
+}
+
 void MainWindow::onStartMeasureButtonClicked()
 {
     if(!checkDeviceConnectionWithMessage())
@@ -856,6 +871,7 @@ void MainWindow::connectButtons()
     connectMainNavButtons();
     connectDevicesSettingsButtons();
     connectNavMeasurementButtons();
+    connectStagesOperationButtons();
     connectPrepareWorksationPageButtons();
     connectInitialDataPageButtons();
     connectDryMassPageButtons();
@@ -874,14 +890,27 @@ void MainWindow::connectButtons()
 void MainWindow::connectMainNavButtons()
 {
     connect(ui->actionSettings, &QAction::triggered, this, [this]() {
+        if(radwagMeasureControler->hasActiveMeasurement())
+        {
+            QMessageBox::warning(this, tr("Aktywny proces pomiarowy"), "Zakończ aktywny proces pomiarowy aby przejść do menadzera urządzeń.");
+            return;
+        }
         navigateToToolBoxPage(ui->settingsPage);
     });
 
     connect(ui->actionMeasureDensity, &QAction::triggered, this, [this]() {
         navigateToToolBoxPage(ui->measureDensityPage);
+
+        if(!radwagMeasureControler->hasActiveMeasurement())
+            ui->stackedWidgetMainHydroMeasure->setCurrentWidget(ui->pageStartMeasure);
     });
 
     connect(ui->actionSieveAnalysis, &QAction::triggered, this, [this]() {
+        if(radwagMeasureControler->hasActiveMeasurement())
+        {
+            QMessageBox::warning(this, tr("Aktywny proces pomiarowy"), "Zakończ aktywny proces pomiarowy aby przejść do procesu analizy sitowej.");
+            return;
+        }
         navigateToToolBoxPage(ui->sieveAnalysisPage);
         ui->stackedWidgetSieveAnalysis->setCurrentWidget(ui->pageConfiguration);
         ui->stackedWidgetSieveAnalysis->setProperty("currentStage", QVariant::fromValue(SieveAnalysisStages::Stage::Configuration));
@@ -908,6 +937,14 @@ void MainWindow::connectNavMeasurementButtons()
     connect(ui->buttonPrevSaturation, &QPushButton::clicked, this, &MainWindow::goToPreviousMeasureStage);
     connect(ui->buttonFinishMeasurementTriple, &QPushButton::clicked, this, &MainWindow::goToNextMeasureStage);
     connect(ui->buttonPrevSaturatedMass, &QPushButton::clicked, this, &MainWindow::goToPreviousMeasureStage);
+}
+
+void MainWindow::connectStagesOperationButtons()
+{
+    connect(ui->buttonResetMeasureStagesSecond, &QPushButton::clicked, this, &MainWindow::onResetMeasureButtonClicked);
+    connect(ui->buttonSaveMeasureToLibraryStagesSecond, &QPushButton::clicked, this, &MainWindow::onSaveMeasureButtonClicekd);
+    connect(ui->buttonResetMeasureStagesTriple, &QPushButton::clicked, this, &MainWindow::onResetMeasureButtonClicked);
+    connect(ui->buttonSaveMeasureToLibraryStagesTriple, &QPushButton::clicked, this, &MainWindow::onSaveMeasureButtonClicekd);
 }
 
 void MainWindow::connectPrepareWorksationPageButtons()

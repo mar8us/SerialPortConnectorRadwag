@@ -44,6 +44,9 @@ private slots:
     void onDisconnectDeviceClicked();
     void onConnectResult(bool connected);
 
+    void onResetMeasureButtonClicked();
+    void onSaveMeasureButtonClicekd();
+
     void onStartMeasureButtonClicked();
     void onShowHydroSetSchemeButtonClicked();
     void onConfrimPrepareWorkstationButtonClicked();
@@ -121,6 +124,7 @@ private:
     void connectButtons();
     void connectMainNavButtons();
     void connectNavMeasurementButtons();
+    void connectStagesOperationButtons();
     void connectPrepareWorksationPageButtons();
     void connectInitialDataPageButtons();
     void connectPrepareMeasureSecondPageButtons();
