@@ -24,7 +24,7 @@
     <item>
      <widget class="QStackedWidget" name="stackedWidget">
       <property name="currentIndex">
-       <number>0</number>
+       <number>1</number>
       </property>
       <widget class="QWidget" name="measureDensityPage">
        <layout class="QHBoxLayout" name="horizontalLayoutMeasureDensity">
@@ -1562,7 +1562,7 @@ i wykonaj pomiar</string>
                               <set>Qt::AlignmentFlag::AlignCenter</set>
                              </property>
                              <property name="readOnly">
-                              <bool>true</bool>
+                              <bool>false</bool>
                              </property>
                             </widget>
                            </item>
@@ -1590,7 +1590,7 @@ i wykonaj pomiar</string>
                               <set>Qt::AlignmentFlag::AlignCenter</set>
                              </property>
                              <property name="readOnly">
-                              <bool>true</bool>
+                              <bool>false</bool>
                              </property>
                             </widget>
                            </item>
@@ -2853,7 +2853,7 @@ umieszczając ją w komorze próźniowej na czas zaniku ostatniego pęcherzyka</
                                 <set>Qt::AlignmentFlag::AlignCenter</set>
                                </property>
                                <property name="readOnly">
-                                <bool>true</bool>
+                                <bool>false</bool>
                                </property>
                               </widget>
                              </item>
@@ -2906,7 +2906,7 @@ umieszczając ją w komorze próźniowej na czas zaniku ostatniego pęcherzyka</
                                 <set>Qt::AlignmentFlag::AlignCenter</set>
                                </property>
                                <property name="readOnly">
-                                <bool>true</bool>
+                                <bool>false</bool>
                                </property>
                               </widget>
                              </item>
@@ -3216,7 +3216,7 @@ umieszczając ją w komorze próźniowej na czas zaniku ostatniego pęcherzyka</
                         <rect>
                          <x>0</x>
                          <y>0</y>
-                         <width>480</width>
+                         <width>821</width>
                          <height>709</height>
                         </rect>
                        </property>
@@ -3970,40 +3970,6 @@ umieszczając ją w komorze próźniowej na czas zaniku ostatniego pęcherzyka</
                              </property>
                             </widget>
                            </item>
-                           <item row="3" column="1">
-                            <widget class="QLineEdit" name="editSavedValueFinishMeasurementTriple">
-                             <property name="minimumSize">
-                              <size>
-                               <width>50</width>
-                               <height>30</height>
-                              </size>
-                             </property>
-                             <property name="maximumSize">
-                              <size>
-                               <width>200</width>
-                               <height>16777215</height>
-                              </size>
-                             </property>
-                             <property name="font">
-                              <font>
-                               <pointsize>9</pointsize>
-                               <bold>true</bold>
-                              </font>
-                             </property>
-                             <property name="styleSheet">
-                              <string notr="true">background-color: #f0f0f0;</string>
-                             </property>
-                             <property name="text">
-                              <string/>
-                             </property>
-                             <property name="alignment">
-                              <set>Qt::AlignmentFlag::AlignCenter</set>
-                             </property>
-                             <property name="readOnly">
-                              <bool>true</bool>
-                             </property>
-                            </widget>
-                           </item>
                            <item row="3" column="2">
                             <widget class="QLabel" name="labelSavedUnitFinishMeasurementTriple">
                              <property name="font">
@@ -4074,7 +4040,7 @@ umieszczając ją w komorze próźniowej na czas zaniku ostatniego pęcherzyka</
                               <set>Qt::AlignmentFlag::AlignCenter</set>
                              </property>
                              <property name="readOnly">
-                              <bool>true</bool>
+                              <bool>false</bool>
                              </property>
                             </widget>
                            </item>
@@ -4089,6 +4055,9 @@ umieszczając ją w komorze próźniowej na czas zaniku ostatniego pęcherzyka</
                               <string>g</string>
                              </property>
                             </widget>
+                           </item>
+                           <item row="3" column="1">
+                            <widget class="QLineEdit" name="editSavedValueFinishMeasurementTriple"/>
                            </item>
                           </layout>
                          </item>
@@ -4706,7 +4675,7 @@ umieszczając ją w komorze próźniowej na czas zaniku ostatniego pęcherzyka</
                             <x>0</x>
                             <y>0</y>
                             <width>360</width>
-                            <height>407</height>
+                            <height>496</height>
                            </rect>
                           </property>
                           <layout class="QVBoxLayout" name="verticalLayout_6">
@@ -4990,37 +4959,6 @@ umieszczając ją w komorze próźniowej na czas zaniku ostatniego pęcherzyka</
                                </property>
                               </widget>
                              </item>
-                             <item row="3" column="1">
-                              <widget class="QLineEdit" name="editSavedMeasureSaturated">
-                               <property name="minimumSize">
-                                <size>
-                                 <width>50</width>
-                                 <height>30</height>
-                                </size>
-                               </property>
-                               <property name="maximumSize">
-                                <size>
-                                 <width>200</width>
-                                 <height>16777215</height>
-                                </size>
-                               </property>
-                               <property name="font">
-                                <font>
-                                 <pointsize>9</pointsize>
-                                 <bold>true</bold>
-                                </font>
-                               </property>
-                               <property name="styleSheet">
-                                <string notr="true">background-color: #f0f0f0;</string>
-                               </property>
-                               <property name="alignment">
-                                <set>Qt::AlignmentFlag::AlignCenter</set>
-                               </property>
-                               <property name="readOnly">
-                                <bool>true</bool>
-                               </property>
-                              </widget>
-                             </item>
                              <item row="3" column="2">
                               <widget class="QLabel" name="labelUnitSavedMeasureSaturated">
                                <property name="font">
@@ -5088,7 +5026,7 @@ umieszczając ją w komorze próźniowej na czas zaniku ostatniego pęcherzyka</
                                 <set>Qt::AlignmentFlag::AlignCenter</set>
                                </property>
                                <property name="readOnly">
-                                <bool>true</bool>
+                                <bool>false</bool>
                                </property>
                               </widget>
                              </item>
@@ -5103,6 +5041,9 @@ umieszczając ją w komorze próźniowej na czas zaniku ostatniego pęcherzyka</
                                 <string>g</string>
                                </property>
                               </widget>
+                             </item>
+                             <item row="3" column="1">
+                              <widget class="QLineEdit" name="editSavedMeasureSaturated"/>
                              </item>
                             </layout>
                            </item>
@@ -5258,7 +5199,7 @@ umieszczając ją w komorze próźniowej na czas zaniku ostatniego pęcherzyka</
                         <rect>
                          <x>0</x>
                          <y>0</y>
-                         <width>583</width>
+                         <width>821</width>
                          <height>1447</height>
                         </rect>
                        </property>
