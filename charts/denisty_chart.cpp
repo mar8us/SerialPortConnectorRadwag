@@ -85,7 +85,7 @@ QList<ChartDataPoint> DensityChartWidget::createDensityComparisonData(const Meas
         theoreticalDensity,
         getTheoreticalDensityColor(),
         "g/cm³",
-        QString("Katalogowa gęstość materiału: %1 g/cm³").arg(formatValue(theoreticalDensity))
+        QString("Gęstość teoryczna materiału: %1 g/cm³").arg(formatValue(theoreticalDensity))
         ));
 
     data.append(ChartDataPoint(
@@ -113,7 +113,7 @@ QList<ChartDataPoint> DensityChartWidget::createMaterialEfficiencyData(const Mea
         relativeDensity,
         getUtilizedPotentialColor(),
         "%",
-        QString("Zagęszczenie materiału: %1% potencjału gęstościowego")
+        QString("Zagęszczenie materiału: %1%")
             .arg(formatPercentage(relativeDensity))
         ));
 
@@ -122,7 +122,7 @@ QList<ChartDataPoint> DensityChartWidget::createMaterialEfficiencyData(const Mea
         wastedPotential,
         getWastedPotentialColor(),
         "%",
-        QString("Objętość zajęta przez pory: %1% (obniża gęstość materiału)")
+        QString("Objętość zajęta przez pory: %1%")
             .arg(formatPercentage(wastedPotential))
         ));
 
