@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1263</width>
-    <height>898</height>
+    <height>850</height>
    </rect>
   </property>
   <property name="minimumSize">
@@ -24,7 +24,7 @@
     <item>
      <widget class="QStackedWidget" name="stackedWidget">
       <property name="currentIndex">
-       <number>1</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="measureDensityPage">
        <layout class="QHBoxLayout" name="horizontalLayoutMeasureDensity">
@@ -807,7 +807,7 @@ a następnie wykonaj poniższe kroki:</string>
                    </size>
                   </property>
                   <property name="currentIndex">
-                   <number>0</number>
+                   <number>1</number>
                   </property>
                   <widget class="QWidget" name="pageInitialData">
                    <layout class="QGridLayout" name="gridLayout_5">
@@ -915,7 +915,7 @@ a następnie wykonaj poniższe kroki:</string>
                             <x>0</x>
                             <y>0</y>
                             <width>805</width>
-                            <height>388</height>
+                            <height>340</height>
                            </rect>
                           </property>
                           <layout class="QGridLayout" name="gridLayout_17">
@@ -1456,6 +1456,9 @@ i wykonaj pomiar</string>
                          <property name="orientation">
                           <enum>Qt::Orientation::Vertical</enum>
                          </property>
+                         <property name="sizeType">
+                          <enum>QSizePolicy::Policy::Minimum</enum>
+                         </property>
                          <property name="sizeHint" stdset="0">
                           <size>
                            <width>20</width>
@@ -1475,247 +1478,206 @@ i wykonaj pomiar</string>
                         <height>110</height>
                        </size>
                       </property>
-                      <property name="maximumSize">
-                       <size>
-                        <width>16777215</width>
-                        <height>16777215</height>
-                       </size>
-                      </property>
                       <property name="title">
                        <string>Pomiar masy próbki suchej w powietrzu</string>
                       </property>
-                      <layout class="QVBoxLayout" name="verticalLayout_21">
+                      <layout class="QVBoxLayout" name="verticalLayoutMain_5">
                        <item>
-                        <layout class="QHBoxLayout" name="savedValueLayout_3">
-                         <item>
-                          <layout class="QGridLayout" name="gridLayout_8">
-                           <item row="4" column="1">
-                            <spacer name="verticalSpacer_15">
-                             <property name="orientation">
-                              <enum>Qt::Orientation::Vertical</enum>
-                             </property>
-                             <property name="sizeHint" stdset="0">
-                              <size>
-                               <width>20</width>
-                               <height>40</height>
-                              </size>
-                             </property>
-                            </spacer>
-                           </item>
-                           <item row="0" column="0">
-                            <widget class="QLabel" name="labelCurrentDryMeasure">
-                             <property name="minimumSize">
-                              <size>
-                               <width>0</width>
-                               <height>0</height>
-                              </size>
-                             </property>
-                             <property name="font">
-                              <font>
-                               <pointsize>9</pointsize>
-                              </font>
-                             </property>
-                             <property name="text">
-                              <string>Aktualna wartość:</string>
-                             </property>
-                            </widget>
-                           </item>
-                           <item row="3" column="0">
-                            <widget class="QLabel" name="labelSavedDryMeasure">
-                             <property name="minimumSize">
-                              <size>
-                               <width>0</width>
-                               <height>0</height>
-                              </size>
-                             </property>
-                             <property name="font">
-                              <font>
-                               <pointsize>9</pointsize>
-                              </font>
-                             </property>
-                             <property name="text">
-                              <string>Zapisana wartość:</string>
-                             </property>
-                            </widget>
-                           </item>
-                           <item row="0" column="1">
-                            <widget class="QLineEdit" name="editCurrentDryMeasure">
-                             <property name="minimumSize">
-                              <size>
-                               <width>50</width>
-                               <height>30</height>
-                              </size>
-                             </property>
-                             <property name="maximumSize">
-                              <size>
-                               <width>200</width>
-                               <height>16777215</height>
-                              </size>
-                             </property>
-                             <property name="font">
-                              <font>
-                               <pointsize>9</pointsize>
-                               <bold>true</bold>
-                              </font>
-                             </property>
-                             <property name="alignment">
-                              <set>Qt::AlignmentFlag::AlignCenter</set>
-                             </property>
-                             <property name="readOnly">
-                              <bool>false</bool>
-                             </property>
-                            </widget>
-                           </item>
-                           <item row="3" column="1">
-                            <widget class="QLineEdit" name="editSavedDryMeasure">
-                             <property name="minimumSize">
-                              <size>
-                               <width>50</width>
-                               <height>30</height>
-                              </size>
-                             </property>
-                             <property name="maximumSize">
-                              <size>
-                               <width>200</width>
-                               <height>16777215</height>
-                              </size>
-                             </property>
-                             <property name="font">
-                              <font>
-                               <pointsize>9</pointsize>
-                               <bold>true</bold>
-                              </font>
-                             </property>
-                             <property name="alignment">
-                              <set>Qt::AlignmentFlag::AlignCenter</set>
-                             </property>
-                             <property name="readOnly">
-                              <bool>false</bool>
-                             </property>
-                            </widget>
-                           </item>
-                           <item row="0" column="2">
-                            <widget class="QLabel" name="labelUnitCurrentDryMeasure">
-                             <property name="font">
-                              <font>
-                               <pointsize>11</pointsize>
-                              </font>
-                             </property>
-                             <property name="text">
-                              <string>g</string>
-                             </property>
-                            </widget>
-                           </item>
-                           <item row="3" column="2">
-                            <widget class="QLabel" name="labelUnitSavedDryMeasure">
-                             <property name="font">
-                              <font>
-                               <pointsize>11</pointsize>
-                              </font>
-                             </property>
-                             <property name="text">
-                              <string>g</string>
-                             </property>
-                            </widget>
-                           </item>
-                          </layout>
-                         </item>
-                         <item>
-                          <spacer name="horizontalSpacer_16">
-                           <property name="orientation">
-                            <enum>Qt::Orientation::Horizontal</enum>
-                           </property>
-                           <property name="sizeType">
-                            <enum>QSizePolicy::Policy::Minimum</enum>
-                           </property>
-                           <property name="sizeHint" stdset="0">
-                            <size>
-                             <width>13</width>
-                             <height>13</height>
-                            </size>
-                           </property>
-                          </spacer>
-                         </item>
-                         <item>
-                          <layout class="QGridLayout" name="gridLayout_11">
-                           <item row="1" column="0">
-                            <widget class="QPushButton" name="buttonSaveCurrentDryMeasure">
-                             <property name="minimumSize">
-                              <size>
-                               <width>130</width>
-                               <height>30</height>
-                              </size>
-                             </property>
-                             <property name="text">
-                              <string>Zapisz</string>
-                             </property>
-                            </widget>
-                           </item>
-                           <item row="2" column="0">
-                            <widget class="QPushButton" name="buttonClearEditSavedDryMeasure">
-                             <property name="minimumSize">
-                              <size>
-                               <width>130</width>
-                               <height>30</height>
-                              </size>
-                             </property>
-                             <property name="text">
-                              <string>Wyczyść</string>
-                             </property>
-                            </widget>
-                           </item>
-                           <item row="0" column="0">
-                            <widget class="QPushButton" name="buttonGetCurrentDryMeasure">
-                             <property name="minimumSize">
-                              <size>
-                               <width>130</width>
-                               <height>30</height>
-                              </size>
-                             </property>
-                             <property name="text">
-                              <string>Pobierz pomiar</string>
-                             </property>
-                            </widget>
-                           </item>
-                           <item row="3" column="0">
-                            <spacer name="verticalSpacer_16">
-                             <property name="orientation">
-                              <enum>Qt::Orientation::Vertical</enum>
-                             </property>
-                             <property name="sizeHint" stdset="0">
-                              <size>
-                               <width>20</width>
-                               <height>40</height>
-                              </size>
-                             </property>
-                            </spacer>
-                           </item>
-                          </layout>
-                         </item>
-                         <item>
-                          <spacer name="horizontalSpacer_22">
-                           <property name="orientation">
-                            <enum>Qt::Orientation::Horizontal</enum>
-                           </property>
-                           <property name="sizeHint" stdset="0">
-                            <size>
-                             <width>40</width>
-                             <height>20</height>
-                            </size>
-                           </property>
-                          </spacer>
-                         </item>
-                        </layout>
+                        <widget class="QGroupBox" name="groupBoxCurrentReading_4">
+                         <property name="title">
+                          <string>Aktualny pomiar z wagi</string>
+                         </property>
+                         <layout class="QHBoxLayout" name="horizontalLayoutCurrent_4">
+                          <item>
+                           <widget class="QLabel" name="labelCurrentDryMeasure">
+                            <property name="font">
+                             <font>
+                              <pointsize>9</pointsize>
+                             </font>
+                            </property>
+                            <property name="text">
+                             <string>Wartość:</string>
+                            </property>
+                           </widget>
+                          </item>
+                          <item>
+                           <widget class="QLineEdit" name="editCurrentDryMeasure">
+                            <property name="minimumSize">
+                             <size>
+                              <width>100</width>
+                              <height>30</height>
+                             </size>
+                            </property>
+                            <property name="maximumSize">
+                             <size>
+                              <width>150</width>
+                              <height>16777215</height>
+                             </size>
+                            </property>
+                            <property name="font">
+                             <font>
+                              <pointsize>10</pointsize>
+                              <bold>true</bold>
+                             </font>
+                            </property>
+                            <property name="alignment">
+                             <set>Qt::AlignmentFlag::AlignCenter</set>
+                            </property>
+                            <property name="readOnly">
+                             <bool>true</bool>
+                            </property>
+                           </widget>
+                          </item>
+                          <item>
+                           <widget class="QLabel" name="labelUnitCurrentDryMeasure">
+                            <property name="font">
+                             <font>
+                              <pointsize>11</pointsize>
+                             </font>
+                            </property>
+                            <property name="text">
+                             <string>g</string>
+                            </property>
+                           </widget>
+                          </item>
+                          <item>
+                           <widget class="QPushButton" name="buttonGetCurrentDryMeasure">
+                            <property name="minimumSize">
+                             <size>
+                              <width>130</width>
+                              <height>30</height>
+                             </size>
+                            </property>
+                            <property name="text">
+                             <string>Pobierz pomiar</string>
+                            </property>
+                           </widget>
+                          </item>
+                          <item>
+                           <widget class="QPushButton" name="buttonSaveCurrentDryMeasure">
+                            <property name="minimumSize">
+                             <size>
+                              <width>90</width>
+                              <height>30</height>
+                             </size>
+                            </property>
+                            <property name="text">
+                             <string>Zapisz</string>
+                            </property>
+                           </widget>
+                          </item>
+                          <item>
+                           <spacer name="horizontalSpacerCurrent_4">
+                            <property name="orientation">
+                             <enum>Qt::Orientation::Horizontal</enum>
+                            </property>
+                            <property name="sizeHint" stdset="0">
+                             <size>
+                              <width>20</width>
+                              <height>20</height>
+                             </size>
+                            </property>
+                           </spacer>
+                          </item>
+                         </layout>
+                        </widget>
                        </item>
                        <item>
-                        <spacer name="verticalSpacer_4">
+                        <widget class="QGroupBox" name="groupBoxSavedReading_4">
+                         <property name="title">
+                          <string>Zapisany pomiar</string>
+                         </property>
+                         <layout class="QHBoxLayout" name="horizontalLayoutSaved_4">
+                          <item>
+                           <widget class="QLabel" name="labelSavedDryMeasure">
+                            <property name="font">
+                             <font>
+                              <pointsize>9</pointsize>
+                             </font>
+                            </property>
+                            <property name="text">
+                             <string>Wartość:</string>
+                            </property>
+                           </widget>
+                          </item>
+                          <item>
+                           <widget class="QLineEdit" name="editSavedDryMeasure">
+                            <property name="minimumSize">
+                             <size>
+                              <width>100</width>
+                              <height>30</height>
+                             </size>
+                            </property>
+                            <property name="maximumSize">
+                             <size>
+                              <width>150</width>
+                              <height>16777215</height>
+                             </size>
+                            </property>
+                            <property name="font">
+                             <font>
+                              <pointsize>10</pointsize>
+                              <bold>true</bold>
+                             </font>
+                            </property>
+                            <property name="alignment">
+                             <set>Qt::AlignmentFlag::AlignCenter</set>
+                            </property>
+                            <property name="readOnly">
+                             <bool>true</bool>
+                            </property>
+                           </widget>
+                          </item>
+                          <item>
+                           <widget class="QLabel" name="labelUnitSavedDryMeasure">
+                            <property name="font">
+                             <font>
+                              <pointsize>11</pointsize>
+                             </font>
+                            </property>
+                            <property name="text">
+                             <string>g</string>
+                            </property>
+                           </widget>
+                          </item>
+                          <item>
+                           <widget class="QPushButton" name="buttonClearEditSavedDryMeasure">
+                            <property name="minimumSize">
+                             <size>
+                              <width>90</width>
+                              <height>30</height>
+                             </size>
+                            </property>
+                            <property name="text">
+                             <string>Wyczyść</string>
+                            </property>
+                           </widget>
+                          </item>
+                          <item>
+                           <spacer name="horizontalSpacerSaved_4">
+                            <property name="orientation">
+                             <enum>Qt::Orientation::Horizontal</enum>
+                            </property>
+                            <property name="sizeHint" stdset="0">
+                             <size>
+                              <width>20</width>
+                              <height>20</height>
+                             </size>
+                            </property>
+                           </spacer>
+                          </item>
+                         </layout>
+                        </widget>
+                       </item>
+                       <item>
+                        <spacer name="verticalSpacerMain_4">
                          <property name="orientation">
                           <enum>Qt::Orientation::Vertical</enum>
                          </property>
                          <property name="sizeHint" stdset="0">
                           <size>
-                           <width>5</width>
-                           <height>5</height>
+                           <width>20</width>
+                           <height>20</height>
                           </size>
                          </property>
                         </spacer>
@@ -2579,9 +2541,140 @@ umieszczając ją w komorze próźniowej na czas zaniku ostatniego pęcherzyka</
                    </layout>
                   </widget>
                   <widget class="QWidget" name="pageFinishMeasurementSecond">
-                   <layout class="QGridLayout" name="gridLayout_3">
-                    <item row="2" column="0" colspan="2">
+                   <layout class="QGridLayout" name="gridLayout_2">
+                    <item row="0" column="0" rowspan="3">
+                     <widget class="QGroupBox" name="groupBoxGuideFinishMeasureSecond">
+                      <property name="minimumSize">
+                       <size>
+                        <width>0</width>
+                        <height>0</height>
+                       </size>
+                      </property>
+                      <property name="title">
+                       <string>Przewodnik koniec pomiaru DWUSTOPNIOWEGO</string>
+                      </property>
+                      <layout class="QVBoxLayout" name="verticalLayout_2">
+                       <item>
+                        <widget class="QLabel" name="labelGuideDescriptionFinishMeasureSecond">
+                         <property name="font">
+                          <font>
+                           <pointsize>9</pointsize>
+                          </font>
+                         </property>
+                         <property name="text">
+                          <string>Wykonaj poniższe kroki aby zmierzyć masę próbki w cieczy:</string>
+                         </property>
+                         <property name="wordWrap">
+                          <bool>true</bool>
+                         </property>
+                        </widget>
+                       </item>
+                       <item>
+                        <widget class="QFrame" name="frameFluidMassSteps">
+                         <property name="frameShape">
+                          <enum>QFrame::Shape::StyledPanel</enum>
+                         </property>
+                         <property name="frameShadow">
+                          <enum>QFrame::Shadow::Raised</enum>
+                         </property>
+                         <layout class="QVBoxLayout" name="stepsLayout_6">
+                          <property name="spacing">
+                           <number>6</number>
+                          </property>
+                          <property name="leftMargin">
+                           <number>9</number>
+                          </property>
+                          <property name="topMargin">
+                           <number>9</number>
+                          </property>
+                          <property name="rightMargin">
+                           <number>9</number>
+                          </property>
+                          <property name="bottomMargin">
+                           <number>9</number>
+                          </property>
+                          <item>
+                           <widget class="QCheckBox" name="step3CheckBox_6">
+                            <property name="text">
+                             <string>1. Upewnij się, że próbka jest całkowicie zanurzona</string>
+                            </property>
+                           </widget>
+                          </item>
+                          <item>
+                           <layout class="QHBoxLayout" name="step1Layout_6">
+                            <item>
+                             <widget class="QCheckBox" name="step2FinishMeasureSecondCheckBox">
+                              <property name="text">
+                               <string>2. Zważ próbkę zanurzoną w wodzie</string>
+                              </property>
+                             </widget>
+                            </item>
+                            <item>
+                             <widget class="QPushButton" name="buttonFinishMeasureSecondExecuteStepTwo">
+                              <property name="maximumSize">
+                               <size>
+                                <width>100</width>
+                                <height>25</height>
+                               </size>
+                              </property>
+                              <property name="text">
+                               <string>Wykonaj</string>
+                              </property>
+                             </widget>
+                            </item>
+                           </layout>
+                          </item>
+                          <item>
+                           <layout class="QHBoxLayout" name="step2Layout_6">
+                            <item>
+                             <widget class="QCheckBox" name="step3FinishMeasureSecondCheckBox">
+                              <property name="text">
+                               <string>3. Zapisz wynik</string>
+                              </property>
+                             </widget>
+                            </item>
+                            <item>
+                             <widget class="QPushButton" name="buttonFinishMeasureSecondExecuteStepTree">
+                              <property name="maximumSize">
+                               <size>
+                                <width>100</width>
+                                <height>25</height>
+                               </size>
+                              </property>
+                              <property name="text">
+                               <string>Zatwierdź</string>
+                              </property>
+                             </widget>
+                            </item>
+                           </layout>
+                          </item>
+                         </layout>
+                        </widget>
+                       </item>
+                       <item>
+                        <spacer name="verticalSpacer_5">
+                         <property name="orientation">
+                          <enum>Qt::Orientation::Vertical</enum>
+                         </property>
+                         <property name="sizeType">
+                          <enum>QSizePolicy::Policy::MinimumExpanding</enum>
+                         </property>
+                         <property name="sizeHint" stdset="0">
+                          <size>
+                           <width>20</width>
+                           <height>40</height>
+                          </size>
+                         </property>
+                        </spacer>
+                       </item>
+                      </layout>
+                     </widget>
+                    </item>
+                    <item row="6" column="0" colspan="2">
                      <layout class="QHBoxLayout" name="navigationButtonsLayout">
+                      <property name="sizeConstraint">
+                       <enum>QLayout::SizeConstraint::SetMinimumSize</enum>
+                      </property>
                       <item>
                        <spacer name="horizontalSpacer_2">
                         <property name="orientation">
@@ -2626,385 +2719,7 @@ umieszczając ją w komorze próźniowej na czas zaniku ostatniego pęcherzyka</
                       </item>
                      </layout>
                     </item>
-                    <item row="0" column="0">
-                     <widget class="QGroupBox" name="groupBoxGuideFinishMeasureSecond">
-                      <property name="minimumSize">
-                       <size>
-                        <width>0</width>
-                        <height>0</height>
-                       </size>
-                      </property>
-                      <property name="title">
-                       <string>Przewodnik koniec pomiaru DWUSTOPNIOWEGO</string>
-                      </property>
-                      <layout class="QVBoxLayout" name="verticalLayout_27">
-                       <item>
-                        <widget class="QLabel" name="labelGuideDescriptionFinishMeasureSecond">
-                         <property name="font">
-                          <font>
-                           <pointsize>9</pointsize>
-                          </font>
-                         </property>
-                         <property name="text">
-                          <string>Wykonaj poniższe kroki aby zmierzyć masę próbki w cieczy:</string>
-                         </property>
-                         <property name="wordWrap">
-                          <bool>true</bool>
-                         </property>
-                        </widget>
-                       </item>
-                       <item>
-                        <widget class="QFrame" name="stepsFrame">
-                         <property name="frameShape">
-                          <enum>QFrame::Shape::StyledPanel</enum>
-                         </property>
-                         <property name="frameShadow">
-                          <enum>QFrame::Shadow::Raised</enum>
-                         </property>
-                         <layout class="QVBoxLayout" name="verticalLayout_13">
-                          <item>
-                           <widget class="QFrame" name="frameFluidMassSteps">
-                            <property name="frameShape">
-                             <enum>QFrame::Shape::StyledPanel</enum>
-                            </property>
-                            <property name="frameShadow">
-                             <enum>QFrame::Shadow::Raised</enum>
-                            </property>
-                            <layout class="QVBoxLayout" name="stepsLayout_6">
-                             <property name="spacing">
-                              <number>6</number>
-                             </property>
-                             <property name="leftMargin">
-                              <number>9</number>
-                             </property>
-                             <property name="topMargin">
-                              <number>9</number>
-                             </property>
-                             <property name="rightMargin">
-                              <number>9</number>
-                             </property>
-                             <property name="bottomMargin">
-                              <number>9</number>
-                             </property>
-                             <item>
-                              <widget class="QCheckBox" name="step3CheckBox_6">
-                               <property name="text">
-                                <string>1. Upewnij się, że próbka jest całkowicie zanurzona</string>
-                               </property>
-                              </widget>
-                             </item>
-                             <item>
-                              <layout class="QHBoxLayout" name="step1Layout_6">
-                               <item>
-                                <widget class="QCheckBox" name="step2FinishMeasureSecondCheckBox">
-                                 <property name="text">
-                                  <string>2. Zważ próbkę zanurzoną w wodzie</string>
-                                 </property>
-                                </widget>
-                               </item>
-                               <item>
-                                <widget class="QPushButton" name="buttonFinishMeasureSecondExecuteStepTwo">
-                                 <property name="maximumSize">
-                                  <size>
-                                   <width>100</width>
-                                   <height>25</height>
-                                  </size>
-                                 </property>
-                                 <property name="text">
-                                  <string>Wykonaj</string>
-                                 </property>
-                                </widget>
-                               </item>
-                              </layout>
-                             </item>
-                             <item>
-                              <layout class="QHBoxLayout" name="step2Layout_6">
-                               <item>
-                                <widget class="QCheckBox" name="step3FinishMeasureSecondCheckBox">
-                                 <property name="text">
-                                  <string>3. Zapisz wynik</string>
-                                 </property>
-                                </widget>
-                               </item>
-                               <item>
-                                <widget class="QPushButton" name="buttonFinishMeasureSecondExecuteStepTree">
-                                 <property name="maximumSize">
-                                  <size>
-                                   <width>100</width>
-                                   <height>25</height>
-                                  </size>
-                                 </property>
-                                 <property name="text">
-                                  <string>Zatwierdź</string>
-                                 </property>
-                                </widget>
-                               </item>
-                              </layout>
-                             </item>
-                            </layout>
-                           </widget>
-                          </item>
-                         </layout>
-                        </widget>
-                       </item>
-                       <item>
-                        <spacer name="verticalSpacer_7">
-                         <property name="orientation">
-                          <enum>Qt::Orientation::Vertical</enum>
-                         </property>
-                         <property name="sizeHint" stdset="0">
-                          <size>
-                           <width>20</width>
-                           <height>40</height>
-                          </size>
-                         </property>
-                        </spacer>
-                       </item>
-                      </layout>
-                     </widget>
-                    </item>
-                    <item row="1" column="0">
-                     <layout class="QVBoxLayout" name="verticalLayout_3">
-                      <item>
-                       <widget class="QGroupBox" name="groupBoxFinishMeasureSecond">
-                        <property name="minimumSize">
-                         <size>
-                          <width>380</width>
-                          <height>0</height>
-                         </size>
-                        </property>
-                        <property name="title">
-                         <string>Pomiar masy próbki w cieczy</string>
-                        </property>
-                        <layout class="QVBoxLayout" name="verticalLayout_2">
-                         <item>
-                          <layout class="QHBoxLayout" name="savedValueLayout_2">
-                           <item>
-                            <layout class="QGridLayout" name="gridLayout_2">
-                             <item row="3" column="0">
-                              <widget class="QLabel" name="labelSavedValueFinishMeasureSecond">
-                               <property name="minimumSize">
-                                <size>
-                                 <width>0</width>
-                                 <height>0</height>
-                                </size>
-                               </property>
-                               <property name="font">
-                                <font>
-                                 <pointsize>9</pointsize>
-                                </font>
-                               </property>
-                               <property name="text">
-                                <string>Zapisana wartość:</string>
-                               </property>
-                              </widget>
-                             </item>
-                             <item row="0" column="2">
-                              <widget class="QLabel" name="unitLabel_2">
-                               <property name="font">
-                                <font>
-                                 <pointsize>11</pointsize>
-                                </font>
-                               </property>
-                               <property name="text">
-                                <string>g</string>
-                               </property>
-                              </widget>
-                             </item>
-                             <item row="0" column="0">
-                              <widget class="QLabel" name="labelCurrentValueFinishMeasureSecond">
-                               <property name="minimumSize">
-                                <size>
-                                 <width>0</width>
-                                 <height>0</height>
-                                </size>
-                               </property>
-                               <property name="font">
-                                <font>
-                                 <pointsize>9</pointsize>
-                                </font>
-                               </property>
-                               <property name="text">
-                                <string>Aktualna wartość:</string>
-                               </property>
-                              </widget>
-                             </item>
-                             <item row="0" column="1">
-                              <widget class="QLineEdit" name="editCurrentValueFinishSecond">
-                               <property name="minimumSize">
-                                <size>
-                                 <width>50</width>
-                                 <height>30</height>
-                                </size>
-                               </property>
-                               <property name="maximumSize">
-                                <size>
-                                 <width>200</width>
-                                 <height>16777215</height>
-                                </size>
-                               </property>
-                               <property name="font">
-                                <font>
-                                 <pointsize>9</pointsize>
-                                 <bold>true</bold>
-                                </font>
-                               </property>
-                               <property name="alignment">
-                                <set>Qt::AlignmentFlag::AlignCenter</set>
-                               </property>
-                               <property name="readOnly">
-                                <bool>false</bool>
-                               </property>
-                              </widget>
-                             </item>
-                             <item row="4" column="1">
-                              <spacer name="verticalSpacer_5">
-                               <property name="orientation">
-                                <enum>Qt::Orientation::Vertical</enum>
-                               </property>
-                               <property name="sizeHint" stdset="0">
-                                <size>
-                                 <width>20</width>
-                                 <height>40</height>
-                                </size>
-                               </property>
-                              </spacer>
-                             </item>
-                             <item row="3" column="2">
-                              <widget class="QLabel" name="savedUnitLabel_2">
-                               <property name="font">
-                                <font>
-                                 <pointsize>11</pointsize>
-                                </font>
-                               </property>
-                               <property name="text">
-                                <string>g</string>
-                               </property>
-                              </widget>
-                             </item>
-                             <item row="3" column="1">
-                              <widget class="QLineEdit" name="editSavedValueFinishMeasureSecond">
-                               <property name="minimumSize">
-                                <size>
-                                 <width>50</width>
-                                 <height>30</height>
-                                </size>
-                               </property>
-                               <property name="maximumSize">
-                                <size>
-                                 <width>200</width>
-                                 <height>16777215</height>
-                                </size>
-                               </property>
-                               <property name="font">
-                                <font>
-                                 <pointsize>9</pointsize>
-                                 <bold>true</bold>
-                                </font>
-                               </property>
-                               <property name="alignment">
-                                <set>Qt::AlignmentFlag::AlignCenter</set>
-                               </property>
-                               <property name="readOnly">
-                                <bool>false</bool>
-                               </property>
-                              </widget>
-                             </item>
-                            </layout>
-                           </item>
-                           <item>
-                            <spacer name="horizontalSpacer_15">
-                             <property name="orientation">
-                              <enum>Qt::Orientation::Horizontal</enum>
-                             </property>
-                             <property name="sizeType">
-                              <enum>QSizePolicy::Policy::Minimum</enum>
-                             </property>
-                             <property name="sizeHint" stdset="0">
-                              <size>
-                               <width>13</width>
-                               <height>13</height>
-                              </size>
-                             </property>
-                            </spacer>
-                           </item>
-                           <item>
-                            <layout class="QGridLayout" name="gridLayout_7">
-                             <item row="1" column="0">
-                              <widget class="QPushButton" name="buttonSaveCurrentFinishSecond">
-                               <property name="minimumSize">
-                                <size>
-                                 <width>130</width>
-                                 <height>30</height>
-                                </size>
-                               </property>
-                               <property name="text">
-                                <string>Zapisz</string>
-                               </property>
-                              </widget>
-                             </item>
-                             <item row="2" column="0">
-                              <widget class="QPushButton" name="buttonClearSavedValueFinishMeasureSecond">
-                               <property name="minimumSize">
-                                <size>
-                                 <width>130</width>
-                                 <height>30</height>
-                                </size>
-                               </property>
-                               <property name="text">
-                                <string>Wyczyść</string>
-                               </property>
-                              </widget>
-                             </item>
-                             <item row="0" column="0">
-                              <widget class="QPushButton" name="buttonGetCurrentValueFinishMeasureSecond">
-                               <property name="minimumSize">
-                                <size>
-                                 <width>130</width>
-                                 <height>30</height>
-                                </size>
-                               </property>
-                               <property name="text">
-                                <string>Pobierz pomiar</string>
-                               </property>
-                              </widget>
-                             </item>
-                             <item row="3" column="0">
-                              <spacer name="verticalSpacer_11">
-                               <property name="orientation">
-                                <enum>Qt::Orientation::Vertical</enum>
-                               </property>
-                               <property name="sizeHint" stdset="0">
-                                <size>
-                                 <width>20</width>
-                                 <height>40</height>
-                                </size>
-                               </property>
-                              </spacer>
-                             </item>
-                            </layout>
-                           </item>
-                           <item>
-                            <spacer name="horizontalSpacer_12">
-                             <property name="orientation">
-                              <enum>Qt::Orientation::Horizontal</enum>
-                             </property>
-                             <property name="sizeHint" stdset="0">
-                              <size>
-                               <width>40</width>
-                               <height>20</height>
-                              </size>
-                             </property>
-                            </spacer>
-                           </item>
-                          </layout>
-                         </item>
-                        </layout>
-                       </widget>
-                      </item>
-                     </layout>
-                    </item>
-                    <item row="0" column="1" rowspan="2">
+                    <item row="0" column="1" rowspan="6">
                      <widget class="QGroupBox" name="calculationHydroGroupBox">
                       <property name="minimumSize">
                        <size>
@@ -3188,6 +2903,224 @@ umieszczając ją w komorze próźniowej na czas zaniku ostatniego pęcherzyka</
                        </item>
                        <item>
                         <spacer name="verticalSpacer_3">
+                         <property name="orientation">
+                          <enum>Qt::Orientation::Vertical</enum>
+                         </property>
+                         <property name="sizeHint" stdset="0">
+                          <size>
+                           <width>20</width>
+                           <height>40</height>
+                          </size>
+                         </property>
+                        </spacer>
+                       </item>
+                      </layout>
+                     </widget>
+                    </item>
+                    <item row="3" column="0">
+                     <widget class="QGroupBox" name="groupBoxFinishMeasureSecond">
+                      <property name="minimumSize">
+                       <size>
+                        <width>380</width>
+                        <height>110</height>
+                       </size>
+                      </property>
+                      <property name="title">
+                       <string>Pomiar masy próbki suchej w powietrzu</string>
+                      </property>
+                      <layout class="QVBoxLayout" name="verticalLayoutMain_8">
+                       <item>
+                        <widget class="QGroupBox" name="groupBoxCurrentReading_7">
+                         <property name="title">
+                          <string>Aktualny pomiar z wagi</string>
+                         </property>
+                         <layout class="QHBoxLayout" name="horizontalLayoutCurrent_7">
+                          <item>
+                           <widget class="QLabel" name="labelCurrentValueFinishMeasureSecond">
+                            <property name="font">
+                             <font>
+                              <pointsize>9</pointsize>
+                             </font>
+                            </property>
+                            <property name="text">
+                             <string>Wartość:</string>
+                            </property>
+                           </widget>
+                          </item>
+                          <item>
+                           <widget class="QLineEdit" name="editCurrentValueFinishSecond">
+                            <property name="minimumSize">
+                             <size>
+                              <width>100</width>
+                              <height>30</height>
+                             </size>
+                            </property>
+                            <property name="maximumSize">
+                             <size>
+                              <width>150</width>
+                              <height>16777215</height>
+                             </size>
+                            </property>
+                            <property name="font">
+                             <font>
+                              <pointsize>10</pointsize>
+                              <bold>true</bold>
+                             </font>
+                            </property>
+                            <property name="alignment">
+                             <set>Qt::AlignmentFlag::AlignCenter</set>
+                            </property>
+                            <property name="readOnly">
+                             <bool>true</bool>
+                            </property>
+                           </widget>
+                          </item>
+                          <item>
+                           <widget class="QLabel" name="labelUnitCurrentFinishMeasure">
+                            <property name="font">
+                             <font>
+                              <pointsize>11</pointsize>
+                             </font>
+                            </property>
+                            <property name="text">
+                             <string>g</string>
+                            </property>
+                           </widget>
+                          </item>
+                          <item>
+                           <widget class="QPushButton" name="buttonGetCurrentValueFinishMeasureSecond">
+                            <property name="minimumSize">
+                             <size>
+                              <width>130</width>
+                              <height>30</height>
+                             </size>
+                            </property>
+                            <property name="text">
+                             <string>Pobierz pomiar</string>
+                            </property>
+                           </widget>
+                          </item>
+                          <item>
+                           <widget class="QPushButton" name="buttonSaveCurrentFinishSecond">
+                            <property name="minimumSize">
+                             <size>
+                              <width>90</width>
+                              <height>30</height>
+                             </size>
+                            </property>
+                            <property name="text">
+                             <string>Zapisz</string>
+                            </property>
+                           </widget>
+                          </item>
+                          <item>
+                           <spacer name="horizontalSpacerCurrent_7">
+                            <property name="orientation">
+                             <enum>Qt::Orientation::Horizontal</enum>
+                            </property>
+                            <property name="sizeHint" stdset="0">
+                             <size>
+                              <width>20</width>
+                              <height>20</height>
+                             </size>
+                            </property>
+                           </spacer>
+                          </item>
+                         </layout>
+                        </widget>
+                       </item>
+                       <item>
+                        <widget class="QGroupBox" name="groupBoxSavedReading_7">
+                         <property name="title">
+                          <string>Zapisany pomiar</string>
+                         </property>
+                         <layout class="QHBoxLayout" name="horizontalLayoutSaved_7">
+                          <item>
+                           <widget class="QLabel" name="labelSavedValueFinishMeasureSecond">
+                            <property name="font">
+                             <font>
+                              <pointsize>9</pointsize>
+                             </font>
+                            </property>
+                            <property name="text">
+                             <string>Wartość:</string>
+                            </property>
+                           </widget>
+                          </item>
+                          <item>
+                           <widget class="QLineEdit" name="editSavedValueFinishMeasureSecond">
+                            <property name="minimumSize">
+                             <size>
+                              <width>100</width>
+                              <height>30</height>
+                             </size>
+                            </property>
+                            <property name="maximumSize">
+                             <size>
+                              <width>150</width>
+                              <height>16777215</height>
+                             </size>
+                            </property>
+                            <property name="font">
+                             <font>
+                              <pointsize>10</pointsize>
+                              <bold>true</bold>
+                             </font>
+                            </property>
+                            <property name="alignment">
+                             <set>Qt::AlignmentFlag::AlignCenter</set>
+                            </property>
+                            <property name="readOnly">
+                             <bool>true</bool>
+                            </property>
+                           </widget>
+                          </item>
+                          <item>
+                           <widget class="QLabel" name="labelUnitSavedFinishMeasure">
+                            <property name="font">
+                             <font>
+                              <pointsize>11</pointsize>
+                             </font>
+                            </property>
+                            <property name="text">
+                             <string>g</string>
+                            </property>
+                           </widget>
+                          </item>
+                          <item>
+                           <widget class="QPushButton" name="buttonClearSavedValueFinishMeasureSecond">
+                            <property name="minimumSize">
+                             <size>
+                              <width>90</width>
+                              <height>30</height>
+                             </size>
+                            </property>
+                            <property name="text">
+                             <string>Wyczyść</string>
+                            </property>
+                           </widget>
+                          </item>
+                          <item>
+                           <spacer name="horizontalSpacerSaved_7">
+                            <property name="orientation">
+                             <enum>Qt::Orientation::Horizontal</enum>
+                            </property>
+                            <property name="sizeType">
+                             <enum>QSizePolicy::Policy::MinimumExpanding</enum>
+                            </property>
+                            <property name="sizeHint" stdset="0">
+                             <size>
+                              <width>20</width>
+                              <height>20</height>
+                             </size>
+                            </property>
+                           </spacer>
+                          </item>
+                         </layout>
+                        </widget>
+                       </item>
+                       <item>
+                        <spacer name="verticalSpacer_4">
                          <property name="orientation">
                           <enum>Qt::Orientation::Vertical</enum>
                          </property>
@@ -3793,424 +3726,7 @@ umieszczając ją w komorze próźniowej na czas zaniku ostatniego pęcherzyka</
                   </widget>
                   <widget class="QWidget" name="pageSatruationMassTriple">
                    <layout class="QGridLayout" name="gridLayout">
-                    <item row="0" column="0">
-                     <widget class="QGroupBox" name="groupBoxSaturatedFluidMassGuide">
-                      <property name="minimumSize">
-                       <size>
-                        <width>380</width>
-                        <height>220</height>
-                       </size>
-                      </property>
-                      <property name="title">
-                       <string>Przewodnik</string>
-                      </property>
-                      <layout class="QVBoxLayout" name="guideLayout_5">
-                       <property name="spacing">
-                        <number>8</number>
-                       </property>
-                       <property name="topMargin">
-                        <number>12</number>
-                       </property>
-                       <item>
-                        <widget class="QLabel" name="labelSaturatedFluidMassGuide">
-                         <property name="font">
-                          <font>
-                           <pointsize>9</pointsize>
-                          </font>
-                         </property>
-                         <property name="text">
-                          <string>Wykonaj poniższe kroki aby zmierzyć masę próbki nasyconej w cieczy:</string>
-                         </property>
-                         <property name="wordWrap">
-                          <bool>true</bool>
-                         </property>
-                        </widget>
-                       </item>
-                       <item>
-                        <widget class="QFrame" name="frameSaturatedFluidMassSteps_2">
-                         <property name="frameShape">
-                          <enum>QFrame::Shape::StyledPanel</enum>
-                         </property>
-                         <property name="frameShadow">
-                          <enum>QFrame::Shadow::Raised</enum>
-                         </property>
-                         <layout class="QVBoxLayout" name="stepsLayout_5">
-                          <property name="spacing">
-                           <number>6</number>
-                          </property>
-                          <property name="leftMargin">
-                           <number>9</number>
-                          </property>
-                          <property name="topMargin">
-                           <number>9</number>
-                          </property>
-                          <property name="rightMargin">
-                           <number>9</number>
-                          </property>
-                          <property name="bottomMargin">
-                           <number>9</number>
-                          </property>
-                          <item>
-                           <widget class="QCheckBox" name="step1FinishTriple">
-                            <property name="text">
-                             <string>1. Upewnij się, że próbka jest całkowicie zanurzona</string>
-                            </property>
-                           </widget>
-                          </item>
-                          <item>
-                           <layout class="QHBoxLayout" name="step1Layout_5">
-                            <item>
-                             <widget class="QCheckBox" name="step2FinishTriple">
-                              <property name="text">
-                               <string>2. Zważ próbkę zanurzoną w cieczy</string>
-                              </property>
-                             </widget>
-                            </item>
-                            <item>
-                             <widget class="QPushButton" name="buttonFinishMeasureTripleExecuteStepTwo">
-                              <property name="minimumSize">
-                               <size>
-                                <width>100</width>
-                                <height>25</height>
-                               </size>
-                              </property>
-                              <property name="maximumSize">
-                               <size>
-                                <width>100</width>
-                                <height>25</height>
-                               </size>
-                              </property>
-                              <property name="text">
-                               <string>Wykonaj</string>
-                              </property>
-                             </widget>
-                            </item>
-                           </layout>
-                          </item>
-                          <item>
-                           <layout class="QHBoxLayout" name="step2Layout_5">
-                            <item>
-                             <widget class="QCheckBox" name="step3FinishTriple">
-                              <property name="text">
-                               <string>3. Zapisz wynik</string>
-                              </property>
-                             </widget>
-                            </item>
-                            <item>
-                             <widget class="QPushButton" name="buttonFinishMeasureTripleExecuteStepThree">
-                              <property name="minimumSize">
-                               <size>
-                                <width>100</width>
-                                <height>25</height>
-                               </size>
-                              </property>
-                              <property name="maximumSize">
-                               <size>
-                                <width>100</width>
-                                <height>25</height>
-                               </size>
-                              </property>
-                              <property name="text">
-                               <string>Zatwierdź</string>
-                              </property>
-                             </widget>
-                            </item>
-                           </layout>
-                          </item>
-                         </layout>
-                        </widget>
-                       </item>
-                       <item>
-                        <spacer name="verticalSpacer_14">
-                         <property name="orientation">
-                          <enum>Qt::Orientation::Vertical</enum>
-                         </property>
-                         <property name="sizeHint" stdset="0">
-                          <size>
-                           <width>20</width>
-                           <height>10</height>
-                          </size>
-                         </property>
-                        </spacer>
-                       </item>
-                      </layout>
-                     </widget>
-                    </item>
-                    <item row="1" column="0">
-                     <widget class="QGroupBox" name="measureHydroGroupBox_4">
-                      <property name="minimumSize">
-                       <size>
-                        <width>380</width>
-                        <height>220</height>
-                       </size>
-                      </property>
-                      <property name="title">
-                       <string>Pomiar masy próbki nasyconej w cieczy</string>
-                      </property>
-                      <layout class="QVBoxLayout" name="verticalLayout_22">
-                       <item>
-                        <layout class="QHBoxLayout" name="savedValueLayout_4">
-                         <item>
-                          <layout class="QGridLayout" name="gridLayout_12">
-                           <item row="3" column="0">
-                            <widget class="QLabel" name="labelSavedValueFinishMeasurementTriple">
-                             <property name="minimumSize">
-                              <size>
-                               <width>0</width>
-                               <height>0</height>
-                              </size>
-                             </property>
-                             <property name="font">
-                              <font>
-                               <pointsize>9</pointsize>
-                              </font>
-                             </property>
-                             <property name="text">
-                              <string>Zapisana wartość:</string>
-                             </property>
-                            </widget>
-                           </item>
-                           <item row="3" column="2">
-                            <widget class="QLabel" name="labelSavedUnitFinishMeasurementTriple">
-                             <property name="font">
-                              <font>
-                               <pointsize>11</pointsize>
-                              </font>
-                             </property>
-                             <property name="text">
-                              <string>g</string>
-                             </property>
-                            </widget>
-                           </item>
-                           <item row="4" column="1">
-                            <spacer name="verticalSpacer_17">
-                             <property name="orientation">
-                              <enum>Qt::Orientation::Vertical</enum>
-                             </property>
-                             <property name="sizeHint" stdset="0">
-                              <size>
-                               <width>20</width>
-                               <height>40</height>
-                              </size>
-                             </property>
-                            </spacer>
-                           </item>
-                           <item row="0" column="0">
-                            <widget class="QLabel" name="labelCurrentValueFinishMeasurementTriple">
-                             <property name="minimumSize">
-                              <size>
-                               <width>0</width>
-                               <height>0</height>
-                              </size>
-                             </property>
-                             <property name="font">
-                              <font>
-                               <pointsize>9</pointsize>
-                              </font>
-                             </property>
-                             <property name="text">
-                              <string>Aktualna wartość:</string>
-                             </property>
-                            </widget>
-                           </item>
-                           <item row="0" column="1">
-                            <widget class="QLineEdit" name="editCurrentValueFinishMeasurementTriple">
-                             <property name="minimumSize">
-                              <size>
-                               <width>50</width>
-                               <height>30</height>
-                              </size>
-                             </property>
-                             <property name="maximumSize">
-                              <size>
-                               <width>200</width>
-                               <height>16777215</height>
-                              </size>
-                             </property>
-                             <property name="font">
-                              <font>
-                               <pointsize>9</pointsize>
-                               <bold>true</bold>
-                              </font>
-                             </property>
-                             <property name="text">
-                              <string/>
-                             </property>
-                             <property name="alignment">
-                              <set>Qt::AlignmentFlag::AlignCenter</set>
-                             </property>
-                             <property name="readOnly">
-                              <bool>false</bool>
-                             </property>
-                            </widget>
-                           </item>
-                           <item row="0" column="2">
-                            <widget class="QLabel" name="labelCurrentUnitFinishMeasurementTriple">
-                             <property name="font">
-                              <font>
-                               <pointsize>11</pointsize>
-                              </font>
-                             </property>
-                             <property name="text">
-                              <string>g</string>
-                             </property>
-                            </widget>
-                           </item>
-                           <item row="3" column="1">
-                            <widget class="QLineEdit" name="editSavedValueFinishMeasurementTriple"/>
-                           </item>
-                          </layout>
-                         </item>
-                         <item>
-                          <spacer name="horizontalSpacer_23">
-                           <property name="orientation">
-                            <enum>Qt::Orientation::Horizontal</enum>
-                           </property>
-                           <property name="sizeType">
-                            <enum>QSizePolicy::Policy::Minimum</enum>
-                           </property>
-                           <property name="sizeHint" stdset="0">
-                            <size>
-                             <width>13</width>
-                             <height>13</height>
-                            </size>
-                           </property>
-                          </spacer>
-                         </item>
-                         <item>
-                          <layout class="QGridLayout" name="gridLayout_13">
-                           <item row="1" column="0">
-                            <widget class="QPushButton" name="buttonSaveMeasureFinishMeasurementTriple">
-                             <property name="minimumSize">
-                              <size>
-                               <width>130</width>
-                               <height>30</height>
-                              </size>
-                             </property>
-                             <property name="text">
-                              <string>Zapisz</string>
-                             </property>
-                            </widget>
-                           </item>
-                           <item row="2" column="0">
-                            <widget class="QPushButton" name="buttonClearSavedMeasureFinishMeasurementTriple">
-                             <property name="minimumSize">
-                              <size>
-                               <width>130</width>
-                               <height>30</height>
-                              </size>
-                             </property>
-                             <property name="text">
-                              <string>Wyczyść</string>
-                             </property>
-                            </widget>
-                           </item>
-                           <item row="0" column="0">
-                            <widget class="QPushButton" name="buttonGetCurrentMeasureFinishMeasurementTriple">
-                             <property name="minimumSize">
-                              <size>
-                               <width>130</width>
-                               <height>30</height>
-                              </size>
-                             </property>
-                             <property name="text">
-                              <string>Pobierz pomiar</string>
-                             </property>
-                            </widget>
-                           </item>
-                           <item row="3" column="0">
-                            <spacer name="verticalSpacer_18">
-                             <property name="orientation">
-                              <enum>Qt::Orientation::Vertical</enum>
-                             </property>
-                             <property name="sizeHint" stdset="0">
-                              <size>
-                               <width>20</width>
-                               <height>40</height>
-                              </size>
-                             </property>
-                            </spacer>
-                           </item>
-                          </layout>
-                         </item>
-                         <item>
-                          <spacer name="horizontalSpacer_24">
-                           <property name="orientation">
-                            <enum>Qt::Orientation::Horizontal</enum>
-                           </property>
-                           <property name="sizeHint" stdset="0">
-                            <size>
-                             <width>40</width>
-                             <height>20</height>
-                            </size>
-                           </property>
-                          </spacer>
-                         </item>
-                        </layout>
-                       </item>
-                       <item>
-                        <spacer name="verticalSpacer_12">
-                         <property name="orientation">
-                          <enum>Qt::Orientation::Vertical</enum>
-                         </property>
-                         <property name="sizeHint" stdset="0">
-                          <size>
-                           <width>20</width>
-                           <height>10</height>
-                          </size>
-                         </property>
-                        </spacer>
-                       </item>
-                      </layout>
-                     </widget>
-                    </item>
-                    <item row="2" column="0" colspan="2">
-                     <layout class="QHBoxLayout" name="navigationButtonsLayout_4">
-                      <item>
-                       <spacer name="horizontalSpacer_41">
-                        <property name="orientation">
-                         <enum>Qt::Orientation::Horizontal</enum>
-                        </property>
-                        <property name="sizeHint" stdset="0">
-                         <size>
-                          <width>454</width>
-                          <height>20</height>
-                         </size>
-                        </property>
-                       </spacer>
-                      </item>
-                      <item>
-                       <widget class="QPushButton" name="buttonPrevSaturation">
-                        <property name="minimumSize">
-                         <size>
-                          <width>150</width>
-                          <height>30</height>
-                         </size>
-                        </property>
-                        <property name="text">
-                         <string>Wróć</string>
-                        </property>
-                       </widget>
-                      </item>
-                      <item>
-                       <widget class="QPushButton" name="buttonNextSaturation">
-                        <property name="enabled">
-                         <bool>true</bool>
-                        </property>
-                        <property name="minimumSize">
-                         <size>
-                          <width>150</width>
-                          <height>30</height>
-                         </size>
-                        </property>
-                        <property name="text">
-                         <string>Przejdź dalej</string>
-                        </property>
-                       </widget>
-                      </item>
-                     </layout>
-                    </item>
-                    <item row="0" column="1" rowspan="2">
+                    <item row="0" column="1" rowspan="5">
                      <widget class="QGroupBox" name="calculationHydroGroupBox_3">
                       <property name="minimumSize">
                        <size>
@@ -4467,22 +3983,417 @@ umieszczając ją w komorze próźniowej na czas zaniku ostatniego pęcherzyka</
                       </layout>
                      </widget>
                     </item>
+                    <item row="5" column="0" colspan="2">
+                     <layout class="QHBoxLayout" name="navigationButtonsLayout_4">
+                      <item>
+                       <spacer name="horizontalSpacer_41">
+                        <property name="orientation">
+                         <enum>Qt::Orientation::Horizontal</enum>
+                        </property>
+                        <property name="sizeHint" stdset="0">
+                         <size>
+                          <width>454</width>
+                          <height>20</height>
+                         </size>
+                        </property>
+                       </spacer>
+                      </item>
+                      <item>
+                       <widget class="QPushButton" name="buttonPrevSaturation">
+                        <property name="minimumSize">
+                         <size>
+                          <width>150</width>
+                          <height>30</height>
+                         </size>
+                        </property>
+                        <property name="text">
+                         <string>Wróć</string>
+                        </property>
+                       </widget>
+                      </item>
+                      <item>
+                       <widget class="QPushButton" name="buttonNextSaturation">
+                        <property name="enabled">
+                         <bool>true</bool>
+                        </property>
+                        <property name="minimumSize">
+                         <size>
+                          <width>150</width>
+                          <height>30</height>
+                         </size>
+                        </property>
+                        <property name="text">
+                         <string>Przejdź dalej</string>
+                        </property>
+                       </widget>
+                      </item>
+                     </layout>
+                    </item>
+                    <item row="2" column="0" rowspan="3">
+                     <widget class="QGroupBox" name="groupBoxFinishMeasureSecond_2">
+                      <property name="minimumSize">
+                       <size>
+                        <width>380</width>
+                        <height>110</height>
+                       </size>
+                      </property>
+                      <property name="title">
+                       <string>Pomiar masy próbki suchej w powietrzu</string>
+                      </property>
+                      <layout class="QVBoxLayout" name="verticalLayoutMain_9">
+                       <item>
+                        <widget class="QGroupBox" name="groupBoxCurrentReading_8">
+                         <property name="title">
+                          <string>Aktualny pomiar z wagi</string>
+                         </property>
+                         <layout class="QHBoxLayout" name="horizontalLayoutCurrent_8">
+                          <item>
+                           <widget class="QLabel" name="labelCurrentValueFinishMeasurementTriple">
+                            <property name="font">
+                             <font>
+                              <pointsize>9</pointsize>
+                             </font>
+                            </property>
+                            <property name="text">
+                             <string>Aktualna wartość:</string>
+                            </property>
+                           </widget>
+                          </item>
+                          <item>
+                           <widget class="QLineEdit" name="editCurrentValueFinishMeasurementTriple">
+                            <property name="minimumSize">
+                             <size>
+                              <width>100</width>
+                              <height>30</height>
+                             </size>
+                            </property>
+                            <property name="maximumSize">
+                             <size>
+                              <width>150</width>
+                              <height>16777215</height>
+                             </size>
+                            </property>
+                            <property name="font">
+                             <font>
+                              <pointsize>10</pointsize>
+                              <bold>true</bold>
+                             </font>
+                            </property>
+                            <property name="alignment">
+                             <set>Qt::AlignmentFlag::AlignCenter</set>
+                            </property>
+                            <property name="readOnly">
+                             <bool>true</bool>
+                            </property>
+                           </widget>
+                          </item>
+                          <item>
+                           <widget class="QLabel" name="labelCurrentUnitFinishMeasurementTriple">
+                            <property name="font">
+                             <font>
+                              <pointsize>11</pointsize>
+                             </font>
+                            </property>
+                            <property name="text">
+                             <string>g</string>
+                            </property>
+                           </widget>
+                          </item>
+                          <item>
+                           <widget class="QPushButton" name="buttonGetCurrentMeasureFinishMeasurementTriple">
+                            <property name="minimumSize">
+                             <size>
+                              <width>130</width>
+                              <height>30</height>
+                             </size>
+                            </property>
+                            <property name="text">
+                             <string>Pobierz pomiar</string>
+                            </property>
+                           </widget>
+                          </item>
+                          <item>
+                           <widget class="QPushButton" name="buttonSaveMeasureFinishMeasurementTriple">
+                            <property name="minimumSize">
+                             <size>
+                              <width>90</width>
+                              <height>30</height>
+                             </size>
+                            </property>
+                            <property name="text">
+                             <string>Zapisz</string>
+                            </property>
+                           </widget>
+                          </item>
+                          <item>
+                           <spacer name="horizontalSpacerCurrent_8">
+                            <property name="orientation">
+                             <enum>Qt::Orientation::Horizontal</enum>
+                            </property>
+                            <property name="sizeHint" stdset="0">
+                             <size>
+                              <width>20</width>
+                              <height>20</height>
+                             </size>
+                            </property>
+                           </spacer>
+                          </item>
+                         </layout>
+                        </widget>
+                       </item>
+                       <item>
+                        <widget class="QGroupBox" name="groupBoxSavedReading_8">
+                         <property name="title">
+                          <string>Zapisany pomiar</string>
+                         </property>
+                         <layout class="QHBoxLayout" name="horizontalLayoutSaved_8">
+                          <item>
+                           <widget class="QLabel" name="labelSavedValueFinishMeasurementTriple">
+                            <property name="font">
+                             <font>
+                              <pointsize>9</pointsize>
+                             </font>
+                            </property>
+                            <property name="text">
+                             <string>Zapisana wartość:</string>
+                            </property>
+                           </widget>
+                          </item>
+                          <item>
+                           <widget class="QLineEdit" name="editSavedValueFinishMeasurementTriple">
+                            <property name="minimumSize">
+                             <size>
+                              <width>100</width>
+                              <height>30</height>
+                             </size>
+                            </property>
+                            <property name="maximumSize">
+                             <size>
+                              <width>150</width>
+                              <height>16777215</height>
+                             </size>
+                            </property>
+                           </widget>
+                          </item>
+                          <item>
+                           <widget class="QLabel" name="labelSavedUnitFinishMeasurementTriple">
+                            <property name="font">
+                             <font>
+                              <pointsize>11</pointsize>
+                             </font>
+                            </property>
+                            <property name="text">
+                             <string>g</string>
+                            </property>
+                           </widget>
+                          </item>
+                          <item>
+                           <widget class="QPushButton" name="buttonClearSavedMeasureFinishMeasurementTriple">
+                            <property name="minimumSize">
+                             <size>
+                              <width>90</width>
+                              <height>30</height>
+                             </size>
+                            </property>
+                            <property name="text">
+                             <string>Wyczyść</string>
+                            </property>
+                           </widget>
+                          </item>
+                          <item>
+                           <spacer name="horizontalSpacerSaved_8">
+                            <property name="orientation">
+                             <enum>Qt::Orientation::Horizontal</enum>
+                            </property>
+                            <property name="sizeType">
+                             <enum>QSizePolicy::Policy::MinimumExpanding</enum>
+                            </property>
+                            <property name="sizeHint" stdset="0">
+                             <size>
+                              <width>20</width>
+                              <height>20</height>
+                             </size>
+                            </property>
+                           </spacer>
+                          </item>
+                         </layout>
+                        </widget>
+                       </item>
+                       <item>
+                        <spacer name="verticalSpacer_11">
+                         <property name="orientation">
+                          <enum>Qt::Orientation::Vertical</enum>
+                         </property>
+                         <property name="sizeHint" stdset="0">
+                          <size>
+                           <width>20</width>
+                           <height>40</height>
+                          </size>
+                         </property>
+                        </spacer>
+                       </item>
+                      </layout>
+                     </widget>
+                    </item>
+                    <item row="0" column="0" rowspan="2">
+                     <widget class="QGroupBox" name="groupBoxSaturatedFluidMassGuide">
+                      <property name="minimumSize">
+                       <size>
+                        <width>380</width>
+                        <height>220</height>
+                       </size>
+                      </property>
+                      <property name="title">
+                       <string>Przewodnik</string>
+                      </property>
+                      <layout class="QVBoxLayout" name="guideLayout_5">
+                       <property name="spacing">
+                        <number>8</number>
+                       </property>
+                       <property name="topMargin">
+                        <number>12</number>
+                       </property>
+                       <item>
+                        <widget class="QLabel" name="labelSaturatedFluidMassGuide">
+                         <property name="font">
+                          <font>
+                           <pointsize>9</pointsize>
+                          </font>
+                         </property>
+                         <property name="text">
+                          <string>Wykonaj poniższe kroki aby zmierzyć masę próbki nasyconej w cieczy:</string>
+                         </property>
+                         <property name="wordWrap">
+                          <bool>true</bool>
+                         </property>
+                        </widget>
+                       </item>
+                       <item>
+                        <widget class="QFrame" name="frameSaturatedFluidMassSteps_2">
+                         <property name="frameShape">
+                          <enum>QFrame::Shape::StyledPanel</enum>
+                         </property>
+                         <property name="frameShadow">
+                          <enum>QFrame::Shadow::Raised</enum>
+                         </property>
+                         <layout class="QVBoxLayout" name="stepsLayout_5">
+                          <property name="spacing">
+                           <number>6</number>
+                          </property>
+                          <property name="leftMargin">
+                           <number>9</number>
+                          </property>
+                          <property name="topMargin">
+                           <number>9</number>
+                          </property>
+                          <property name="rightMargin">
+                           <number>9</number>
+                          </property>
+                          <property name="bottomMargin">
+                           <number>9</number>
+                          </property>
+                          <item>
+                           <widget class="QCheckBox" name="step1FinishTriple">
+                            <property name="text">
+                             <string>1. Upewnij się, że próbka jest całkowicie zanurzona</string>
+                            </property>
+                           </widget>
+                          </item>
+                          <item>
+                           <layout class="QHBoxLayout" name="step1Layout_5">
+                            <item>
+                             <widget class="QCheckBox" name="step2FinishTriple">
+                              <property name="text">
+                               <string>2. Zważ próbkę zanurzoną w cieczy</string>
+                              </property>
+                             </widget>
+                            </item>
+                            <item>
+                             <widget class="QPushButton" name="buttonFinishMeasureTripleExecuteStepTwo">
+                              <property name="minimumSize">
+                               <size>
+                                <width>100</width>
+                                <height>25</height>
+                               </size>
+                              </property>
+                              <property name="maximumSize">
+                               <size>
+                                <width>100</width>
+                                <height>25</height>
+                               </size>
+                              </property>
+                              <property name="text">
+                               <string>Wykonaj</string>
+                              </property>
+                             </widget>
+                            </item>
+                           </layout>
+                          </item>
+                          <item>
+                           <layout class="QHBoxLayout" name="step2Layout_5">
+                            <item>
+                             <widget class="QCheckBox" name="step3FinishTriple">
+                              <property name="text">
+                               <string>3. Zapisz wynik</string>
+                              </property>
+                             </widget>
+                            </item>
+                            <item>
+                             <widget class="QPushButton" name="buttonFinishMeasureTripleExecuteStepThree">
+                              <property name="minimumSize">
+                               <size>
+                                <width>100</width>
+                                <height>25</height>
+                               </size>
+                              </property>
+                              <property name="maximumSize">
+                               <size>
+                                <width>100</width>
+                                <height>25</height>
+                               </size>
+                              </property>
+                              <property name="text">
+                               <string>Zatwierdź</string>
+                              </property>
+                             </widget>
+                            </item>
+                           </layout>
+                          </item>
+                         </layout>
+                        </widget>
+                       </item>
+                       <item>
+                        <spacer name="verticalSpacer_16">
+                         <property name="orientation">
+                          <enum>Qt::Orientation::Vertical</enum>
+                         </property>
+                         <property name="sizeHint" stdset="0">
+                          <size>
+                           <width>20</width>
+                           <height>40</height>
+                          </size>
+                         </property>
+                        </spacer>
+                       </item>
+                      </layout>
+                     </widget>
+                    </item>
                    </layout>
                   </widget>
                   <widget class="QWidget" name="pageFinishSaturatedMassTriple">
-                   <layout class="QGridLayout" name="gridLayout_9">
-                    <item row="0" column="0">
+                   <layout class="QGridLayout" name="gridLayout_3">
+                    <item row="0" column="1">
                      <widget class="QGroupBox" name="groupBoxSaturatedMassGuide">
                       <property name="minimumSize">
                        <size>
                         <width>0</width>
-                        <height>250</height>
+                        <height>150</height>
                        </size>
                       </property>
                       <property name="title">
                        <string>Przewodnik - Pomiar masy próbki nasyconej w powietrzu</string>
                       </property>
-                      <layout class="QVBoxLayout" name="verticalLayout_15">
+                      <layout class="QVBoxLayout" name="verticalLayout_3">
                        <item>
                         <widget class="QLabel" name="labelSaturatedMassGuide">
                          <property name="font">
@@ -4499,129 +4410,93 @@ umieszczając ją w komorze próźniowej na czas zaniku ostatniego pęcherzyka</
                         </widget>
                        </item>
                        <item>
-                        <widget class="QFrame" name="frameSaturatedMassSteps">
-                         <property name="frameShape">
-                          <enum>QFrame::Shape::StyledPanel</enum>
+                        <widget class="QCheckBox" name="step1CheckBox_2">
+                         <property name="text">
+                          <string>1. Wyjmij próbkę z cieczy</string>
                          </property>
-                         <property name="frameShadow">
-                          <enum>QFrame::Shadow::Raised</enum>
-                         </property>
-                         <layout class="QVBoxLayout" name="verticalLayout_23">
-                          <item>
-                           <widget class="QFrame" name="frameSaturatedPrepSteps">
-                            <property name="frameShape">
-                             <enum>QFrame::Shape::StyledPanel</enum>
-                            </property>
-                            <property name="frameShadow">
-                             <enum>QFrame::Shadow::Raised</enum>
-                            </property>
-                            <layout class="QVBoxLayout" name="stepsLayout_7">
-                             <property name="spacing">
-                              <number>6</number>
-                             </property>
-                             <property name="leftMargin">
-                              <number>9</number>
-                             </property>
-                             <property name="topMargin">
-                              <number>9</number>
-                             </property>
-                             <property name="rightMargin">
-                              <number>9</number>
-                             </property>
-                             <property name="bottomMargin">
-                              <number>9</number>
-                             </property>
-                             <item>
-                              <widget class="QCheckBox" name="step1CheckBox_2">
-                               <property name="text">
-                                <string>1. Wyjmij próbkę z cieczy</string>
-                               </property>
-                              </widget>
-                             </item>
-                             <item>
-                              <widget class="QCheckBox" name="step2CheckBox_2">
-                               <property name="text">
-                                <string>2. Delikatnie osusz powierzchnię próbki wilgotną tkaniną</string>
-                               </property>
-                              </widget>
-                             </item>
-                             <item>
-                              <widget class="QCheckBox" name="step3CheckBox_2">
-                               <property name="text">
-                                <string>3. Usuń tylko nadmiar cieczy z powierzchni</string>
-                               </property>
-                              </widget>
-                             </item>
-                             <item>
-                              <layout class="QHBoxLayout" name="step4Layout_2">
-                               <item>
-                                <widget class="QCheckBox" name="step4CheckBoxSaturatedTriple">
-                                 <property name="text">
-                                  <string>4. Natychmiast po osuszeniu zważ próbkę nasyconą</string>
-                                 </property>
-                                </widget>
-                               </item>
-                               <item>
-                                <widget class="QPushButton" name="buttonSaturatedMassExecuteStepFour">
-                                 <property name="minimumSize">
-                                  <size>
-                                   <width>100</width>
-                                   <height>25</height>
-                                  </size>
-                                 </property>
-                                 <property name="maximumSize">
-                                  <size>
-                                   <width>100</width>
-                                   <height>25</height>
-                                  </size>
-                                 </property>
-                                 <property name="text">
-                                  <string>Wykonaj</string>
-                                 </property>
-                                </widget>
-                               </item>
-                              </layout>
-                             </item>
-                             <item>
-                              <layout class="QHBoxLayout" name="step5Layout_2">
-                               <item>
-                                <widget class="QCheckBox" name="step5CheckBoxSaturatedTriple">
-                                 <property name="text">
-                                  <string>5. Zapisz wynik</string>
-                                 </property>
-                                </widget>
-                               </item>
-                               <item>
-                                <widget class="QPushButton" name="buttonSaturatedMassExecuteStepFive">
-                                 <property name="minimumSize">
-                                  <size>
-                                   <width>100</width>
-                                   <height>25</height>
-                                  </size>
-                                 </property>
-                                 <property name="maximumSize">
-                                  <size>
-                                   <width>100</width>
-                                   <height>25</height>
-                                  </size>
-                                 </property>
-                                 <property name="text">
-                                  <string>Zatwierdź</string>
-                                 </property>
-                                </widget>
-                               </item>
-                              </layout>
-                             </item>
-                            </layout>
-                           </widget>
-                          </item>
-                         </layout>
                         </widget>
                        </item>
                        <item>
-                        <spacer name="verticalSpacer_19">
+                        <widget class="QCheckBox" name="step2CheckBox_2">
+                         <property name="text">
+                          <string>2. Delikatnie osusz powierzchnię próbki wilgotną tkaniną</string>
+                         </property>
+                        </widget>
+                       </item>
+                       <item>
+                        <widget class="QCheckBox" name="step3CheckBox_2">
+                         <property name="text">
+                          <string>3. Usuń tylko nadmiar cieczy z powierzchni</string>
+                         </property>
+                        </widget>
+                       </item>
+                       <item>
+                        <layout class="QHBoxLayout" name="step4Layout_2">
+                         <item>
+                          <widget class="QCheckBox" name="step4CheckBoxSaturatedTriple">
+                           <property name="text">
+                            <string>4. Natychmiast po osuszeniu zważ próbkę nasyconą</string>
+                           </property>
+                          </widget>
+                         </item>
+                         <item>
+                          <widget class="QPushButton" name="buttonSaturatedMassExecuteStepFour">
+                           <property name="minimumSize">
+                            <size>
+                             <width>100</width>
+                             <height>25</height>
+                            </size>
+                           </property>
+                           <property name="maximumSize">
+                            <size>
+                             <width>100</width>
+                             <height>25</height>
+                            </size>
+                           </property>
+                           <property name="text">
+                            <string>Wykonaj</string>
+                           </property>
+                          </widget>
+                         </item>
+                        </layout>
+                       </item>
+                       <item>
+                        <layout class="QHBoxLayout" name="step5Layout_2">
+                         <item>
+                          <widget class="QCheckBox" name="step5CheckBoxSaturatedTriple">
+                           <property name="text">
+                            <string>5. Zapisz wynik</string>
+                           </property>
+                          </widget>
+                         </item>
+                         <item>
+                          <widget class="QPushButton" name="buttonSaturatedMassExecuteStepFive">
+                           <property name="minimumSize">
+                            <size>
+                             <width>100</width>
+                             <height>25</height>
+                            </size>
+                           </property>
+                           <property name="maximumSize">
+                            <size>
+                             <width>100</width>
+                             <height>25</height>
+                            </size>
+                           </property>
+                           <property name="text">
+                            <string>Zatwierdź</string>
+                           </property>
+                          </widget>
+                         </item>
+                        </layout>
+                       </item>
+                       <item>
+                        <spacer name="verticalSpacer_15">
                          <property name="orientation">
                           <enum>Qt::Orientation::Vertical</enum>
+                         </property>
+                         <property name="sizeType">
+                          <enum>QSizePolicy::Policy::Minimum</enum>
                          </property>
                          <property name="sizeHint" stdset="0">
                           <size>
@@ -4634,7 +4509,7 @@ umieszczając ją w komorze próźniowej na czas zaniku ostatniego pęcherzyka</
                       </layout>
                      </widget>
                     </item>
-                    <item row="0" column="1" rowspan="2">
+                    <item row="0" column="2" rowspan="4">
                      <widget class="QGroupBox" name="calculationHydroGroupBox_2">
                       <property name="minimumSize">
                        <size>
@@ -4651,495 +4526,248 @@ umieszczając ją w komorze próźniowej na czas zaniku ostatniego pęcherzyka</
                       <property name="title">
                        <string>Obliczenia</string>
                       </property>
-                      <layout class="QVBoxLayout" name="verticalLayout_29">
+                      <layout class="QVBoxLayout" name="verticalLayout_6">
                        <item>
-                        <widget class="QScrollArea" name="scrollArea">
-                         <property name="sizePolicy">
-                          <sizepolicy hsizetype="Maximum" vsizetype="Expanding">
-                           <horstretch>0</horstretch>
-                           <verstretch>0</verstretch>
-                          </sizepolicy>
+                        <widget class="QGroupBox" name="groupBoxMeasureInfo">
+                         <property name="title">
+                          <string>Pomiar</string>
                          </property>
-                         <property name="frameShape">
-                          <enum>QFrame::Shape::NoFrame</enum>
-                         </property>
-                         <property name="frameShadow">
-                          <enum>QFrame::Shadow::Plain</enum>
-                         </property>
-                         <property name="widgetResizable">
-                          <bool>true</bool>
-                         </property>
-                         <widget class="QWidget" name="scrollAreaWidgetContents">
-                          <property name="geometry">
-                           <rect>
-                            <x>0</x>
-                            <y>0</y>
-                            <width>360</width>
-                            <height>496</height>
-                           </rect>
-                          </property>
-                          <layout class="QVBoxLayout" name="verticalLayout_6">
-                           <item>
-                            <widget class="QGroupBox" name="groupBoxMeasureInfo">
-                             <property name="title">
-                              <string>Pomiar</string>
-                             </property>
-                             <layout class="QFormLayout" name="formLayout_6">
-                              <item row="0" column="0">
-                               <widget class="QLabel" name="labelSampleIdFinishMeasurementTriple">
-                                <property name="text">
-                                 <string>Numer próbki:</string>
-                                </property>
-                               </widget>
-                              </item>
-                              <item row="0" column="1">
-                               <widget class="QLabel" name="editSampleIdAirSaturatedTriple">
-                                <property name="font">
-                                 <font>
-                                  <bold>true</bold>
-                                 </font>
-                                </property>
-                                <property name="text">
-                                 <string>PRB-2023-001</string>
-                                </property>
-                               </widget>
-                              </item>
-                              <item row="2" column="0">
-                               <widget class="QLabel" name="labelSampleMaterialFinishMeasurementTriple">
-                                <property name="text">
-                                 <string>Materiał:</string>
-                                </property>
-                               </widget>
-                              </item>
-                              <item row="2" column="1">
-                               <widget class="QLabel" name="editMaterialAirSaturatedTriple">
-                                <property name="font">
-                                 <font>
-                                  <bold>true</bold>
-                                 </font>
-                                </property>
-                                <property name="text">
-                                 <string>Ceramika</string>
-                                </property>
-                               </widget>
-                              </item>
-                              <item row="3" column="0">
-                               <widget class="QLabel" name="labeSampleMaterialFinishMeasurementTriple">
-                                <property name="text">
-                                 <string>Ciecz:</string>
-                                </property>
-                               </widget>
-                              </item>
-                              <item row="3" column="1">
-                               <widget class="QLabel" name="editFluidAirSaturatedTriple">
-                                <property name="font">
-                                 <font>
-                                  <bold>true</bold>
-                                 </font>
-                                </property>
-                                <property name="text">
-                                 <string>Woda destylowana</string>
-                                </property>
-                               </widget>
-                              </item>
-                              <item row="4" column="1">
-                               <widget class="QLabel" name="editSaturationAirSaturatedTriple">
-                                <property name="font">
-                                 <font>
-                                  <bold>true</bold>
-                                 </font>
-                                </property>
-                                <property name="text">
-                                 <string>Gotowanie</string>
-                                </property>
-                               </widget>
-                              </item>
-                              <item row="4" column="0">
-                               <widget class="QLabel" name="labelSaturationMethodFinishMeasurementTriple">
-                                <property name="minimumSize">
-                                 <size>
-                                  <width>170</width>
-                                  <height>0</height>
-                                 </size>
-                                </property>
-                                <property name="text">
-                                 <string>Metoda nasycania:</string>
-                                </property>
-                               </widget>
-                              </item>
-                              <item row="5" column="0">
-                               <widget class="QLabel" name="labelDensityLiquidFinishMeasurementTriple">
-                                <property name="minimumSize">
-                                 <size>
-                                  <width>170</width>
-                                  <height>0</height>
-                                 </size>
-                                </property>
-                                <property name="text">
-                                 <string>Gęstość cieczy:</string>
-                                </property>
-                               </widget>
-                              </item>
-                              <item row="5" column="1">
-                               <widget class="QLabel" name="editDensityAirSaturatedTriple">
-                                <property name="font">
-                                 <font>
-                                  <bold>true</bold>
-                                 </font>
-                                </property>
-                                <property name="text">
-                                 <string>TextLabel</string>
-                                </property>
-                               </widget>
-                              </item>
-                             </layout>
-                            </widget>
-                           </item>
-                           <item>
-                            <widget class="QGroupBox" name="calculationHydroDateGroupBox_4">
-                             <property name="minimumSize">
-                              <size>
-                               <width>250</width>
-                               <height>0</height>
-                              </size>
-                             </property>
-                             <property name="title">
-                              <string>Dane pomiarowe</string>
-                             </property>
-                             <layout class="QGridLayout" name="gridLayout_4">
-                              <item row="0" column="0">
-                               <widget class="QLabel" name="labelDryMeasureFinishMeasurementTriple">
-                                <property name="text">
-                                 <string>Masa próbki suchej:
-(w powietrzu):</string>
-                                </property>
-                               </widget>
-                              </item>
-                              <item row="2" column="1">
-                               <widget class="QLineEdit" name="editAirSaturatedTriple">
-                                <property name="enabled">
-                                 <bool>false</bool>
-                                </property>
-                                <property name="maximumSize">
-                                 <size>
-                                  <width>120</width>
-                                  <height>16777215</height>
-                                 </size>
-                                </property>
-                                <property name="alignment">
-                                 <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
-                                </property>
-                                <property name="readOnly">
-                                 <bool>true</bool>
-                                </property>
-                               </widget>
-                              </item>
-                              <item row="1" column="0">
-                               <widget class="QLabel" name="labelLiquidMeasureFinishMeasurementTriple">
-                                <property name="minimumSize">
-                                 <size>
-                                  <width>170</width>
-                                  <height>0</height>
-                                 </size>
-                                </property>
-                                <property name="text">
-                                 <string>Masa próbki nasyconej:
-(w cieczy)</string>
-                                </property>
-                               </widget>
-                              </item>
-                              <item row="0" column="1">
-                               <widget class="QLineEdit" name="editDryAirSaturatedTriple">
-                                <property name="enabled">
-                                 <bool>false</bool>
-                                </property>
-                                <property name="maximumSize">
-                                 <size>
-                                  <width>120</width>
-                                  <height>16777215</height>
-                                 </size>
-                                </property>
-                                <property name="alignment">
-                                 <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
-                                </property>
-                                <property name="readOnly">
-                                 <bool>true</bool>
-                                </property>
-                               </widget>
-                              </item>
-                              <item row="2" column="0">
-                               <widget class="QLabel" name="labelMeasureSaturatedFinishMeasurementTriple">
-                                <property name="minimumSize">
-                                 <size>
-                                  <width>170</width>
-                                  <height>0</height>
-                                 </size>
-                                </property>
-                                <property name="text">
-                                 <string>Masa próbki nasyconej:
-(w powietrzu)</string>
-                                </property>
-                               </widget>
-                              </item>
-                              <item row="1" column="1">
-                               <widget class="QLineEdit" name="editLiquidAirSaturatedTriple">
-                                <property name="enabled">
-                                 <bool>false</bool>
-                                </property>
-                                <property name="maximumSize">
-                                 <size>
-                                  <width>120</width>
-                                  <height>16777215</height>
-                                 </size>
-                                </property>
-                                <property name="alignment">
-                                 <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
-                                </property>
-                                <property name="readOnly">
-                                 <bool>true</bool>
-                                </property>
-                               </widget>
-                              </item>
-                             </layout>
-                            </widget>
-                           </item>
-                           <item>
-                            <spacer name="verticalSpacer_24">
-                             <property name="orientation">
-                              <enum>Qt::Orientation::Vertical</enum>
-                             </property>
-                             <property name="sizeHint" stdset="0">
-                              <size>
-                               <width>20</width>
-                               <height>40</height>
-                              </size>
-                             </property>
-                            </spacer>
-                           </item>
-                          </layout>
-                         </widget>
+                         <layout class="QFormLayout" name="formLayout_6">
+                          <item row="0" column="0">
+                           <widget class="QLabel" name="labelSampleIdFinishMeasurementTriple">
+                            <property name="text">
+                             <string>Numer próbki:</string>
+                            </property>
+                           </widget>
+                          </item>
+                          <item row="0" column="1">
+                           <widget class="QLabel" name="editSampleIdAirSaturatedTriple">
+                            <property name="font">
+                             <font>
+                              <bold>true</bold>
+                             </font>
+                            </property>
+                            <property name="text">
+                             <string>PRB-2023-001</string>
+                            </property>
+                           </widget>
+                          </item>
+                          <item row="2" column="0">
+                           <widget class="QLabel" name="labelSampleMaterialFinishMeasurementTriple">
+                            <property name="text">
+                             <string>Materiał:</string>
+                            </property>
+                           </widget>
+                          </item>
+                          <item row="2" column="1">
+                           <widget class="QLabel" name="editMaterialAirSaturatedTriple">
+                            <property name="font">
+                             <font>
+                              <bold>true</bold>
+                             </font>
+                            </property>
+                            <property name="text">
+                             <string>Ceramika</string>
+                            </property>
+                           </widget>
+                          </item>
+                          <item row="3" column="0">
+                           <widget class="QLabel" name="labeSampleMaterialFinishMeasurementTriple">
+                            <property name="text">
+                             <string>Ciecz:</string>
+                            </property>
+                           </widget>
+                          </item>
+                          <item row="3" column="1">
+                           <widget class="QLabel" name="editFluidAirSaturatedTriple">
+                            <property name="font">
+                             <font>
+                              <bold>true</bold>
+                             </font>
+                            </property>
+                            <property name="text">
+                             <string>Woda destylowana</string>
+                            </property>
+                           </widget>
+                          </item>
+                          <item row="4" column="1">
+                           <widget class="QLabel" name="editSaturationAirSaturatedTriple">
+                            <property name="font">
+                             <font>
+                              <bold>true</bold>
+                             </font>
+                            </property>
+                            <property name="text">
+                             <string>Gotowanie</string>
+                            </property>
+                           </widget>
+                          </item>
+                          <item row="4" column="0">
+                           <widget class="QLabel" name="labelSaturationMethodFinishMeasurementTriple">
+                            <property name="minimumSize">
+                             <size>
+                              <width>170</width>
+                              <height>0</height>
+                             </size>
+                            </property>
+                            <property name="text">
+                             <string>Metoda nasycania:</string>
+                            </property>
+                           </widget>
+                          </item>
+                          <item row="5" column="0">
+                           <widget class="QLabel" name="labelDensityLiquidFinishMeasurementTriple">
+                            <property name="minimumSize">
+                             <size>
+                              <width>170</width>
+                              <height>0</height>
+                             </size>
+                            </property>
+                            <property name="text">
+                             <string>Gęstość cieczy:</string>
+                            </property>
+                           </widget>
+                          </item>
+                          <item row="5" column="1">
+                           <widget class="QLabel" name="editDensityAirSaturatedTriple">
+                            <property name="font">
+                             <font>
+                              <bold>true</bold>
+                             </font>
+                            </property>
+                            <property name="text">
+                             <string>TextLabel</string>
+                            </property>
+                           </widget>
+                          </item>
+                         </layout>
                         </widget>
+                       </item>
+                       <item>
+                        <widget class="QGroupBox" name="calculationHydroDateGroupBox_4">
+                         <property name="minimumSize">
+                          <size>
+                           <width>250</width>
+                           <height>0</height>
+                          </size>
+                         </property>
+                         <property name="title">
+                          <string>Dane pomiarowe</string>
+                         </property>
+                         <layout class="QGridLayout" name="gridLayout_4">
+                          <item row="0" column="0">
+                           <widget class="QLabel" name="labelDryMeasureFinishMeasurementTriple">
+                            <property name="text">
+                             <string>Masa próbki suchej:
+(w powietrzu):</string>
+                            </property>
+                           </widget>
+                          </item>
+                          <item row="2" column="1">
+                           <widget class="QLineEdit" name="editAirSaturatedTriple">
+                            <property name="enabled">
+                             <bool>false</bool>
+                            </property>
+                            <property name="maximumSize">
+                             <size>
+                              <width>120</width>
+                              <height>16777215</height>
+                             </size>
+                            </property>
+                            <property name="alignment">
+                             <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
+                            </property>
+                            <property name="readOnly">
+                             <bool>true</bool>
+                            </property>
+                           </widget>
+                          </item>
+                          <item row="1" column="0">
+                           <widget class="QLabel" name="labelLiquidMeasureFinishMeasurementTriple">
+                            <property name="minimumSize">
+                             <size>
+                              <width>170</width>
+                              <height>0</height>
+                             </size>
+                            </property>
+                            <property name="text">
+                             <string>Masa próbki nasyconej:
+(w cieczy)</string>
+                            </property>
+                           </widget>
+                          </item>
+                          <item row="0" column="1">
+                           <widget class="QLineEdit" name="editDryAirSaturatedTriple">
+                            <property name="enabled">
+                             <bool>false</bool>
+                            </property>
+                            <property name="maximumSize">
+                             <size>
+                              <width>120</width>
+                              <height>16777215</height>
+                             </size>
+                            </property>
+                            <property name="alignment">
+                             <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
+                            </property>
+                            <property name="readOnly">
+                             <bool>true</bool>
+                            </property>
+                           </widget>
+                          </item>
+                          <item row="2" column="0">
+                           <widget class="QLabel" name="labelMeasureSaturatedFinishMeasurementTriple">
+                            <property name="minimumSize">
+                             <size>
+                              <width>170</width>
+                              <height>0</height>
+                             </size>
+                            </property>
+                            <property name="text">
+                             <string>Masa próbki nasyconej:
+(w powietrzu)</string>
+                            </property>
+                           </widget>
+                          </item>
+                          <item row="1" column="1">
+                           <widget class="QLineEdit" name="editLiquidAirSaturatedTriple">
+                            <property name="enabled">
+                             <bool>false</bool>
+                            </property>
+                            <property name="maximumSize">
+                             <size>
+                              <width>120</width>
+                              <height>16777215</height>
+                             </size>
+                            </property>
+                            <property name="alignment">
+                             <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
+                            </property>
+                            <property name="readOnly">
+                             <bool>true</bool>
+                            </property>
+                           </widget>
+                          </item>
+                         </layout>
+                        </widget>
+                       </item>
+                       <item>
+                        <spacer name="verticalSpacer_14">
+                         <property name="orientation">
+                          <enum>Qt::Orientation::Vertical</enum>
+                         </property>
+                         <property name="sizeHint" stdset="0">
+                          <size>
+                           <width>20</width>
+                           <height>40</height>
+                          </size>
+                         </property>
+                        </spacer>
                        </item>
                       </layout>
                      </widget>
                     </item>
-                    <item row="1" column="0">
-                     <layout class="QVBoxLayout" name="verticalLayout_25">
-                      <item>
-                       <widget class="QGroupBox" name="measureSaturatedGroupBox">
-                        <property name="minimumSize">
-                         <size>
-                          <width>380</width>
-                          <height>220</height>
-                         </size>
-                        </property>
-                        <property name="title">
-                         <string>Pomiar masy próbki nasyconej w powietrzu</string>
-                        </property>
-                        <layout class="QVBoxLayout" name="verticalLayout_26">
-                         <item>
-                          <layout class="QHBoxLayout" name="savedValueLayout_5">
-                           <item>
-                            <layout class="QGridLayout" name="gridLayout_14">
-                             <item row="3" column="0">
-                              <widget class="QLabel" name="labelSavedMeasureSaturated">
-                               <property name="minimumSize">
-                                <size>
-                                 <width>0</width>
-                                 <height>0</height>
-                                </size>
-                               </property>
-                               <property name="font">
-                                <font>
-                                 <pointsize>9</pointsize>
-                                </font>
-                               </property>
-                               <property name="text">
-                                <string>Zapisana wartość:</string>
-                               </property>
-                              </widget>
-                             </item>
-                             <item row="3" column="2">
-                              <widget class="QLabel" name="labelUnitSavedMeasureSaturated">
-                               <property name="font">
-                                <font>
-                                 <pointsize>11</pointsize>
-                                </font>
-                               </property>
-                               <property name="text">
-                                <string>g</string>
-                               </property>
-                              </widget>
-                             </item>
-                             <item row="4" column="1">
-                              <spacer name="verticalSpacer_20">
-                               <property name="orientation">
-                                <enum>Qt::Orientation::Vertical</enum>
-                               </property>
-                               <property name="sizeHint" stdset="0">
-                                <size>
-                                 <width>20</width>
-                                 <height>40</height>
-                                </size>
-                               </property>
-                              </spacer>
-                             </item>
-                             <item row="0" column="0">
-                              <widget class="QLabel" name="labelCurrentMeasureSaturated">
-                               <property name="minimumSize">
-                                <size>
-                                 <width>0</width>
-                                 <height>0</height>
-                                </size>
-                               </property>
-                               <property name="font">
-                                <font>
-                                 <pointsize>9</pointsize>
-                                </font>
-                               </property>
-                               <property name="text">
-                                <string>Aktualna wartość:</string>
-                               </property>
-                              </widget>
-                             </item>
-                             <item row="0" column="1">
-                              <widget class="QLineEdit" name="editCurrentMeasureSaturated">
-                               <property name="minimumSize">
-                                <size>
-                                 <width>50</width>
-                                 <height>30</height>
-                                </size>
-                               </property>
-                               <property name="maximumSize">
-                                <size>
-                                 <width>200</width>
-                                 <height>16777215</height>
-                                </size>
-                               </property>
-                               <property name="font">
-                                <font>
-                                 <pointsize>9</pointsize>
-                                 <bold>true</bold>
-                                </font>
-                               </property>
-                               <property name="alignment">
-                                <set>Qt::AlignmentFlag::AlignCenter</set>
-                               </property>
-                               <property name="readOnly">
-                                <bool>false</bool>
-                               </property>
-                              </widget>
-                             </item>
-                             <item row="0" column="2">
-                              <widget class="QLabel" name="labelUnitCurrentMeasureSaturated">
-                               <property name="font">
-                                <font>
-                                 <pointsize>11</pointsize>
-                                </font>
-                               </property>
-                               <property name="text">
-                                <string>g</string>
-                               </property>
-                              </widget>
-                             </item>
-                             <item row="3" column="1">
-                              <widget class="QLineEdit" name="editSavedMeasureSaturated"/>
-                             </item>
-                            </layout>
-                           </item>
-                           <item>
-                            <spacer name="horizontalSpacer_17">
-                             <property name="orientation">
-                              <enum>Qt::Orientation::Horizontal</enum>
-                             </property>
-                             <property name="sizeType">
-                              <enum>QSizePolicy::Policy::Minimum</enum>
-                             </property>
-                             <property name="sizeHint" stdset="0">
-                              <size>
-                               <width>13</width>
-                               <height>13</height>
-                              </size>
-                             </property>
-                            </spacer>
-                           </item>
-                           <item>
-                            <layout class="QGridLayout" name="gridLayout_15">
-                             <item row="1" column="0">
-                              <widget class="QPushButton" name="buttonSaveCurrentMeasureSaturated">
-                               <property name="minimumSize">
-                                <size>
-                                 <width>130</width>
-                                 <height>30</height>
-                                </size>
-                               </property>
-                               <property name="text">
-                                <string>Zapisz</string>
-                               </property>
-                              </widget>
-                             </item>
-                             <item row="2" column="0">
-                              <widget class="QPushButton" name="buttonClearSavedMeasureSaturated">
-                               <property name="minimumSize">
-                                <size>
-                                 <width>130</width>
-                                 <height>30</height>
-                                </size>
-                               </property>
-                               <property name="text">
-                                <string>Wyczyść</string>
-                               </property>
-                              </widget>
-                             </item>
-                             <item row="0" column="0">
-                              <widget class="QPushButton" name="buttonGetMeasureSaturated">
-                               <property name="minimumSize">
-                                <size>
-                                 <width>130</width>
-                                 <height>30</height>
-                                </size>
-                               </property>
-                               <property name="text">
-                                <string>Pobierz pomiar</string>
-                               </property>
-                              </widget>
-                             </item>
-                             <item row="3" column="0">
-                              <spacer name="verticalSpacer_21">
-                               <property name="orientation">
-                                <enum>Qt::Orientation::Vertical</enum>
-                               </property>
-                               <property name="sizeHint" stdset="0">
-                                <size>
-                                 <width>20</width>
-                                 <height>40</height>
-                                </size>
-                               </property>
-                              </spacer>
-                             </item>
-                            </layout>
-                           </item>
-                           <item>
-                            <spacer name="horizontalSpacer_25">
-                             <property name="orientation">
-                              <enum>Qt::Orientation::Horizontal</enum>
-                             </property>
-                             <property name="sizeHint" stdset="0">
-                              <size>
-                               <width>40</width>
-                               <height>20</height>
-                              </size>
-                             </property>
-                            </spacer>
-                           </item>
-                          </layout>
-                         </item>
-                        </layout>
-                       </widget>
-                      </item>
-                     </layout>
-                    </item>
-                    <item row="2" column="0" colspan="2">
+                    <item row="4" column="1" colspan="2">
                      <layout class="QHBoxLayout" name="navigationButtonsLayout_3">
                       <item>
                        <spacer name="horizontalSpacer_5">
@@ -5184,6 +4812,212 @@ umieszczając ją w komorze próźniowej na czas zaniku ostatniego pęcherzyka</
                        </widget>
                       </item>
                      </layout>
+                    </item>
+                    <item row="2" column="1">
+                     <widget class="QGroupBox" name="measureSaturatedGroupBox">
+                      <property name="minimumSize">
+                       <size>
+                        <width>380</width>
+                        <height>170</height>
+                       </size>
+                      </property>
+                      <property name="title">
+                       <string>Pomiar masy próbki nasyconej w powietrzu</string>
+                      </property>
+                      <layout class="QVBoxLayout" name="verticalLayout_26">
+                       <item>
+                        <widget class="QGroupBox" name="groupBoxCurrentReading_9">
+                         <property name="title">
+                          <string>Aktualny pomiar z wagi</string>
+                         </property>
+                         <layout class="QHBoxLayout" name="horizontalLayoutCurrent_9">
+                          <item>
+                           <widget class="QLabel" name="labelCurrentMeasureSaturated">
+                            <property name="font">
+                             <font>
+                              <pointsize>9</pointsize>
+                             </font>
+                            </property>
+                            <property name="text">
+                             <string>Aktualna wartość:</string>
+                            </property>
+                           </widget>
+                          </item>
+                          <item>
+                           <widget class="QLineEdit" name="editCurrentMeasureSaturated">
+                            <property name="minimumSize">
+                             <size>
+                              <width>100</width>
+                              <height>30</height>
+                             </size>
+                            </property>
+                            <property name="maximumSize">
+                             <size>
+                              <width>150</width>
+                              <height>16777215</height>
+                             </size>
+                            </property>
+                            <property name="font">
+                             <font>
+                              <pointsize>10</pointsize>
+                              <bold>true</bold>
+                             </font>
+                            </property>
+                            <property name="alignment">
+                             <set>Qt::AlignmentFlag::AlignCenter</set>
+                            </property>
+                            <property name="readOnly">
+                             <bool>false</bool>
+                            </property>
+                           </widget>
+                          </item>
+                          <item>
+                           <widget class="QLabel" name="labelUnitCurrentMeasureSaturated">
+                            <property name="font">
+                             <font>
+                              <pointsize>11</pointsize>
+                             </font>
+                            </property>
+                            <property name="text">
+                             <string>g</string>
+                            </property>
+                           </widget>
+                          </item>
+                          <item>
+                           <widget class="QPushButton" name="buttonGetMeasureSaturated">
+                            <property name="minimumSize">
+                             <size>
+                              <width>130</width>
+                              <height>30</height>
+                             </size>
+                            </property>
+                            <property name="text">
+                             <string>Pobierz pomiar</string>
+                            </property>
+                           </widget>
+                          </item>
+                          <item>
+                           <widget class="QPushButton" name="buttonSaveCurrentMeasureSaturated">
+                            <property name="minimumSize">
+                             <size>
+                              <width>90</width>
+                              <height>30</height>
+                             </size>
+                            </property>
+                            <property name="text">
+                             <string>Zapisz</string>
+                            </property>
+                           </widget>
+                          </item>
+                          <item>
+                           <spacer name="horizontalSpacerCurrent_9">
+                            <property name="orientation">
+                             <enum>Qt::Orientation::Horizontal</enum>
+                            </property>
+                            <property name="sizeHint" stdset="0">
+                             <size>
+                              <width>20</width>
+                              <height>20</height>
+                             </size>
+                            </property>
+                           </spacer>
+                          </item>
+                         </layout>
+                        </widget>
+                       </item>
+                       <item>
+                        <widget class="QGroupBox" name="groupBoxSavedReading_9">
+                         <property name="title">
+                          <string>Zapisany pomiar</string>
+                         </property>
+                         <layout class="QHBoxLayout" name="horizontalLayoutSaved_9">
+                          <item>
+                           <widget class="QLabel" name="labelSavedMeasureSaturated">
+                            <property name="font">
+                             <font>
+                              <pointsize>9</pointsize>
+                             </font>
+                            </property>
+                            <property name="text">
+                             <string>Zapisana wartość:</string>
+                            </property>
+                           </widget>
+                          </item>
+                          <item>
+                           <widget class="QLineEdit" name="editSavedMeasureSaturated">
+                            <property name="minimumSize">
+                             <size>
+                              <width>100</width>
+                              <height>30</height>
+                             </size>
+                            </property>
+                            <property name="maximumSize">
+                             <size>
+                              <width>150</width>
+                              <height>16777215</height>
+                             </size>
+                            </property>
+                           </widget>
+                          </item>
+                          <item>
+                           <widget class="QLabel" name="labelUnitSavedMeasureSaturated">
+                            <property name="font">
+                             <font>
+                              <pointsize>11</pointsize>
+                             </font>
+                            </property>
+                            <property name="text">
+                             <string>g</string>
+                            </property>
+                           </widget>
+                          </item>
+                          <item>
+                           <widget class="QPushButton" name="buttonClearSavedMeasureSaturated">
+                            <property name="minimumSize">
+                             <size>
+                              <width>90</width>
+                              <height>30</height>
+                             </size>
+                            </property>
+                            <property name="text">
+                             <string>Wyczyść</string>
+                            </property>
+                           </widget>
+                          </item>
+                          <item>
+                           <spacer name="horizontalSpacerSaved_9">
+                            <property name="orientation">
+                             <enum>Qt::Orientation::Horizontal</enum>
+                            </property>
+                            <property name="sizeType">
+                             <enum>QSizePolicy::Policy::MinimumExpanding</enum>
+                            </property>
+                            <property name="sizeHint" stdset="0">
+                             <size>
+                              <width>20</width>
+                              <height>20</height>
+                             </size>
+                            </property>
+                           </spacer>
+                          </item>
+                         </layout>
+                        </widget>
+                       </item>
+                       <item>
+                        <spacer name="verticalSpacer_12">
+                         <property name="orientation">
+                          <enum>Qt::Orientation::Vertical</enum>
+                         </property>
+                         <property name="sizeHint" stdset="0">
+                          <size>
+                           <width>20</width>
+                           <height>40</height>
+                          </size>
+                         </property>
+                        </spacer>
+                       </item>
+                      </layout>
+                     </widget>
                     </item>
                    </layout>
                   </widget>
@@ -6872,7 +6706,7 @@ umieszczając ją w komorze próźniowej na czas zaniku ostatniego pęcherzyka</
                  <x>0</x>
                  <y>0</y>
                  <width>1004</width>
-                 <height>645</height>
+                 <height>597</height>
                 </rect>
                </property>
                <layout class="QGridLayout" name="gridLayout_26">
@@ -7222,7 +7056,7 @@ umieszczając ją w komorze próźniowej na czas zaniku ostatniego pęcherzyka</
                     <rect>
                      <x>0</x>
                      <y>0</y>
-                     <width>886</width>
+                     <width>584</width>
                      <height>1034</height>
                     </rect>
                    </property>

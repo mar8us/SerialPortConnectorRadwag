@@ -1226,7 +1226,6 @@ void MainWindow::setProperty()
 {
     ui->measureDensityStage->setProperty("currentStage", QVariant::fromValue(MeasurementStages::Stage::StartMeasure));
     ui->scrollAreaInitialData->setBackgroundRole(QPalette::Base);
-    ui->scrollArea->setBackgroundRole(QPalette::Base);
     ui->scrollAreaFinishSecond->setBackgroundRole(QPalette::Base);
     ui->scrollAreaFinishTriple->setBackgroundRole(QPalette::Base);
     ui->scrollAreaLibrary->setBackgroundRole(QPalette::Base);
