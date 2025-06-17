@@ -62,6 +62,9 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         charts/base_chart_widget.h charts/base_chart_widget.cpp
         charts/denisty_chart.h charts/denisty_chart.cpp
 
+        sieveAnalysis/sieve_analysis_study.h sieveAnalysis/sieve_analysis_study.cpp
+        sieveAnalysis/sieve_analysis_stages.h sieveAnalysis/sieve_analysis_stages.cpp
+
 
 
     )
