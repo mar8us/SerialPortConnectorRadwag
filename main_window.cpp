@@ -912,8 +912,8 @@ void MainWindow::connectMainNavButtons()
             return;
         }
         navigateToToolBoxPage(ui->sieveAnalysisPage);
-        ui->stackedWidgetSieveAnalysis->setCurrentWidget(ui->pageConfiguration);
-        ui->stackedWidgetSieveAnalysis->setProperty("currentStage", QVariant::fromValue(SieveAnalysisStages::Stage::Configuration));
+        ui->stackedWidgetSieveAnalysis->setCurrentWidget(ui->pageInitialSieveData);
+        ui->stackedWidgetSieveAnalysis->setProperty("currentStage", QVariant::fromValue(SieveAnalysisStages::Stage::InitialSieveData));
     });
 
     connect(ui->stackedWidget, &QStackedWidget::currentChanged, this, &MainWindow::onMainPageChanged);
@@ -2273,30 +2273,37 @@ void MainWindow::goToPreviousSieveStage()
     SieveAnalysisStages::Stage prevStage = SieveAnalysisStages::previousStage(currentStage);
     switch(currentStage)
     {
-        case SieveAnalysisStages::Stage::Configuration:
+
+        case SieveAnalysisStages::Stage::ConfigurationSieve:
         {
-            return;
-        }
-        case SieveAnalysisStages::Stage::InitialWeighing:
-        {
-            ui->stackedWidgetSieveAnalysis->setCurrentWidget(ui->pageConfiguration);
+            ui->stackedWidgetSieveAnalysis->setCurrentWidget(ui->pageInitialSieveData);
             break;
         }
+
+        case SieveAnalysisStages::Stage::InitialWeighing:
+        {
+            ui->stackedWidgetSieveAnalysis->setCurrentWidget(ui->pageSieveConfiguration);
+            break;
+        }
+
         case SieveAnalysisStages::Stage::Sieving:
         {
             ui->stackedWidgetSieveAnalysis->setCurrentWidget(ui->pageInitialWeighing);
             break;
         }
+
         case SieveAnalysisStages::Stage::FinalWeighing:
         {
             ui->stackedWidgetSieveAnalysis->setCurrentWidget(ui->pageSieving);
             break;
         }
+
         case SieveAnalysisStages::Stage::Summary:
         {
             ui->stackedWidgetSieveAnalysis->setCurrentWidget(ui->pageFinalWeighing);
             break;
         }
+
         default:
             return;
     }
@@ -2311,7 +2318,13 @@ void MainWindow::goToNextSieveStage()
 
     switch(currentStage)
     {
-        case SieveAnalysisStages::Stage::Configuration:
+        case SieveAnalysisStages::Stage::InitialSieveData:
+        {
+            ui->stackedWidgetSieveAnalysis->setCurrentWidget(ui->pageSieveConfiguration);
+            break;
+        }
+
+        case SieveAnalysisStages::Stage::ConfigurationSieve:
         {
             ui->stackedWidgetSieveAnalysis->setCurrentWidget(ui->pageInitialWeighing);
             break;
@@ -2337,7 +2350,7 @@ void MainWindow::goToNextSieveStage()
 
         case SieveAnalysisStages::Stage::Summary:
         {
-            ui->stackedWidgetSieveAnalysis->setCurrentWidget(ui->pageConfiguration);
+            ui->stackedWidgetSieveAnalysis->setCurrentWidget(ui->pageInitialSieveData);
             break;
         }
 
@@ -2367,11 +2380,12 @@ void MainWindow::updateSieveStageLabels()
 
     QList<QLabel*> sieveLabels =
     {
-        ui->labelSieveStageConfigrationData,
+        ui->labelSieveStageInitialData,
+        ui->labelSieveStageConfigration,
         ui->labelSieveStageInitialWeighting,
         ui->labelSieveStageSieving,
         ui->labelSieveStageFinalWeighting,
-        ui->labelStageSummary
+        ui->labelSieveStageSummary
     };
 
     for(QLabel* label : sieveLabels)
@@ -2382,9 +2396,15 @@ void MainWindow::updateSieveStageLabels()
 
     switch (currentStage)
     {
-        case SieveAnalysisStages::Stage::Configuration:
-            ui->labelSieveStageConfigrationData->setFont(boldFont);
-            ui->labelSieveStageConfigrationData->setPalette(activePalette);
+
+        case SieveAnalysisStages::Stage::InitialSieveData:
+            ui->labelSieveStageInitialData->setFont(boldFont);
+            ui->labelSieveStageInitialData->setPalette(activePalette);
+            break;
+
+        case SieveAnalysisStages::Stage::ConfigurationSieve:
+            ui->labelSieveStageConfigration->setFont(boldFont);
+            ui->labelSieveStageConfigration->setPalette(activePalette);
             break;
 
         case SieveAnalysisStages::Stage::InitialWeighing:
@@ -2403,8 +2423,8 @@ void MainWindow::updateSieveStageLabels()
             break;
 
         case SieveAnalysisStages::Stage::Summary:
-            ui->labelStageSummary->setFont(boldFont);
-            ui->labelStageSummary->setPalette(activePalette);
+            ui->labelSieveStageSummary->setFont(boldFont);
+            ui->labelSieveStageSummary->setPalette(activePalette);
             break;
 
         default:
@@ -2415,6 +2435,9 @@ void MainWindow::updateSieveStageLabels()
 void MainWindow::connectNavSieveButtons()
 {
     connect(ui->buttonStartAnalysis, &QPushButton::clicked, this, &MainWindow::goToNextSieveStage);
+
+    connect(ui->buttonNextConfigurationSieve, &QPushButton::clicked, this, &MainWindow::goToNextSieveStage);
+    connect(ui->buttonBackConfigurationSieve, &QPushButton::clicked, this, &MainWindow::goToPreviousSieveStage);
 
     connect(ui->buttonNextInitialSieveMeasure, &QPushButton::clicked, this, &MainWindow::goToNextSieveStage);
     connect(ui->buttonBackInitialSieveMeasure, &QPushButton::clicked, this, &MainWindow::goToPreviousSieveStage);

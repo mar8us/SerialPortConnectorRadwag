@@ -9,11 +9,12 @@ namespace SieveAnalysisStages
 enum class Stage
 {
     None = -1,              // Brak aktywnego etapu
-    Configuration = 0,       // Dane wstępne i konfiguracja
-    InitialWeighing = 1,    // Ważenie wstępne (pustych sit i próbki)
-    Sieving = 2,            // Przesiewanie
-    FinalWeighing = 3,      // Ważenie końcowe (sit z materiałem)
-    Summary = 4             // Podsumowanie i raport
+    InitialSieveData,   // Dane wstępne
+    ConfigurationSieve, // Konfigracja
+    InitialWeighing,    // Ważenie wstępne (pustych sit i próbki)
+    Sieving,            // Przesiewanie
+    FinalWeighing,      // Ważenie końcowe (sit z materiałem)
+    Summary             // Podsumowanie i raport
 };
 
 inline QString stageToString(Stage stage)
@@ -23,7 +24,7 @@ inline QString stageToString(Stage stage)
         case Stage::None:
             return "None";
 
-        case Stage::Configuration:
+        case Stage::ConfigurationSieve:
             return "Configuration";
 
         case Stage::InitialWeighing:
@@ -51,7 +52,7 @@ inline QString stageDisplayName(Stage stage)
         case Stage::None:
             return "Brak";
 
-        case Stage::Configuration:
+        case Stage::ConfigurationSieve:
             return "Dane wstępne";
 
         case Stage::InitialWeighing:
@@ -74,7 +75,7 @@ inline QString stageDisplayName(Stage stage)
 
 inline bool isValidStage(Stage stage)
 {
-    return stage >= Stage::Configuration && stage <= Stage::Summary;
+    return stage >= Stage::InitialSieveData && stage <= Stage::Summary;
 }
 
 
@@ -82,21 +83,17 @@ inline Stage nextStage(Stage current)
 {
     int next = static_cast<int>(current) + 1;
     if(next <= static_cast<int>(Stage::Summary))
-    {
         return static_cast<Stage>(next);
-    }
-    return Stage::Summary;
+    return Stage::InitialSieveData;
 }
 
 
 inline Stage previousStage(Stage current)
 {
     int prev = static_cast<int>(current) - 1;
-    if(prev >= static_cast<int>(Stage::Configuration))
-    {
+    if(prev >= static_cast<int>(Stage::InitialSieveData))
         return static_cast<Stage>(prev);
-    }
-    return Stage::Configuration;
+    return Stage::Summary;
 }
 
 }
