@@ -5,8 +5,7 @@
 #include <algorithm>
 
 SieveAnalysisStudy::SieveAnalysisStudy()
-    : temperature(20.0)
-    , dateTime(QDateTime::currentDateTime())
+    : dateTime(QDateTime::currentDateTime())
     , sampleMass(0.0)
     , sampleWeighed(false)
 {
@@ -18,18 +17,18 @@ SieveAnalysisStudy::~SieveAnalysisStudy()
 
 }
 
-void SieveAnalysisStudy::sortSievesBySize()
+void SieveAnalysisStudy::sortAscendingSievesBySize()
 {
     std::sort(sieves.begin(), sieves.end(), [](const Sieve& a, const Sieve& b) {
-        return a.meshSize > b.meshSize; // Od największych do najmniejszych
+        return a.meshSize > b.meshSize;
     });
 }
 
 double SieveAnalysisStudy::getTotalRecoveredMass() const
 {
     double total = 0.0;
-    for (const auto& sieve : sieves)
-        if (sieve.isFinalWeighed)
+    for(const auto& sieve : sieves)
+        if(sieve.isFinalWeighed)
             total += sieve.getMaterialMass();
 
     return total;
@@ -42,7 +41,8 @@ double SieveAnalysisStudy::getMassLoss() const
 
 double SieveAnalysisStudy::getMassLossPercentage() const
 {
-    if (sampleMass <= 0.0) return 0.0;
+    if(sampleMass <= 0.0)
+        return 0.0;
     return (getMassLoss() / sampleMass) * 100.0;
 }
 
@@ -66,14 +66,14 @@ double SieveAnalysisStudy::getCumulativePercentage(int sieveIndex) const
     for(int i = 0; i <= sieveIndex; ++i)
         cumulative += getFractionPercentage(i);
 
-    return 100.0 - cumulative; // Procent przechodzącej przez sito
+    return 100.0 - cumulative;
 }
 
 bool SieveAnalysisStudy::isConfigurationComplete() const
 {
     return !studyName.isEmpty() &&
            !materialType.isEmpty() &&
-           !performer.isEmpty() &&
+           !author.isEmpty() &&
            !sieves.isEmpty();
 }
 
@@ -108,26 +108,21 @@ QJsonObject SieveAnalysisStudy::toJson() const
 
     obj["studyName"] = studyName;
     obj["materialType"] = materialType;
-    obj["temperature"] = temperature;
-    obj["performer"] = performer;
+    obj["author"] = author;
     obj["dateTime"] = dateTime.toString(Qt::ISODate);
     obj["notes"] = notes;
 
-    // Parametry przesiewarki
     obj["sieverParameters"] = sieverParams.toJson();
 
-    // Masa próbki
     obj["sampleMass"] = sampleMass;
     obj["sampleWeighed"] = sampleWeighed;
 
-    // Sita
     QJsonArray sievesArray;
-    for (const auto& sieve : sieves) {
+    for(const auto& sieve : sieves)
         sievesArray.append(sieve.toJson());
-    }
+
     obj["sieves"] = sievesArray;
 
-    // Metadane
     obj["version"] = "1.0";
     obj["createdAt"] = QDateTime::currentDateTime().toString(Qt::ISODate);
 
@@ -140,15 +135,13 @@ bool SieveAnalysisStudy::fromJson(const QJsonObject& obj)
     {
         studyName = obj["studyName"].toString();
         materialType = obj["materialType"].toString();
-        temperature = obj["temperature"].toDouble();
-        performer = obj["performer"].toString();
+        author = obj["author"].toString();
         dateTime = QDateTime::fromString(obj["dateTime"].toString(), Qt::ISODate);
         notes = obj["notes"].toString();
 
         // Parametry przesiewarki
         if(obj.contains("sieverParameters"))
             sieverParams.fromJson(obj["sieverParameters"].toObject());
-
 
         // Masa próbki
         sampleMass = obj["sampleMass"].toDouble();
@@ -186,7 +179,7 @@ bool SieveAnalysisStudy::saveToFile(const QString& filePath) const
     QFile file(filePath);
     if(!file.open(QIODevice::WriteOnly))
     {
-        qWarning() << "Cannot open file for writing:" << filePath;
+        qWarning() << "Nie można otworzyć pliku do zapisu:" << filePath;
         return false;
     }
 
@@ -199,7 +192,7 @@ bool SieveAnalysisStudy::loadFromFile(const QString& filePath)
     QFile file(filePath);
     if(!file.open(QIODevice::ReadOnly))
     {
-        qWarning() << "Cannot open file for reading:" << filePath;
+        qWarning() << "Nie można otworzyć pliku do odczytu:" << filePath;
         return false;
     }
 
@@ -208,7 +201,7 @@ bool SieveAnalysisStudy::loadFromFile(const QString& filePath)
 
     if(doc.isNull() || !doc.isObject())
     {
-        qWarning() << "Invalid JSON document in file:" << filePath;
+        qWarning() << "Błąd dokumentu:" << filePath;
         return false;
     }
 
@@ -233,19 +226,127 @@ bool SieveAnalysisStudy::fromJsonString(const QString& jsonString)
 
 void SieveAnalysisStudy::validateData()
 {
-    // Sortuj sita po rozmiarze
-    sortSievesBySize();
+    sortAscendingSievesBySize();
 
-    // Waliduj temperatury
-    if(temperature < 0.0 || temperature > 50.0)
-        temperature = 20.0;
-
-    // Waliduj masy
     if(sampleMass < 0.0)
         sampleMass = 0.0;
 
-    // Waliduj daty
     if(!dateTime.isValid())
         dateTime = QDateTime::currentDateTime();
+}
 
+QString SieveAnalysisStudy::getStudyName() const
+{
+    return studyName;
+}
+
+void SieveAnalysisStudy::setStudyName(const QString& name)
+{
+    studyName = name;
+}
+
+
+QString SieveAnalysisStudy::getMaterialType() const
+{
+    return materialType;
+}
+
+void SieveAnalysisStudy::setMaterialType(const QString& type)
+{
+    materialType = type;
+}
+
+QString SieveAnalysisStudy::getAuthor() const
+{
+    return author;
+}
+
+void SieveAnalysisStudy::setAuthor(const QString& name)
+{
+    author = name;
+}
+
+
+QDateTime SieveAnalysisStudy::getDateTime() const
+{
+    return dateTime;
+}
+
+void SieveAnalysisStudy::setDateTime(const QDateTime& dt)
+{
+    dateTime = dt;
+}
+
+
+QString SieveAnalysisStudy::getNotes() const
+{
+    return notes;
+}
+
+void SieveAnalysisStudy::setNotes(const QString& text)
+{
+    notes = text;
+}
+
+
+// === PARAMETRY PRZESIEWARKI ===
+SieverParameters SieveAnalysisStudy::getSieverParameters() const
+{
+    return sieverParams;
+}
+
+void SieveAnalysisStudy::setSieverParameters(const SieverParameters& params)
+{
+    sieverParams = params;
+}
+
+const QList<Sieve>& SieveAnalysisStudy::getSieves() const
+{
+    return sieves;
+}
+
+void SieveAnalysisStudy::setSieves(const QList<Sieve>& sieveList)
+{
+    sieves = sieveList;
+}
+
+void SieveAnalysisStudy::addSieve(const Sieve& sieve)
+{
+    sieves.append(sieve);
+}
+
+void SieveAnalysisStudy::removeSieve(int index)
+{
+    if (index >= 0 && index < sieves.size()) sieves.removeAt(index);
+}
+
+void SieveAnalysisStudy::clearSieves()
+{
+    sieves.clear();
+}
+
+int SieveAnalysisStudy::getSieveCount() const
+{
+    return sieves.size();
+}
+
+// === MASA PRÓBKI ===
+double SieveAnalysisStudy::getSampleMass() const
+{
+    return sampleMass;
+}
+
+void SieveAnalysisStudy::setSampleMass(double mass)
+{
+    sampleMass = mass;
+}
+
+bool SieveAnalysisStudy::isSampleWeighed() const
+{
+    return sampleWeighed;
+}
+
+void SieveAnalysisStudy::setSampleWeighed(bool weighed)
+{
+    sampleWeighed = weighed;
 }

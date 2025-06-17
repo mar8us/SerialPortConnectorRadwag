@@ -24,8 +24,8 @@ struct Sieve
 
     }
 
-    Sieve(double size, const QString& desc = "")
-        : meshSize(size), description(desc), emptyMass(0.0), fullMass(0.0), isWeighed(false), isFinalWeighed(false)
+    Sieve(double meshSize, const QString& description = "")
+        : meshSize(meshSize), description(description), emptyMass(0.0), fullMass(0.0), isWeighed(false), isFinalWeighed(false)
     {
 
     }
@@ -101,143 +101,43 @@ public:
     ~SieveAnalysisStudy();
 
 
-    QString getStudyName() const
-    {
-        return studyName;
-    }
+    QString getStudyName() const;
+    void setStudyName(const QString& name);
 
-    void setStudyName(const QString& name)
-    {
-        studyName = name;
-    }
+    QString getMaterialType() const;
+    void setMaterialType(const QString& type);
 
+    QString getAuthor() const;
+    void setAuthor(const QString& name);
 
-    QString getMaterialType() const
-    {
-        return materialType;
-    }
+    QDateTime getDateTime() const;
+    void setDateTime(const QDateTime& dt);
 
-    void setMaterialType(const QString& type)
-    {
-        materialType = type;
-    }
-
-
-    double getTemperature() const
-    {
-        return temperature;
-    }
-
-    void setTemperature(double temp)
-    {
-        temperature = temp;
-    }
-
-
-    QString getPerformer() const
-    {
-        return performer;
-    }
-
-    void setPerformer(const QString& name)
-    {
-        performer = name;
-    }
-
-
-    QDateTime getDateTime() const
-    {
-        return dateTime;
-    }
-
-    void setDateTime(const QDateTime& dt)
-    {
-        dateTime = dt;
-    }
-
-
-    QString getNotes() const
-    {
-        return notes;
-    }
-
-    void setNotes(const QString& text)
-    {
-        notes = text;
-    }
-
+    QString getNotes() const;
+    void setNotes(const QString& text);
 
     // === PARAMETRY PRZESIEWARKI ===
-    SieverParameters getSieverParameters() const
-    {
-        return sieverParams;
-    }
-
-    void setSieverParameters(const SieverParameters& params)
-    {
-        sieverParams = params;
-    }
+    SieverParameters getSieverParameters() const;
+    void setSieverParameters(const SieverParameters& params);
 
 
-    QList<Sieve> getSieves() const
-    {
-        return sieves;
-    }
+    const QList<Sieve>& getSieves() const;
+    void setSieves(const QList<Sieve>& sieveList);
 
-    void setSieves(const QList<Sieve>& sieveList)
-    {
-        sieves = sieveList;
-    }
+    void addSieve(const Sieve& sieve);
+    void removeSieve(int index);
 
-    void addSieve(const Sieve& sieve)
-    {
-        sieves.append(sieve);
-    }
+    void clearSieves();
+    int getSieveCount() const;
 
-
-    void addSieve(double meshSize, const QString& description = "")
-    {
-        sieves.append(Sieve(meshSize, description));
-    }
-
-    void removeSieve(int index)
-    {
-        if (index >= 0 && index < sieves.size()) sieves.removeAt(index);
-    }
-
-    void clearSieves()
-    {
-        sieves.clear();
-    }
-
-    int getSieveCount() const
-    {
-        return sieves.size();
-    }
-
-    // Sortuje sita od największych do najmniejszych oczek
-    void sortSievesBySize();
+    void sortAscendingSievesBySize();
 
     // === MASA PRÓBKI ===
-    double getSampleMass() const
-    {
-        return sampleMass;
-    }
+    double getSampleMass() const;
 
-    void setSampleMass(double mass)
-    {
-        sampleMass = mass;
-    }
-
-    bool isSampleWeighed() const
-    {
-        return sampleWeighed;
-    }
-
-    void setSampleWeighed(bool weighed)
-    {
-        sampleWeighed = weighed;
-    }
+    void setSampleMass(double mass);
+    bool isSampleWeighed() const;
+    void setSampleWeighed(bool weighed);
 
     // === METODY OBLICZENIOWE ===
     // Oblicza całkowitą masę materiału odzyskanego
@@ -276,8 +176,7 @@ public:
 private:
     QString studyName;
     QString materialType;
-    double temperature;
-    QString performer;
+    QString author;
     QDateTime dateTime;
     QString notes;
 
