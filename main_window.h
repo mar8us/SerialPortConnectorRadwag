@@ -108,6 +108,8 @@ private slots:
     void onSaveTripleCurrentSaturatedMeasureButtonClicked();
     void onClearTripleSavedSaturatedMeasureButtonClicked();
 
+    void onLibraryNewMeasureButtonClicked();
+
 private:
     bool canEditDevice(std::shared_ptr<const Device> &device);
     std::shared_ptr<const Device> getSelectedDevice();
@@ -218,6 +220,10 @@ private:
 
     static inline const QColor ACTIVE_LABEL_COLOR = QColor(0, 0, 255);
     static inline const QColor MEASURE_LABEL_COLOR = QColor(0, 100, 255);
+
+    //Radwag measure library
+
+    void connectLibraryMeasureButtons();
 
     //SieveAnalysis
 

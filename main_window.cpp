@@ -738,7 +738,7 @@ void MainWindow::onResetMeasureButtonClicked()
 void MainWindow::onSaveMeasureButtonClicekd()
 {
     if(measurementManager->addMeasurement(radwagMeasureControler->getActiveMeasure()))
-       QMessageBox::warning(this, tr("Zapis pomiaru"), "Pomyślnie zapisano dane aktywnego pomiaru.");
+        QMessageBox::warning(this, tr("Zapis pomiaru"), "Pomyślnie zapisano dane aktywnego pomiaru.");
 }
 
 void MainWindow::onStartMeasureButtonClicked()
@@ -882,6 +882,7 @@ void MainWindow::connectButtons()
     connectSaturatedTriplePageButtons();
     connectSummaryMeasureSecondPageButtons();
     connectSummaryMeasureTriplePageButtons();
+    connectLibraryMeasureButtons();
     connectCatalogsButtons();
 
     connectNavSieveButtons();
@@ -2263,7 +2264,24 @@ void MainWindow::updateDenistyChart()
         denistyChart->clearChart();
 }
 
+// Radwag measure library
 
+void MainWindow::onLibraryNewMeasureButtonClicked()
+{
+    ui->tabWidgetMain->setCurrentIndex(0);
+    if(!radwagScaleConnector.get() || !radwagScaleConnector->connectionIsActive() || !radwagMeasureControler->hasActiveMeasurement())
+    {
+        ui->stackedWidgetMainHydroMeasure->setCurrentWidget(ui->pageStartMeasure);
+        ui->measureDensityStage->setProperty("currentStage", QVariant::fromValue(MeasurementStages::Stage::StartMeasure));
+    }
+    else if(radwagMeasureControler->hasActiveMeasurement())
+        QMessageBox::warning(this, "Aktywny pomiar", "Masz aktywny pomiar hydrostatyczny. Zakończ aktualny pomiar aby wykonać kolejny.");
+}
+
+void MainWindow::connectLibraryMeasureButtons()
+{
+    connect(ui->buttonLibNewMeasure, &QPushButton::clicked, this, &MainWindow::onLibraryNewMeasureButtonClicked);
+}
 
 //SieveAnalysis
 
