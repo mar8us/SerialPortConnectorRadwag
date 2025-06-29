@@ -64,6 +64,12 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
 
         sieveAnalysis/sieve_analysis_study.h sieveAnalysis/sieve_analysis_study.cpp
         sieveAnalysis/sieve_analysis_stages.h sieveAnalysis/sieve_analysis_stages.cpp
+        main_window_ui_handlers/hydrostatic_measure_module.h main_window_ui_handlers/hydrostatic_measure_module.cpp
+        main_window_ui_handlers/measurement_process_ui_handler.h main_window_ui_handlers/measurement_process_ui_handler.cpp
+        main_window_ui_handlers/devices_manager_ui_handler.h main_window_ui_handlers/devices_manager_ui_handler.cpp
+        main_window_ui_handlers/measurement_library_ui_handler.h main_window_ui_handlers/measurement_library_ui_handler.cpp
+        main_window_ui_handlers/hydrostatic_data_holder.h main_window_ui_handlers/hydrostatic_data_holder.cpp
+        app_core.h app_core.cpp
 
 
 

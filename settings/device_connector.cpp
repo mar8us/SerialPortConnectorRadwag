@@ -12,7 +12,7 @@ DeviceConnector::~DeviceConnector()
 
 }
 
-bool DeviceConnector::connectDevice(const QString &portName)
+bool DeviceConnector::connectDevice(const QString &portName) const
 {
     if(!activeDevice.get())
         return false;
@@ -36,16 +36,17 @@ bool DeviceConnector::closeActiveConnection()
         return false;
     }
     bool connectionClosed = serialPort->closeConnection();
+    activeDevice = nullptr;
     emit connectionResult(!connectionClosed);
     return !connectionClosed;
 }
 
-bool DeviceConnector::connectionIsActive()
+bool DeviceConnector::connectionIsActive() const
 {
     return serialPort->isOpen();
 }
 
-std::shared_ptr<const Device> DeviceConnector::getActiveDevice()
+std::shared_ptr<const Device> DeviceConnector::getActiveDevice() const
 {
     return activeDevice;
 }
@@ -55,7 +56,7 @@ void DeviceConnector::setActiveDevice(const std::shared_ptr<const Device>& newAc
     activeDevice = newActiveDevice;
 }
 
-bool DeviceConnector::sendCommand(const QByteArray &command)
+bool DeviceConnector::sendCommand(const QByteArray &command) const
 {
     if(!connectionIsActive())
         return false;
