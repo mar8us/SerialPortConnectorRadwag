@@ -64,6 +64,7 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
 
         sieveAnalysis/sieve_analysis_study.h sieveAnalysis/sieve_analysis_study.cpp
         sieveAnalysis/sieve_analysis_stages.h sieveAnalysis/sieve_analysis_stages.cpp
+        app_core.h app_core.cpp
 
 
 
