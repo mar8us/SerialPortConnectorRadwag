@@ -12,52 +12,52 @@ RadwagScaleConnector::~RadwagScaleConnector()
 
 }
 
-void RadwagScaleConnector::sendTareCommand()
+void RadwagScaleConnector::sendTareCommand() const
 {
     sendCommand("T\r\n");
 }
 
-void RadwagScaleConnector::sendZeroCommand()
+void RadwagScaleConnector::sendZeroCommand() const
 {
     sendCommand("Z\r\n");
 }
 
-void RadwagScaleConnector::sendImmediateWeightCommand()
+void RadwagScaleConnector::sendImmediateWeightCommand() const
 {
     sendCommand("SI\r\n");
 }
 
-void RadwagScaleConnector::sendStableWeightCommand()
+void RadwagScaleConnector::sendStableWeightCommand() const
 {
     sendCommand("S\r\n");
 }
 
-void RadwagScaleConnector::sendStableWeightCurrentUnitCommand()
+void RadwagScaleConnector::sendStableWeightCurrentUnitCommand() const
 {
     sendCommand("SU\r\n");
 }
 
-void RadwagScaleConnector::sendImmediateWeightCurrentUnitCommand()
+void RadwagScaleConnector::sendImmediateWeightCurrentUnitCommand() const
 {
     sendCommand("SUI\r\n");
 }
 
-void RadwagScaleConnector::startContinuousTransmissionBasicUnit()
+void RadwagScaleConnector::startContinuousTransmissionBasicUnit() const
 {
     sendCommand("C1\r\n");
 }
 
-void RadwagScaleConnector::stopContinuousTransmissionBasicUnit()
+void RadwagScaleConnector::stopContinuousTransmissionBasicUnit() const
 {
     sendCommand("C0\r\n");
 }
 
-void RadwagScaleConnector::startContinuousTransmissionCurrentUnit()
+void RadwagScaleConnector::startContinuousTransmissionCurrentUnit() const
 {
     sendCommand("CU1\r\n");
 }
 
-void RadwagScaleConnector::stopContinuousTransmissionCurrentUnit()
+void RadwagScaleConnector::stopContinuousTransmissionCurrentUnit() const
 {
     sendCommand("CU0\r\n");
 }

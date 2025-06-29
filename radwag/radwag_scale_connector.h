@@ -36,16 +36,16 @@ public:
     explicit RadwagScaleConnector();
     virtual ~RadwagScaleConnector();
 
-    void sendTareCommand();
-    void sendZeroCommand();
-    void sendImmediateWeightCommand();
-    void sendStableWeightCommand();
-    void sendStableWeightCurrentUnitCommand();
-    void sendImmediateWeightCurrentUnitCommand();
-    void startContinuousTransmissionBasicUnit();
-    void stopContinuousTransmissionBasicUnit();
-    void startContinuousTransmissionCurrentUnit();
-    void stopContinuousTransmissionCurrentUnit();
+    void sendTareCommand() const;
+    void sendZeroCommand() const;
+    void sendImmediateWeightCommand() const;
+    void sendStableWeightCommand() const;
+    void sendStableWeightCurrentUnitCommand() const;
+    void sendImmediateWeightCurrentUnitCommand() const;
+    void startContinuousTransmissionBasicUnit() const;
+    void stopContinuousTransmissionBasicUnit() const;
+    void startContinuousTransmissionCurrentUnit() const;
+    void stopContinuousTransmissionCurrentUnit() const;
 
 protected:
     void processCompleteLine(const QByteArray &lineData);

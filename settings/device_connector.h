@@ -16,14 +16,14 @@ public:
     DeviceConnector();
     virtual ~DeviceConnector();
 
-    virtual bool connectDevice(const QString &portName);
+    virtual bool connectDevice(const QString &portName) const;
     virtual bool closeActiveConnection();
-    virtual bool connectionIsActive();
+    virtual bool connectionIsActive() const;
 
-    std::shared_ptr<const Device> getActiveDevice();
+    std::shared_ptr<const Device> getActiveDevice() const;
     void setActiveDevice(const std::shared_ptr<const Device>& newActiveDevice);
 
-    bool sendCommand(const QByteArray &command);
+    bool sendCommand(const QByteArray &command) const;
 
 protected:
     std::shared_ptr<const Device> activeDevice;
@@ -34,9 +34,9 @@ protected slots:
     virtual void dataReceived(const QByteArray &deviceData) = 0;
 
 signals:
-    void connectionResult(bool connected);
-    void dataReady(const QByteArray &data);
-    void deviceError(const QString &errorMessage);
+    void connectionResult(bool connected) const;
+    void dataReady(const QByteArray &data) const;
+    void deviceError(const QString &errorMessage) const;
 };
 
 
