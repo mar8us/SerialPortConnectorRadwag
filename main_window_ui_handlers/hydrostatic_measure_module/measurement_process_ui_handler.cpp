@@ -1,11 +1,11 @@
 #include "measurement_process_ui_handler.h"
 #include <QDialog>
 
-#include "../main_window.h"
-#include "../sample/sample_dialog.h"
-#include "../fluid_tabels/fluid_tables_form.h"
-#include "../app_core.h"
-#include "../utils.h"
+#include "../../main_window.h"
+#include "../../sample/sample_dialog.h"
+#include "../../fluid_tabels/fluid_tables_form.h"
+#include "../../app_core.h"
+#include "../../utils.h"
 
 MeasurementProcessUiHandler::MeasurementProcessUiHandler(MainWindow *mainWindow, MeasurementController &radwagMeasureControler, HydrostaticDataHolder &dataHolder)
     : QObject(mainWindow)

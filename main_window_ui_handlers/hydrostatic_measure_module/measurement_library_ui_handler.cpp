@@ -1,5 +1,5 @@
 #include "measurement_library_ui_handler.h"
-#include "../main_window.h"
+#include "../../main_window.h"
 
 
 MeasurementLibraryUiHandler::MeasurementLibraryUiHandler(MainWindow *mainWindow, HydrostaticDataHolder &dataHolder)

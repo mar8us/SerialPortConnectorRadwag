@@ -1,6 +1,6 @@
 #include <QMessageBox>
 #include "hydrostatic_measure_module.h"
-#include "../main_window.h"
+#include "../../main_window.h"
 
 HydrostaticMeasurementModule::HydrostaticMeasurementModule(MainWindow *mainWindow)
     : QObject(mainWindow)

@@ -1,5 +1,5 @@
 #include "hydrostatic_data_holder.h"
-#include "../main_window.h"
+#include "../../../main_window.h"
 
 HydrostaticDataHolder::HydrostaticDataHolder(MainWindow *mainWindow)
     : measurementManager(new MeasurementManager(mainWindow))

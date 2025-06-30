@@ -1,6 +1,6 @@
 #include "devices_manager_ui_handler.h"
-#include "../main_window.h"
-#include "../app_core.h"
+#include "../../main_window.h"
+#include "../../app_core.h"
 
 DevicesManagerUiHandler::DevicesManagerUiHandler(MainWindow *mainWindow)
     : QObject(mainWindow)

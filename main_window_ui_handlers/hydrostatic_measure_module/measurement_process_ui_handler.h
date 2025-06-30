@@ -3,10 +3,10 @@
 
 #include <QObject>
 
-#include "hydrostatic_data_holder.h"
-#include "../main_widow/measurement_controller.h"
-#include "../charts/porosity_chart.h"
-#include "../charts/denisty_chart.h"
+#include "data_holder/hydrostatic_data_holder.h"
+#include "../../main_widow/measurement_controller.h"
+#include "../../charts/porosity_chart.h"
+#include "../../charts/denisty_chart.h"
 
 class MainWindow;
 

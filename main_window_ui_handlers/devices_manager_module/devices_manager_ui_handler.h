@@ -2,9 +2,9 @@
 #define DEVICES_MANAGER_UI_HANDLER_H
 
 #include <QObject>
-#include "hydrostatic_measure_module.h"
-#include "../settings/devices_list_model.h"
-#include "../settings/devices_list_controler.h"
+#include "../hydrostatic_measure_module/hydrostatic_measure_module.h"
+#include "../../settings/devices_list_model.h"
+#include "../../settings/devices_list_controler.h"
 
 class DevicesManagerUiHandler : public QObject
 {
@@ -42,4 +42,4 @@ private:
     Ui::MainWindow *ui;
 };
 
-#endif // DEVICES_MANAGER_UI_HANDLER_H
+#endif

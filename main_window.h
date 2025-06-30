@@ -2,7 +2,7 @@
 #define MAIN_WINDOW_H
 
 #include <QMainWindow>
-#include "main_window_ui_handlers/devices_manager_ui_handler.h"
+#include "main_window_ui_handlers/devices_manager_module/devices_manager_ui_handler.h"
 #include "radwag/radwag_measure.h"
 
 #include "ui_main_window.h"

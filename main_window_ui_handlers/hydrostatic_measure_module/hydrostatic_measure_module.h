@@ -2,7 +2,7 @@
 #define HYDROSTATIC_MEASURE_MODULE_H
 
 #include <QObject>
-#include "hydrostatic_data_holder.h"
+#include "data_holder/hydrostatic_data_holder.h"
 #include "measurement_process_ui_handler.h"
 #include "measurement_library_ui_handler.h"
 
