@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 #include "main_window_ui_handlers/devices_manager_module/devices_manager_ui_handler.h"
+#include "main_window_ui_handlers/sieve_analysis_module/sieve_analysis_module.h"
 #include "radwag/radwag_measure.h"
 
 #include "ui_main_window.h"
@@ -19,9 +20,6 @@ public:
     void showWarning(const QString& title, const QString& message);
     void showInfo(const QString& title, const QString& message);
 
-    static inline const QColor ACTIVE_LABEL_COLOR = QColor(0, 0, 255);
-    static inline const QColor MEASURE_LABEL_COLOR = QColor(0, 100, 255);
-
 private slots:
     void onConnectResult(bool connected);
     void onDeviceComboSelectionChanged();
@@ -31,23 +29,13 @@ private slots:
     void onMainPageChanged(int index);
 
 private:
-    void setProperty();
-    void setIcons();
-    void setPalette();
-
     void updateActionIcons(int index);
     void updateConnectonLabelsStatusBar(bool connectionStatus);
 
-    //SieveAnalysis
-    void goToPreviousSieveStage();
-    void goToNextSieveStage();
-    void updateSieveStageLabels();
-
-    void connectNavSieveButtons();
-    void resizeAllTablesColumnsToContents();
-    //end SieveAnalysis
-
     void initControls();
+    void resizeAllTablesColumnsToContents();
+    void setIcons();
+    void setPalette();
     void connectButtons();
     void connectMainNavButtons();
     void connectScaleSignals();
@@ -56,6 +44,7 @@ private:
 
     DevicesManagerUiHandler deviceManagerUiHandler;
     HydrostaticMeasurementModule hydrostaticMeasurementModule;
+    SieveAnalysisModule sieveAnalysisModule;
 
     QIcon defaultSettingsIcon;
     QIcon activeSettingsIcon;
