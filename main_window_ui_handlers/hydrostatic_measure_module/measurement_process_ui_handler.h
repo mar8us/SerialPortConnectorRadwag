@@ -165,6 +165,16 @@ private:
     void connectCatalogsButtons();
     void updateStageLabels();
 
+
+    MeasurementStages::Stage getCurrentStage() const;
+    void initializeMappings();
+
+    QMap<MeasurementStages::Stage, QLabel*> tripleStageToLabelMap;
+    QMap<MeasurementStages::Stage, QLabel*> secondStageToLabelMap;
+    QList<QLabel*> allTripleLabels;
+    QList<QLabel*> allSecondLabels;
+
+
     MainWindow *mainWindow;
     Ui::MainWindow *ui;
     HydrostaticDataHolder &dataHolder;

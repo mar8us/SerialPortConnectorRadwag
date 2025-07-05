@@ -19,6 +19,7 @@ MeasurementProcessUiHandler::MeasurementProcessUiHandler(MainWindow *mainWindow,
 
 void MeasurementProcessUiHandler::initialize()
 {
+    initializeMappings();
     fillFluidCombo();
     fillSampleCombo();
     setupCharts();
@@ -1605,167 +1606,81 @@ void MeasurementProcessUiHandler::connectCatalogsButtons()
 
 void MeasurementProcessUiHandler::updateStageLabels()
 {
-    QFont normalFont;
-    normalFont.setBold(false);
-    normalFont.setPixelSize(12);
+    static const QFont normalFont = utils::stage::getNormalFont();
+    static const QFont boldFont = utils::stage::getBoldFont();
+    static const QPalette normalPalette;
+    static const QPalette activePalette = utils::stage::getActivePalette();
 
-    QFont boldFont = normalFont;
-    boldFont.setBold(true);
-    boldFont.setPixelSize(13);
 
-    QPalette normalPalette;
-    QPalette activePalette;
-    activePalette.setColor(QPalette::WindowText, MainWindow::ACTIVE_LABEL_COLOR);
-
-    QPalette measurePalette;
-    measurePalette.setColor(QPalette::WindowText, MainWindow::MEASURE_LABEL_COLOR);
-
-    MeasurementStages::Stage currentStage = ui->measureDensityStage->property("currentStage").value<MeasurementStages::Stage>();
+    MeasurementStages::Stage currentStage = getCurrentStage();
     MeasurementStages::Stage radwagStage = radwagMeasureControler.getStage();
     bool isTripleMeasurement = ui->radioMeasureTriple->isChecked();
 
-    if(isTripleMeasurement)
-    {
-        QList<QLabel*> tripleLabels =
-            {
-                ui->labelStageDataTriple,
-                ui->labelStageDryMassTriple,
-                ui->labelStagePrepareSaturation,
-                ui->labelStageSaturationMass,
-                ui->labelStageSaturatedMass,
-                ui->labelStageSummaryTriple
-            };
+    const auto& currentStageToLabelMap = isTripleMeasurement ? tripleStageToLabelMap : secondStageToLabelMap;
+    const auto& currentAllLabels = isTripleMeasurement ? allTripleLabels : allSecondLabels;
 
-        for (QLabel* label : tripleLabels)
-        {
-            label->setFont(normalFont);
-            label->setPalette(normalPalette);
-        }
-
-        switch (currentStage)
-        {
-        case MeasurementStages::Stage::InitialData:
-            ui->labelStageDataTriple->setFont(boldFont);
-            ui->labelStageDataTriple->setPalette(activePalette);
-            break;
-        case MeasurementStages::Stage::DryMeasure:
-            ui->labelStageDryMassTriple->setFont(boldFont);
-            ui->labelStageDryMassTriple->setPalette(activePalette);
-            break;
-        case MeasurementStages::Stage::PrepareTriple:
-            ui->labelStagePrepareSaturation->setFont(boldFont);
-            ui->labelStagePrepareSaturation->setPalette(activePalette);
-            break;
-        case MeasurementStages::Stage::SaturationMass:
-            ui->labelStageSaturationMass->setFont(boldFont);
-            ui->labelStageSaturationMass->setPalette(activePalette);
-            break;
-        case MeasurementStages::Stage::FinishTriple:
-            ui->labelStageSaturatedMass->setFont(boldFont);
-            ui->labelStageSaturatedMass->setPalette(activePalette);
-            break;
-        case MeasurementStages::Stage::Summary:
-            ui->labelStageSummaryTriple->setFont(boldFont);
-            ui->labelStageSummaryTriple->setPalette(activePalette);
-            break;
-        default:
-            break;
-        }
-
-        if(static_cast<int>(radwagStage) == static_cast<int>(currentStage))
-            return;
-
-        switch(radwagStage)
-        {
-        case MeasurementStages::Stage::InitialData:
-            ui->labelStageDataTriple->setPalette(measurePalette);
-            break;
-        case MeasurementStages::Stage::DryMeasure:
-            ui->labelStageDryMassTriple->setPalette(measurePalette);
-            break;
-        case MeasurementStages::Stage::PrepareTriple:
-            ui->labelStagePrepareSaturation->setPalette(measurePalette);
-            break;
-        case MeasurementStages::Stage::SaturationMass:
-            ui->labelStageSaturationMass->setPalette(measurePalette);
-            break;
-        case MeasurementStages::Stage::FinishTriple:
-            ui->labelStageSaturatedMass->setPalette(measurePalette);
-            break;
-        case MeasurementStages::Stage::Summary:
-            ui->labelStageSummaryTriple->setPalette(measurePalette);
-            break;
-        default:
-            break;
-        }
+    // Reset wszystkich labeli do normalnego stylu
+    for (QLabel* label : currentAllLabels) {
+        label->setFont(normalFont);
+        label->setPalette(normalPalette);
     }
-    else
-    {
-        QList<QLabel*> secondLabels =
-            {
-                ui->labelStageData,
-                ui->labelStageDryMass,
-                ui->labelStagePreparation,
-                ui->labelStageFluidMass,
-                ui->labelStageSummary
-            };
 
-        for(QLabel* label : secondLabels)
-        {
-            label->setFont(normalFont);
-            label->setPalette(normalPalette);
-        }
-
-        switch (currentStage)
-        {
-        case MeasurementStages::Stage::InitialData:
-            ui->labelStageData->setFont(boldFont);
-            ui->labelStageData->setPalette(activePalette);
-            break;
-        case MeasurementStages::Stage::DryMeasure:
-            ui->labelStageDryMass->setFont(boldFont);
-            ui->labelStageDryMass->setPalette(activePalette);
-            break;
-        case MeasurementStages::Stage::PrepareSecond:
-        case MeasurementStages::Stage::SaturationMass:
-            ui->labelStagePreparation->setFont(boldFont);
-            ui->labelStagePreparation->setPalette(activePalette);
-            break;
-        case MeasurementStages::Stage::FinishSecond:
-            ui->labelStageFluidMass->setFont(boldFont);
-            ui->labelStageFluidMass->setPalette(activePalette);
-            break;
-        case MeasurementStages::Stage::Summary:
-            ui->labelStageSummary->setFont(boldFont);
-            ui->labelStageSummary->setPalette(activePalette);
-            break;
-        default:
-            break;
-        }
-
-        if(static_cast<int>(radwagStage) == static_cast<int>(currentStage))
-            return;
-
-        switch(radwagStage)
-        {
-        case MeasurementStages::Stage::InitialData:
-            ui->labelStageData->setPalette(measurePalette);
-            break;
-        case MeasurementStages::Stage::DryMeasure:
-            ui->labelStageDryMass->setPalette(measurePalette);
-            break;
-        case MeasurementStages::Stage::PrepareSecond:
-        case MeasurementStages::Stage::SaturationMass:
-            ui->labelStagePreparation->setPalette(measurePalette);
-            break;
-        case MeasurementStages::Stage::FinishSecond:
-            ui->labelStageFluidMass->setPalette(measurePalette);
-            break;
-        case MeasurementStages::Stage::Summary:
-            ui->labelStageSummary->setPalette(measurePalette);
-            break;
-        default:
-            break;
-        }
+    // Podświetl aktywny stage
+    if (currentStageToLabelMap.contains(currentStage)) {
+        QLabel* activeLabel = currentStageToLabelMap[currentStage];
+        activeLabel->setFont(boldFont);
+        activeLabel->setPalette(activePalette);
     }
+
+    // Jeśli radwag stage jest taki sam jak current, nie dodawaj measure palette
+    if (static_cast<int>(radwagStage) == static_cast<int>(currentStage)) {
+        return;
+    }
+
+    // Dodaj measure palette dla radwag stage
+    if (currentStageToLabelMap.contains(radwagStage)) {
+        currentStageToLabelMap[radwagStage]->setPalette(activePalette);
+    }
+}
+
+void MeasurementProcessUiHandler::initializeMappings()
+{
+    tripleStageToLabelMap = {
+        {MeasurementStages::Stage::InitialData, ui->labelStageDataTriple},
+        {MeasurementStages::Stage::DryMeasure, ui->labelStageDryMassTriple},
+        {MeasurementStages::Stage::PrepareTriple, ui->labelStagePrepareSaturation},
+        {MeasurementStages::Stage::SaturationMass, ui->labelStageSaturationMass},
+        {MeasurementStages::Stage::FinishTriple, ui->labelStageSaturatedMass},
+        {MeasurementStages::Stage::Summary, ui->labelStageSummaryTriple}
+    };
+
+    secondStageToLabelMap = {
+        {MeasurementStages::Stage::InitialData, ui->labelStageData},
+        {MeasurementStages::Stage::DryMeasure, ui->labelStageDryMass},
+        {MeasurementStages::Stage::PrepareSecond, ui->labelStagePreparation},
+        {MeasurementStages::Stage::FinishSecond, ui->labelStageFluidMass},
+        {MeasurementStages::Stage::Summary, ui->labelStageSummary}
+    };
+
+    allTripleLabels = {
+        ui->labelStageDataTriple,
+        ui->labelStageDryMassTriple,
+        ui->labelStagePrepareSaturation,
+        ui->labelStageSaturationMass,
+        ui->labelStageSaturatedMass,
+        ui->labelStageSummaryTriple
+    };
+
+    allSecondLabels = {
+        ui->labelStageData,
+        ui->labelStageDryMass,
+        ui->labelStagePreparation,
+        ui->labelStageFluidMass,
+        ui->labelStageSummary
+    };
+}
+
+MeasurementStages::Stage MeasurementProcessUiHandler::getCurrentStage() const
+{
+    return ui->measureDensityStage->property("currentStage").value<MeasurementStages::Stage>();
 }
