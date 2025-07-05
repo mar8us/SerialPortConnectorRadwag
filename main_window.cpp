@@ -3,9 +3,9 @@
 
 #include <QMessageBox>
 
+#include "sieveAnalysis/sieve_analysis_stages.h"
 #include "tooltip/tooltip_manager.h"
 #include "radwag/measurement.h"
-#include "sieveAnalysis/sieve_analysis_stages.h"
 #include "app_core.h"
 
 MainWindow::MainWindow(QWidget *parent)
@@ -13,6 +13,7 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
     , deviceManagerUiHandler(this)
     , hydrostaticMeasurementModule(this)
+    , sieveAnalysisModule(this)
 {
     initControls();
     connectButtons();
@@ -21,14 +22,13 @@ MainWindow::MainWindow(QWidget *parent)
 
     deviceManagerUiHandler.initialize();
     hydrostaticMeasurementModule.initialize();
+    sieveAnalysisModule.initialize();
 
     // tooltip i.e
     TooltipManager& tooltipManager = TooltipManager::getInstance();
     tooltipManager.setGlobalStyle("QToolTip { background-color: #2C3E50; color: white; }");
     tooltipManager.registerImage("info", ":/icons/image.jpg", 424, 424);
     tooltipManager.registerTooltip(ui->buttonDryMassExecuteStepOne, ui->buttonDryMassExecuteStepOne->text(), "Wyzeruj wagę wskazanym na ilustracji przyciskiem", "info", TooltipManager::IMAGE_BOTTOM);
-
-    QTimer::singleShot(0, this, &MainWindow::resizeAllTablesColumnsToContents);
 }
 
 MainWindow::~MainWindow()
@@ -85,32 +85,6 @@ void MainWindow::onDeviceComboSelectionChanged()
     updateConnectonLabelsStatusBar(appCore.hasConnectionWithScale());
 }
 
-void MainWindow::setProperty()
-{
-    ui->stackedWidgetSieveAnalysis->setProperty("currentStage", QVariant::fromValue(SieveAnalysisStages::Stage::None));
-}
-
-void MainWindow::setIcons()
-{
-    defaultSettingsIcon = QIcon(":/icons/settings_white.png");
-    activeSettingsIcon = QIcon(":/icons/settings_selected.png");
-    defaultRadwagIcon = QIcon(":/icons/balance_white.png");
-    activeRadwagIcon = QIcon(":/icons/balance_selected.png");
-}
-
-void MainWindow::setPalette()
-{
-    ui->scrollAreaInitialData->setBackgroundRole(QPalette::Base);
-    ui->scrollAreaFinishSecond->setBackgroundRole(QPalette::Base);
-    ui->scrollAreaFinishTriple->setBackgroundRole(QPalette::Base);
-    ui->scrollAreaLibrary->setBackgroundRole(QPalette::Base);
-    ui->scrollAreaLibrary->setBackgroundRole(QPalette::Base);
-    ui->scrollAreaSieveMain->setBackgroundRole(QPalette::Base);
-    ui->scrollAreaSieveProcess->setBackgroundRole(QPalette::Base);
-    ui->scrollAreaFinalWeighting->setBackgroundRole(QPalette::Base);
-    ui->scrollAreaSummarySieve->setBackgroundRole(QPalette::Base);
-}
-
 void MainWindow::updateActionIcons(int index)
 {
     ui->actionSettings->setIcon(ui->stackedWidget->widget(index) == ui->settingsPage ? activeSettingsIcon : defaultSettingsIcon);
@@ -134,191 +108,17 @@ void MainWindow::updateConnectonLabelsStatusBar(bool connectionStatus)
     }
 }
 
-//SieveAnalysis
-
-void MainWindow::goToPreviousSieveStage()
+void MainWindow::initControls()
 {
-    SieveAnalysisStages::Stage currentStage = ui->stackedWidgetSieveAnalysis->property("currentStage").value<SieveAnalysisStages::Stage>();
-    SieveAnalysisStages::Stage prevStage = SieveAnalysisStages::previousStage(currentStage);
-    switch(currentStage)
-    {
-
-        case SieveAnalysisStages::Stage::ConfigurationSieve:
-        {
-            ui->stackedWidgetSieveAnalysis->setCurrentWidget(ui->pageInitialSieveData);
-            break;
-        }
-
-        case SieveAnalysisStages::Stage::InitialWeighing:
-        {
-            ui->stackedWidgetSieveAnalysis->setCurrentWidget(ui->pageSieveConfiguration);
-            break;
-        }
-
-        case SieveAnalysisStages::Stage::Sieving:
-        {
-            ui->stackedWidgetSieveAnalysis->setCurrentWidget(ui->pageInitialWeighing);
-            break;
-        }
-
-        case SieveAnalysisStages::Stage::FinalWeighing:
-        {
-            ui->stackedWidgetSieveAnalysis->setCurrentWidget(ui->pageSieving);
-            break;
-        }
-
-        case SieveAnalysisStages::Stage::Summary:
-        {
-            ui->stackedWidgetSieveAnalysis->setCurrentWidget(ui->pageFinalWeighing);
-            break;
-        }
-
-        default:
-            return;
-    }
-    ui->stackedWidgetSieveAnalysis->setProperty("currentStage", QVariant::fromValue(prevStage));
-    updateSieveStageLabels();
-}
-
-void MainWindow::goToNextSieveStage()
-{
-    SieveAnalysisStages::Stage currentStage = ui->stackedWidgetSieveAnalysis->property("currentStage").value<SieveAnalysisStages::Stage>();
-    SieveAnalysisStages::Stage nextStage = SieveAnalysisStages::nextStage(currentStage);
-
-    switch(currentStage)
-    {
-        case SieveAnalysisStages::Stage::InitialSieveData:
-        {
-            ui->stackedWidgetSieveAnalysis->setCurrentWidget(ui->pageSieveConfiguration);
-            break;
-        }
-
-        case SieveAnalysisStages::Stage::ConfigurationSieve:
-        {
-            ui->stackedWidgetSieveAnalysis->setCurrentWidget(ui->pageInitialWeighing);
-            break;
-        }
-
-        case SieveAnalysisStages::Stage::InitialWeighing:
-        {
-            ui->stackedWidgetSieveAnalysis->setCurrentWidget(ui->pageSieving);
-            break;
-        }
-
-        case SieveAnalysisStages::Stage::Sieving:
-        {
-            ui->stackedWidgetSieveAnalysis->setCurrentWidget(ui->pageFinalWeighing);
-            break;
-        }
-
-        case SieveAnalysisStages::Stage::FinalWeighing:
-        {
-            ui->stackedWidgetSieveAnalysis->setCurrentWidget(ui->pageSummarySieve);
-            break;
-        }
-
-        case SieveAnalysisStages::Stage::Summary:
-        {
-            ui->stackedWidgetSieveAnalysis->setCurrentWidget(ui->pageInitialSieveData);
-            break;
-        }
-
-        default:
-            return;
-    }
-
-    ui->stackedWidgetSieveAnalysis->setProperty("currentStage", QVariant::fromValue(nextStage));
-    updateSieveStageLabels();
-}
-
-void MainWindow::updateSieveStageLabels()
-{
-    QFont normalFont;
-    normalFont.setBold(false);
-    normalFont.setPixelSize(12);
-
-    QFont boldFont = normalFont;
-    boldFont.setBold(true);
-    boldFont.setPixelSize(13);
-
-    QPalette normalPalette;
-    QPalette activePalette;
-    activePalette.setColor(QPalette::WindowText, ACTIVE_LABEL_COLOR);
-
-    SieveAnalysisStages::Stage currentStage = ui->stackedWidgetSieveAnalysis->property("currentStage").value<SieveAnalysisStages::Stage>();
-
-    QList<QLabel*> sieveLabels =
-    {
-        ui->labelSieveStageInitialData,
-        ui->labelSieveStageConfigration,
-        ui->labelSieveStageInitialWeighting,
-        ui->labelSieveStageSieving,
-        ui->labelSieveStageFinalWeighting,
-        ui->labelSieveStageSummary
-    };
-
-    for(QLabel* label : sieveLabels)
-    {
-        label->setFont(normalFont);
-        label->setPalette(normalPalette);
-    }
-
-    switch (currentStage)
-    {
-
-        case SieveAnalysisStages::Stage::InitialSieveData:
-            ui->labelSieveStageInitialData->setFont(boldFont);
-            ui->labelSieveStageInitialData->setPalette(activePalette);
-            break;
-
-        case SieveAnalysisStages::Stage::ConfigurationSieve:
-            ui->labelSieveStageConfigration->setFont(boldFont);
-            ui->labelSieveStageConfigration->setPalette(activePalette);
-            break;
-
-        case SieveAnalysisStages::Stage::InitialWeighing:
-            ui->labelSieveStageInitialWeighting->setFont(boldFont);
-            ui->labelSieveStageInitialWeighting->setPalette(activePalette);
-            break;
-
-        case SieveAnalysisStages::Stage::Sieving:
-            ui->labelSieveStageSieving->setFont(boldFont);
-            ui->labelSieveStageSieving->setPalette(activePalette);
-            break;
-
-        case SieveAnalysisStages::Stage::FinalWeighing:
-            ui->labelSieveStageFinalWeighting->setFont(boldFont);
-            ui->labelSieveStageFinalWeighting->setPalette(activePalette);
-            break;
-
-        case SieveAnalysisStages::Stage::Summary:
-            ui->labelSieveStageSummary->setFont(boldFont);
-            ui->labelSieveStageSummary->setPalette(activePalette);
-            break;
-
-        default:
-            break;
-    }
-}
-
-void MainWindow::connectNavSieveButtons()
-{
-    connect(ui->buttonStartAnalysis, &QPushButton::clicked, this, &MainWindow::goToNextSieveStage);
-
-    connect(ui->buttonNextConfigurationSieve, &QPushButton::clicked, this, &MainWindow::goToNextSieveStage);
-    connect(ui->buttonBackConfigurationSieve, &QPushButton::clicked, this, &MainWindow::goToPreviousSieveStage);
-
-    connect(ui->buttonNextInitialSieveMeasure, &QPushButton::clicked, this, &MainWindow::goToNextSieveStage);
-    connect(ui->buttonBackInitialSieveMeasure, &QPushButton::clicked, this, &MainWindow::goToPreviousSieveStage);
-
-    connect(ui->buttonNextSieveProcess, &QPushButton::clicked, this, &MainWindow::goToNextSieveStage);
-    connect(ui->buttonBackSieveProcess, &QPushButton::clicked, this, &MainWindow::goToPreviousSieveStage);
-
-    connect(ui->buttonNextEndSieveMeasure, &QPushButton::clicked, this, &MainWindow::goToNextSieveStage);
-    connect(ui->buttonBackEndSieveMeasure, &QPushButton::clicked, this, &MainWindow::goToPreviousSieveStage);
-
-    connect(ui->buttonNewAnalysisSummarySieve, &QPushButton::clicked, this, &MainWindow::goToNextSieveStage);
-    connect(ui->buttonBackSummarySieve, &QPushButton::clicked, this, &MainWindow::goToPreviousSieveStage);
+    ui->setupUi(this);
+    ui->statusbar->addPermanentWidget(ui->labelDeviceNameStatusBar);
+    ui->statusbar->addPermanentWidget(ui->labelConnectionStatusStatusBar);
+    setIcons();
+    setPalette();
+    navigateToToolBoxPage(ui->measureDensityPage);
+    updateActionIcons(0);
+    updateConnectonLabelsStatusBar(false);
+    QTimer::singleShot(0, this, &MainWindow::resizeAllTablesColumnsToContents);
 }
 
 void MainWindow::resizeAllTablesColumnsToContents()
@@ -329,22 +129,30 @@ void MainWindow::resizeAllTablesColumnsToContents()
         table->resizeColumnsToContents();
 }
 
-void MainWindow::initControls()
+void MainWindow::setIcons()
 {
-    ui->setupUi(this);
-    ui->statusbar->addPermanentWidget(ui->labelDeviceNameStatusBar);
-    ui->statusbar->addPermanentWidget(ui->labelConnectionStatusStatusBar);
-    setIcons();
-    setProperty();
-    navigateToToolBoxPage(ui->measureDensityPage);
-    updateActionIcons(0);
-    updateConnectonLabelsStatusBar(false);
+    defaultSettingsIcon = QIcon(":/icons/settings_white.png");
+    activeSettingsIcon = QIcon(":/icons/settings_selected.png");
+    defaultRadwagIcon = QIcon(":/icons/balance_white.png");
+    activeRadwagIcon = QIcon(":/icons/balance_selected.png");
+}
+
+void MainWindow::setPalette()
+{
+    ui->scrollAreaInitialData->setBackgroundRole(QPalette::Base);
+    ui->scrollAreaFinishSecond->setBackgroundRole(QPalette::Base);
+    ui->scrollAreaFinishTriple->setBackgroundRole(QPalette::Base);
+    ui->scrollAreaLibrary->setBackgroundRole(QPalette::Base);
+    ui->scrollAreaLibrary->setBackgroundRole(QPalette::Base);
+    ui->scrollAreaSieveMain->setBackgroundRole(QPalette::Base);
+    ui->scrollAreaSieveProcess->setBackgroundRole(QPalette::Base);
+    ui->scrollAreaFinalWeighting->setBackgroundRole(QPalette::Base);
+    ui->scrollAreaSummarySieve->setBackgroundRole(QPalette::Base);
 }
 
 void MainWindow::connectButtons()
 {
     connectMainNavButtons();
-    connectNavSieveButtons();
 }
 
 void MainWindow::connectMainNavButtons()
