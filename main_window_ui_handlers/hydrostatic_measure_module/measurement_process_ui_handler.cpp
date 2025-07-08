@@ -25,8 +25,10 @@ void MeasurementProcessUiHandler::initialize()
     setupCharts();
     onMeasurementTypeChanged();
     updateSaveCurrentDryMeasureButtonState();
+    ui->measureDensityStage->setCurrentWidget(ui->pageStartMeasure);
     ui->measureDensityStage->setProperty("currentStage", QVariant::fromValue(MeasurementStages::Stage::StartMeasure));
     connectSignals();
+    ui->frame->setVisible(false);
 }
 
 void MeasurementProcessUiHandler::buttonTableFluidsOnClicked()
@@ -94,7 +96,6 @@ void MeasurementProcessUiHandler::onStartMeasureButtonClicked()
     if(!radwagMeasureControler.hasActiveMeasurement())
         radwagMeasureControler.beginNewMeasure();
 
-    ui->stackedWidgetMainHydroMeasure->setCurrentWidget(ui->pageMeasureProcess);
     goToNextMeasureStage();
 }
 
@@ -158,10 +159,12 @@ void MeasurementProcessUiHandler::goToPreviousMeasureStage()
     switch(currentStage)
     {
         case MeasurementStages::Stage::StartMeasure:
+            ui->frame->setVisible(false);
             break;
 
         case MeasurementStages::Stage::InitialData:
-            ui->stackedWidgetMainHydroMeasure->setCurrentWidget(ui->pageStartMeasure);
+            ui->measureDensityStage->setCurrentWidget(ui->pageStartMeasure);
+            ui->frame->setVisible(false);
             break;
 
         case MeasurementStages::Stage::DryMeasure:
@@ -220,6 +223,7 @@ void MeasurementProcessUiHandler::goToNextMeasureStage()
             radwagMeasureControler.setStage(nextStage);
             setEnableInitialDataPage(radwagMeasureControler.getStage() == nextStage);
             ui->measureDensityStage->setCurrentWidget(ui->pageInitialData);
+            ui->frame->setVisible(true);
             break;
         }
 
@@ -327,8 +331,9 @@ void MeasurementProcessUiHandler::onResetMeasureButtonClicked()
     radwagMeasureControler.endMeasure(true);
     clearSecondMeasurePages();
     clearTripleMeasurePages();
-    ui->stackedWidgetMainHydroMeasure->setCurrentWidget(ui->pageStartMeasure);
+    ui->measureDensityStage->setCurrentWidget(ui->pageStartMeasure);
     ui->measureDensityStage->setProperty("currentStage", QVariant::fromValue(MeasurementStages::Stage::StartMeasure));
+    ui->frame->setVisible(false);
 }
 
 void MeasurementProcessUiHandler::onSaveMeasureButtonClicekd()
