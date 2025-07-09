@@ -330,13 +330,12 @@ void MeasurementTreeModel::buildTree()
 
 MeasurementTreeModel::TreeItem* MeasurementTreeModel::getItem(const QModelIndex& index) const
 {
-    if (index.isValid())
-    {
-        TreeItem* item = static_cast<TreeItem*>(index.internalPointer());
-        if(item)
-            return item;
-    }
-    return rootItem;
+    if(!index.isValid())
+        return nullptr;
+
+    TreeItem* item = static_cast<TreeItem*>(index.internalPointer());
+
+    return static_cast<TreeItem*>(index.internalPointer());
 }
 
 QString MeasurementTreeModel::getStatusText(MeasurementStatus status) const
