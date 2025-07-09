@@ -31,7 +31,6 @@ private slots:
     void buttonSamplesOnClicked();
     void onMaterialsChanged(const QMap<QString, Material> &materials);
 
-    void onBeginNewMeasure();
     void onStartMeasureButtonClicked();
     void onShowHydroSetSchemeButtonClicked();
 
@@ -41,7 +40,7 @@ private slots:
     void onResetMeasureButtonClicked();
     void onSaveMeasureButtonClicekd();
 
-    void onSetInitialData();
+    void onSetMeasureInitialData();
     void onMeasurementTypeChanged();
     void onSampleComboBoxChanged(int index);
 
@@ -79,39 +78,40 @@ private slots:
 
     void onConfrimPrepareWorkstationButtonClicked();
     void onConfrimPrepareMeasureSecondButtonClicked();
-    bool checkGuidePrepareMeasureSecondButton();
 
     void onConfirmSampleSaturationPreparationClicked();
-    bool checkGuideSampleSaturationPreparation();
     void onSpinSaturationTimeChanged();
 
 private:
-    bool fillInitialDataLabels();
     void fillSampleCombo();
     void fillFluidCombo();
-    void fillPrepareDataLabels();
-    void fillSampleInfoLabels();
-    void fillFluidInfoLabels();
-    void fillTemperatureComboBox();
-    void fillFinishMeasureSecondLabels();
-
-    void fillPrepareSaturationDataLabels();
-    void fillSaturationSampleInfoLabels();
     void fillSaturationMethodsCombo();
-    void fillPrepareSaturationFluidInfoLabels();
-    void fillPrepareSaturationTemperatureCombo();
-    void fillMeasureSecondLabelsSummary();
 
-    void fillFinishMeasureTripleLabels();
-    void fillAirSaturatedTripleLabels();
-    void fillMeasureTripleLabelsSummary();
+    void upadteSampleEditors();
+
+    bool updateInitialDataLabels();
+    void updateDryDataLabels();
+    void updatePrepareDataLabels();
+
+    void updateSampleInfoLabels();
+    void updateFluidInfoLabels();
+    void updateTemperatureComboBox();
+    void updateFluidDensityLabel();
+    void updateFinishMeasureSecondLabels();
+    void updateMeasureSecondLabelsSummary();
+
+    void updatePrepareSaturationDataLabels();
+    void updateSaturationSampleInfoLabels();
+    void updatePrepareSaturationFluidInfoLabels();
+    void updatePrepareSaturationTemperatureCombo();
+    void updateFinishMeasureTripleLabels();
+    void updateAirSaturatedTripleLabels();
+    void updateMeasureTripleLabelsSummary();
 
     void updateSaveCurrentDryMeasureButtonState();
     void updateSaveFinishSecondButtonState();
     void updateSaveFinishTripleButtonState();
     void updateSaveSaturatedTripleButtonState();
-
-    void updateFluidDensityLabel();
 
     void updateSaturationMethodPrepareTriple();
     void updatePrepareSaturationFluidDensityLabel();
@@ -119,6 +119,10 @@ private:
     void setupCharts();
     void updatePorosityChart();
     void updateDenistyChart();
+
+    bool checkGuidePrepareWorkstation();
+    bool checkGuidePrepareMeasureSecondButton();
+    bool checkGuideSampleSaturationPreparation();
 
     bool validateUIDataForCurrentStage(MeasurementStages::Stage currentStage);
     bool validateInitialData();
@@ -128,8 +132,6 @@ private:
     bool vaildatePrepareTripleMeasureData();
     bool vaildateSaturationMassMeasureData();
     bool vaildateFinishTripleMeasureData();
-
-    void upadteSampleEditors();
 
     void clearSecondMeasurePages();
     void clearTripleMeasurePages();
@@ -148,6 +150,7 @@ private:
     void setEnableFinishMeasureSecondPage(bool enabled);
     void setEnablePrepareSaturationPage(bool enabled);
     void setEnableSaturationTrilpePage(bool enabled);
+    void setEnableSaturatedTrilpePage(bool enabled);
 
     void connectSignals();
     void connectNavMeasurementButtons();
@@ -163,8 +166,8 @@ private:
     void connectSummaryMeasureSecondPageButtons();
     void connectSummaryMeasureTriplePageButtons();
     void connectCatalogsButtons();
-    void updateStageLabels();
 
+    void updateStageLabels();
 
     MeasurementStages::Stage getCurrentStage() const;
     void initializeMappings();
