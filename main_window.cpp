@@ -51,6 +51,11 @@ void MainWindow::showInfo(const QString& title, const QString& message)
     QMessageBox::information(this, title, message);
 }
 
+bool MainWindow::showQuestion(const QString& title, const QString& message)
+{
+    return QMessageBox::question(this, title, message, QMessageBox::Yes | QMessageBox::No, QMessageBox::No) == QMessageBox::Yes;
+}
+
 void MainWindow::navigateToToolBoxPage(QWidget* page)
 {
     if(page && ui->stackedWidget->indexOf(page) != -1)

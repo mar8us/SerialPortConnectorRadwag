@@ -20,6 +20,7 @@ public:
 
     void showWarning(const QString& title, const QString& message);
     void showInfo(const QString& title, const QString& message);
+    bool showQuestion(const QString& title, const QString& message);
 
 private slots:
     void onConnectResult(bool connected);
