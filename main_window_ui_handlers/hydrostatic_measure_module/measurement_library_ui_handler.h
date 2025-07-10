@@ -22,7 +22,7 @@ public:
     void initialize();
 
 signals:
-    void newMeasureButtonClicked();
+    void newMeasure();
 
 private slots:
     void onLibrarySearchTextChanged(const QString& text);

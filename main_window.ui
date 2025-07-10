@@ -11736,6 +11736,14 @@ QPushButton:disabled {
     <enum>QAction::MenuRole::NoRole</enum>
    </property>
   </action>
+  <action name="actionLibraryNewMeasure">
+   <property name="text">
+    <string>Nowy pomiar</string>
+   </property>
+   <property name="menuRole">
+    <enum>QAction::MenuRole::NoRole</enum>
+   </property>
+  </action>
  </widget>
  <resources>
   <include location="resources.qrc"/>

@@ -167,15 +167,7 @@ void MainWindow::connectMainNavButtons()
     });
 
     connect(ui->actionMeasureDensity, &QAction::triggered, this, [this]() {
-
-        if(!appCore.hasConnectionWithScale() || !hydrostaticMeasurementModule.hasActiveMeasurement())
-        {
-            ui->stackedWidgetMainHydroMeasure->setCurrentWidget(ui->pageStartMeasure);
-            ui->measureDensityStage->setProperty("currentStage", QVariant::fromValue(MeasurementStages::Stage::StartMeasure));
-        }
-        else if(hydrostaticMeasurementModule.hasActiveMeasurement())
-            showWarning("Aktywny pomiar", "Masz aktywny pomiar hydrostatyczny. Zakończ aktualny pomiar aby wykonać kolejny.");
-
+        ui->tabWidgetMain->setCurrentIndex(0);
         navigateToToolBoxPage(ui->measureDensityPage);
     });
 

@@ -1500,6 +1500,19 @@ void MeasurementProcessUiHandler::onSpinSaturationTimeChanged()
     radwagMeasureControler.setSaturationTime(ui->spinSaturationTimePrepareMeasureTriple->value());
 }
 
+void MeasurementProcessUiHandler::onNewMeasure()
+{
+    ui->actionLibraryNewMeasure->trigger();
+
+    if(radwagMeasureControler.hasActiveMeasurement())
+        mainWindow->showWarning("Aktywny pomiar", "Masz aktywny pomiar hydrostatyczny. Zakończ aktualny pomiar aby wykonać kolejny.");
+    else
+    {
+        ui->measureDensityStage->setCurrentWidget(ui->pageStartMeasure);
+        ui->measureDensityStage->setProperty("currentStage", QVariant::fromValue(MeasurementStages::Stage::StartMeasure));
+    }
+}
+
 void MeasurementProcessUiHandler::connectSignals()
 {
     connectNavMeasurementButtons();

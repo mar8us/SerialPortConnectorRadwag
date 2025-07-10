@@ -26,6 +26,8 @@ signals:
     void setMeasureInitialData();
     void updateConnectonLabelsStatusBar(bool status);
 
+public slots:
+    void onNewMeasure();
 private slots:
     void buttonTableFluidsOnClicked();
     void buttonSamplesOnClicked();
