@@ -21,8 +21,6 @@ public:
     const std::shared_ptr<Measurement>& getActiveMeasure();
 
     MeasurementStages::Stage getStage() const;
-    MeasurementStages::Stage getPrevStage(MeasurementStages::Stage basedStage = MeasurementStages::Stage::None) const;
-    MeasurementStages::Stage getNextStage(MeasurementStages::Stage basedStage = MeasurementStages::Stage::None) const;
 
     bool setStage(MeasurementStages::Stage stage);
     bool setMeasureStatus(MeasurementStatus status);
@@ -41,6 +39,8 @@ public:
     void setSaturationMethod(SaturationMethod method);
     void setSaturationTime(int saturationTimeMinutes);
     int getSaturationTime();
+    void setSaturationBeginDate(QDateTime beginDate);
+    QDateTime getSaturationBeginDate();
 
     bool hasActiveMeasurement() const;
     bool canCalculateResult() const;
@@ -48,11 +48,6 @@ public:
     MeasurementResults calculateResults();
 
 signals:
-    void measurementChanged();
-    void measurementSaved();
-    void measurementLoaded();
-    void stageChanged(int stageIndex);
-    void measurementCompleted();
 
 private:
     std::shared_ptr<Measurement> measurement;

@@ -172,7 +172,6 @@ void MainWindow::connectMainNavButtons()
     });
 
     connect(ui->actionMeasureDensity, &QAction::triggered, this, [this]() {
-        ui->tabWidgetMain->setCurrentIndex(0);
         navigateToToolBoxPage(ui->measureDensityPage);
     });
 

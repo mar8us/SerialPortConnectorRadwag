@@ -25,7 +25,6 @@ bool MeasurementController::setInitialData(MeasurementType type, const Sample &s
     measurement->setSample(sample);
     measurement->setFluid(fluid);
     measurement->setAuthor(author);
-    setStage(MeasurementStages::Stage::InitialData);
     return true;
 }
 
@@ -60,77 +59,6 @@ MeasurementStages::Stage MeasurementController::getStage() const
     if(!hasActiveMeasurement())
         return MeasurementStages::Stage::None;
     return measurement->getCurrentStage();
-}
-
-MeasurementStages::Stage MeasurementController::getPrevStage(MeasurementStages::Stage basedStage) const
-{
-    if(!hasActiveMeasurement())
-        return MeasurementStages::Stage::None;
-
-    MeasurementStages::Stage stage = basedStage != MeasurementStages::Stage::None ? basedStage : getStage();
-
-    switch(stage)
-    {
-        case MeasurementStages::Stage::StartMeasure:
-            return MeasurementStages::Stage::StartMeasure;
-
-        case MeasurementStages::Stage::InitialData:
-            return MeasurementStages::Stage::StartMeasure;
-
-        case MeasurementStages::Stage::DryMeasure:
-            return MeasurementStages::Stage::InitialData;
-
-        case MeasurementStages::Stage::PrepareSecond:
-        case MeasurementStages::Stage::PrepareTriple:
-            return MeasurementStages::Stage::DryMeasure;
-
-        case MeasurementStages::Stage::FinishSecond:
-            return MeasurementStages::Stage::PrepareSecond;
-
-        case MeasurementStages::Stage::SaturationMass:
-            return MeasurementStages::Stage::PrepareTriple;
-
-        case MeasurementStages::Stage::FinishTriple:
-            return MeasurementStages::Stage::SaturationMass;
-
-        default:
-            return stage;
-    }
-}
-
-MeasurementStages::Stage MeasurementController::getNextStage(MeasurementStages::Stage basedStage) const
-{
-    if(!hasActiveMeasurement())
-        return MeasurementStages::Stage::None;
-
-    MeasurementStages::Stage stage = basedStage != MeasurementStages::Stage::None ? basedStage : getStage();
-    switch(stage)
-    {
-        case MeasurementStages::Stage::StartMeasure:
-            return MeasurementStages::Stage::InitialData;
-
-        case MeasurementStages::Stage::InitialData:
-            return MeasurementStages::Stage::DryMeasure;
-
-        case MeasurementStages::Stage::DryMeasure:
-            return measurement->isThreeType() ? MeasurementStages::Stage::PrepareTriple : MeasurementStages::Stage::PrepareSecond;
-
-        case MeasurementStages::Stage::PrepareSecond:
-            return MeasurementStages::Stage::FinishSecond;
-
-        case MeasurementStages::Stage::PrepareTriple:
-            return MeasurementStages::Stage::SaturationMass;
-
-        case MeasurementStages::Stage::SaturationMass:
-            return MeasurementStages::Stage::FinishTriple;
-
-        case MeasurementStages::Stage::FinishSecond:
-        case MeasurementStages::Stage::FinishTriple:
-            return MeasurementStages::Stage::Summary;
-
-        default:
-            return stage;
-    }
 }
 
 bool MeasurementController::setStage(MeasurementStages::Stage stage)
@@ -217,6 +145,16 @@ void MeasurementController::setFluidTemperature(double temperature)
 double MeasurementController::getFluidDensity()
 {
     return measurement->getFluidDensity();
+}
+
+void MeasurementController::setSaturationBeginDate(QDateTime beginDate)
+{
+    measurement->setSaturationBeginDate(beginDate);
+}
+
+QDateTime MeasurementController::getSaturationBeginDate()
+{
+    return measurement->getSaturationBeginDate();
 }
 
 void MeasurementController::setSaturationTime(int saturationTimeMinutes)

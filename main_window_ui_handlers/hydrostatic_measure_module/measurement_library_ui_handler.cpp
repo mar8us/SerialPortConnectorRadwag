@@ -2,8 +2,8 @@
 #include "../../main_window.h"
 
 
-MeasurementLibraryUiHandler::MeasurementLibraryUiHandler(MainWindow *mainWindow, HydrostaticDataHolder &dataHolder)
-    : QObject(mainWindow)
+MeasurementLibraryUiHandler::MeasurementLibraryUiHandler(MainWindow *mainWindow, HydrostaticDataHolder &dataHolder, QObject *parent)
+    : QObject(parent)
     , mainWindow(mainWindow)
     , ui(mainWindow->getUi())
     , dataHolder(dataHolder)
@@ -15,6 +15,7 @@ void MeasurementLibraryUiHandler::initialize()
 {
     setupLibraryView();
     connectSignals();
+    updateButtonsState();
 }
 
 void MeasurementLibraryUiHandler::onLibrarySearchTextChanged(const QString& text)
@@ -40,8 +41,9 @@ void MeasurementLibraryUiHandler::onLibraryGroupByChanged(int index)
 
 void MeasurementLibraryUiHandler::onLibraryNewMeasureButtonClicked()
 {
-    ui->tabWidgetMain->setCurrentIndex(0);
-    ui->actionMeasureDensity->trigger();
+    emit newMeasure();
+}
+
 }
 
 void MeasurementLibraryUiHandler::onLibraryDeleteMeasureButtonClicked()
@@ -215,6 +217,7 @@ void MeasurementLibraryUiHandler::setupLibraryTreeView()
 void MeasurementLibraryUiHandler::refreshLibraryView()
 {
     measurementModel->buildTree();
+    ui->treeViewLibMeasure->clearSelection();
     ui->treeViewLibMeasure->expandAll();
 }
 

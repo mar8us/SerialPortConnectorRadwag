@@ -9,7 +9,9 @@ Measurement::Measurement()
     , sampleDryMass(0.0)
     , sampleInFluidMass(0.0)
     , sampleSaturatedMass(0.0)
+    , saturationBeginDate()
     , date(QDateTime::currentDateTime())
+    , saturationMethod(SaturationMethod::None)
     , saturationTimeMin(0)
 {
 
@@ -23,11 +25,13 @@ Measurement::Measurement(MeasurementType type, const Sample &sample, const Fluid
     , author(author)
     , stage(MeasurementStages::Stage::None)
     , status(MeasurementStatus::InProgress)
+    , saturationBeginDate()
     , date(QDateTime::currentDateTime())
     , fluidTemperature(0.0)
     , sampleDryMass(0.0)
     , sampleInFluidMass(0.0)
     , sampleSaturatedMass(0.0)
+    , saturationMethod(SaturationMethod::None)
     , saturationTimeMin(0)
 {
 
@@ -41,12 +45,14 @@ Measurement::Measurement(const Measurement& other)
     , author(other.author)
     , stage(other.stage)
     , status(other.status)
+    , saturationBeginDate(other.saturationBeginDate)
     , date(other.date)
     , fluidTemperature(other.fluidTemperature)
     , sampleDryMass(other.sampleDryMass)
     , sampleInFluidMass(other.sampleInFluidMass)
     , sampleSaturatedMass(other.sampleSaturatedMass)
-    , saturationTimeMin(0)
+    , saturationMethod(SaturationMethod::None)
+    , saturationTimeMin(other.saturationTimeMin)
 
 {
 
@@ -119,6 +125,16 @@ void Measurement::setSaturationMethod(SaturationMethod method)
 void Measurement::setSaturationTime(int saturationTimeMiuntes)
 {
     saturationTimeMin = saturationTimeMiuntes;
+}
+
+void Measurement::setSaturationBeginDate(QDateTime beginDate)
+{
+    saturationBeginDate = beginDate;
+}
+
+QDateTime Measurement::getSaturationBeginDate()
+{
+    return saturationBeginDate;
 }
 
 void Measurement::setDate(const QDateTime& newDate)
@@ -248,6 +264,7 @@ QJsonObject Measurement::toJson() const
     obj["sampleDryMass"] = sampleDryMass;
     obj["sampleInFluidMass"] = sampleInFluidMass;
     obj["sampleSaturatedMass"] = sampleSaturatedMass;
+    obj["saturationBeginDate"] = saturationBeginDate.toString();
     obj["sample"] = sample.toJson();
     obj["fluid"] = fluid.toJson();
     obj["saturationMethod"] = static_cast<int>(saturationMethod);
@@ -268,6 +285,7 @@ void Measurement::fromJson(const QJsonObject &json)
     sampleDryMass = json["sampleDryMass"].toDouble();
     sampleInFluidMass = json["sampleInFluidMass"].toDouble();
     sampleSaturatedMass = json["sampleSaturatedMass"].toDouble();
+    saturationBeginDate = QDateTime::fromString(json["saturationBeginDate"].toString());
     saturationMethod = static_cast<SaturationMethod>(json["saturationMethod"].toInt());
     saturationTimeMin = json["saturationTimeMin"].toInt();
 

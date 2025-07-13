@@ -17,7 +17,7 @@ class MeasurementLibraryUiHandler : public QObject
 {
     Q_OBJECT
 public:
-    explicit MeasurementLibraryUiHandler(MainWindow *mainWindow,  HydrostaticDataHolder &dataHolder);
+    explicit MeasurementLibraryUiHandler(MainWindow *mainWindow,  HydrostaticDataHolder &dataHolder, QObject *parent = nullptr);
 
     void initialize();
 
