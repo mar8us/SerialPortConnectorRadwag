@@ -16,6 +16,7 @@ public:
     bool beginNewMeasure();
     bool setInitialData(MeasurementType type, const Sample &sample, const Fluid &fluid, const QString &author);
     bool replyActiveMeasure();
+    bool continueMeasure(const std::shared_ptr<const Measurement> &sourceMeasure);
     void endMeasure(bool reset = false);
     QString getLastMeasureId();
     const std::shared_ptr<Measurement>& getActiveMeasure();
@@ -47,12 +48,15 @@ public:
 
     MeasurementResults calculateResults();
 
+    bool isContinued();
+
 signals:
 
 private:
     std::shared_ptr<Measurement> measurement;
     std::shared_ptr<MeasurementManager> measurementManager;
     QString lastMeasureId;
+    bool isContinueMeasure;
 };
 
 #endif // MEASUREMENTCONTROLLER_H

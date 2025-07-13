@@ -535,7 +535,14 @@ void MeasurementProcessUiHandler::onResetMeasureButtonClicked()
 
 void MeasurementProcessUiHandler::onSaveMeasureButtonClicekd()
 {
-    if(dataHolder.measurementManager->addMeasurement(radwagMeasureControler.getActiveMeasure()))
+    if(!radwagMeasureControler.hasActiveMeasurement())
+        return;
+
+    auto measure = radwagMeasureControler.getActiveMeasure();
+    if(radwagMeasureControler.isContinued())
+        dataHolder.measurementManager->removeMeasurement(measure->getId());
+
+    if(dataHolder.measurementManager->addMeasurement(measure))
         mainWindow->showWarning(tr("Zapis pomiaru"), "Pomyślnie zapisano dane aktywnego pomiaru.");
 }
 
@@ -1632,10 +1639,19 @@ void MeasurementProcessUiHandler::onNewMeasure()
     measureStateMachine->goToStage(checkGuidePrepareWorkstation(false) ? MeasurementStages::Stage::InitialData : MeasurementStages::Stage::StartMeasure);
 }
 
+void MeasurementProcessUiHandler::onContinueMeasure(const std::shared_ptr<const Measurement> &sourceMeasure)
+{
+    ui->actionLibraryContinueMeasure->trigger();
 
     if(radwagMeasureControler.hasActiveMeasurement())
     {
+        mainWindow->showWarning("Aktywny pomiar", "Masz aktywny pomiar hydrostatyczny. Zakończ aktualny pomiar aby wykonać kolejny.");
+        return;
     }
+
+    if(!appCore.hasConnectionWithScale() || !radwagMeasureControler.continueMeasure(sourceMeasure))
+        return;
+    measureStateMachine->goToStage(checkGuidePrepareWorkstation(false) ? radwagMeasureControler.getStage() : MeasurementStages::Stage::StartMeasure, true);
 }
 
 void MeasurementProcessUiHandler::connectSignals()

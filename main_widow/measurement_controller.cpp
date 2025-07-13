@@ -6,6 +6,7 @@ MeasurementController::MeasurementController(const std::shared_ptr<MeasurementMa
     : QObject(parent)
     , measurement(nullptr)
     , measurementManager(measurementManager)
+    , isContinueMeasure(false)
 {
 
 }
@@ -14,6 +15,7 @@ bool MeasurementController::beginNewMeasure()
 {
     measurement.reset(new Measurement());
     measurement->setStage(MeasurementStages::Stage::StartMeasure);
+    isContinueMeasure = false;
     return measurementManager->addMeasurement(measurement);
 }
 
@@ -35,6 +37,18 @@ bool MeasurementController::replyActiveMeasure()
         return false;
     beginNewMeasure();
     return setInitialData(lastMeasurement->getType(), lastMeasurement->getSample(), lastMeasurement->getFluid(), lastMeasurement->getAuthor());
+}
+
+bool MeasurementController::continueMeasure(const std::shared_ptr<const Measurement> &sourceMeasure)
+{
+    if(!sourceMeasure.get())
+        return false;
+    if(sourceMeasure->isCompleted())
+        return false;
+
+    measurement.reset(new Measurement(*sourceMeasure.get()));
+    isContinueMeasure = true;
+    return true;
 }
 
 void MeasurementController::endMeasure(bool reset)
@@ -184,4 +198,9 @@ MeasurementResults MeasurementController::calculateResults()
 
     measurementManager->calculateResults(measurement->getId());
     return measurementManager->getResults(measurement->getId());
+}
+
+bool MeasurementController::isContinued()
+{
+    return isContinueMeasure;
 }

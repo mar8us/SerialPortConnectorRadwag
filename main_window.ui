@@ -6353,7 +6353,7 @@ umieszczając ją w komorze próźniowej na czas zaniku ostatniego pęcherzyka</
                   </widget>
                  </item>
                  <item>
-                  <widget class="QPushButton" name="buttonLibNewSelectedMeasure">
+                  <widget class="QPushButton" name="buttonLibContinueMeasure">
                    <property name="minimumSize">
                     <size>
                      <width>0</width>
@@ -6367,7 +6367,7 @@ umieszczając ją w komorze próźniowej na czas zaniku ostatniego pęcherzyka</
                     </size>
                    </property>
                    <property name="text">
-                    <string>Nowy z zaznaczenia</string>
+                    <string>Kontynuuj</string>
                    </property>
                   </widget>
                  </item>
@@ -11750,6 +11750,17 @@ QPushButton:disabled {
    </property>
    <property name="text">
     <string>Analiza sitowa</string>
+   </property>
+   <property name="menuRole">
+    <enum>QAction::MenuRole::NoRole</enum>
+   </property>
+  </action>
+  <action name="actionLibraryContinueMeasure">
+   <property name="text">
+    <string>Kontynuuj pomiar</string>
+   </property>
+   <property name="toolTip">
+    <string>Kontynuuj zaznaczony pomiar</string>
    </property>
    <property name="menuRole">
     <enum>QAction::MenuRole::NoRole</enum>

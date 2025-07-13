@@ -28,6 +28,7 @@ public:
 
 public slots:
     void onNewMeasure();
+    void onContinueMeasure(const std::shared_ptr<const Measurement> &sourceMeasure);
 
 private slots:
     void initializeStateMachine();

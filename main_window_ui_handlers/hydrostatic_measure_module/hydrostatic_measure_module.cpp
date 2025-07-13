@@ -1,6 +1,7 @@
 #include <QMessageBox>
 #include "hydrostatic_measure_module.h"
 #include "../../main_window.h"
+#include "../../app_core.h"
 
 HydrostaticMeasurementModule::HydrostaticMeasurementModule(MainWindow *mainWindow)
     : QObject(mainWindow)
@@ -8,7 +9,7 @@ HydrostaticMeasurementModule::HydrostaticMeasurementModule(MainWindow *mainWindo
     , ui(mainWindow->getUi())
     , dataHolder(mainWindow)
     , radwagMeasureControler(std::make_shared<MeasurementController>(dataHolder.measurementManager, this))
-    , processUiHandler(mainWindow, *radwagMeasureControler.get(), dataHolder)
+    , processUiHandler(mainWindow, *radwagMeasureControler.get(), dataHolder, this)
     , libraryUiHandler(mainWindow, dataHolder)
 {
 
@@ -41,6 +42,7 @@ void HydrostaticMeasurementModule::onMeasureProcess()
     }
 
     ui->actionMeasureDensity->trigger();
+    ui->tabWidgetMain->setCurrentIndex(0);
 }
 
 void HydrostaticMeasurementModule::connectActions()

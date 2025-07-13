@@ -44,6 +44,9 @@ void MeasurementLibraryUiHandler::onLibraryNewMeasureButtonClicked()
     emit newMeasure();
 }
 
+void MeasurementLibraryUiHandler::onLibraryContinueMeasureButtonClicked()
+{
+    emit continueSelectedMeasure(getSelectedMeasure());
 }
 
 void MeasurementLibraryUiHandler::onLibraryDeleteMeasureButtonClicked()
@@ -254,7 +257,9 @@ int MeasurementLibraryUiHandler::countVisibleItems(QAbstractItemModel* model, co
 void MeasurementLibraryUiHandler::updateButtonsState()
 {
     auto measure = getSelectedMeasure();
+    auto measures = getSelectedMeasures();
     ui->buttonLibDeleteMeasure->setEnabled(measure != nullptr);
+    ui->buttonLibContinueMeasure->setEnabled(measures.size() == 1 && !measures.first()->isCompleted());
 }
 
 void MeasurementLibraryUiHandler::fillComboLibSearchIn()
@@ -294,6 +299,7 @@ void MeasurementLibraryUiHandler::connectLibraryMeasureButtons()
 {
     connect(ui->buttonLibNewMeasure, &QPushButton::clicked, this, &MeasurementLibraryUiHandler::onLibraryNewMeasureButtonClicked);
     connect(ui->buttonLibDeleteMeasure, &QPushButton::clicked, this, &MeasurementLibraryUiHandler::onLibraryDeleteMeasureButtonClicked);
+    connect(ui->buttonLibContinueMeasure, &QPushButton::clicked, this, &MeasurementLibraryUiHandler::onLibraryContinueMeasureButtonClicked);
 }
 
 void MeasurementLibraryUiHandler::connectMeasurementTreeSignals()
