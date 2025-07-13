@@ -72,6 +72,8 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         app_core.h app_core.cpp
         main_window_ui_handlers/sieve_analysis_module/sieve_analysis_module.h main_window_ui_handlers/sieve_analysis_module/sieve_analysis_module.cpp
         main_window_ui_handlers/sieve_analysis_module/sieve_analysis_process_ui_handler.h main_window_ui_handlers/sieve_analysis_module/sieve_analysis_process_ui_handler.cpp
+        state_machine.h state_machine.cpp
+        main_window_ui_handlers/hydrostatic_measure_module/measurement_state_machine.h main_window_ui_handlers/hydrostatic_measure_module/measurement_state_machine.cpp
 
 
 

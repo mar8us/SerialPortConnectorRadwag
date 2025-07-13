@@ -7,6 +7,9 @@
 #include "../../main_widow/measurement_controller.h"
 #include "../../charts/porosity_chart.h"
 #include "../../charts/denisty_chart.h"
+#include "measurement_state_machine.h"
+
+#include "../../state_machine.h"
 
 class MainWindow;
 
@@ -14,21 +17,47 @@ namespace Ui {
 class MainWindow;
 }
 
-class MeasurementProcessUiHandler : public QObject
+class MeasurementProcessUiHandler : public QObject, StageHandler<MeasurementStages::Stage>
 {
     Q_OBJECT
 public:
-    explicit MeasurementProcessUiHandler(MainWindow *mainWindow, MeasurementController &radwagMeasureControler, HydrostaticDataHolder &dataHolder);
+    explicit MeasurementProcessUiHandler(MainWindow *mainWindow, MeasurementController &radwagMeasureControler, HydrostaticDataHolder &dataHolder, QObject *parent = nullptr);
+    virtual ~MeasurementProcessUiHandler() = default;
 
     void initialize();
 
-signals:
-    void setMeasureInitialData();
-    void updateConnectonLabelsStatusBar(bool status);
-
 public slots:
     void onNewMeasure();
+
 private slots:
+    void initializeStateMachine();
+
+    bool onEnterStage(MeasurementStages::Stage stage, MeasurementStages::Stage) override;
+    void onStartMeasurePageEnter();
+    void onInitialDataPageEnter();
+    void onDryMeasurePageEnter();
+    void onPrepareSecondPageEnter();
+    void onPrepareTriplePageEnter();
+    void onFinishSecondPageEnter();
+    void onSaturationMassPageEnter();
+    void onFinishTriplePageEnter();
+    void onSummarySecondPageEnter();
+    void onSummaryTriplePageEnter();
+
+    bool onExitStage(MeasurementStages::Stage stage, MeasurementStages::Stage toStage) override;
+    bool onStartMeasurePageDataExit();
+    bool onInitialDataPageExit();
+    bool onDryMeasureDataPageExit();
+    bool onPrepareSecondMeasurePageDataExit();
+    bool onFinishSecondMeasurePageDataExit();
+    bool onPrepareTripleMeasurePageDataExit();
+    bool onSaturationMassMeasurePageDataExit();
+    bool onFinishTripleMeasurePageDataExit();
+
+    void goToNextMeasureStage();
+    void goToPreviousMeasureStage();
+    void onStageChanged();
+
     void buttonTableFluidsOnClicked();
     void buttonSamplesOnClicked();
     void onMaterialsChanged(const QMap<QString, Material> &materials);
@@ -36,13 +65,9 @@ private slots:
     void onStartMeasureButtonClicked();
     void onShowHydroSetSchemeButtonClicked();
 
-    void goToPreviousMeasureStage();
-    void goToNextMeasureStage();
-
     void onResetMeasureButtonClicked();
     void onSaveMeasureButtonClicekd();
 
-    void onSetMeasureInitialData();
     void onMeasurementTypeChanged();
     void onSampleComboBoxChanged(int index);
 
@@ -71,12 +96,9 @@ private slots:
     void onSaveTripleCurrentSaturatedMeasureButtonClicked();
     void onClearTripleSavedSaturatedMeasureButtonClicked();
 
-
-    //Summary second
-    void onSaveSecondMeasureButtonClicked();
-    void onNewMeasureButtonClicked();
-    void onReplyMeasureButtonClicked();
-
+    void onSaveMeasureSummaryButtonClicked();
+    void onNewMeasureSummaryButtonClicked();
+    void onReplyMeasureSummaryButtonClicked();
 
     void onConfrimPrepareWorkstationButtonClicked();
     void onConfrimPrepareMeasureSecondButtonClicked();
@@ -88,6 +110,10 @@ private:
     void fillSampleCombo();
     void fillFluidCombo();
     void fillSaturationMethodsCombo();
+
+    void fillMeasuresTypeCombos();
+    void fillPrepareMeasureTemperatureCombo();
+    void fillPrepareSaturationTemperatureCombo();
 
     void upadteSampleEditors();
 
@@ -122,18 +148,9 @@ private:
     void updatePorosityChart();
     void updateDenistyChart();
 
-    bool checkGuidePrepareWorkstation();
+    bool checkGuidePrepareWorkstation(bool showMessage = true);
     bool checkGuidePrepareMeasureSecondButton();
     bool checkGuideSampleSaturationPreparation();
-
-    bool validateUIDataForCurrentStage(MeasurementStages::Stage currentStage);
-    bool validateInitialData();
-    bool vaildateDryMeasureData();
-    bool vaildatePrepareSecondMeasureData();
-    bool vaildateFinishSecondMeasureData();
-    bool vaildatePrepareTripleMeasureData();
-    bool vaildateSaturationMassMeasureData();
-    bool vaildateFinishTripleMeasureData();
 
     void clearSecondMeasurePages();
     void clearTripleMeasurePages();
@@ -171,9 +188,9 @@ private:
 
     void updateStageLabels();
 
-    MeasurementStages::Stage getCurrentStage() const;
     void initializeMappings();
 
+    QMap<MeasurementStages::Stage, QWidget*> stageToPageMap;
     QMap<MeasurementStages::Stage, QLabel*> tripleStageToLabelMap;
     QMap<MeasurementStages::Stage, QLabel*> secondStageToLabelMap;
     QList<QLabel*> allTripleLabels;
@@ -185,6 +202,7 @@ private:
     HydrostaticDataHolder &dataHolder;
 
     MeasurementController &radwagMeasureControler;
+    MeasurementStateMachine *measureStateMachine;
 
     PorosityChartWidget *porosityChart;
     DensityChartWidget *denistyChart;

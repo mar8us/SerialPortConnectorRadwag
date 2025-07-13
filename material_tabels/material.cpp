@@ -1,6 +1,10 @@
 #include "material.h"
 
 Material::Material()
+    : name(QString())
+    , category(Category::Other)
+    , description(QString())
+    , density(0)
 {
 
 }
