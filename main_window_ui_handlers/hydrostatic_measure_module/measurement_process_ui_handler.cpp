@@ -1677,17 +1677,19 @@ void MeasurementProcessUiHandler::onReplyMeasure(const std::shared_ptr<const Mea
 
 void MeasurementProcessUiHandler::onContinueMeasure(const std::shared_ptr<const Measurement> &sourceMeasure)
 {
-    ui->actionLibraryContinueMeasure->trigger();
+    if(!canStartMeasureProcces())
+        return;
 
-    if(radwagMeasureControler.hasActiveMeasurement())
+    if(!radwagMeasureControler.continueMeasure(sourceMeasure))
+        return;
+
+    if(!checkGuidePrepareWorkstation())
     {
-        mainWindow->showWarning("Aktywny pomiar", "Masz aktywny pomiar hydrostatyczny. Zakończ aktualny pomiar aby wykonać kolejny.");
+        measureStateMachine->goToStage(MeasurementStages::Stage::StartMeasure, true);
         return;
     }
 
-    if(!appCore.hasConnectionWithScale() || !radwagMeasureControler.continueMeasure(sourceMeasure))
-        return;
-    measureStateMachine->goToStage(checkGuidePrepareWorkstation(false) ? radwagMeasureControler.getStage() : MeasurementStages::Stage::StartMeasure, true);
+    measureStateMachine->goToStage(radwagMeasureControler.getStage(), true);
 }
 
 void MeasurementProcessUiHandler::connectSignals()

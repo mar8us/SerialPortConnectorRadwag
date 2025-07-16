@@ -24,30 +24,12 @@ void HydrostaticMeasurementModule::initialize()
 {
     processUiHandler.initialize();
     libraryUiHandler.initialize();
-    connectActions();
     connectSignals();
 }
 
 bool HydrostaticMeasurementModule::hasActiveMeasurement() const
 {
     return radwagMeasureControler && radwagMeasureControler->hasActiveMeasurement();
-}
-
-void HydrostaticMeasurementModule::onMeasureProcess()
-{
-    if(!appCore.hasConnectionWithScale())
-    {
-        mainWindow->navigateToToolBoxPage(ui->settingsPage);
-        return;
-    }
-
-    ui->actionMeasureDensity->trigger();
-    ui->tabWidgetMain->setCurrentIndex(0);
-}
-
-void HydrostaticMeasurementModule::connectActions()
-{
-    connect(ui->actionLibraryContinueMeasure, &QAction::triggered, this, &HydrostaticMeasurementModule::onMeasureProcess);
 }
 
 void HydrostaticMeasurementModule::connectSignals()
