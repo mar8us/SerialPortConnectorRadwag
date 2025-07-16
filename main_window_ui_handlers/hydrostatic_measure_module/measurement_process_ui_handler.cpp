@@ -32,6 +32,26 @@ void MeasurementProcessUiHandler::initialize()
     ui->frame->setVisible(false);
 }
 
+bool MeasurementProcessUiHandler::canStartMeasureProcces()
+{
+    if(!appCore.hasConnectionWithScale())
+    {
+        mainWindow->navigateToToolBoxPage(ui->settingsPage);
+        mainWindow->showWarning("Brak połączenia", "Brak połaczenia z urządzeniem");
+        return false;
+    }
+
+    if(radwagMeasureControler.hasActiveMeasurement())
+    {
+        mainWindow->showWarning("Aktywny pomiar", "Masz aktywny pomiar hydrostatyczny. Zakończ aktualny pomiar aby wykonać kolejny.");
+        return false;
+    }
+
+    ui->actionMeasureDensity->trigger();
+    ui->tabWidgetMain->setCurrentIndex(0);
+    return true;
+}
+
 void MeasurementProcessUiHandler::initializeStateMachine()
 {
     if(measureStateMachine)
@@ -1639,6 +1659,22 @@ void MeasurementProcessUiHandler::onNewMeasure()
     measureStateMachine->goToStage(checkGuidePrepareWorkstation(false) ? MeasurementStages::Stage::InitialData : MeasurementStages::Stage::StartMeasure);
 }
 
+void MeasurementProcessUiHandler::onReplyMeasure(const std::shared_ptr<const Measurement> &sourceMeasure)
+{
+    if(!canStartMeasureProcces())
+        return;
+
+    radwagMeasureControler.replyMeasure(sourceMeasure);
+
+    if(!checkGuidePrepareWorkstation())
+    {
+        measureStateMachine->goToStage(MeasurementStages::Stage::StartMeasure, true);
+        return;
+    }
+
+    measureStateMachine->goToStage(MeasurementStages::Stage::InitialData, true);
+}
+
 void MeasurementProcessUiHandler::onContinueMeasure(const std::shared_ptr<const Measurement> &sourceMeasure)
 {
     ui->actionLibraryContinueMeasure->trigger();
@@ -1885,7 +1921,8 @@ void MeasurementProcessUiHandler::initializeMappings()
 
 void MeasurementProcessUiHandler::onStartMeasureButtonClicked()
 {
-    radwagMeasureControler.beginNewMeasure();
+    if(!radwagMeasureControler.hasActiveMeasurement())
+        radwagMeasureControler.beginNewMeasure();
     measureStateMachine->goToNextStage();
 }
 

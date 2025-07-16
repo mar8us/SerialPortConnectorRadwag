@@ -39,6 +39,12 @@ bool MeasurementController::replyActiveMeasure()
     return setInitialData(lastMeasurement->getType(), lastMeasurement->getSample(), lastMeasurement->getFluid(), lastMeasurement->getAuthor());
 }
 
+bool MeasurementController::replyMeasure(const std::shared_ptr<const Measurement> &sourceMeasure)
+{
+    beginNewMeasure();
+    return setInitialData(sourceMeasure->getType(), sourceMeasure->getSample(), sourceMeasure->getFluid(), sourceMeasure->getAuthor());
+}
+
 bool MeasurementController::continueMeasure(const std::shared_ptr<const Measurement> &sourceMeasure)
 {
     if(!sourceMeasure.get())

@@ -44,6 +44,11 @@ void MeasurementLibraryUiHandler::onLibraryNewMeasureButtonClicked()
     emit newMeasure();
 }
 
+void MeasurementLibraryUiHandler::onLibraryReplyMeasureClicked()
+{
+    emit replySelectedMeasure(getSelectedMeasure());
+}
+
 void MeasurementLibraryUiHandler::onLibraryContinueMeasureButtonClicked()
 {
     emit continueSelectedMeasure(getSelectedMeasure());
@@ -259,6 +264,7 @@ void MeasurementLibraryUiHandler::updateButtonsState()
     auto measure = getSelectedMeasure();
     auto measures = getSelectedMeasures();
     ui->buttonLibDeleteMeasure->setEnabled(measure != nullptr);
+    ui->buttonLibReplyMeasure->setEnabled(measures.size() == 1);
     ui->buttonLibContinueMeasure->setEnabled(measures.size() == 1 && !measures.first()->isCompleted());
 }
 
@@ -298,8 +304,9 @@ void MeasurementLibraryUiHandler::connectSignals()
 void MeasurementLibraryUiHandler::connectLibraryMeasureButtons()
 {
     connect(ui->buttonLibNewMeasure, &QPushButton::clicked, this, &MeasurementLibraryUiHandler::onLibraryNewMeasureButtonClicked);
-    connect(ui->buttonLibDeleteMeasure, &QPushButton::clicked, this, &MeasurementLibraryUiHandler::onLibraryDeleteMeasureButtonClicked);
+    connect(ui->buttonLibReplyMeasure, &QPushButton::clicked, this, &MeasurementLibraryUiHandler::onLibraryReplyMeasureClicked);
     connect(ui->buttonLibContinueMeasure, &QPushButton::clicked, this, &MeasurementLibraryUiHandler::onLibraryContinueMeasureButtonClicked);
+    connect(ui->buttonLibDeleteMeasure, &QPushButton::clicked, this, &MeasurementLibraryUiHandler::onLibraryDeleteMeasureButtonClicked);
 }
 
 void MeasurementLibraryUiHandler::connectMeasurementTreeSignals()

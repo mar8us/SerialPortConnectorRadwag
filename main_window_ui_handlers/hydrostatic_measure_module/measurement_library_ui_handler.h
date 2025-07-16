@@ -23,6 +23,7 @@ public:
 
 signals:
     void newMeasure();
+    void replySelectedMeasure(const std::shared_ptr<const Measurement> &sourceMeasure);
     void continueSelectedMeasure(const std::shared_ptr<const Measurement> &sourceMeasure);
 
 private slots:
@@ -31,6 +32,7 @@ private slots:
     void onLibraryGroupByChanged(int index);
 
     void onLibraryNewMeasureButtonClicked();
+    void onLibraryReplyMeasureClicked();
     void onLibraryContinueMeasureButtonClicked();
     void onLibraryDeleteMeasureButtonClicked();
 

@@ -37,7 +37,7 @@
            </size>
           </property>
           <property name="currentIndex">
-           <number>0</number>
+           <number>2</number>
           </property>
           <property name="iconSize">
            <size>
@@ -3019,7 +3019,7 @@ umieszczając ją w komorze próźniowej na czas zaniku ostatniego pęcherzyka</
                     <rect>
                      <x>0</x>
                      <y>0</y>
-                     <width>845</width>
+                     <width>480</width>
                      <height>709</height>
                     </rect>
                    </property>
@@ -6353,6 +6353,25 @@ umieszczając ją w komorze próźniowej na czas zaniku ostatniego pęcherzyka</
                   </widget>
                  </item>
                  <item>
+                  <widget class="QPushButton" name="buttonLibReplyMeasure">
+                   <property name="minimumSize">
+                    <size>
+                     <width>0</width>
+                     <height>30</height>
+                    </size>
+                   </property>
+                   <property name="maximumSize">
+                    <size>
+                     <width>16777215</width>
+                     <height>30</height>
+                    </size>
+                   </property>
+                   <property name="text">
+                    <string>Powtórz</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
                   <widget class="QPushButton" name="buttonLibContinueMeasure">
                    <property name="minimumSize">
                     <size>
@@ -8281,7 +8300,7 @@ QPushButton:disabled {
                     <rect>
                      <x>0</x>
                      <y>0</y>
-                     <width>508</width>
+                     <width>886</width>
                      <height>594</height>
                     </rect>
                    </property>

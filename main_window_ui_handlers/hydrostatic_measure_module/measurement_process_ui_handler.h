@@ -25,9 +25,11 @@ public:
     virtual ~MeasurementProcessUiHandler() = default;
 
     void initialize();
+    bool canStartMeasureProcces();
 
 public slots:
     void onNewMeasure();
+    void onReplyMeasure(const std::shared_ptr<const Measurement> &sourceMeasure);
     void onContinueMeasure(const std::shared_ptr<const Measurement> &sourceMeasure);
 
 private slots:
