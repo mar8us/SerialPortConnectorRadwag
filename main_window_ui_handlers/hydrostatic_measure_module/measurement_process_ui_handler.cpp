@@ -1649,14 +1649,14 @@ void MeasurementProcessUiHandler::onSpinSaturationTimeChanged()
 
 void MeasurementProcessUiHandler::onNewMeasure()
 {
-    if(radwagMeasureControler.hasActiveMeasurement())
-    {
-        mainWindow->showWarning("Aktywny pomiar", "Masz aktywny pomiar hydrostatyczny. Zakończ aktualny pomiar aby wykonać kolejny.");
+    if(!canStartMeasureProcces())
         return;
-    }
 
-    ui->actionLibraryNewMeasure->trigger();
-    measureStateMachine->goToStage(checkGuidePrepareWorkstation(false) ? MeasurementStages::Stage::InitialData : MeasurementStages::Stage::StartMeasure);
+    if(!checkGuidePrepareWorkstation())
+        return;
+
+    radwagMeasureControler.beginNewMeasure();
+    measureStateMachine->goToStage(MeasurementStages::Stage::InitialData);
 }
 
 void MeasurementProcessUiHandler::onReplyMeasure(const std::shared_ptr<const Measurement> &sourceMeasure)

@@ -47,7 +47,6 @@ void HydrostaticMeasurementModule::onMeasureProcess()
 
 void HydrostaticMeasurementModule::connectActions()
 {
-    connect(ui->actionLibraryNewMeasure, &QAction::triggered, this, &HydrostaticMeasurementModule::onMeasureProcess);
     connect(ui->actionLibraryContinueMeasure, &QAction::triggered, this, &HydrostaticMeasurementModule::onMeasureProcess);
 }
 
