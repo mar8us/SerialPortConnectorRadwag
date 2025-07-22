@@ -9,6 +9,7 @@
 
 enum class MeasurementType
 {
+    None = -1,
     TwoStage,
     ThreeStage
 };

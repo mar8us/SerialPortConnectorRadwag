@@ -11,6 +11,7 @@ namespace utils
 {
 
 double getDouble(const QString &text);
+bool compareDouble(double a, double b, double epsilon = 1.0e-9);
 QString getSaturationMethodName(SaturationMethod method);
 SaturationMethod getSaturationMethodFromIndex(int index);
 

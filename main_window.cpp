@@ -53,7 +53,42 @@ void MainWindow::showInfo(const QString& title, const QString& message)
 
 bool MainWindow::showQuestion(const QString& title, const QString& message)
 {
-    return QMessageBox::question(this, title, message, QMessageBox::Yes | QMessageBox::No, QMessageBox::No) == QMessageBox::Yes;
+    QMessageBox msgBox(this);
+    msgBox.setWindowTitle(title);
+    msgBox.setText(message);
+    msgBox.setIcon(QMessageBox::Question);
+
+    QPushButton *yesButton = msgBox.addButton("Tak", QMessageBox::YesRole);
+    QPushButton *noButton = msgBox.addButton("Nie", QMessageBox::NoRole);
+
+    msgBox.setDefaultButton(noButton);
+
+    msgBox.exec();
+
+    return msgBox.clickedButton() == yesButton;
+}
+
+MainWindow::MessageResult MainWindow::showQuestionWithCancel(const QString& title, const QString& message)
+{
+    QMessageBox msgBox(this);
+    msgBox.setWindowTitle(title);
+    msgBox.setText(message);
+    msgBox.setIcon(QMessageBox::Question);
+
+    QPushButton *yesButton = msgBox.addButton("Tak", QMessageBox::YesRole);
+    QPushButton *noButton = msgBox.addButton("Nie", QMessageBox::NoRole);
+    QPushButton *cancelButton = msgBox.addButton("Anuluj", QMessageBox::RejectRole);
+
+    msgBox.setDefaultButton(cancelButton);
+
+    int result = msgBox.exec();
+
+    if(msgBox.clickedButton() == yesButton)
+        return MessageResult::Yes;
+    else if (msgBox.clickedButton() == noButton)
+        return MessageResult::No;
+    else
+        return MessageResult::Cancel;
 }
 
 void MainWindow::navigateToToolBoxPage(QWidget* page)

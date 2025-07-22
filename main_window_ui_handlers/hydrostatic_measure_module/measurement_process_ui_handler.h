@@ -25,9 +25,12 @@ public:
     virtual ~MeasurementProcessUiHandler() = default;
 
     void initialize();
+    bool canStartMeasureProcces();
 
 public slots:
     void onNewMeasure();
+    void onReplyMeasure(const std::shared_ptr<const Measurement> &sourceMeasure);
+    void onContinueMeasure(const std::shared_ptr<const Measurement> &sourceMeasure);
 
 private slots:
     void initializeStateMachine();
@@ -53,6 +56,8 @@ private slots:
     bool onPrepareTripleMeasurePageDataExit();
     bool onSaturationMassMeasurePageDataExit();
     bool onFinishTripleMeasurePageDataExit();
+    bool onSummarySecondPageExit();
+    bool onSummaryTriplePageExit();
 
     void goToNextMeasureStage();
     void goToPreviousMeasureStage();
@@ -62,7 +67,6 @@ private slots:
     void buttonSamplesOnClicked();
     void onMaterialsChanged(const QMap<QString, Material> &materials);
 
-    void onStartMeasureButtonClicked();
     void onShowHydroSetSchemeButtonClicked();
 
     void onResetMeasureButtonClicked();
@@ -70,6 +74,12 @@ private slots:
 
     void onMeasurementTypeChanged();
     void onSampleComboBoxChanged(int index);
+    void onFluidComboBoxChanged(int index);
+    void onAuthorEditingFinished();
+
+    void onComboFluidTempPrepMeasureSecondChanged(int index);
+    void onComboFluidTempPrepMeasureTripleChanged(int index);
+    void onComboSatMethodPrepareMeasureTripleChanged(int index);
 
     void onDryMassExecuteStepOneClicked();
     void onDryMassExecuteStepTwoClicked();
@@ -96,7 +106,6 @@ private slots:
     void onSaveTripleCurrentSaturatedMeasureButtonClicked();
     void onClearTripleSavedSaturatedMeasureButtonClicked();
 
-    void onSaveMeasureSummaryButtonClicked();
     void onNewMeasureSummaryButtonClicked();
     void onReplyMeasureSummaryButtonClicked();
 
@@ -107,11 +116,18 @@ private slots:
     void onSpinSaturationTimeChanged();
 
 private:
+    bool validateInitialDataPage();
+    bool validateDryMeasureDataPage();
+    bool validatePrepareSecondMeasurePage();
+    bool validateFinishSecondMeasurePage();
+    bool validatePrepareTripleMeasurePage();
+    bool validateSaturationMassMeasurePage();
+    bool validateFinishTripleMeasurePage();
+
     void fillSampleCombo();
     void fillFluidCombo();
     void fillSaturationMethodsCombo();
 
-    void fillMeasuresTypeCombos();
     void fillPrepareMeasureTemperatureCombo();
     void fillPrepareSaturationTemperatureCombo();
 
@@ -143,6 +159,8 @@ private:
 
     void updateSaturationMethodPrepareTriple();
     void updatePrepareSaturationFluidDensityLabel();
+
+    void updateWigdetVisibility(MeasurementStages::Stage currentStage);
 
     void setupCharts();
     void updatePorosityChart();
@@ -206,6 +224,9 @@ private:
 
     PorosityChartWidget *porosityChart;
     DensityChartWidget *denistyChart;
+
+    bool saveStageData(MeasurementStages::Stage stage);
+    bool saveDataToStage(MeasurementStages::Stage currentStage);
 };
 
 #endif

@@ -22,6 +22,15 @@ public:
     void showInfo(const QString& title, const QString& message);
     bool showQuestion(const QString& title, const QString& message);
 
+    enum class MessageResult
+    {
+        Yes,
+        No,
+        Cancel
+    };
+
+    MessageResult showQuestionWithCancel(const QString& title, const QString& message);
+
 private slots:
     void onConnectResult(bool connected);
     void onDeviceComboSelectionChanged();

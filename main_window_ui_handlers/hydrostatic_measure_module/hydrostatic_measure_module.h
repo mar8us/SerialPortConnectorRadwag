@@ -23,11 +23,7 @@ public:
 
     bool hasActiveMeasurement() const;
 
-public slots:
-    void onMeasureProcess();
-
 private:
-    void connectActions();
     void connectSignals();
 
 protected:

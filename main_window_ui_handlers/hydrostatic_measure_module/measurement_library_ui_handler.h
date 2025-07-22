@@ -23,6 +23,8 @@ public:
 
 signals:
     void newMeasure();
+    void replySelectedMeasure(const std::shared_ptr<const Measurement> &sourceMeasure);
+    void continueSelectedMeasure(const std::shared_ptr<const Measurement> &sourceMeasure);
 
 private slots:
     void onLibrarySearchTextChanged(const QString& text);
@@ -30,6 +32,8 @@ private slots:
     void onLibraryGroupByChanged(int index);
 
     void onLibraryNewMeasureButtonClicked();
+    void onLibraryReplyMeasureClicked();
+    void onLibraryContinueMeasureButtonClicked();
     void onLibraryDeleteMeasureButtonClicked();
 
     void onSelectionChanged(const QItemSelection &selected, const QItemSelection &deselected);

@@ -24,12 +24,35 @@ void MeasurementProcessUiHandler::initialize()
     initializeMappings();
     initializeStateMachine();
     setupCharts();
-    updateSaveCurrentDryMeasureButtonState();
 
     connectSignals();
     clearSecondMeasurePages();
     clearTripleMeasurePages();
-    ui->frame->setVisible(false);
+    fillSampleCombo();
+    fillFluidCombo();
+    updateSaveCurrentDryMeasureButtonState();
+
+    measureStateMachine->goToStage(MeasurementStages::Stage::StartMeasure);
+}
+
+bool MeasurementProcessUiHandler::canStartMeasureProcces()
+{
+    if(!appCore.hasConnectionWithScale())
+    {
+        mainWindow->navigateToToolBoxPage(ui->settingsPage);
+        mainWindow->showWarning("Brak połączenia", "Brak połaczenia z urządzeniem");
+        return false;
+    }
+
+    if(radwagMeasureControler.hasActiveMeasurement())
+    {
+        mainWindow->showWarning("Aktywny pomiar", "Masz aktywny pomiar hydrostatyczny. Zakończ aktualny pomiar aby wykonać kolejny.");
+        return false;
+    }
+
+    ui->actionMeasureDensity->trigger();
+    ui->tabWidgetMain->setCurrentIndex(0);
+    return true;
 }
 
 void MeasurementProcessUiHandler::initializeStateMachine()
@@ -98,8 +121,6 @@ void MeasurementProcessUiHandler::initializeStateMachine()
         this
     });
 
-    measureStateMachine->goToStage(MeasurementStages::Stage::StartMeasure);
-
     connect(measureStateMachine, &MeasurementStateMachine::stageChanged, this, &MeasurementProcessUiHandler::onStageChanged);
 }
 
@@ -108,50 +129,51 @@ bool MeasurementProcessUiHandler::onEnterStage(MeasurementStages::Stage stage, M
 #ifdef DEBUG
     qDebug() << "Entering stage:" << static_cast<int>(stage) << "from:" << static_cast<int>(fromStage);
 #endif
+
     switch(stage)
     {
-    case MeasurementStages::Stage::StartMeasure:
-        onStartMeasurePageEnter();
-        break;
+        case MeasurementStages::Stage::StartMeasure:
+            onStartMeasurePageEnter();
+            break;
 
-    case MeasurementStages::Stage::InitialData:
-        onInitialDataPageEnter();
-        break;
+        case MeasurementStages::Stage::InitialData:
+            onInitialDataPageEnter();
+            break;
 
-    case MeasurementStages::Stage::DryMeasure:
-        onDryMeasurePageEnter();
-        break;
+        case MeasurementStages::Stage::DryMeasure:
+            onDryMeasurePageEnter();
+            break;
 
-    case MeasurementStages::Stage::PrepareSecond:
-        onPrepareSecondPageEnter();
-        break;
+        case MeasurementStages::Stage::PrepareSecond:
+            onPrepareSecondPageEnter();
+            break;
 
-    case MeasurementStages::Stage::PrepareTriple:
-        onPrepareTriplePageEnter();
-        break;
+        case MeasurementStages::Stage::PrepareTriple:
+            onPrepareTriplePageEnter();
+            break;
 
-    case MeasurementStages::Stage::FinishSecond:
-        onFinishSecondPageEnter();
-        break;
+        case MeasurementStages::Stage::FinishSecond:
+            onFinishSecondPageEnter();
+            break;
 
-    case MeasurementStages::Stage::SaturationMass:
-        onSaturationMassPageEnter();
-        break;
+        case MeasurementStages::Stage::SaturationMass:
+            onSaturationMassPageEnter();
+            break;
 
-    case MeasurementStages::Stage::FinishTriple:
-        onFinishTriplePageEnter();
-        break;
+        case MeasurementStages::Stage::FinishTriple:
+            onFinishTriplePageEnter();
+            break;
 
-    case MeasurementStages::Stage::SummarySecond:
-        onSummarySecondPageEnter();
-        break;
+        case MeasurementStages::Stage::SummarySecond:
+            onSummarySecondPageEnter();
+            break;
 
-    case MeasurementStages::Stage::SummaryTriple:
-        onSummaryTriplePageEnter();
-        break;
+        case MeasurementStages::Stage::SummaryTriple:
+            onSummaryTriplePageEnter();
+            break;
 
-    default:
-        break;
+        default:
+            break;
     }
 
     return true;
@@ -164,76 +186,47 @@ void MeasurementProcessUiHandler::onStartMeasurePageEnter()
 
 void MeasurementProcessUiHandler::onInitialDataPageEnter()
 {
-    fillFluidCombo();
-    fillSampleCombo();
     updateInitialDataLabels();
-
-    bool setStageResult = radwagMeasureControler.getStage() == measureStateMachine->getCurrentStage();
-    setEnableInitialDataPage(setStageResult);
 }
 
 void MeasurementProcessUiHandler::onDryMeasurePageEnter()
 {
     updateDryDataLabels();
-    bool setStageResult = radwagMeasureControler.getStage() == measureStateMachine->getCurrentStage();
-    setEnableDryMeasurePage(setStageResult);
 }
 
 void MeasurementProcessUiHandler::onPrepareSecondPageEnter()
 {
     updatePrepareDataLabels();
-    bool setStageResult = radwagMeasureControler.getStage() == measureStateMachine->getCurrentStage();
-    setEnablePrepareMeasureSecondPage(setStageResult);
 }
 
 void MeasurementProcessUiHandler::onPrepareTriplePageEnter()
 {
     updatePrepareSaturationDataLabels();
-    bool setStageResult = radwagMeasureControler.getStage() == measureStateMachine->getCurrentStage();
-    setEnablePrepareSaturationPage(setStageResult);
 }
 
 void MeasurementProcessUiHandler::onFinishSecondPageEnter()
 {
     updateFinishMeasureSecondLabels();
-    bool setStageResult = radwagMeasureControler.getStage() == measureStateMachine->getCurrentStage();
-    setEnableFinishMeasureSecondPage(setStageResult);
 }
 
 void MeasurementProcessUiHandler::onSaturationMassPageEnter()
 {
     updateFinishMeasureTripleLabels();
-    bool setStageResult = radwagMeasureControler.getStage() == measureStateMachine->getCurrentStage();
-    setEnableSaturationTrilpePage(setStageResult);
 }
 
 void MeasurementProcessUiHandler::onFinishTriplePageEnter()
 {
     updateAirSaturatedTripleLabels();
-    bool setStageResult = radwagMeasureControler.getStage() == measureStateMachine->getCurrentStage();
-    setEnableSaturatedTrilpePage(setStageResult);
 }
 
 void MeasurementProcessUiHandler::onSummarySecondPageEnter()
 {
     updateMeasureSecondLabelsSummary();
-    bool setStageResult = radwagMeasureControler.getStage() == measureStateMachine->getCurrentStage();
-    if(!setStageResult)
-        return;
-    radwagMeasureControler.setMeasureStatus(MeasurementStatus::Completed);
-    radwagMeasureControler.endMeasure();
-    clearSecondMeasurePages();
 }
 
 void MeasurementProcessUiHandler::onSummaryTriplePageEnter()
 {
     updateMeasureTripleLabelsSummary();
-    bool setStageResult = radwagMeasureControler.getStage() == measureStateMachine->getCurrentStage();
-    if(!setStageResult)
-        return;
-    radwagMeasureControler.setMeasureStatus(MeasurementStatus::Completed);
-    radwagMeasureControler.endMeasure();
-    clearTripleMeasurePages();
 }
 
 bool MeasurementProcessUiHandler::onExitStage(MeasurementStages::Stage stage, MeasurementStages::Stage toStage)
@@ -242,72 +235,80 @@ bool MeasurementProcessUiHandler::onExitStage(MeasurementStages::Stage stage, Me
 
     bool canExit = false;
 
-    if(toStage < stage)
+    if(toStage < stage && !measureStateMachine->isLastStage(stage))
         return true;
 
     switch(stage)
     {
-    case MeasurementStages::Stage::StartMeasure:
-        canExit = onStartMeasurePageDataExit();
-        break;
+        case MeasurementStages::Stage::StartMeasure:
+            canExit = onStartMeasurePageDataExit();
+            break;
 
-    case MeasurementStages::Stage::InitialData:
-        canExit = onInitialDataPageExit();
-        break;
+        case MeasurementStages::Stage::InitialData:
+            canExit = onInitialDataPageExit();
+            break;
 
-    case MeasurementStages::Stage::DryMeasure:
-        canExit = onDryMeasureDataPageExit();
-        break;
+        case MeasurementStages::Stage::DryMeasure:
+            canExit = onDryMeasureDataPageExit();
+            break;
 
-    case MeasurementStages::Stage::PrepareSecond:
-        canExit = onPrepareSecondMeasurePageDataExit();
-        break;
+        case MeasurementStages::Stage::PrepareSecond:
+            canExit = onPrepareSecondMeasurePageDataExit();
+            break;
 
-    case MeasurementStages::Stage::PrepareTriple:
-        canExit = onPrepareTripleMeasurePageDataExit();
-        break;
+        case MeasurementStages::Stage::PrepareTriple:
+            canExit = onPrepareTripleMeasurePageDataExit();
+            break;
 
-    case MeasurementStages::Stage::SaturationMass:
-        canExit = onSaturationMassMeasurePageDataExit();
-        break;
+        case MeasurementStages::Stage::SaturationMass:
+            canExit = onSaturationMassMeasurePageDataExit();
+            break;
 
-    case MeasurementStages::Stage::FinishSecond:
-        canExit = onFinishSecondMeasurePageDataExit();
-        break;
+        case MeasurementStages::Stage::FinishSecond:
+            canExit = onFinishSecondMeasurePageDataExit();
+            break;
 
-    case MeasurementStages::Stage::FinishTriple:
-        canExit = onFinishTripleMeasurePageDataExit();
-        break;
+        case MeasurementStages::Stage::FinishTriple:
+            canExit = onFinishTripleMeasurePageDataExit();
+            break;
 
-    default:
-        return canExit;
+        case MeasurementStages::Stage::SummarySecond:
+            canExit = onSummarySecondPageExit();
+            break;
+
+        case MeasurementStages::Stage::SummaryTriple:
+            canExit = onSummaryTriplePageExit();
+            break;
+
+        default:
+            return canExit;
     }
 
     if(canExit)
         radwagMeasureControler.setStage(toStage);
 
+    auto measue = radwagMeasureControler.getActiveMeasure();
     return canExit;
 }
 
 void MeasurementProcessUiHandler::goToNextMeasureStage()
 {
-    if(!radwagMeasureControler.hasActiveMeasurement())
-        return;
     measureStateMachine->goToNextStage();
 }
 
 void MeasurementProcessUiHandler::goToPreviousMeasureStage()
 {
-    if(!radwagMeasureControler.hasActiveMeasurement())
-        return;
     measureStateMachine->goToPreviousStage();
 }
 
 void MeasurementProcessUiHandler::onStageChanged()
 {
+    updateWigdetVisibility(measureStateMachine->getCurrentStage());
     updateStageLabels();
-    ui->frame->setVisible(measureStateMachine->getCurrentStage() != MeasurementStages::Stage::StartMeasure);
-    ui->groupBoxAdditionalSettings->setVisible(measureStateMachine->getCurrentStage() == MeasurementStages::Stage::InitialData);
+
+    MeasurementStages::Stage currentMachineStage = measureStateMachine->getCurrentStage();
+    auto currentPageConfig = measureStateMachine->getStageConfiguration(currentMachineStage);
+    currentPageConfig->page->setEnabled(currentMachineStage == MeasurementStages::Stage::StartMeasure || radwagMeasureControler.getStage() == currentMachineStage);
 }
 
 bool MeasurementProcessUiHandler::onStartMeasurePageDataExit()
@@ -328,105 +329,30 @@ bool MeasurementProcessUiHandler::onStartMeasurePageDataExit()
 }
 
 bool MeasurementProcessUiHandler::onInitialDataPageExit()
-{
-    if(!radwagMeasureControler.hasActiveMeasurement())
-        return false;
-
-    if(!appCore.hasConnectionWithScale())
-    {
-        mainWindow->showWarning("Brak połączenia", "Brak połączenia z urządzeniem");
-        return false;
-    }
-
-    if(ui->comboBoxSampleSelection->currentText().isEmpty())
-    {
-        mainWindow->showWarning("Brak wybranej próbki", "Brak wybranej próbki");
-        return false;
-    }
-
-    if(ui->editAuthor->text().isEmpty())
-    {
-        mainWindow->showWarning("Brak danych", "Pole autor nie może być puste");
-        return false;
-    }
-
-    MeasurementType type = ui->radioMeasureSecond->isChecked() ? MeasurementType::TwoStage : MeasurementType::ThreeStage;
-    auto sample = dataHolder.sampleManager->getSample(ui->comboBoxSampleSelection->currentData().toString());
-    auto fluid = dataHolder.fluidManager->getFluid(ui->comboBoxFluid->currentText());
-    QString author = ui->editAuthor->text().trimmed();
-    radwagMeasureControler.setInitialData(type, sample, fluid, author);
-
-    fillMeasuresTypeCombos();
-    return true;
+{   
+    return validateInitialDataPage();
 }
 
 bool MeasurementProcessUiHandler::onDryMeasureDataPageExit()
 {
-    if(!appCore.hasConnectionWithScale())
-    {
-        mainWindow->showWarning("Brak połączenia", "Brak połączenia z urządzeniem");
-        return false;
-    }
-
-    if(ui->editSavedDryMeasure->text().isEmpty())
-    {
-        mainWindow->showWarning("Brak danych", "Aby przejść dalej musisz zapisać pomiar");
-        return false;
-    }
-    return true;
+    return validateDryMeasureDataPage();
 }
 
 bool MeasurementProcessUiHandler::onPrepareSecondMeasurePageDataExit()
 {
-    if(!checkGuidePrepareMeasureSecondButton())
-        return false;
-
-    if(ui->comboBoxTempFluidPrepareMeasureSecond->currentIndex() == -1)
-    {
-        mainWindow->showWarning("Brak danych", "Aby przejść dalej musisz wybrać temperature cieczy");
-        return false;
-    }
-
-    double selectedTemperature = ui->comboBoxTempFluidPrepareMeasureSecond->currentData().toDouble();
-    radwagMeasureControler.setFluidTemperature(selectedTemperature);
-    return true;
+    return validatePrepareSecondMeasurePage();
 }
 
 bool MeasurementProcessUiHandler::onFinishSecondMeasurePageDataExit()
 {
-    if(ui->editSavedValueFinishMeasureSecond->text().isEmpty())
-    {
-        mainWindow->showWarning("Brak danych", "Aby przejść dalej musisz zapisać pomiar");
-        return false;
-    }
-    return true;
+    return validateFinishSecondMeasurePage();
 }
 
 bool MeasurementProcessUiHandler::onPrepareTripleMeasurePageDataExit()
 {
-    if(!checkGuideSampleSaturationPreparation())
+    if(!validatePrepareTripleMeasurePage())
         return false;
 
-    if(ui->comboBoxTempFluidPrepareSaturationTrilpe->currentIndex() == -1)
-    {
-        mainWindow->showWarning("Brak danych", "Aby przejść dalej musisz wybrać temperature cieczy");
-        return false;
-    }
-
-    if(ui->comboBoxSaturationMethodPrepareMeasureTriple->currentIndex() == -1)
-    {
-        mainWindow->showWarning("Brak danych", "Aby przejść dalej musisz wybrać metodę nasycania próbki");
-        return false;
-    }
-
-    if(ui->spinSaturationTimePrepareMeasureTriple->value() == 0)
-    {
-        mainWindow->showWarning("Brak danych", "Aby przejść dalej musisz uzupełnić czas próbki");
-        return false;
-    }
-
-    radwagMeasureControler.setSaturationMethod(static_cast<SaturationMethod>(ui->comboBoxSaturationMethodPrepareMeasureTriple->currentData().toInt()));
-    radwagMeasureControler.setFluidTemperature(ui->comboBoxTempFluidPrepareSaturationTrilpe->currentData().toDouble());
     radwagMeasureControler.setSaturationTime(ui->spinSaturationTimePrepareMeasureTriple->value());
     radwagMeasureControler.setSaturationBeginDate(ui->editStartSaturationDateTimePrepareMeasureTriple->dateTime());
     return true;
@@ -434,21 +360,31 @@ bool MeasurementProcessUiHandler::onPrepareTripleMeasurePageDataExit()
 
 bool MeasurementProcessUiHandler::onSaturationMassMeasurePageDataExit()
 {
-    if(ui->editSavedValueFinishMeasurementTriple->text().isEmpty())
-    {
-        mainWindow->showWarning("Brak danych", "Aby przejść dalej musisz zapisać pomiar");
-        return false;
-    }
-    return true;
+    return validateSaturationMassMeasurePage();
 }
 
 bool MeasurementProcessUiHandler::onFinishTripleMeasurePageDataExit()
 {
-    if(ui->editSavedMeasureSaturated->text().isEmpty())
-    {
-        mainWindow->showWarning("Brak danych", "Aby przejść dalej musisz zapisać pomiar");
-        return false;
-    }
+    return validateFinishTripleMeasurePage();
+}
+
+bool MeasurementProcessUiHandler::onSummarySecondPageExit()
+{
+    if(radwagMeasureControler.needSave())
+        if(mainWindow->showQuestion("Zapis pomiaru", "Masz niezapisane dane. Czy chcesz zapisać pomiar?"))
+            radwagMeasureControler.save();
+
+    clearSecondMeasurePages();
+    return true;
+}
+
+bool MeasurementProcessUiHandler::onSummaryTriplePageExit()
+{
+    if(radwagMeasureControler.needSave())
+        if(mainWindow->showQuestion("Zapis pomiaru", "Masz niezapisane dane. Czy chcesz zapisać pomiar?"))
+            radwagMeasureControler.save();
+
+    clearTripleMeasurePages();
     return true;
 }
 
@@ -526,17 +462,34 @@ void MeasurementProcessUiHandler::onShowHydroSetSchemeButtonClicked()
 
 void MeasurementProcessUiHandler::onResetMeasureButtonClicked()
 {
+    if(radwagMeasureControler.needSave())
+    {
+        MainWindow::MessageResult result = mainWindow->showQuestionWithCancel("Resetowanie procesu pomiarowego", "Masz niezapisane dane. Czy chcesz zapisać pomiar?");
+
+        if(result == MainWindow::MessageResult::Cancel)
+            return;
+        else if(result == MainWindow::MessageResult::Yes)
+            if(radwagMeasureControler.save())
+                mainWindow->showWarning(tr("Zapis pomiaru"), "Pomyślnie zapisano dane pomiaru.");
+    }
+
+    measureStateMachine->goToStage(MeasurementStages::Stage::StartMeasure, true);
+    radwagMeasureControler.endMeasure();
     clearSecondMeasurePages();
     clearTripleMeasurePages();
-    measureStateMachine->goToStage(MeasurementStages::Stage::StartMeasure, true);
     ui->frame->setVisible(false);
-    radwagMeasureControler.endMeasure(true);
 }
 
 void MeasurementProcessUiHandler::onSaveMeasureButtonClicekd()
 {
-    if(dataHolder.measurementManager->addMeasurement(radwagMeasureControler.getActiveMeasure()))
-        mainWindow->showWarning(tr("Zapis pomiaru"), "Pomyślnie zapisano dane aktywnego pomiaru.");
+    if(!radwagMeasureControler.hasActiveMeasurement())
+        return;
+
+    if(!radwagMeasureControler.needSave())
+        return;
+
+    if(radwagMeasureControler.save())
+        mainWindow->showWarning(tr("Zapis pomiaru"), "Pomyślnie zapisano dane pomiaru.");
 }
 
 void MeasurementProcessUiHandler::onMeasurementTypeChanged()
@@ -544,15 +497,70 @@ void MeasurementProcessUiHandler::onMeasurementTypeChanged()
     if(ui->radioMeasureSecond->isChecked())
         ui->stackedWidgetStepsMeasure->setCurrentWidget(ui->stageSecondMeasure);
     else
+    {
         ui->stackedWidgetStepsMeasure->setCurrentWidget(ui->stageTripleMeasure);
+        if(ui->comboBoxSaturationMethodPrepareMeasureTriple->count() == 0)
+            fillSaturationMethodsCombo();
+    }
 
-    measureStateMachine->setMeasurementType(!ui->radioMeasureSecond->isChecked());
+    MeasurementType type = ui->radioMeasureSecond->isChecked() ? MeasurementType::TwoStage : MeasurementType::ThreeStage;
+    measureStateMachine->setMeasurementType(type);
+    radwagMeasureControler.setType(type);
     updateStageLabels();
 }
 
 void MeasurementProcessUiHandler::onSampleComboBoxChanged(int index)
 {
     upadteSampleEditors();
+
+    if(!radwagMeasureControler.hasActiveMeasurement())
+        return;
+
+    auto sample = dataHolder.sampleManager->getSample(ui->comboBoxSampleSelection->currentData().toString());
+    radwagMeasureControler.setSample(sample);
+}
+
+void MeasurementProcessUiHandler::onFluidComboBoxChanged(int index)
+{
+    if(!radwagMeasureControler.hasActiveMeasurement())
+        return;
+
+    auto fluid = dataHolder.fluidManager->getFluid(ui->comboBoxFluid->currentText());
+    radwagMeasureControler.setFluid(fluid);
+
+    fillPrepareSaturationTemperatureCombo();
+    fillPrepareMeasureTemperatureCombo();
+}
+
+void MeasurementProcessUiHandler::onAuthorEditingFinished()
+{
+    if(!radwagMeasureControler.hasActiveMeasurement())
+        return;
+
+    radwagMeasureControler.setAuthor(ui->editAuthor->text().trimmed());
+}
+
+void MeasurementProcessUiHandler::onComboFluidTempPrepMeasureSecondChanged(int index)
+{
+    updateFluidDensityLabel();
+
+    double selectedTemperature = ui->comboBoxTempFluidPrepareMeasureSecond->currentData().toDouble();
+    radwagMeasureControler.setFluidTemperature(selectedTemperature);
+}
+
+void MeasurementProcessUiHandler::onComboFluidTempPrepMeasureTripleChanged(int index)
+{
+    updatePrepareSaturationFluidDensityLabel();
+
+    double selectedTemperature = ui->comboBoxTempFluidPrepareSaturationTrilpe->currentData().toDouble();
+    radwagMeasureControler.setFluidTemperature(selectedTemperature);
+}
+
+void MeasurementProcessUiHandler::onComboSatMethodPrepareMeasureTripleChanged(int index)
+{
+    if(!radwagMeasureControler.hasActiveMeasurement())
+        return;
+    radwagMeasureControler.setSaturationMethod(static_cast<SaturationMethod>(ui->comboBoxSaturationMethodPrepareMeasureTriple->currentData().toInt()));
 }
 
 void MeasurementProcessUiHandler::onDryMassExecuteStepOneClicked()
@@ -599,8 +607,7 @@ void MeasurementProcessUiHandler::onGetCurrentDryMeasureButtonClicked()
 void MeasurementProcessUiHandler::onSaveCurrentDryMeasureButtonClicked()
 {
     QString text = ui->editCurrentDryMeasure->text().trimmed();
-    if(!radwagMeasureControler.setDryMass(utils::getDouble(text)))
-        mainWindow->showWarning(tr("Błąd"), "Błąd zapisu pomiaru!");
+    radwagMeasureControler.setDryMass(utils::getDouble(text));
     ui->editSavedDryMeasure->setText(text);
 }
 
@@ -641,8 +648,7 @@ void MeasurementProcessUiHandler::onGetCurrentFinishMeasureSecondButtonClicked()
 void MeasurementProcessUiHandler::onSaveCurrentFinishMeasureSecondButtonClicked()
 {
     QString text = ui->editCurrentValueFinishSecond->text().trimmed();
-    if(!radwagMeasureControler.setMassInFluid(utils::getDouble(text)))
-        mainWindow->showWarning(tr("Błąd"), "Błąd zapisu pomiaru!");
+    radwagMeasureControler.setMassInFluid(utils::getDouble(text));
     ui->editSavedValueFinishMeasureSecond->setText(text);
     ui->editLiquidMeasureFinishMeasureSecond->setText(text + " g");
 }
@@ -687,8 +693,7 @@ void MeasurementProcessUiHandler::onGetTripleCurrentFinishMeasureButtonClicked()
 void MeasurementProcessUiHandler::onSaveTripleCurrentFinishMeasureButtonClicked()
 {
     QString text = ui->editCurrentValueFinishMeasurementTriple->text().trimmed();
-    if(!radwagMeasureControler.setMassInFluid(utils::getDouble(text)))
-        mainWindow->showWarning(tr("Błąd"), "Błąd zapisu pomiaru! FinishTriple");
+    radwagMeasureControler.setMassInFluid(utils::getDouble(text));
     ui->editSavedValueFinishMeasurementTriple->setText(text);
     ui->editLiquidMeasureFinishMeasurementTriple->setText(text + " g");
 }
@@ -736,8 +741,7 @@ void MeasurementProcessUiHandler::onGetTripleCurrentSaturatedMeasureButtonClicke
 void MeasurementProcessUiHandler::onSaveTripleCurrentSaturatedMeasureButtonClicked()
 {
     QString text = ui->editCurrentMeasureSaturated->text().trimmed();
-    if(!radwagMeasureControler.setSaturatedMass(utils::getDouble(text)))
-        mainWindow->showWarning("Błąd", "Błąd zapisu pomiaru! SaturatedTriple");
+    radwagMeasureControler.setSaturatedMass(utils::getDouble(text));
     ui->editSavedMeasureSaturated->setText(text);
     ui->editAirSaturatedTriple->setText(text + " g");
 }
@@ -751,23 +755,159 @@ void MeasurementProcessUiHandler::onClearTripleSavedSaturatedMeasureButtonClicke
 
 void MeasurementProcessUiHandler::onNewMeasureSummaryButtonClicked()
 {
-    radwagMeasureControler.beginNewMeasure();
-    measureStateMachine->goToStage(checkGuidePrepareWorkstation() ? MeasurementStages::Stage::InitialData : MeasurementStages::Stage::StartMeasure, true);
-    setEnableInitialDataPage(true);
+    if(!radwagMeasureControler.hasActiveMeasurement())
+    {
+        measureStateMachine->goToStage(MeasurementStages::Stage::StartMeasure, true);
+        return;
+    }
+
+    if(radwagMeasureControler.needSave())
+        if(mainWindow->showQuestion("Zapis pomiaru", "Masz niezapisane dane. Czy chcesz zapisać pomiar?"))
+            radwagMeasureControler.save();
+
+    radwagMeasureControler.endMeasure();
+    onNewMeasure();
 }
 
 void MeasurementProcessUiHandler::onReplyMeasureSummaryButtonClicked()
 {
-    measureStateMachine->goToStage(radwagMeasureControler.replyActiveMeasure() ? MeasurementStages::Stage::StartMeasure : MeasurementStages::Stage::DryMeasure, true);
+    if(!radwagMeasureControler.hasActiveMeasurement())
+    {
+        measureStateMachine->goToStage(MeasurementStages::Stage::StartMeasure, true);
+        return;
+    }
+
+    if(radwagMeasureControler.needSave())
+        if(mainWindow->showQuestion("Zapis pomiaru", "Masz niezapisane dane. Czy chcesz zapisać pomiar?"))
+            radwagMeasureControler.save();
+
+    auto activeMeasure = radwagMeasureControler.getActiveMeasure();
+
+    std::shared_ptr<Measurement> measureToReply = std::make_shared<Measurement>(*activeMeasure.get());
+    radwagMeasureControler.endMeasure();
+    onReplyMeasure(measureToReply);
 }
 
-void MeasurementProcessUiHandler::onSaveMeasureSummaryButtonClicked()
+bool MeasurementProcessUiHandler::validateInitialDataPage()
 {
-    dataHolder.measurementManager->saveMeasurements();
+    if(!radwagMeasureControler.hasActiveMeasurement())
+        return false;
+
+    if(!appCore.hasConnectionWithScale())
+    {
+        mainWindow->showWarning("Brak połączenia", "Brak połączenia z urządzeniem");
+        return false;
+    }
+
+    if(ui->comboBoxSampleSelection->currentText().isEmpty())
+    {
+        mainWindow->showWarning("Brak wybranej próbki", "Brak wybranej próbki");
+        return false;
+    }
+
+    if(ui->editAuthor->text().isEmpty())
+    {
+        mainWindow->showWarning("Brak danych", "Pole autor nie może być puste");
+        return false;
+    }
+
+    return true;
+}
+
+bool MeasurementProcessUiHandler::validateDryMeasureDataPage()
+{
+    if(!appCore.hasConnectionWithScale())
+    {
+        mainWindow->showWarning("Brak połączenia", "Brak połączenia z urządzeniem");
+        return false;
+    }
+
+    if(ui->editSavedDryMeasure->text().isEmpty())//|| radwagMeasureControler.getDryMass() <= 0.0
+    {
+        mainWindow->showWarning("Brak danych", "Aby przejść dalej musisz zapisać pomiar");
+        return false;
+    }
+
+    return true;
+}
+
+bool MeasurementProcessUiHandler::validatePrepareSecondMeasurePage()
+{
+    if(!checkGuidePrepareMeasureSecondButton())
+        return false;
+
+    if(ui->comboBoxTempFluidPrepareMeasureSecond->currentIndex() == -1)//|| radwagMeasureControler.getFluidTemperature() <= 0.0
+    {
+        mainWindow->showWarning("Brak danych", "Aby przejść dalej musisz wybrać temperature cieczy");
+        return false;
+    }
+
+    return true;
+}
+
+bool MeasurementProcessUiHandler::validateFinishSecondMeasurePage()
+{
+    if(ui->editSavedValueFinishMeasureSecond->text().isEmpty())//|| radwagMeasureControler.getMassInFluid() <= 0.0
+    {
+        mainWindow->showWarning("Brak danych", "Aby przejść dalej musisz zapisać pomiar");
+        return false;
+    }
+
+    return true;
+}
+
+bool MeasurementProcessUiHandler::validatePrepareTripleMeasurePage()
+{
+    if(!checkGuideSampleSaturationPreparation())
+        return false;
+
+    if(ui->comboBoxTempFluidPrepareSaturationTrilpe->currentIndex() == -1)
+    {
+        mainWindow->showWarning("Brak danych", "Aby przejść dalej musisz wybrać temperature cieczy");
+        return false;
+    }
+
+    if(ui->comboBoxSaturationMethodPrepareMeasureTriple->currentIndex() == -1)
+    {
+        mainWindow->showWarning("Brak danych", "Aby przejść dalej musisz wybrać metodę nasycania próbki");
+        return false;
+    }
+
+    if(ui->spinSaturationTimePrepareMeasureTriple->value() == 0)
+    {
+        mainWindow->showWarning("Brak danych", "Aby przejść dalej musisz uzupełnić czas próbki");
+        return false;
+    }
+
+    return true;
+}
+
+bool MeasurementProcessUiHandler::validateSaturationMassMeasurePage()
+{
+    if(ui->editSavedValueFinishMeasurementTriple->text().isEmpty())
+    {
+        mainWindow->showWarning("Brak danych", "Aby przejść dalej musisz zapisać pomiar");
+        return false;
+    }
+
+    return true;
+}
+
+bool MeasurementProcessUiHandler::validateFinishTripleMeasurePage()
+{
+    if(ui->editSavedMeasureSaturated->text().isEmpty())
+    {
+        mainWindow->showWarning("Brak danych", "Aby przejść dalej musisz zapisać pomiar");
+        return false;
+    }
+
+    return true;
 }
 
 void MeasurementProcessUiHandler::fillSampleCombo()
 {
+    ui->comboBoxSampleSelection->blockSignals(true);
+
     ui->comboBoxSampleSelection->clear();
     const QMap<QString, Sample> &samples = dataHolder.sampleManager->getSamples();
     for(auto it = samples.constBegin(); it != samples.constEnd(); it++)
@@ -777,39 +917,34 @@ void MeasurementProcessUiHandler::fillSampleCombo()
         ui->comboBoxSampleSelection->addItem(it.value().getName(), it.value().getId());
     }
     ui->comboBoxSampleSelection->setCurrentIndex(-1);
+
+    ui->comboBoxSampleSelection->blockSignals(false);
 }
 
 void MeasurementProcessUiHandler::fillFluidCombo()
 {
+    ui->comboBoxFluid->blockSignals(true);
+
     ui->comboBoxFluid->clear();
     const QMap<QString, Fluid> &fluids = dataHolder.fluidManager->getFluids();
     for(auto &fluid : fluids)
         ui->comboBoxFluid->addItem(fluid.getName());
     ui->comboBoxFluid->setCurrentIndex(-1);
+
+    ui->comboBoxFluid->blockSignals(false);
 }
 
 void MeasurementProcessUiHandler::fillSaturationMethodsCombo()
 {
+    ui->comboBoxSaturationMethodPrepareMeasureTriple->blockSignals(true);
+
     ui->comboBoxSaturationMethodPrepareMeasureTriple->clear();
     ui->comboBoxSaturationMethodPrepareMeasureTriple->addItem(utils::getSaturationMethodName(SaturationMethod::BoilingInWater), static_cast<int>(SaturationMethod::BoilingInWater));
     ui->comboBoxSaturationMethodPrepareMeasureTriple->addItem(utils::getSaturationMethodName(SaturationMethod::VacuumMethod), static_cast<int>(SaturationMethod::VacuumMethod));
     ui->comboBoxSaturationMethodPrepareMeasureTriple->addItem(utils::getSaturationMethodName(SaturationMethod::LongTermSoaking), static_cast<int>(SaturationMethod::LongTermSoaking));
     ui->comboBoxSaturationMethodPrepareMeasureTriple->setCurrentIndex(-1);
 
-    ui->spinSaturationTimePrepareMeasureTriple->setValue(0);
-}
-
-void MeasurementProcessUiHandler::fillMeasuresTypeCombos()
-{
-    if(!radwagMeasureControler.hasActiveMeasurement())
-        return;
-    if(radwagMeasureControler.getActiveMeasure()->isThreeType())
-    {
-        fillSaturationMethodsCombo();
-        fillPrepareSaturationTemperatureCombo();
-    }
-    else
-        fillPrepareMeasureTemperatureCombo();
+    ui->comboBoxSaturationMethodPrepareMeasureTriple->blockSignals(false);
 }
 
 void MeasurementProcessUiHandler::fillPrepareMeasureTemperatureCombo()
@@ -817,12 +952,16 @@ void MeasurementProcessUiHandler::fillPrepareMeasureTemperatureCombo()
     if(!radwagMeasureControler.hasActiveMeasurement())
         return;
 
+    ui->comboBoxTempFluidPrepareMeasureSecond->blockSignals(true);
+
     ui->comboBoxTempFluidPrepareMeasureSecond->clear();
     const Fluid &currentFluid = radwagMeasureControler.getActiveMeasure()->getFluid();
     const QMap<double, double> &densityTableMap = currentFluid.getDensityTableMap();
 
     for(auto it = densityTableMap.keyBegin(); it != densityTableMap.keyEnd(); it++)
         ui->comboBoxTempFluidPrepareMeasureSecond->addItem(QString::number(*it) + " °C", *it);
+
+    ui->comboBoxTempFluidPrepareMeasureSecond->blockSignals(false);
 }
 
 void MeasurementProcessUiHandler::fillPrepareSaturationTemperatureCombo()
@@ -830,12 +969,16 @@ void MeasurementProcessUiHandler::fillPrepareSaturationTemperatureCombo()
     if(!radwagMeasureControler.hasActiveMeasurement())
         return;
 
+    ui->comboBoxTempFluidPrepareSaturationTrilpe->blockSignals(true);
+
     ui->comboBoxTempFluidPrepareSaturationTrilpe->clear();
     const Fluid &currentFluid = radwagMeasureControler.getActiveMeasure()->getFluid();
     const QMap<double, double> &densityTableMap = currentFluid.getDensityTableMap();
 
     for(auto it = densityTableMap.keyBegin(); it != densityTableMap.keyEnd(); it++)
         ui->comboBoxTempFluidPrepareSaturationTrilpe->addItem(QString::number(*it) + " °C", *it);
+
+    ui->comboBoxTempFluidPrepareSaturationTrilpe->blockSignals(false);
 }
 
 void MeasurementProcessUiHandler::upadteSampleEditors()
@@ -879,9 +1022,15 @@ void MeasurementProcessUiHandler::updateDryDataLabels()
     if(!radwagMeasureControler.hasActiveMeasurement())
         return;
 
-    QString value = QString::number(radwagMeasureControler.getActiveMeasure()->getSampleDryMass(), 'f', 3);
-    ui->editCurrentDryMeasure->setText(value);
-    ui->editSavedDryMeasure->setText(value);
+    auto dryMass = radwagMeasureControler.getActiveMeasure()->getSampleDryMass();
+    if(dryMass <= 0.0)
+    {
+        ui->editSavedDryMeasure->clear();
+        return;
+    }
+
+    QString dryMassStr = QString::number(dryMass, 'f', 3);
+    ui->editSavedDryMeasure->setText(dryMassStr);
 }
 
 void MeasurementProcessUiHandler::updatePrepareDataLabels()
@@ -921,6 +1070,9 @@ void MeasurementProcessUiHandler::updateTemperatureComboBox()
     if(!radwagMeasureControler.hasActiveMeasurement())
         return;
 
+    if(ui->comboBoxTempFluidPrepareMeasureSecond->count() == 0)
+        fillPrepareMeasureTemperatureCombo();
+
     const Fluid &currentFluid = radwagMeasureControler.getActiveMeasure()->getFluid();
     const QMap<double, double> &densityTableMap = currentFluid.getDensityTableMap();
 
@@ -958,10 +1110,20 @@ void MeasurementProcessUiHandler::updateFinishMeasureSecondLabels()
 
     double airMass = radwagMeasureControler.getDryMass();
     double fluidDensity = radwagMeasureControler.getFluidDensity();
+    double massInFluid = radwagMeasureControler.getActiveMeasure()->getSampleInFluidMass();
 
     ui->editDryMeasureFinishMeasureSecond->setText(QString::number(airMass, 'f', 3) + " g");
     ui->editDensityLiquidFinishMeasureSecond->setText(QString::number(fluidDensity, 'f', 5) + " g/cm³");
-    ui->editSavedValueFinishMeasureSecond->setText(QString::number(radwagMeasureControler.getActiveMeasure()->getSampleInFluidMass(), 'f', 4) + " g");
+
+    if(massInFluid <= 0.0)
+    {
+        ui->editSavedValueFinishMeasureSecond->clear();
+        ui->editLiquidMeasureFinishMeasureSecond->clear();
+        return;
+    }
+
+    ui->editSavedValueFinishMeasureSecond->setText(QString::number(massInFluid, 'f', 4) + " g");
+    ui->editLiquidMeasureFinishMeasureSecond->setText(QString::number(massInFluid, 'f', 4) + " g");
 }
 
 void MeasurementProcessUiHandler::updateMeasureSecondLabelsSummary()
@@ -1013,6 +1175,7 @@ void MeasurementProcessUiHandler::updatePrepareSaturationDataLabels()
     updateSaturationMethodPrepareTriple();
     updateSaturationSampleInfoLabels();
     updatePrepareSaturationFluidInfoLabels();
+    updatePrepareSaturationTemperatureCombo();
 }
 
 void MeasurementProcessUiHandler::updateSaturationSampleInfoLabels()
@@ -1028,8 +1191,8 @@ void MeasurementProcessUiHandler::updateSaturationSampleInfoLabels()
     QString formattedAirMass = QString::number(airMass, 'f', 3) + " g";
     ui->editAirWeightValuePrepareMeasureTriple->setText(formattedAirMass);
 
-    ui->editStartSaturationDateTimePrepareMeasureTriple->setMinimumDate(QDate::currentDate());//
     ui->editStartSaturationDateTimePrepareMeasureTriple->setDateTime(radwagMeasureControler.getSaturationBeginDate());
+    ui->editStartSaturationDateTimePrepareMeasureTriple->setMinimumDate(QDate::currentDate());
 }
 
 void MeasurementProcessUiHandler::updatePrepareSaturationFluidInfoLabels()
@@ -1039,14 +1202,15 @@ void MeasurementProcessUiHandler::updatePrepareSaturationFluidInfoLabels()
 
     const Fluid &currentFluid = radwagMeasureControler.getActiveMeasure()->getFluid();
     ui->editLiquidTypePrepareSaturationTriple->setText(currentFluid.getName());
-    updatePrepareSaturationTemperatureCombo();
-
 }
 
 void MeasurementProcessUiHandler::updatePrepareSaturationTemperatureCombo()
 {
     if(!radwagMeasureControler.hasActiveMeasurement())
         return;
+
+    if(ui->comboBoxTempFluidPrepareSaturationTrilpe->count() == 0)
+        fillPrepareSaturationTemperatureCombo();
 
     double currentTemperature = radwagMeasureControler.getFluidTemperature();
     int temperatureIndex = ui->comboBoxTempFluidPrepareSaturationTrilpe->findData(currentTemperature);
@@ -1086,7 +1250,17 @@ void MeasurementProcessUiHandler::updateFinishMeasureTripleLabels()
     ui->editSaturationMethodSaturationTriple->setText(utils::getSaturationMethodName(static_cast<SaturationMethod>(radwagMeasureControler.getActiveMeasure()->getSaturationMethod())));
     ui->editFluidDensitySaturationTriple->setText(QString::number(fluidDensity, 'f', 5) + " g");
     ui->editDryMassSaturationTriple->setText(QString::number(airMass, 'f', 3) + " g");
-    ui->editSavedValueFinishMeasurementTriple->setText(QString::number(radwagMeasureControler.getActiveMeasure()->getSampleInFluidMass(), 'f', 4) + " g");
+
+    double massInFluid = radwagMeasureControler.getActiveMeasure()->getSampleInFluidMass();
+    if(massInFluid <= 0.0)
+    {
+        ui->editSavedValueFinishMeasurementTriple->clear();
+        ui->editLiquidMeasureFinishMeasurementTriple->clear();
+        return;
+    }
+
+    ui->editSavedValueFinishMeasurementTriple->setText(QString::number(massInFluid, 'f', 4) + " g");
+    ui->editLiquidMeasureFinishMeasurementTriple->setText(QString::number(massInFluid, 'f', 4) + " g");
 }
 
 void MeasurementProcessUiHandler::updateAirSaturatedTripleLabels()
@@ -1110,7 +1284,17 @@ void MeasurementProcessUiHandler::updateAirSaturatedTripleLabels()
 
     double saturationMassInFluid = radwagMeasureControler.getMassInFluid();
     ui->editLiquidAirSaturatedTriple->setText(QString::number(saturationMassInFluid, 'f', 3) + " g");
-    ui->editSavedMeasureSaturated->setText(QString::number(radwagMeasureControler.getActiveMeasure()->getSampleSaturatedMass(), 'f', 4) + " g");
+
+    double saturatedMass = radwagMeasureControler.getActiveMeasure()->getSampleSaturatedMass();
+
+    if(saturatedMass <= 0.0)
+    {
+        ui->editSavedMeasureSaturated->clear();
+        ui->editAirSaturatedTriple->clear();
+        return;
+    }
+    ui->editSavedMeasureSaturated->setText(QString::number(saturatedMass, 'f', 4) + " g");
+    ui->editAirSaturatedTriple->setText(QString::number(saturatedMass, 'f', 4) + " g");
 }
 
 void MeasurementProcessUiHandler::updateMeasureTripleLabelsSummary()
@@ -1201,19 +1385,23 @@ void MeasurementProcessUiHandler::updateFluidDensityLabel()
     if(!radwagMeasureControler.hasActiveMeasurement())
         return;
 
+    int currentIndex = ui->comboBoxTempFluidPrepareMeasureSecond->currentIndex();
+    if(currentIndex == -1)
+        return;
+
+    double selectedTemperature = ui->comboBoxTempFluidPrepareMeasureSecond->currentData().toDouble();
     Fluid currentFluid = radwagMeasureControler.getActiveMeasure()->getFluid();
     const QMap<double, double>& densityTableMap = currentFluid.getDensityTableMap();
 
-    int currentIndex = ui->comboBoxTempFluidPrepareMeasureSecond->currentIndex();
-    double selectedTemperature = ui->comboBoxTempFluidPrepareMeasureSecond->currentData().toDouble();
-    if(densityTableMap.contains(selectedTemperature))
+    if(!densityTableMap.contains(selectedTemperature))
     {
-        double density = densityTableMap.value(selectedTemperature);
-        QString formattedDensity = QString::number(density, 'f', 5) + " g/cm³";
-        ui->labelLiquidDensityValuePrepareMeasureSecond->setText(formattedDensity);
+        ui->labelLiquidDensityValuePrepareMeasureSecond->setText("0.0 g/cm³");
+        return;
     }
-    else
-       ui->labelLiquidDensityValuePrepareMeasureSecond->setText("0.0 g/cm³");
+
+    double density = densityTableMap.value(selectedTemperature);
+    QString formattedDensity = QString::number(density, 'f', 5) + " g/cm³";
+    ui->labelLiquidDensityValuePrepareMeasureSecond->setText(formattedDensity);
 }
 
 
@@ -1221,10 +1409,17 @@ void MeasurementProcessUiHandler::updateSaturationMethodPrepareTriple()
 {
     if(!radwagMeasureControler.hasActiveMeasurement())
         return;
-    SaturationMethod saturationMethod = radwagMeasureControler.getActiveMeasure()->getSaturationMethod();
+
+    if(ui->comboBoxSaturationMethodPrepareMeasureTriple->count() == 0)
+        fillSaturationMethodsCombo();
+
+    auto measure = radwagMeasureControler.getActiveMeasure();
+    SaturationMethod saturationMethod = measure->getSaturationMethod();
     int index = ui->comboBoxSaturationMethodPrepareMeasureTriple->findData(static_cast<int>(saturationMethod));
     if(index != -1)
         ui->comboBoxSaturationMethodPrepareMeasureTriple->setCurrentIndex(index);
+
+    ui->spinSaturationTimePrepareMeasureTriple->setValue(measure->getSaturationTime());
 }
 
 void MeasurementProcessUiHandler::updatePrepareSaturationFluidDensityLabel()
@@ -1239,12 +1434,40 @@ void MeasurementProcessUiHandler::updatePrepareSaturationFluidDensityLabel()
     double selectedTemperature = ui->comboBoxTempFluidPrepareSaturationTrilpe->itemData(currentIndex).toDouble();
     Fluid currentFluid = radwagMeasureControler.getActiveMeasure()->getFluid();
     const QMap<double, double>& densityTableMap = currentFluid.getDensityTableMap();
+
     if(!densityTableMap.contains(selectedTemperature))
+    {
+        ui->labelLiquidDensityValuePrepareMeasureSecond->setText("0.0 g/cm³");
         return;
+    }
 
     double density = densityTableMap.value(selectedTemperature);
     QString formattedDensity = QString::number(density, 'f', 5) + " g/cm³";
     ui->labelFluidDensityPrepareSaturationTrilpe->setText(formattedDensity);
+}
+
+void MeasurementProcessUiHandler::updateWigdetVisibility(MeasurementStages::Stage currentStage)
+{
+    if(currentStage == MeasurementStages::Stage::StartMeasure)
+    {
+        ui->buttonPrevData->setVisible(false);
+        ui->buttonNextData->setVisible(true);
+        ui->buttonNextData->setText("Rozpocznij pomiar");
+    }
+    else if (currentStage == MeasurementStages::Stage::SummarySecond || currentStage == MeasurementStages::Stage::SummaryTriple)
+    {
+        ui->buttonPrevData->setVisible(false);
+        ui->buttonNextData->setVisible(false);
+    }
+    else
+    {
+        ui->buttonPrevData->setVisible(true);
+        ui->buttonNextData->setVisible(true);
+        ui->buttonNextData->setText("Przejdź dalej");
+    }
+
+    ui->frame->setVisible(currentStage != MeasurementStages::Stage::StartMeasure);
+    ui->groupBoxAdditionalSettings->setVisible(currentStage == MeasurementStages::Stage::InitialData);
 }
 
 
@@ -1393,14 +1616,11 @@ void MeasurementProcessUiHandler::clearDryMeasurePage()
 
 void MeasurementProcessUiHandler::clearPrepareMeasureSecondPage()
 {
-    // if(radwagMeasureControler.isContinued())
-    // {
-    //     ui->stepFirstPrepareMeasureSecond->setChecked(false);
-    //     ui->stepTwoPrepareMeasureSecond->setChecked(false);
-    //     ui->stepTreePrepareMeasureSecond->setChecked(false);
-    //     ui->stepFourPrepareMeasureSecond->setChecked(false);
-    //     ui->stepFivePrepareMeasureSecond->setChecked(false);
-    // }
+//     ui->stepFirstPrepareMeasureSecond->setChecked(false);
+//     ui->stepTwoPrepareMeasureSecond->setChecked(false);
+//     ui->stepTreePrepareMeasureSecond->setChecked(false);
+//     ui->stepFourPrepareMeasureSecond->setChecked(false);
+//     ui->stepFivePrepareMeasureSecond->setChecked(false);
 
     ui->comboBoxTempFluidPrepareMeasureSecond->clear();
     ui->editSampleIdValuePrepareMeasureSecond->clear();
@@ -1428,15 +1648,12 @@ void MeasurementProcessUiHandler::clearFinishMeasureSecondPage()
 
 void MeasurementProcessUiHandler::clearPrepareMeasureTriplePage()
 {
-    // if(!radwagMeasureControler.isContinued())
-    // {
-    //     ui->step1CheckBoxPrepareSaturation->setChecked(false);
-    //     ui->step2CheckBoxPrepareSaturation->setChecked(false);
-    //     ui->step3CheckBoxPrepareSaturation->setChecked(false);
-    //     ui->step4CheckBoxPrepareSaturation->setChecked(false);
-    //     ui->step5CheckBoxPrepareSaturation->setChecked(false);
-    //     ui->step6CheckBoxPrepareSaturation->setChecked(false);
-    // }
+//     ui->step1CheckBoxPrepareSaturation->setChecked(false);
+//     ui->step2CheckBoxPrepareSaturation->setChecked(false);
+//     ui->step3CheckBoxPrepareSaturation->setChecked(false);
+//     ui->step4CheckBoxPrepareSaturation->setChecked(false);
+//     ui->step5CheckBoxPrepareSaturation->setChecked(false);
+//     ui->step6CheckBoxPrepareSaturation->setChecked(false);
 
     ui->comboBoxTempFluidPrepareSaturationTrilpe->clear();
     ui->comboBoxSaturationMethodPrepareMeasureTriple->clear();
@@ -1491,98 +1708,104 @@ void MeasurementProcessUiHandler::clearAirSaturatedTriplePage()
 
 void MeasurementProcessUiHandler::setEnableInitialDataPage(bool enabled)
 {
-    ui->radioMeasureSecond->setEnabled(enabled);
-    ui->radioMeasureTriple->setEnabled(enabled);
-    ui->comboBoxSampleSelection->setEnabled(enabled);
-    ui->editAuthor->setEnabled(enabled);
-    ui->comboBoxFluid->setEnabled(enabled);
-    ui->buttonSamples->setEnabled(enabled);
-    ui->buttonTableFluids->setEnabled(enabled);
+    ui->pageInitialData->setEnabled(enabled);
+    // ui->radioMeasureSecond->setEnabled(enabled);
+    // ui->radioMeasureTriple->setEnabled(enabled);
+    // ui->comboBoxSampleSelection->setEnabled(enabled);
+    // ui->editAuthor->setEnabled(enabled);
+    // ui->comboBoxFluid->setEnabled(enabled);
+    // ui->buttonSamples->setEnabled(enabled);
+    // ui->buttonTableFluids->setEnabled(enabled);
 }
 
 void MeasurementProcessUiHandler::setEnableDryMeasurePage(bool enabled)
 {
-    ui->step1CheckBox->setEnabled(enabled);
-    ui->step2CheckBox->setEnabled(enabled);
-    ui->step3CheckBox->setEnabled(enabled);
-    ui->buttonDryMassExecuteStepOne->setEnabled(enabled);
-    ui->buttonDryMassExecuteStepTwo->setEnabled(enabled);
-    ui->buttonDryMassExecuteStepThree->setEnabled(enabled);
+    ui->pageDryMeasure->setEnabled(enabled);
+    // ui->step1CheckBox->setEnabled(enabled);
+    // ui->step2CheckBox->setEnabled(enabled);
+    // ui->step3CheckBox->setEnabled(enabled);
+    // ui->buttonDryMassExecuteStepOne->setEnabled(enabled);
+    // ui->buttonDryMassExecuteStepTwo->setEnabled(enabled);
+    // ui->buttonDryMassExecuteStepThree->setEnabled(enabled);
 
-    ui->buttonGetCurrentDryMeasure->setEnabled(enabled);
-    ui->buttonSaveCurrentDryMeasure->setEnabled(enabled);
-    ui->buttonClearEditSavedDryMeasure->setEnabled(enabled);
+    // ui->buttonGetCurrentDryMeasure->setEnabled(enabled);
+    // ui->buttonSaveCurrentDryMeasure->setEnabled(enabled);
+    // ui->buttonClearEditSavedDryMeasure->setEnabled(enabled);
 }
 
 void MeasurementProcessUiHandler::setEnablePrepareMeasureSecondPage(bool enabled)
 {
-
-    ui->stepFirstPrepareMeasureSecond->setEnabled(enabled);
-    ui->stepTwoPrepareMeasureSecond->setEnabled(enabled);
-    ui->stepTreePrepareMeasureSecond->setEnabled(enabled);
-    ui->stepFourPrepareMeasureSecond->setEnabled(enabled);
-    ui->stepFivePrepareMeasureSecond->setEnabled(enabled);
-    ui->buttonConfrimPrepareMeasureSecond->setEnabled(enabled);
-    ui->comboBoxTempFluidPrepareMeasureSecond->setEnabled(enabled);
+    ui->pagePrepareMeasureSecond->setEnabled(enabled);
+    // ui->stepFirstPrepareMeasureSecond->setEnabled(enabled);
+    // ui->stepTwoPrepareMeasureSecond->setEnabled(enabled);
+    // ui->stepTreePrepareMeasureSecond->setEnabled(enabled);
+    // ui->stepFourPrepareMeasureSecond->setEnabled(enabled);
+    // ui->stepFivePrepareMeasureSecond->setEnabled(enabled);
+    // ui->buttonConfrimPrepareMeasureSecond->setEnabled(enabled);
+    // ui->comboBoxTempFluidPrepareMeasureSecond->setEnabled(enabled);
 }
 
 void MeasurementProcessUiHandler::setEnableFinishMeasureSecondPage(bool enabled)
 {
-    ui->step3CheckBox_6->setEnabled(enabled);
-    ui->step2FinishMeasureSecondCheckBox->setEnabled(enabled);
-    ui->step3FinishMeasureSecondCheckBox->setEnabled(enabled);
+    ui->pageFinishMeasurementSecond->setEnabled(enabled);
+    // ui->step3CheckBox_6->setEnabled(enabled);
+    // ui->step2FinishMeasureSecondCheckBox->setEnabled(enabled);
+    // ui->step3FinishMeasureSecondCheckBox->setEnabled(enabled);
 
-    ui->buttonFinishMeasureSecondExecuteStepTwo->setEnabled(enabled);
-    ui->buttonFinishMeasureSecondExecuteStepTree->setEnabled(enabled);
-    ui->buttonGetCurrentValueFinishMeasureSecond->setEnabled(enabled);
-    ui->buttonSaveCurrentFinishSecond->setEnabled(enabled);
-    ui->buttonClearSavedValueFinishMeasureSecond->setEnabled(enabled);
+    // ui->buttonFinishMeasureSecondExecuteStepTwo->setEnabled(enabled);
+    // ui->buttonFinishMeasureSecondExecuteStepTree->setEnabled(enabled);
+    // ui->buttonGetCurrentValueFinishMeasureSecond->setEnabled(enabled);
+    // ui->buttonSaveCurrentFinishSecond->setEnabled(enabled);
+    // ui->buttonClearSavedValueFinishMeasureSecond->setEnabled(enabled);
 }
 
 void MeasurementProcessUiHandler::setEnablePrepareSaturationPage(bool enabled)
 {
-    ui->comboBoxSaturationMethodPrepareMeasureTriple->setEnabled(enabled);
-    ui->spinSaturationTimePrepareMeasureTriple->setEnabled(enabled);
-    ui->editStartSaturationDateTimePrepareMeasureTriple->setEnabled(enabled);
-    ui->comboBoxTempFluidPrepareSaturationTrilpe->setEnabled(enabled);
+    ui->pagePrepareMeasureTriple->setEnabled(enabled);
+    // ui->comboBoxSaturationMethodPrepareMeasureTriple->setEnabled(enabled);
+    // ui->spinSaturationTimePrepareMeasureTriple->setEnabled(enabled);
+    // ui->editStartSaturationDateTimePrepareMeasureTriple->setEnabled(enabled);
+    // ui->comboBoxTempFluidPrepareSaturationTrilpe->setEnabled(enabled);
 
-    ui->step1CheckBoxPrepareSaturation->setEnabled(enabled);
-    ui->step2CheckBoxPrepareSaturation->setEnabled(enabled);
-    ui->step3CheckBoxPrepareSaturation->setEnabled(enabled);
-    ui->step4CheckBoxPrepareSaturation->setEnabled(enabled);
-    ui->step5CheckBoxPrepareSaturation->setEnabled(enabled);
-    ui->step6CheckBoxPrepareSaturation->setEnabled(enabled);
-    ui->buttonConfirmPrepareSaturation->setEnabled(enabled);
+    // ui->step1CheckBoxPrepareSaturation->setEnabled(enabled);
+    // ui->step2CheckBoxPrepareSaturation->setEnabled(enabled);
+    // ui->step3CheckBoxPrepareSaturation->setEnabled(enabled);
+    // ui->step4CheckBoxPrepareSaturation->setEnabled(enabled);
+    // ui->step5CheckBoxPrepareSaturation->setEnabled(enabled);
+    // ui->step6CheckBoxPrepareSaturation->setEnabled(enabled);
+    // ui->buttonConfirmPrepareSaturation->setEnabled(enabled);
 }
 
 void MeasurementProcessUiHandler::setEnableSaturationTrilpePage(bool enabled)
 {
-    ui->step1FinishTriple->setEnabled(enabled);
-    ui->step2FinishTriple->setEnabled(enabled);
-    ui->step3FinishTriple->setEnabled(enabled);
+    ui->pageSatruationMassTriple->setEnabled(enabled);
+    // ui->step1FinishTriple->setEnabled(enabled);
+    // ui->step2FinishTriple->setEnabled(enabled);
+    // ui->step3FinishTriple->setEnabled(enabled);
 
-    ui->buttonFinishMeasureTripleExecuteStepTwo->setEnabled(enabled);
-    ui->buttonFinishMeasureTripleExecuteStepThree->setEnabled(enabled);
+    // ui->buttonFinishMeasureTripleExecuteStepTwo->setEnabled(enabled);
+    // ui->buttonFinishMeasureTripleExecuteStepThree->setEnabled(enabled);
 
-    ui->buttonGetCurrentMeasureFinishMeasurementTriple->setEnabled(enabled);
-    ui->buttonSaveMeasureFinishMeasurementTriple->setEnabled(enabled);
-    ui->buttonClearSavedMeasureFinishMeasurementTriple->setEnabled(enabled);
+    // ui->buttonGetCurrentMeasureFinishMeasurementTriple->setEnabled(enabled);
+    // ui->buttonSaveMeasureFinishMeasurementTriple->setEnabled(enabled);
+    // ui->buttonClearSavedMeasureFinishMeasurementTriple->setEnabled(enabled);
 }
 
 void MeasurementProcessUiHandler::setEnableSaturatedTrilpePage(bool enabled)
 {
-    ui->step1CheckBox_2->setEnabled(enabled);
-    ui->step2CheckBox_2->setEnabled(enabled);
-    ui->step3CheckBox_2->setEnabled(enabled);
-    ui->step4CheckBoxSaturatedTriple->setEnabled(enabled);
-    ui->step5CheckBoxSaturatedTriple->setEnabled(enabled);
+    ui->pageFinishSaturatedMassTriple->setEnabled(enabled);
+    // ui->step1CheckBox_2->setEnabled(enabled);
+    // ui->step2CheckBox_2->setEnabled(enabled);
+    // ui->step3CheckBox_2->setEnabled(enabled);
+    // ui->step4CheckBoxSaturatedTriple->setEnabled(enabled);
+    // ui->step5CheckBoxSaturatedTriple->setEnabled(enabled);
 
-    ui->buttonSaturatedMassExecuteStepFour->setEnabled(enabled);
-    ui->buttonSaturatedMassExecuteStepFive->setEnabled(enabled);
+    // ui->buttonSaturatedMassExecuteStepFour->setEnabled(enabled);
+    // ui->buttonSaturatedMassExecuteStepFive->setEnabled(enabled);
 
-    ui->buttonGetMeasureSaturated->setEnabled(enabled);
-    ui->buttonSaveCurrentMeasureSaturated->setEnabled(enabled);
-    ui->buttonClearSavedMeasureSaturated->setEnabled(enabled);
+    // ui->buttonGetMeasureSaturated->setEnabled(enabled);
+    // ui->buttonSaveCurrentMeasureSaturated->setEnabled(enabled);
+    // ui->buttonClearSavedMeasureSaturated->setEnabled(enabled);
 }
 
 void MeasurementProcessUiHandler::onConfrimPrepareWorkstationButtonClicked()
@@ -1622,20 +1845,52 @@ void MeasurementProcessUiHandler::onSpinSaturationTimeChanged()
 
 void MeasurementProcessUiHandler::onNewMeasure()
 {
-    if(radwagMeasureControler.hasActiveMeasurement())
-    {
-        mainWindow->showWarning("Aktywny pomiar", "Masz aktywny pomiar hydrostatyczny. Zakończ aktualny pomiar aby wykonać kolejny.");
+    if(!canStartMeasureProcces())
         return;
-    }
 
-    ui->actionLibraryNewMeasure->trigger();
-    measureStateMachine->goToStage(checkGuidePrepareWorkstation(false) ? MeasurementStages::Stage::InitialData : MeasurementStages::Stage::StartMeasure);
+    radwagMeasureControler.beginNewMeasure();
+    if(!checkGuidePrepareWorkstation())
+        measureStateMachine->goToStage(MeasurementStages::Stage::StartMeasure, true);
+    else
+        measureStateMachine->goToStage(MeasurementStages::Stage::InitialData, true); //radwagMeasureControler.getStage() sprawdz
 }
 
+void MeasurementProcessUiHandler::onReplyMeasure(const std::shared_ptr<const Measurement> &sourceMeasure)
+{
+    if(!canStartMeasureProcces())
+        return;
 
-    if(radwagMeasureControler.hasActiveMeasurement())
+    radwagMeasureControler.replyMeasure(sourceMeasure);
+    if(!checkGuidePrepareWorkstation())
+        measureStateMachine->goToStage(MeasurementStages::Stage::StartMeasure, true);
+    else
+        measureStateMachine->goToStage(radwagMeasureControler.getStage(), true);
+}
+
+void MeasurementProcessUiHandler::onContinueMeasure(const std::shared_ptr<const Measurement> &sourceMeasure)
+{
+    if(!canStartMeasureProcces())
+        return;
+
+    if(!radwagMeasureControler.continueMeasure(sourceMeasure))
+        return;
+
+    MeasurementType type = radwagMeasureControler.getType();
+    measureStateMachine->setMeasurementType(type);
+
+    int currentStageValue = static_cast<int>(radwagMeasureControler.getStage());
+    if(currentStageValue >= static_cast<int>(MeasurementStages::Stage::PrepareSecond) || currentStageValue >= static_cast<int>(MeasurementStages::Stage::PrepareTriple))
     {
+        if(type == MeasurementType::TwoStage)
+            onConfrimPrepareMeasureSecondButtonClicked();
+        else
+            onConfirmSampleSaturationPreparationClicked();
     }
+
+    if(!checkGuidePrepareWorkstation())
+        measureStateMachine->goToStage(MeasurementStages::Stage::StartMeasure, true);
+    else
+        measureStateMachine->goToStage(radwagMeasureControler.getStage(), true);
 }
 
 void MeasurementProcessUiHandler::connectSignals()
@@ -1659,20 +1914,6 @@ void MeasurementProcessUiHandler::connectNavMeasurementButtons()
 {
     connect(ui->buttonPrevData, &QPushButton::clicked, this, &MeasurementProcessUiHandler::goToPreviousMeasureStage);
     connect(ui->buttonNextData, &QPushButton::clicked, this, &MeasurementProcessUiHandler::goToNextMeasureStage);
-
-    connect(ui->buttonNextDryMass, &QPushButton::clicked, this, &MeasurementProcessUiHandler::goToNextMeasureStage);
-    connect(ui->buttonPrevDryMass, &QPushButton::clicked, this, &MeasurementProcessUiHandler::goToPreviousMeasureStage);
-    connect(ui->buttonNextPreparation, &QPushButton::clicked, this, &MeasurementProcessUiHandler::goToNextMeasureStage);
-    connect(ui->buttonPrevPreparation, &QPushButton::clicked, this, &MeasurementProcessUiHandler::goToPreviousMeasureStage);
-    connect(ui->buttonFinishMeasurementSecond, &QPushButton::clicked, this, &MeasurementProcessUiHandler::goToNextMeasureStage);
-    connect(ui->buttonPrevFluidMass, &QPushButton::clicked, this, &MeasurementProcessUiHandler::goToPreviousMeasureStage);
-
-    connect(ui->buttonNextPrepareSaturation, &QPushButton::clicked, this, &MeasurementProcessUiHandler::goToNextMeasureStage);
-    connect(ui->buttonPrevPrepareSaturation, &QPushButton::clicked, this, &MeasurementProcessUiHandler::goToPreviousMeasureStage);
-    connect(ui->buttonNextSaturation, &QPushButton::clicked, this, &MeasurementProcessUiHandler::goToNextMeasureStage);
-    connect(ui->buttonPrevSaturation, &QPushButton::clicked, this, &MeasurementProcessUiHandler::goToPreviousMeasureStage);
-    connect(ui->buttonFinishMeasurementTriple, &QPushButton::clicked, this, &MeasurementProcessUiHandler::goToNextMeasureStage);
-    connect(ui->buttonPrevSaturatedMass, &QPushButton::clicked, this, &MeasurementProcessUiHandler::goToPreviousMeasureStage);
 }
 
 void MeasurementProcessUiHandler::connectStagesOperationButtons()
@@ -1687,7 +1928,6 @@ void MeasurementProcessUiHandler::connectPrepareWorksationPageButtons()
 {
     connect(ui->buttonShowHydroSetScheme, &QPushButton::clicked, this, &MeasurementProcessUiHandler::onShowHydroSetSchemeButtonClicked);
     connect(ui->buttonConfrimPrepareWorkstation, &QPushButton::clicked, this, &MeasurementProcessUiHandler::onConfrimPrepareWorkstationButtonClicked);
-    connect(ui->buttonStartMeasure, &QPushButton::clicked, this, &MeasurementProcessUiHandler::onStartMeasureButtonClicked);
 }
 
 void MeasurementProcessUiHandler::connectInitialDataPageButtons()
@@ -1695,18 +1935,23 @@ void MeasurementProcessUiHandler::connectInitialDataPageButtons()
     connect(ui->radioMeasureSecond, &QRadioButton::toggled, this, &MeasurementProcessUiHandler::onMeasurementTypeChanged);
     connect(ui->radioMeasureTriple, &QRadioButton::toggled, this, &MeasurementProcessUiHandler::onMeasurementTypeChanged);
     connect(ui->comboBoxSampleSelection, &QComboBox::currentIndexChanged, this, &MeasurementProcessUiHandler::onSampleComboBoxChanged);
+    connect(ui->comboBoxFluid, &QComboBox::currentIndexChanged, this, &MeasurementProcessUiHandler::onFluidComboBoxChanged);
+
+    connect(ui->editAuthor, &QLineEdit::editingFinished, this, &MeasurementProcessUiHandler::onAuthorEditingFinished);
 }
 
 void MeasurementProcessUiHandler::connectPrepareMeasureSecondPageButtons()
 {
     connect(ui->buttonConfrimPrepareMeasureSecond, &QPushButton::clicked, this, &MeasurementProcessUiHandler::onConfrimPrepareMeasureSecondButtonClicked);
-    connect(ui->comboBoxTempFluidPrepareMeasureSecond, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &MeasurementProcessUiHandler::updateFluidDensityLabel);
+    connect(ui->comboBoxTempFluidPrepareMeasureSecond, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &MeasurementProcessUiHandler::onComboFluidTempPrepMeasureSecondChanged);
 }
 
 void MeasurementProcessUiHandler::connectPrepareSaturationButton()
 {
     connect(ui->buttonConfirmPrepareSaturation, &QPushButton::clicked, this, &MeasurementProcessUiHandler::onConfirmSampleSaturationPreparationClicked);
-    connect(ui->comboBoxTempFluidPrepareSaturationTrilpe, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &MeasurementProcessUiHandler::updatePrepareSaturationFluidDensityLabel);
+
+    connect(ui->comboBoxSaturationMethodPrepareMeasureTriple, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &MeasurementProcessUiHandler::onComboSatMethodPrepareMeasureTripleChanged);
+    connect(ui->comboBoxTempFluidPrepareSaturationTrilpe, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &MeasurementProcessUiHandler::onComboFluidTempPrepMeasureTripleChanged);
     connect(ui->spinSaturationTimePrepareMeasureTriple, &QSpinBox::valueChanged, this, &MeasurementProcessUiHandler::onSpinSaturationTimeChanged);
 }
 
@@ -1763,7 +2008,6 @@ void MeasurementProcessUiHandler::connectSummaryMeasureSecondPageButtons()
 {
     connect(ui->buttonNewSecondMeasure, &QPushButton::clicked, this, &MeasurementProcessUiHandler::onNewMeasureSummaryButtonClicked);
     connect(ui->buttonReplySecondMeasure, &QPushButton::clicked, this, &MeasurementProcessUiHandler::onReplyMeasureSummaryButtonClicked);
-    connect(ui->buttonSaveSecondMeasureToLibrary, &QPushButton::clicked, this, &MeasurementProcessUiHandler::onSaveMeasureSummaryButtonClicked);
 }
 
 void MeasurementProcessUiHandler::connectSummaryMeasureTriplePageButtons()
@@ -1788,7 +2032,8 @@ void MeasurementProcessUiHandler::updateStageLabels()
 
     MeasurementStages::Stage currentStage = measureStateMachine->getCurrentStage();
     MeasurementStages::Stage radwagStage = radwagMeasureControler.getStage();
-    bool isTripleMeasurement = ui->radioMeasureTriple->isChecked();
+    bool isTripleMeasurement = radwagMeasureControler.getType() == MeasurementType::ThreeStage;
+    ui->stackedWidgetStepsMeasure->setCurrentWidget(isTripleMeasurement ? ui->stageTripleMeasure : ui->stageSecondMeasure);
 
     const auto& currentStageToLabelMap = isTripleMeasurement ? tripleStageToLabelMap : secondStageToLabelMap;
     const auto& currentAllLabels = isTripleMeasurement ? allTripleLabels : allSecondLabels;
@@ -1865,11 +2110,5 @@ void MeasurementProcessUiHandler::initializeMappings()
         ui->labelStageFluidMass,
         ui->labelStageSummary
     };
-}
-
-void MeasurementProcessUiHandler::onStartMeasureButtonClicked()
-{
-    radwagMeasureControler.beginNewMeasure();
-    measureStateMachine->goToNextStage();
 }
 

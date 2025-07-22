@@ -2,7 +2,7 @@
 
 Measurement::Measurement()
     : id(QUuid::createUuid().toString(QUuid::WithoutBraces))
-    , type(MeasurementType::TwoStage)
+    , type(MeasurementType::None)
     , stage(MeasurementStages::Stage::None)
     , status(MeasurementStatus::InProgress)
     , fluidTemperature(0.0)
@@ -51,7 +51,7 @@ Measurement::Measurement(const Measurement& other)
     , sampleDryMass(other.sampleDryMass)
     , sampleInFluidMass(other.sampleInFluidMass)
     , sampleSaturatedMass(other.sampleSaturatedMass)
-    , saturationMethod(SaturationMethod::None)
+    , saturationMethod(other.saturationMethod)
     , saturationTimeMin(other.saturationTimeMin)
 
 {
