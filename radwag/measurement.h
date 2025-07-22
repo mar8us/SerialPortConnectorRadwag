@@ -9,6 +9,7 @@
 
 enum class MeasurementType
 {
+    None = -1,
     TwoStage,
     ThreeStage
 };
@@ -28,7 +29,8 @@ enum class Stage
     FinishSecond,
     SaturationMass,
     FinishTriple,
-    Summary
+    SummarySecond,
+    SummaryTriple
 };
 
 Q_ENUM_NS(Stage)
@@ -44,6 +46,7 @@ enum class MeasurementStatus
 
 enum class SaturationMethod
 {
+    None,
     BoilingInWater,
     VacuumMethod,
     LongTermSoaking
@@ -58,6 +61,7 @@ public:
     ~Measurement();
 
     QString getId() const;
+
     MeasurementType getType() const;
     MeasurementStages::Stage getCurrentStage() const;
     MeasurementStatus getStatus() const;
@@ -65,11 +69,15 @@ public:
     int getSaturationTime() const;
     QDateTime getDate() const;
     QString getAuthor() const;
+
     void setType(MeasurementType newType);
     void setStage(MeasurementStages::Stage);
     void setStatus(MeasurementStatus newStatus);
     void setSaturationMethod(SaturationMethod method);
     void setSaturationTime(int saturationTimeMiuntes);
+    void setSaturationBeginDate(QDateTime beginDate);
+    QDateTime getSaturationBeginDate();
+
     void setDate(const QDateTime& newDate);
     void setAuthor(const QString &authorName);
 
@@ -105,6 +113,7 @@ private:
     MeasurementStatus status;
     SaturationMethod saturationMethod;
     int saturationTimeMin;
+    QDateTime saturationBeginDate;
     QDateTime date;
     QString author;
 

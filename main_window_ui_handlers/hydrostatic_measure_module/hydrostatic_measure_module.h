@@ -23,6 +23,9 @@ public:
 
     bool hasActiveMeasurement() const;
 
+private:
+    void connectSignals();
+
 protected:
     MainWindow *mainWindow;
     Ui::MainWindow *ui;

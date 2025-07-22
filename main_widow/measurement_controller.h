@@ -14,50 +14,53 @@ public:
     MeasurementController(const std::shared_ptr<MeasurementManager> &measurementManager, QObject* parent = nullptr);
 
     bool beginNewMeasure();
-    bool setInitialData(MeasurementType type, const Sample &sample, const Fluid &fluid, const QString &author);
-    bool replyActiveMeasure();
-    void endMeasure(bool reset = false);
-    QString getLastMeasureId();
+    bool replyMeasure(const std::shared_ptr<const Measurement> &sourceMeasure);
+    bool continueMeasure(const std::shared_ptr<const Measurement> &sourceMeasure);
+    void endMeasure();
+    bool save();
+    bool needSave();
+
     const std::shared_ptr<Measurement>& getActiveMeasure();
+    bool hasActiveMeasurement() const;
 
     MeasurementStages::Stage getStage() const;
-    MeasurementStages::Stage getPrevStage(MeasurementStages::Stage basedStage = MeasurementStages::Stage::None) const;
-    MeasurementStages::Stage getNextStage(MeasurementStages::Stage basedStage = MeasurementStages::Stage::None) const;
-
-    bool setStage(MeasurementStages::Stage stage);
-    bool setMeasureStatus(MeasurementStatus status);
+    MeasurementType getType();
 
     double getDryMass() const;
-    bool setDryMass(double value);
     double getMassInFluid() const;
-    bool setMassInFluid(double value);
+    double getSaturatedMass();
+
+    int getSaturationTime();
+    QDateTime getSaturationBeginDate();
 
     double getFluidTemperature();
-    void setFluidTemperature(double temperature);
     double getFluidDensity();
 
-    bool setSaturatedMass(double value);
-    double getSaturatedMass();
-    void setSaturationMethod(SaturationMethod method);
-    void setSaturationTime(int saturationTimeMinutes);
-    int getSaturationTime();
+    bool setMeasureStatus(MeasurementStatus status);
+    bool setStage(MeasurementStages::Stage stage);
+    bool setType(MeasurementType type);
+    bool setSample(const Sample &sample);
+    bool setFluid(const Fluid &fluid);
+    bool setFluidTemperature(double temperature);
+    bool setAuthor(const QString &text);
 
-    bool hasActiveMeasurement() const;
-    bool canCalculateResult() const;
+    bool setDryMass(double value);
+    bool setMassInFluid(double value);
+    bool setSaturatedMass(double value);
+
+    bool setSaturationMethod(SaturationMethod method);
+    bool setSaturationTime(int saturationTimeMinutes);
+    bool setSaturationBeginDate(QDateTime beginDate);
 
     MeasurementResults calculateResults();
+    bool canCalculateResult() const;
 
 signals:
-    void measurementChanged();
-    void measurementSaved();
-    void measurementLoaded();
-    void stageChanged(int stageIndex);
-    void measurementCompleted();
 
 private:
     std::shared_ptr<Measurement> measurement;
     std::shared_ptr<MeasurementManager> measurementManager;
-    QString lastMeasureId;
+    bool hasChanges;
 };
 
 #endif // MEASUREMENTCONTROLLER_H

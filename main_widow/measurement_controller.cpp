@@ -1,11 +1,13 @@
 #include "measurement_controller.h"
 #include <QMessageBox>
 #include <QDebug>
+#include "../utils.h"
 
 MeasurementController::MeasurementController(const std::shared_ptr<MeasurementManager> &measurementManager, QObject* parent)
     : QObject(parent)
     , measurement(nullptr)
     , measurementManager(measurementManager)
+    , hasChanges(false)
 {
 
 }
@@ -14,45 +16,78 @@ bool MeasurementController::beginNewMeasure()
 {
     measurement.reset(new Measurement());
     measurement->setStage(MeasurementStages::Stage::StartMeasure);
-    return measurementManager->addMeasurement(measurement);
-}
-
-bool MeasurementController::setInitialData(MeasurementType type, const Sample &sample, const Fluid &fluid, const QString &author)
-{
-    if(!hasActiveMeasurement())
-        return false;
-    measurement->setType(type);
-    measurement->setSample(sample);
-    measurement->setFluid(fluid);
-    measurement->setAuthor(author);
-    setStage(MeasurementStages::Stage::InitialData);
+    hasChanges = false;
     return true;
 }
 
-bool MeasurementController::replyActiveMeasure()
+bool MeasurementController::replyMeasure(const std::shared_ptr<const Measurement> &sourceMeasure)
 {
-    auto lastMeasurement = measurementManager->getMeasurement(lastMeasureId);
-    if(!lastMeasurement.get())
-        return false;
     beginNewMeasure();
-    return setInitialData(lastMeasurement->getType(), lastMeasurement->getSample(), lastMeasurement->getFluid(), lastMeasurement->getAuthor());
+    if(!sourceMeasure.get())
+        return false;
+
+    bool result = true;
+    result &= setType(sourceMeasure->getType());
+    result &= setSample(sourceMeasure->getSample());
+    result &= setFluid(sourceMeasure->getFluid());
+    result &= setAuthor(sourceMeasure->getAuthor());
+
+    if(result)
+        setStage(MeasurementStages::Stage::InitialData);
+
+    hasChanges = false;
+    return true;
 }
 
-void MeasurementController::endMeasure(bool reset)
+bool MeasurementController::continueMeasure(const std::shared_ptr<const Measurement> &sourceMeasure)
 {
-    if(!reset)
-        lastMeasureId = measurement->getId();
+    if(!sourceMeasure.get())
+        return false;
+    if(sourceMeasure->isCompleted())
+        return false;
+
+    measurement.reset(new Measurement(*sourceMeasure.get()));
+    hasChanges = false;
+    return true;
+}
+
+void MeasurementController::endMeasure()
+{
     measurement.reset();
+    hasChanges = false;
 }
 
-QString MeasurementController::getLastMeasureId()
+bool MeasurementController::save()
 {
-    return lastMeasureId;
+    if(!hasActiveMeasurement())
+        return false;
+
+    MeasurementStages::Stage currentStage = measurement->getCurrentStage();
+    if(currentStage == MeasurementStages::Stage::SummarySecond || currentStage == MeasurementStages::Stage::SummaryTriple)
+        measurement->setStatus(MeasurementStatus::Completed);
+
+    measurementManager->removeMeasurement(measurement->getId());
+    if(measurementManager->addMeasurement(measurement))
+        hasChanges = false;
+
+    measurement.reset(new Measurement(*measurement.get()));
+
+    return !hasChanges;
+}
+
+bool MeasurementController::needSave()
+{
+    return hasActiveMeasurement() && hasChanges;
 }
 
 const std::shared_ptr<Measurement>& MeasurementController::getActiveMeasure()
 {
     return measurement;
+}
+
+bool MeasurementController::hasActiveMeasurement() const
+{
+    return measurement && measurement->getStatus() != MeasurementStatus::Error;
 }
 
 MeasurementStages::Stage MeasurementController::getStage() const
@@ -62,75 +97,55 @@ MeasurementStages::Stage MeasurementController::getStage() const
     return measurement->getCurrentStage();
 }
 
-MeasurementStages::Stage MeasurementController::getPrevStage(MeasurementStages::Stage basedStage) const
+MeasurementType MeasurementController::getType()
 {
     if(!hasActiveMeasurement())
-        return MeasurementStages::Stage::None;
-
-    MeasurementStages::Stage stage = basedStage != MeasurementStages::Stage::None ? basedStage : getStage();
-
-    switch(stage)
-    {
-        case MeasurementStages::Stage::StartMeasure:
-            return MeasurementStages::Stage::StartMeasure;
-
-        case MeasurementStages::Stage::InitialData:
-            return MeasurementStages::Stage::StartMeasure;
-
-        case MeasurementStages::Stage::DryMeasure:
-            return MeasurementStages::Stage::InitialData;
-
-        case MeasurementStages::Stage::PrepareSecond:
-        case MeasurementStages::Stage::PrepareTriple:
-            return MeasurementStages::Stage::DryMeasure;
-
-        case MeasurementStages::Stage::FinishSecond:
-            return MeasurementStages::Stage::PrepareSecond;
-
-        case MeasurementStages::Stage::SaturationMass:
-            return MeasurementStages::Stage::PrepareTriple;
-
-        case MeasurementStages::Stage::FinishTriple:
-            return MeasurementStages::Stage::SaturationMass;
-
-        default:
-            return stage;
-    }
+        return MeasurementType::None;
+    return measurement->getType();
 }
 
-MeasurementStages::Stage MeasurementController::getNextStage(MeasurementStages::Stage basedStage) const
+double MeasurementController::getDryMass() const
 {
-    if(!hasActiveMeasurement())
-        return MeasurementStages::Stage::None;
+    return measurement->getSampleDryMass();
+}
 
-    MeasurementStages::Stage stage = basedStage != MeasurementStages::Stage::None ? basedStage : getStage();
-    switch(stage)
-    {
-        case MeasurementStages::Stage::StartMeasure:
-            return MeasurementStages::Stage::InitialData;
+double MeasurementController::getMassInFluid() const
+{
+    return measurement->getSampleInFluidMass();
+}
 
-        case MeasurementStages::Stage::InitialData:
-            return MeasurementStages::Stage::DryMeasure;
+double MeasurementController::getSaturatedMass()
+{
+    return measurement->getSampleSaturatedMass();
+}
 
-        case MeasurementStages::Stage::DryMeasure:
-            return measurement->isThreeType() ? MeasurementStages::Stage::PrepareTriple : MeasurementStages::Stage::PrepareSecond;
+int MeasurementController::getSaturationTime()
+{
+    return measurement->getSaturationTime();
+}
 
-        case MeasurementStages::Stage::PrepareSecond:
-            return MeasurementStages::Stage::FinishSecond;
+QDateTime MeasurementController::getSaturationBeginDate()
+{
+    return measurement->getSaturationBeginDate();
+}
 
-        case MeasurementStages::Stage::PrepareTriple:
-            return MeasurementStages::Stage::SaturationMass;
+double MeasurementController::getFluidTemperature()
+{
+    return measurement->getFluidTemperature();
+}
 
-        case MeasurementStages::Stage::SaturationMass:
-            return MeasurementStages::Stage::FinishTriple;
+double MeasurementController::getFluidDensity()
+{
+    return measurement->getFluidDensity();
+}
 
-        case MeasurementStages::Stage::FinishSecond:
-        case MeasurementStages::Stage::FinishTriple:
-            return MeasurementStages::Stage::Summary;
-
-        default:
-            return stage;
-    }
+bool MeasurementController::setMeasureStatus(MeasurementStatus status)
+{
+    if(!hasActiveMeasurement() || static_cast<int>(status) <= static_cast<int>(measurement->getStatus()))
+        return false;
+    measurement->setStatus(status);
+    hasChanges = true;
+    return true;
 }
 
 bool MeasurementController::setStage(MeasurementStages::Stage stage)
@@ -138,19 +153,87 @@ bool MeasurementController::setStage(MeasurementStages::Stage stage)
     if(!hasActiveMeasurement() || static_cast<int>(stage) <= static_cast<int>(measurement->getCurrentStage()))
         return false;
     measurement->setStage(stage);
-    return true;
-}
-bool MeasurementController::setMeasureStatus(MeasurementStatus status)
-{
-    if(!hasActiveMeasurement() || static_cast<int>(status) <= static_cast<int>(measurement->getStatus()))
-        return false;
-    measurement->setStatus(status);
+    hasChanges = true;
     return true;
 }
 
-double MeasurementController::getDryMass() const
+bool MeasurementController::setType(MeasurementType type)
 {
-    return measurement->getSampleDryMass();
+    if(!hasActiveMeasurement())
+        return false;
+
+    if(measurement->getType() == type)
+        return true;
+
+    measurement->setType(type);
+    hasChanges = true;
+    return true;
+}
+
+bool MeasurementController::setSample(const Sample &sample)
+{
+    if(!hasActiveMeasurement())
+        return false;
+
+    QString newSampleId = sample.getId();
+    if(newSampleId.isEmpty())
+        return false;
+
+    if(newSampleId == measurement->getSample().getId())
+        return true;
+
+    measurement->setSample(sample);
+    hasChanges = true;
+    return true;
+}
+
+bool MeasurementController::setFluid(const Fluid &fluid)   //ref
+{
+    if(!hasActiveMeasurement())
+        return false;
+
+    QString newFluidName = fluid.getName();
+    if(newFluidName.isEmpty())
+        return false;
+
+    if(newFluidName == measurement->getFluidName())
+        return true;
+
+    measurement->setFluid(fluid);
+    hasChanges = true;
+    return true;
+}
+
+bool MeasurementController::setFluidTemperature(double temperature)
+{
+    if(!hasActiveMeasurement())
+        return false;
+
+    if(temperature == 0)
+        return false;
+
+    if(utils::compareDouble(temperature, measurement->getFluidTemperature()))
+        return true;
+
+    measurement->setFluidTemperature(temperature);
+    hasChanges = true;
+    return true;
+}
+
+bool MeasurementController::setAuthor(const QString &text)
+{
+    if(!hasActiveMeasurement())
+        return false;
+
+    if(text.isEmpty())
+        return false;
+
+    if(text == measurement->getAuthor())
+        return true;
+
+    measurement->setAuthor(text);
+    hasChanges = true;
+    return true;
 }
 
 bool MeasurementController::setDryMass(double value)
@@ -161,13 +244,12 @@ bool MeasurementController::setDryMass(double value)
     if(!hasActiveMeasurement() || measurement->isCompleted())
         return false;
 
-    measurement->setSampleDryMass(value);
-    return true;
-}
+    if(utils::compareDouble(value, measurement->getSampleDryMass()))
+        return true;
 
-double MeasurementController::getMassInFluid() const
-{
-    return measurement->getSampleInFluidMass();
+    measurement->setSampleDryMass(value);
+    hasChanges = true;
+    return true;
 }
 
 bool MeasurementController::setMassInFluid(double value)
@@ -178,7 +260,11 @@ bool MeasurementController::setMassInFluid(double value)
     if(!hasActiveMeasurement() || measurement->isCompleted())
         return false;
 
+    if(utils::compareDouble(value, measurement->getSampleInFluidMass()))
+        return true;
+
     measurement->setSampleInFluidMass(value);
+    hasChanges = true;
     return true;
 }
 
@@ -190,53 +276,57 @@ bool MeasurementController::setSaturatedMass(double value)
     if(!hasActiveMeasurement() || measurement->isCompleted())
         return false;
 
+    if(utils::compareDouble(value, measurement->getSampleSaturatedMass()))
+        return true;
+
     measurement->setSampleSaturatedMass(value);
+    hasChanges = true;
     return true;
 }
 
-double MeasurementController::getSaturatedMass()
+bool MeasurementController::setSaturationMethod(SaturationMethod method)
 {
-    return measurement->getSampleSaturatedMass();
-}
+    if(!hasActiveMeasurement())
+        return false;
 
-void MeasurementController::setSaturationMethod(SaturationMethod method)
-{
+    if(method == measurement->getSaturationMethod())
+        return true;
+
     measurement->setSaturationMethod(method);
+    hasChanges = true;
+    return true;
 }
 
-double MeasurementController::getFluidTemperature()
+bool MeasurementController::setSaturationTime(int saturationTimeMinutes)
 {
-    return measurement->getFluidTemperature();
-}
+    if(!hasActiveMeasurement())
+        return false;
 
-void MeasurementController::setFluidTemperature(double temperature)
-{
-    measurement->setFluidTemperature(temperature);
-}
+    if(saturationTimeMinutes == 0)
+        return false;
 
-double MeasurementController::getFluidDensity()
-{
-    return measurement->getFluidDensity();
-}
+    if(measurement->getSaturationTime() == saturationTimeMinutes)
+        return true;
 
-void MeasurementController::setSaturationTime(int saturationTimeMinutes)
-{
     measurement->setSaturationTime(saturationTimeMinutes);
+    hasChanges = true;
+    return true;
 }
 
-int MeasurementController::getSaturationTime()
+bool MeasurementController::setSaturationBeginDate(QDateTime beginDate)
 {
-    return measurement->getSaturationTime();
-}
+    if(!hasActiveMeasurement())
+        return false;
 
-bool MeasurementController::hasActiveMeasurement() const
-{
-    return measurement && measurement->getStatus() != MeasurementStatus::Error;
-}
+    if(!beginDate.isValid())
+        return false;
 
-bool MeasurementController::canCalculateResult() const
-{
-    return measurement->hasAllRequiredMeasurements();
+    if(measurement->getSaturationBeginDate() == beginDate)
+        return true;
+
+    measurement->setSaturationBeginDate(beginDate);
+    hasChanges = true;
+    return true;
 }
 
 MeasurementResults MeasurementController::calculateResults()
@@ -246,4 +336,9 @@ MeasurementResults MeasurementController::calculateResults()
 
     measurementManager->calculateResults(measurement->getId());
     return measurementManager->getResults(measurement->getId());
+}
+
+bool MeasurementController::canCalculateResult() const
+{
+    return measurement->hasAllRequiredMeasurements();
 }

@@ -7,6 +7,9 @@
 #include "../../main_widow/measurement_controller.h"
 #include "../../charts/porosity_chart.h"
 #include "../../charts/denisty_chart.h"
+#include "measurement_state_machine.h"
+
+#include "../../state_machine.h"
 
 class MainWindow;
 
@@ -14,36 +17,69 @@ namespace Ui {
 class MainWindow;
 }
 
-class MeasurementProcessUiHandler : public QObject
+class MeasurementProcessUiHandler : public QObject, StageHandler<MeasurementStages::Stage>
 {
     Q_OBJECT
 public:
-    explicit MeasurementProcessUiHandler(MainWindow *mainWindow, MeasurementController &radwagMeasureControler, HydrostaticDataHolder &dataHolder);
+    explicit MeasurementProcessUiHandler(MainWindow *mainWindow, MeasurementController &radwagMeasureControler, HydrostaticDataHolder &dataHolder, QObject *parent = nullptr);
+    virtual ~MeasurementProcessUiHandler() = default;
 
     void initialize();
+    bool canStartMeasureProcces();
 
-signals:
-    void setMeasureInitialData();
-    void updateConnectonLabelsStatusBar(bool status);
+public slots:
+    void onNewMeasure();
+    void onReplyMeasure(const std::shared_ptr<const Measurement> &sourceMeasure);
+    void onContinueMeasure(const std::shared_ptr<const Measurement> &sourceMeasure);
 
 private slots:
+    void initializeStateMachine();
+
+    bool onEnterStage(MeasurementStages::Stage stage, MeasurementStages::Stage) override;
+    void onStartMeasurePageEnter();
+    void onInitialDataPageEnter();
+    void onDryMeasurePageEnter();
+    void onPrepareSecondPageEnter();
+    void onPrepareTriplePageEnter();
+    void onFinishSecondPageEnter();
+    void onSaturationMassPageEnter();
+    void onFinishTriplePageEnter();
+    void onSummarySecondPageEnter();
+    void onSummaryTriplePageEnter();
+
+    bool onExitStage(MeasurementStages::Stage stage, MeasurementStages::Stage toStage) override;
+    bool onStartMeasurePageDataExit();
+    bool onInitialDataPageExit();
+    bool onDryMeasureDataPageExit();
+    bool onPrepareSecondMeasurePageDataExit();
+    bool onFinishSecondMeasurePageDataExit();
+    bool onPrepareTripleMeasurePageDataExit();
+    bool onSaturationMassMeasurePageDataExit();
+    bool onFinishTripleMeasurePageDataExit();
+    bool onSummarySecondPageExit();
+    bool onSummaryTriplePageExit();
+
+    void goToNextMeasureStage();
+    void goToPreviousMeasureStage();
+    void onStageChanged();
+
     void buttonTableFluidsOnClicked();
     void buttonSamplesOnClicked();
     void onMaterialsChanged(const QMap<QString, Material> &materials);
 
-    void onBeginNewMeasure();
-    void onStartMeasureButtonClicked();
     void onShowHydroSetSchemeButtonClicked();
-
-    void goToPreviousMeasureStage();
-    void goToNextMeasureStage();
 
     void onResetMeasureButtonClicked();
     void onSaveMeasureButtonClicekd();
 
-    void onSetInitialData();
     void onMeasurementTypeChanged();
     void onSampleComboBoxChanged(int index);
+    void onFluidComboBoxChanged(int index);
+    void onAuthorEditingFinished();
+
+    void onComboFluidTempPrepMeasureSecondChanged(int index);
+    void onComboFluidTempPrepMeasureTripleChanged(int index);
+    void onComboSatMethodPrepareMeasureTripleChanged(int index);
 
     void onDryMassExecuteStepOneClicked();
     void onDryMassExecuteStepTwoClicked();
@@ -70,66 +106,69 @@ private slots:
     void onSaveTripleCurrentSaturatedMeasureButtonClicked();
     void onClearTripleSavedSaturatedMeasureButtonClicked();
 
-
-    //Summary second
-    void onSaveSecondMeasureButtonClicked();
-    void onNewMeasureButtonClicked();
-    void onReplyMeasureButtonClicked();
-
+    void onNewMeasureSummaryButtonClicked();
+    void onReplyMeasureSummaryButtonClicked();
 
     void onConfrimPrepareWorkstationButtonClicked();
     void onConfrimPrepareMeasureSecondButtonClicked();
-    bool checkGuidePrepareMeasureSecondButton();
 
     void onConfirmSampleSaturationPreparationClicked();
-    bool checkGuideSampleSaturationPreparation();
     void onSpinSaturationTimeChanged();
 
 private:
-    bool fillInitialDataLabels();
+    bool validateInitialDataPage();
+    bool validateDryMeasureDataPage();
+    bool validatePrepareSecondMeasurePage();
+    bool validateFinishSecondMeasurePage();
+    bool validatePrepareTripleMeasurePage();
+    bool validateSaturationMassMeasurePage();
+    bool validateFinishTripleMeasurePage();
+
     void fillSampleCombo();
     void fillFluidCombo();
-    void fillPrepareDataLabels();
-    void fillSampleInfoLabels();
-    void fillFluidInfoLabels();
-    void fillTemperatureComboBox();
-    void fillFinishMeasureSecondLabels();
-
-    void fillPrepareSaturationDataLabels();
-    void fillSaturationSampleInfoLabels();
     void fillSaturationMethodsCombo();
-    void fillPrepareSaturationFluidInfoLabels();
-    void fillPrepareSaturationTemperatureCombo();
-    void fillMeasureSecondLabelsSummary();
 
-    void fillFinishMeasureTripleLabels();
-    void fillAirSaturatedTripleLabels();
-    void fillMeasureTripleLabelsSummary();
+    void fillPrepareMeasureTemperatureCombo();
+    void fillPrepareSaturationTemperatureCombo();
+
+    void upadteSampleEditors();
+
+    bool updateInitialDataLabels();
+    void updateDryDataLabels();
+    void updatePrepareDataLabels();
+
+    void updateSampleInfoLabels();
+    void updateFluidInfoLabels();
+    void updateTemperatureComboBox();
+    void updateFluidDensityLabel();
+    void updateFinishMeasureSecondLabels();
+    void updateMeasureSecondLabelsSummary();
+
+    void updatePrepareSaturationDataLabels();
+    void updateSaturationSampleInfoLabels();
+    void updatePrepareSaturationFluidInfoLabels();
+    void updatePrepareSaturationTemperatureCombo();
+    void updateFinishMeasureTripleLabels();
+    void updateAirSaturatedTripleLabels();
+    void updateMeasureTripleLabelsSummary();
 
     void updateSaveCurrentDryMeasureButtonState();
     void updateSaveFinishSecondButtonState();
     void updateSaveFinishTripleButtonState();
     void updateSaveSaturatedTripleButtonState();
 
-    void updateFluidDensityLabel();
-
     void updateSaturationMethodPrepareTriple();
     void updatePrepareSaturationFluidDensityLabel();
+
+    void updateWigdetVisibility(MeasurementStages::Stage currentStage);
 
     void setupCharts();
     void updatePorosityChart();
     void updateDenistyChart();
 
-    bool validateUIDataForCurrentStage(MeasurementStages::Stage currentStage);
-    bool validateInitialData();
-    bool vaildateDryMeasureData();
-    bool vaildatePrepareSecondMeasureData();
-    bool vaildateFinishSecondMeasureData();
-    bool vaildatePrepareTripleMeasureData();
-    bool vaildateSaturationMassMeasureData();
-    bool vaildateFinishTripleMeasureData();
-
-    void upadteSampleEditors();
+    bool checkGuidePrepareWorkstation(bool showMessage = true);
+    bool checkGuidePrepareMeasureSecondButton();
+    bool checkGuideSampleSaturationPreparation();
 
     void clearSecondMeasurePages();
     void clearTripleMeasurePages();
@@ -148,6 +187,7 @@ private:
     void setEnableFinishMeasureSecondPage(bool enabled);
     void setEnablePrepareSaturationPage(bool enabled);
     void setEnableSaturationTrilpePage(bool enabled);
+    void setEnableSaturatedTrilpePage(bool enabled);
 
     void connectSignals();
     void connectNavMeasurementButtons();
@@ -163,12 +203,12 @@ private:
     void connectSummaryMeasureSecondPageButtons();
     void connectSummaryMeasureTriplePageButtons();
     void connectCatalogsButtons();
+
     void updateStageLabels();
 
-
-    MeasurementStages::Stage getCurrentStage() const;
     void initializeMappings();
 
+    QMap<MeasurementStages::Stage, QWidget*> stageToPageMap;
     QMap<MeasurementStages::Stage, QLabel*> tripleStageToLabelMap;
     QMap<MeasurementStages::Stage, QLabel*> secondStageToLabelMap;
     QList<QLabel*> allTripleLabels;
@@ -180,9 +220,13 @@ private:
     HydrostaticDataHolder &dataHolder;
 
     MeasurementController &radwagMeasureControler;
+    MeasurementStateMachine *measureStateMachine;
 
     PorosityChartWidget *porosityChart;
     DensityChartWidget *denistyChart;
+
+    bool saveStageData(MeasurementStages::Stage stage);
+    bool saveDataToStage(MeasurementStages::Stage currentStage);
 };
 
 #endif

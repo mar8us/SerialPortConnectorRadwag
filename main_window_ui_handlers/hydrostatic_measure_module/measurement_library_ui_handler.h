@@ -17,12 +17,14 @@ class MeasurementLibraryUiHandler : public QObject
 {
     Q_OBJECT
 public:
-    explicit MeasurementLibraryUiHandler(MainWindow *mainWindow,  HydrostaticDataHolder &dataHolder);
+    explicit MeasurementLibraryUiHandler(MainWindow *mainWindow,  HydrostaticDataHolder &dataHolder, QObject *parent = nullptr);
 
     void initialize();
 
 signals:
-    void newMeasureButtonClicked();
+    void newMeasure();
+    void replySelectedMeasure(const std::shared_ptr<const Measurement> &sourceMeasure);
+    void continueSelectedMeasure(const std::shared_ptr<const Measurement> &sourceMeasure);
 
 private slots:
     void onLibrarySearchTextChanged(const QString& text);
@@ -30,11 +32,19 @@ private slots:
     void onLibraryGroupByChanged(int index);
 
     void onLibraryNewMeasureButtonClicked();
+    void onLibraryReplyMeasureClicked();
+    void onLibraryContinueMeasureButtonClicked();
+    void onLibraryDeleteMeasureButtonClicked();
 
     void onSelectionChanged(const QItemSelection &selected, const QItemSelection &deselected);
     void onMeasurementDoubleClicked(const QModelIndex& index);
 
 private:
+    MeasurementTreeModel::TreeItem* getSelectedItem() const;
+    QList<MeasurementTreeModel::TreeItem*> getSelectedItems() const;
+    std::shared_ptr<const Measurement> getSelectedMeasure() const;
+    QList<std::shared_ptr<const Measurement>> getSelectedMeasures() const;
+
     void setupLibraryView();
     void setupLibraryControls();
     void setupLibraryModels();
@@ -43,6 +53,7 @@ private:
     void refreshLibraryView();
     void updateMeasurementCounter();
     int countVisibleItems(QAbstractItemModel* model, const QModelIndex& parent);
+    void updateButtonsState();
 
     void fillComboLibSearchIn();
     void fillComboLibGroupBy();

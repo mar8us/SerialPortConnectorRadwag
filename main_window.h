@@ -16,16 +16,26 @@ public:
     ~MainWindow();
 
     Ui::MainWindow *getUi() const;
+    void navigateToToolBoxPage(QWidget* page);
 
     void showWarning(const QString& title, const QString& message);
     void showInfo(const QString& title, const QString& message);
+    bool showQuestion(const QString& title, const QString& message);
+
+    enum class MessageResult
+    {
+        Yes,
+        No,
+        Cancel
+    };
+
+    MessageResult showQuestionWithCancel(const QString& title, const QString& message);
 
 private slots:
     void onConnectResult(bool connected);
     void onDeviceComboSelectionChanged();
     void onRadwagMeasueReady(const RadwagMeasure &data);
 
-    void navigateToToolBoxPage(QWidget* page);
     void onMainPageChanged(int index);
 
 private:

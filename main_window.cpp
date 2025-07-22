@@ -51,6 +51,46 @@ void MainWindow::showInfo(const QString& title, const QString& message)
     QMessageBox::information(this, title, message);
 }
 
+bool MainWindow::showQuestion(const QString& title, const QString& message)
+{
+    QMessageBox msgBox(this);
+    msgBox.setWindowTitle(title);
+    msgBox.setText(message);
+    msgBox.setIcon(QMessageBox::Question);
+
+    QPushButton *yesButton = msgBox.addButton("Tak", QMessageBox::YesRole);
+    QPushButton *noButton = msgBox.addButton("Nie", QMessageBox::NoRole);
+
+    msgBox.setDefaultButton(noButton);
+
+    msgBox.exec();
+
+    return msgBox.clickedButton() == yesButton;
+}
+
+MainWindow::MessageResult MainWindow::showQuestionWithCancel(const QString& title, const QString& message)
+{
+    QMessageBox msgBox(this);
+    msgBox.setWindowTitle(title);
+    msgBox.setText(message);
+    msgBox.setIcon(QMessageBox::Question);
+
+    QPushButton *yesButton = msgBox.addButton("Tak", QMessageBox::YesRole);
+    QPushButton *noButton = msgBox.addButton("Nie", QMessageBox::NoRole);
+    QPushButton *cancelButton = msgBox.addButton("Anuluj", QMessageBox::RejectRole);
+
+    msgBox.setDefaultButton(cancelButton);
+
+    int result = msgBox.exec();
+
+    if(msgBox.clickedButton() == yesButton)
+        return MessageResult::Yes;
+    else if (msgBox.clickedButton() == noButton)
+        return MessageResult::No;
+    else
+        return MessageResult::Cancel;
+}
+
 void MainWindow::navigateToToolBoxPage(QWidget* page)
 {
     if(page && ui->stackedWidget->indexOf(page) != -1)
@@ -167,15 +207,6 @@ void MainWindow::connectMainNavButtons()
     });
 
     connect(ui->actionMeasureDensity, &QAction::triggered, this, [this]() {
-
-        if(!appCore.hasConnectionWithScale() || !hydrostaticMeasurementModule.hasActiveMeasurement())
-        {
-            ui->stackedWidgetMainHydroMeasure->setCurrentWidget(ui->pageStartMeasure);
-            ui->measureDensityStage->setProperty("currentStage", QVariant::fromValue(MeasurementStages::Stage::StartMeasure));
-        }
-        else if(hydrostaticMeasurementModule.hasActiveMeasurement())
-            showWarning("Aktywny pomiar", "Masz aktywny pomiar hydrostatyczny. Zakończ aktualny pomiar aby wykonać kolejny.");
-
         navigateToToolBoxPage(ui->measureDensityPage);
     });
 

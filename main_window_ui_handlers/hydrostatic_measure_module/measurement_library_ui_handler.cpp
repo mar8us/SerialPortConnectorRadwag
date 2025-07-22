@@ -2,8 +2,8 @@
 #include "../../main_window.h"
 
 
-MeasurementLibraryUiHandler::MeasurementLibraryUiHandler(MainWindow *mainWindow, HydrostaticDataHolder &dataHolder)
-    : QObject(mainWindow)
+MeasurementLibraryUiHandler::MeasurementLibraryUiHandler(MainWindow *mainWindow, HydrostaticDataHolder &dataHolder, QObject *parent)
+    : QObject(parent)
     , mainWindow(mainWindow)
     , ui(mainWindow->getUi())
     , dataHolder(dataHolder)
@@ -15,6 +15,7 @@ void MeasurementLibraryUiHandler::initialize()
 {
     setupLibraryView();
     connectSignals();
+    updateButtonsState();
 }
 
 void MeasurementLibraryUiHandler::onLibrarySearchTextChanged(const QString& text)
@@ -40,16 +41,55 @@ void MeasurementLibraryUiHandler::onLibraryGroupByChanged(int index)
 
 void MeasurementLibraryUiHandler::onLibraryNewMeasureButtonClicked()
 {
-    ui->tabWidgetMain->setCurrentIndex(0);
-    ui->actionMeasureDensity->trigger();
+    emit newMeasure();
+}
+
+void MeasurementLibraryUiHandler::onLibraryReplyMeasureClicked()
+{
+    emit replySelectedMeasure(getSelectedMeasure());
+}
+
+void MeasurementLibraryUiHandler::onLibraryContinueMeasureButtonClicked()
+{
+    emit continueSelectedMeasure(getSelectedMeasure());
+}
+
+void MeasurementLibraryUiHandler::onLibraryDeleteMeasureButtonClicked()
+{
+    auto measures = getSelectedMeasures();
+
+    if(measures.isEmpty())
+        return;
+
+    QString message;
+    if(measures.size() == 1)
+    {
+        auto measurement = dataHolder.measurementManager->getMeasurement(measures.first()->getId());
+        if(!measurement)
+            return;
+
+        QString sampleName = measurement->getSample().getName();
+        QString materialName = measurement->getSample().getMaterialName();
+
+        QString displayInfo = QString(":\n");
+        displayInfo = sampleName.isEmpty() ? QString(): QString(": \"%1 - %2\"").arg(sampleName).arg(materialName);
+        message = QString("Czy na pewno chcesz usunąć zaznaczony pomiar%1").arg(displayInfo) + QString("?");
+    }
+    else
+        message = QString("Czy na pewno chcesz usunąć %1 zaznaczonych pomiarów?").arg(measures.size());
+
+    if(!mainWindow->showQuestion("Potwierdzenie usunięcia", message))
+        return;
+
+    for(const auto measure : measures)
+        dataHolder.measurementManager->removeMeasurement(measure->getId());
 }
 
 void MeasurementLibraryUiHandler::onSelectionChanged(const QItemSelection &selected, const QItemSelection &deselected)
 {
-    QItemSelectionModel *selectionModel = ui->treeViewLibMeasure->selectionModel();
-    int selectedCount = selectionModel->selectedRows().count();
-    ui->labelLibSelectedCount->setText(QString("Zaznaczone: %1").arg(selectedCount));
+    ui->labelLibSelectedCount->setText(QString("Zaznaczone: %1").arg(selected.indexes().count()));
     updateMeasurementCounter();
+    updateButtonsState();
 }
 
 void MeasurementLibraryUiHandler::onMeasurementDoubleClicked(const QModelIndex& index)
@@ -85,6 +125,61 @@ void MeasurementLibraryUiHandler::onMeasurementDoubleClicked(const QModelIndex& 
 //         // ...
 //     }
 // }
+
+MeasurementTreeModel::TreeItem* MeasurementLibraryUiHandler::getSelectedItem() const
+{
+    QItemSelectionModel *selectionModel = ui->treeViewLibMeasure->selectionModel();
+    if(!selectionModel || !selectionModel->hasSelection())
+        return nullptr;
+    return measurementModel->getItem(measurementProxyModel->mapToSource(ui->treeViewLibMeasure->currentIndex()));
+}
+
+QList<MeasurementTreeModel::TreeItem *> MeasurementLibraryUiHandler::getSelectedItems() const
+{
+    QList<MeasurementTreeModel::TreeItem*> items;
+
+    QItemSelectionModel *selectionModel = ui->treeViewLibMeasure->selectionModel();
+    if(!selectionModel || !selectionModel->hasSelection())
+        return items;
+
+    QModelIndexList selectedIndexes = selectionModel->selectedRows();
+
+    for(const QModelIndex& proxyIndex : selectedIndexes)
+    {
+        if(!proxyIndex.isValid())
+            continue;
+
+        QModelIndex sourceIndex = measurementProxyModel->mapToSource(proxyIndex);
+        if(!sourceIndex.isValid())
+            continue;
+
+        auto* item = measurementModel->getItem(sourceIndex);
+        if(item)
+            items.append(item);
+    }
+
+    return items;
+}
+
+std::shared_ptr<const Measurement> MeasurementLibraryUiHandler::getSelectedMeasure() const
+{
+    auto item = getSelectedItem();
+    if(!item || item->measurementIds.size() != 1)
+        return nullptr;
+
+    auto measure = dataHolder.measurementManager->getMeasurement(item->measurementIds.first());
+    return measure;
+}
+
+QList<std::shared_ptr<const Measurement>> MeasurementLibraryUiHandler::getSelectedMeasures() const
+{
+    QVector<std::shared_ptr<const Measurement>> measures;
+    auto items = getSelectedItems();
+    for(auto &item : items)
+        if(item && item->measurementIds.size() == 1)
+            measures.append(dataHolder.measurementManager->getMeasurement(item->measurementIds.first()));
+    return measures;
+}
 
 void MeasurementLibraryUiHandler::setupLibraryView()
 {
@@ -130,6 +225,7 @@ void MeasurementLibraryUiHandler::setupLibraryTreeView()
 void MeasurementLibraryUiHandler::refreshLibraryView()
 {
     measurementModel->buildTree();
+    ui->treeViewLibMeasure->clearSelection();
     ui->treeViewLibMeasure->expandAll();
 }
 
@@ -161,6 +257,15 @@ int MeasurementLibraryUiHandler::countVisibleItems(QAbstractItemModel* model, co
             count++;
     }
     return count;
+}
+
+void MeasurementLibraryUiHandler::updateButtonsState()
+{
+    auto measure = getSelectedMeasure();
+    auto measures = getSelectedMeasures();
+    ui->buttonLibDeleteMeasure->setEnabled(measure != nullptr);
+    ui->buttonLibReplyMeasure->setEnabled(measures.size() == 1);
+    ui->buttonLibContinueMeasure->setEnabled(measures.size() == 1 && !measures.first()->isCompleted());
 }
 
 void MeasurementLibraryUiHandler::fillComboLibSearchIn()
@@ -199,6 +304,9 @@ void MeasurementLibraryUiHandler::connectSignals()
 void MeasurementLibraryUiHandler::connectLibraryMeasureButtons()
 {
     connect(ui->buttonLibNewMeasure, &QPushButton::clicked, this, &MeasurementLibraryUiHandler::onLibraryNewMeasureButtonClicked);
+    connect(ui->buttonLibReplyMeasure, &QPushButton::clicked, this, &MeasurementLibraryUiHandler::onLibraryReplyMeasureClicked);
+    connect(ui->buttonLibContinueMeasure, &QPushButton::clicked, this, &MeasurementLibraryUiHandler::onLibraryContinueMeasureButtonClicked);
+    connect(ui->buttonLibDeleteMeasure, &QPushButton::clicked, this, &MeasurementLibraryUiHandler::onLibraryDeleteMeasureButtonClicked);
 }
 
 void MeasurementLibraryUiHandler::connectMeasurementTreeSignals()
