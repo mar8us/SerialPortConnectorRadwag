@@ -13,9 +13,9 @@ MeasurementStateMachine::MeasurementStateMachine(QStackedWidget* stackedWidget, 
     setupTripleMeasurementFlow();
 }
 
-void MeasurementStateMachine::setMeasurementType(bool isTripleMeasurement)
+void MeasurementStateMachine::setMeasurementType(MeasurementType type)
 {
-    this->isTripleMeasurement = isTripleMeasurement;
+    isTripleMeasurement = type == MeasurementType::ThreeStage;
 }
 
 MeasurementStages::Stage MeasurementStateMachine::getNextStage(MeasurementStages::Stage stage) const
@@ -36,6 +36,11 @@ MeasurementStages::Stage MeasurementStateMachine::getPreviousStage(MeasurementSt
     if(it != sequence.end() && it != sequence.begin())
         return *(it - 1);
     return stage;
+}
+
+MeasurementStages::Stage MeasurementStateMachine::getLastStage() const
+{
+    return StateMachine<MeasurementStages::Stage>::getPreviousStage();
 }
 
 bool MeasurementStateMachine::isLastStage(MeasurementStages::Stage stage) const

@@ -15,6 +15,14 @@ double getDouble(const QString &text)
     return conversionOk ? value : 0.0;
 }
 
+bool compareDouble(double a, double b, double epsilon)
+{
+    if(qAbs(a - b) <= epsilon)
+        return true;
+
+    return qAbs(a - b) <= epsilon * qMax(qAbs(a), qAbs(b));
+}
+
 SaturationMethod getSaturationMethodFromIndex(int index)
 {
     switch (index)

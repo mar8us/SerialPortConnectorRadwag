@@ -3,6 +3,7 @@
 
 #include <QObject>
 #include "../../state_machine.h"
+#include "../../radwag/measurement.h"
 
 namespace MeasurementStages {
 enum class Stage;
@@ -20,10 +21,12 @@ public:
     explicit MeasurementStateMachine(QStackedWidget* stackedWidget, QObject* parent = nullptr);
     virtual ~MeasurementStateMachine() = default;
 
-    void setMeasurementType(bool isTripleMeasurement);
+    void setMeasurementType(MeasurementType type);
 
     MeasurementStages::Stage getNextStage(MeasurementStages::Stage stage) const override;
     MeasurementStages::Stage getPreviousStage(MeasurementStages::Stage stage) const override;
+
+    MeasurementStages::Stage getLastStage() const;
 
     bool isLastStage(MeasurementStages::Stage stage) const;
     bool isFirstStage(MeasurementStages::Stage stage) const;

@@ -37,7 +37,7 @@
            </size>
           </property>
           <property name="currentIndex">
-           <number>2</number>
+           <number>0</number>
           </property>
           <property name="iconSize">
            <size>
@@ -50,6 +50,25 @@
             <string>Proces pomiarowy</string>
            </attribute>
            <layout class="QGridLayout" name="gridLayout_9">
+            <item row="1" column="3">
+             <widget class="QPushButton" name="buttonNextData">
+              <property name="minimumSize">
+               <size>
+                <width>150</width>
+                <height>30</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>150</width>
+                <height>16777215</height>
+               </size>
+              </property>
+              <property name="text">
+               <string>Przejdź dalej</string>
+              </property>
+             </widget>
+            </item>
             <item row="0" column="0">
              <widget class="QFrame" name="frame">
               <property name="minimumSize">
@@ -101,7 +120,7 @@
                   </size>
                  </property>
                  <property name="currentIndex">
-                  <number>0</number>
+                  <number>1</number>
                  </property>
                  <widget class="QWidget" name="stageSecondMeasure">
                   <layout class="QVBoxLayout" name="verticalLayout_71">
@@ -497,7 +516,26 @@
               </layout>
              </widget>
             </item>
-            <item row="0" column="1">
+            <item row="1" column="2">
+             <widget class="QPushButton" name="buttonPrevData">
+              <property name="minimumSize">
+               <size>
+                <width>150</width>
+                <height>30</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>150</width>
+                <height>16777215</height>
+               </size>
+              </property>
+              <property name="text">
+               <string>Wróć</string>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="1" colspan="3">
              <widget class="QStackedWidget" name="measureDensityStage">
               <property name="minimumSize">
                <size>
@@ -506,7 +544,7 @@
                </size>
               </property>
               <property name="currentIndex">
-               <number>9</number>
+               <number>0</number>
               </property>
               <widget class="QWidget" name="pageStartMeasure">
                <layout class="QVBoxLayout" name="verticalLayout_12">
@@ -641,42 +679,6 @@ a następnie wykonaj poniższe kroki:</string>
                   </property>
                  </spacer>
                 </item>
-                <item>
-                 <layout class="QHBoxLayout" name="horizontalLayout_17">
-                  <item>
-                   <spacer name="horizontalSpacer_54">
-                    <property name="orientation">
-                     <enum>Qt::Orientation::Horizontal</enum>
-                    </property>
-                    <property name="sizeHint" stdset="0">
-                     <size>
-                      <width>40</width>
-                      <height>20</height>
-                     </size>
-                    </property>
-                   </spacer>
-                  </item>
-                  <item>
-                   <widget class="QPushButton" name="buttonStartMeasure">
-                    <property name="minimumSize">
-                     <size>
-                      <width>150</width>
-                      <height>30</height>
-                     </size>
-                    </property>
-                    <property name="maximumSize">
-                     <size>
-                      <width>150</width>
-                      <height>16777215</height>
-                     </size>
-                    </property>
-                    <property name="text">
-                     <string>Rozpocznij pomiar</string>
-                    </property>
-                   </widget>
-                  </item>
-                 </layout>
-                </item>
                </layout>
               </widget>
               <widget class="QWidget" name="pageInitialData">
@@ -706,44 +708,6 @@ a następnie wykonaj poniższe kroki:</string>
                     </property>
                    </widget>
                   </item>
-                  <item>
-                   <widget class="QPushButton" name="buttonPrevData">
-                    <property name="minimumSize">
-                     <size>
-                      <width>150</width>
-                      <height>30</height>
-                     </size>
-                    </property>
-                    <property name="maximumSize">
-                     <size>
-                      <width>150</width>
-                      <height>16777215</height>
-                     </size>
-                    </property>
-                    <property name="text">
-                     <string>Wróć</string>
-                    </property>
-                   </widget>
-                  </item>
-                  <item>
-                   <widget class="QPushButton" name="buttonNextData">
-                    <property name="minimumSize">
-                     <size>
-                      <width>150</width>
-                      <height>30</height>
-                     </size>
-                    </property>
-                    <property name="maximumSize">
-                     <size>
-                      <width>150</width>
-                      <height>16777215</height>
-                     </size>
-                    </property>
-                    <property name="text">
-                     <string>Przejdź dalej</string>
-                    </property>
-                   </widget>
-                  </item>
                  </layout>
                 </item>
                 <item row="0" column="0">
@@ -762,7 +726,92 @@ a następnie wykonaj poniższe kroki:</string>
                   </property>
                  </spacer>
                 </item>
-                <item row="1" column="1" colspan="2">
+                <item row="0" column="1">
+                 <widget class="QGroupBox" name="groupBoxInitialDataMeasure">
+                  <property name="title">
+                   <string>Pomiar</string>
+                  </property>
+                  <layout class="QVBoxLayout" name="verticalLayout_14">
+                   <item>
+                    <layout class="QHBoxLayout" name="horizontalLayout_4">
+                     <item>
+                      <widget class="QRadioButton" name="radioMeasureSecond">
+                       <property name="toolTip">
+                        <string>Wyznaczenie gęstości pozornej i objętości materiałów niewchłaniających wody.
+Odpowiedni dla materiałów o zwartej strukturze, nienasiąkliwych.</string>
+                       </property>
+                       <property name="text">
+                        <string>Pomiar dwustopniowy</string>
+                       </property>
+                       <property name="checked">
+                        <bool>true</bool>
+                       </property>
+                      </widget>
+                     </item>
+                     <item>
+                      <widget class="QRadioButton" name="radioMeasureTriple">
+                       <property name="toolTip">
+                        <string>Wyznaczenie gęstości pozornej, porowatości otwartej oraz nasiąkliwości materiałów porowatych.
+Odpowiedni dla materiałów wchłaniających wodę (ceramika, skały osadowe, betony, itp.).</string>
+                       </property>
+                       <property name="text">
+                        <string>Pomiar trzystopniowy</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item>
+                      <spacer name="horizontalSpacer_21">
+                       <property name="orientation">
+                        <enum>Qt::Orientation::Horizontal</enum>
+                       </property>
+                       <property name="sizeHint" stdset="0">
+                        <size>
+                         <width>40</width>
+                         <height>20</height>
+                        </size>
+                       </property>
+                      </spacer>
+                     </item>
+                    </layout>
+                   </item>
+                   <item>
+                    <layout class="QHBoxLayout" name="horizontalLayout_11">
+                     <item>
+                      <widget class="QLabel" name="labelSelectSample">
+                       <property name="text">
+                        <string>Wybierz próbkę:</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item>
+                      <widget class="QComboBox" name="comboBoxSampleSelection">
+                       <property name="minimumSize">
+                        <size>
+                         <width>200</width>
+                         <height>30</height>
+                        </size>
+                       </property>
+                      </widget>
+                     </item>
+                     <item>
+                      <spacer name="horizontalSpacer_20">
+                       <property name="orientation">
+                        <enum>Qt::Orientation::Horizontal</enum>
+                       </property>
+                       <property name="sizeHint" stdset="0">
+                        <size>
+                         <width>40</width>
+                         <height>20</height>
+                        </size>
+                       </property>
+                      </spacer>
+                     </item>
+                    </layout>
+                   </item>
+                  </layout>
+                 </widget>
+                </item>
+                <item row="1" column="1">
                  <widget class="QGroupBox" name="groupBoxInitialData">
                   <property name="title">
                    <string>Dane wstępne pomiaru</string>
@@ -784,8 +833,8 @@ a następnie wykonaj poniższe kroki:</string>
                        <rect>
                         <x>0</x>
                         <y>0</y>
-                        <width>320</width>
-                        <height>281</height>
+                        <width>829</width>
+                        <height>329</height>
                        </rect>
                       </property>
                       <layout class="QGridLayout" name="gridLayout_17">
@@ -1026,91 +1075,6 @@ a następnie wykonaj poniższe kroki:</string>
                       </layout>
                      </widget>
                     </widget>
-                   </item>
-                  </layout>
-                 </widget>
-                </item>
-                <item row="0" column="1">
-                 <widget class="QGroupBox" name="groupBoxInitialDataMeasure">
-                  <property name="title">
-                   <string>Pomiar</string>
-                  </property>
-                  <layout class="QVBoxLayout" name="verticalLayout_14">
-                   <item>
-                    <layout class="QHBoxLayout" name="horizontalLayout_4">
-                     <item>
-                      <widget class="QRadioButton" name="radioMeasureSecond">
-                       <property name="toolTip">
-                        <string>Wyznaczenie gęstości pozornej i objętości materiałów niewchłaniających wody.
-Odpowiedni dla materiałów o zwartej strukturze, nienasiąkliwych.</string>
-                       </property>
-                       <property name="text">
-                        <string>Pomiar dwustopniowy</string>
-                       </property>
-                       <property name="checked">
-                        <bool>true</bool>
-                       </property>
-                      </widget>
-                     </item>
-                     <item>
-                      <widget class="QRadioButton" name="radioMeasureTriple">
-                       <property name="toolTip">
-                        <string>Wyznaczenie gęstości pozornej, porowatości otwartej oraz nasiąkliwości materiałów porowatych.
-Odpowiedni dla materiałów wchłaniających wodę (ceramika, skały osadowe, betony, itp.).</string>
-                       </property>
-                       <property name="text">
-                        <string>Pomiar trzystopniowy</string>
-                       </property>
-                      </widget>
-                     </item>
-                     <item>
-                      <spacer name="horizontalSpacer_21">
-                       <property name="orientation">
-                        <enum>Qt::Orientation::Horizontal</enum>
-                       </property>
-                       <property name="sizeHint" stdset="0">
-                        <size>
-                         <width>40</width>
-                         <height>20</height>
-                        </size>
-                       </property>
-                      </spacer>
-                     </item>
-                    </layout>
-                   </item>
-                   <item>
-                    <layout class="QHBoxLayout" name="horizontalLayout_11">
-                     <item>
-                      <widget class="QLabel" name="labelSelectSample">
-                       <property name="text">
-                        <string>Wybierz próbkę:</string>
-                       </property>
-                      </widget>
-                     </item>
-                     <item>
-                      <widget class="QComboBox" name="comboBoxSampleSelection">
-                       <property name="minimumSize">
-                        <size>
-                         <width>200</width>
-                         <height>30</height>
-                        </size>
-                       </property>
-                      </widget>
-                     </item>
-                     <item>
-                      <spacer name="horizontalSpacer_20">
-                       <property name="orientation">
-                        <enum>Qt::Orientation::Horizontal</enum>
-                       </property>
-                       <property name="sizeHint" stdset="0">
-                        <size>
-                         <width>40</width>
-                         <height>20</height>
-                        </size>
-                       </property>
-                      </spacer>
-                     </item>
-                    </layout>
                    </item>
                   </layout>
                  </widget>
@@ -1496,6 +1460,9 @@ i wykonaj pomiar</string>
                         <property name="readOnly">
                          <bool>true</bool>
                         </property>
+                        <property name="placeholderText">
+                         <string>0.0</string>
+                        </property>
                        </widget>
                       </item>
                       <item>
@@ -1554,52 +1521,6 @@ i wykonaj pomiar</string>
                    </item>
                   </layout>
                  </widget>
-                </item>
-                <item>
-                 <layout class="QHBoxLayout" name="navigationButtonsLayout">
-                  <item>
-                   <spacer name="horizontalSpacer_4">
-                    <property name="orientation">
-                     <enum>Qt::Orientation::Horizontal</enum>
-                    </property>
-                    <property name="sizeHint" stdset="0">
-                     <size>
-                      <width>40</width>
-                      <height>20</height>
-                     </size>
-                    </property>
-                   </spacer>
-                  </item>
-                  <item>
-                   <widget class="QPushButton" name="buttonPrevDryMass">
-                    <property name="minimumSize">
-                     <size>
-                      <width>150</width>
-                      <height>30</height>
-                     </size>
-                    </property>
-                    <property name="text">
-                     <string>Wróć</string>
-                    </property>
-                   </widget>
-                  </item>
-                  <item>
-                   <widget class="QPushButton" name="buttonNextDryMass">
-                    <property name="enabled">
-                     <bool>true</bool>
-                    </property>
-                    <property name="minimumSize">
-                     <size>
-                      <width>150</width>
-                      <height>30</height>
-                     </size>
-                    </property>
-                    <property name="text">
-                     <string>Przejdź dalej</string>
-                    </property>
-                   </widget>
-                  </item>
-                 </layout>
                 </item>
                </layout>
               </widget>
@@ -1750,6 +1671,9 @@ umieszczając ją w komorze próźniowej na czas zaniku ostatniego pęcherzyka</
                     <spacer name="verticalSpacer_7">
                      <property name="orientation">
                       <enum>Qt::Orientation::Vertical</enum>
+                     </property>
+                     <property name="sizeType">
+                      <enum>QSizePolicy::Policy::MinimumExpanding</enum>
                      </property>
                      <property name="sizeHint" stdset="0">
                       <size>
@@ -1944,49 +1868,6 @@ umieszczając ją w komorze próźniowej na czas zaniku ostatniego pęcherzyka</
                    </size>
                   </property>
                  </spacer>
-                </item>
-                <item>
-                 <layout class="QHBoxLayout" name="navigationButtonsLayout_2">
-                  <item>
-                   <spacer name="horizontalSpacer">
-                    <property name="orientation">
-                     <enum>Qt::Orientation::Horizontal</enum>
-                    </property>
-                    <property name="sizeHint" stdset="0">
-                     <size>
-                      <width>40</width>
-                      <height>20</height>
-                     </size>
-                    </property>
-                   </spacer>
-                  </item>
-                  <item>
-                   <widget class="QPushButton" name="buttonPrevPreparation">
-                    <property name="minimumSize">
-                     <size>
-                      <width>150</width>
-                      <height>30</height>
-                     </size>
-                    </property>
-                    <property name="text">
-                     <string>Wróć</string>
-                    </property>
-                   </widget>
-                  </item>
-                  <item>
-                   <widget class="QPushButton" name="buttonNextPreparation">
-                    <property name="minimumSize">
-                     <size>
-                      <width>150</width>
-                      <height>30</height>
-                     </size>
-                    </property>
-                    <property name="text">
-                     <string>Przejdź dalej</string>
-                    </property>
-                   </widget>
-                  </item>
-                 </layout>
                 </item>
                </layout>
               </widget>
@@ -2365,230 +2246,10 @@ umieszczając ją w komorze próźniowej na czas zaniku ostatniego pęcherzyka</
                   </item>
                  </layout>
                 </item>
-                <item>
-                 <layout class="QHBoxLayout" name="navigationButtonsLayout_3">
-                  <item>
-                   <spacer name="horizontalSpacer_5">
-                    <property name="orientation">
-                     <enum>Qt::Orientation::Horizontal</enum>
-                    </property>
-                    <property name="sizeHint" stdset="0">
-                     <size>
-                      <width>40</width>
-                      <height>20</height>
-                     </size>
-                    </property>
-                   </spacer>
-                  </item>
-                  <item>
-                   <widget class="QPushButton" name="buttonPrevPrepareSaturation">
-                    <property name="minimumSize">
-                     <size>
-                      <width>150</width>
-                      <height>30</height>
-                     </size>
-                    </property>
-                    <property name="text">
-                     <string>Wróć</string>
-                    </property>
-                   </widget>
-                  </item>
-                  <item>
-                   <widget class="QPushButton" name="buttonNextPrepareSaturation">
-                    <property name="minimumSize">
-                     <size>
-                      <width>150</width>
-                      <height>30</height>
-                     </size>
-                    </property>
-                    <property name="text">
-                     <string>Przejdź dalej</string>
-                    </property>
-                   </widget>
-                  </item>
-                 </layout>
-                </item>
                </layout>
               </widget>
               <widget class="QWidget" name="pageFinishMeasurementSecond">
                <layout class="QGridLayout" name="gridLayout_2">
-                <item row="0" column="0" rowspan="3">
-                 <widget class="QGroupBox" name="groupBoxGuideFinishMeasureSecond">
-                  <property name="minimumSize">
-                   <size>
-                    <width>0</width>
-                    <height>0</height>
-                   </size>
-                  </property>
-                  <property name="title">
-                   <string>Przewodnik koniec pomiaru DWUSTOPNIOWEGO</string>
-                  </property>
-                  <layout class="QVBoxLayout" name="verticalLayout_2">
-                   <item>
-                    <widget class="QLabel" name="labelGuideDescriptionFinishMeasureSecond">
-                     <property name="font">
-                      <font>
-                       <pointsize>9</pointsize>
-                      </font>
-                     </property>
-                     <property name="text">
-                      <string>Wykonaj poniższe kroki aby zmierzyć masę próbki w cieczy:</string>
-                     </property>
-                     <property name="wordWrap">
-                      <bool>true</bool>
-                     </property>
-                    </widget>
-                   </item>
-                   <item>
-                    <widget class="QFrame" name="frameFluidMassSteps">
-                     <property name="frameShape">
-                      <enum>QFrame::Shape::StyledPanel</enum>
-                     </property>
-                     <property name="frameShadow">
-                      <enum>QFrame::Shadow::Raised</enum>
-                     </property>
-                     <layout class="QVBoxLayout" name="stepsLayout_6">
-                      <property name="spacing">
-                       <number>6</number>
-                      </property>
-                      <property name="leftMargin">
-                       <number>9</number>
-                      </property>
-                      <property name="topMargin">
-                       <number>9</number>
-                      </property>
-                      <property name="rightMargin">
-                       <number>9</number>
-                      </property>
-                      <property name="bottomMargin">
-                       <number>9</number>
-                      </property>
-                      <item>
-                       <widget class="QCheckBox" name="step3CheckBox_6">
-                        <property name="text">
-                         <string>1. Upewnij się, że próbka jest całkowicie zanurzona</string>
-                        </property>
-                       </widget>
-                      </item>
-                      <item>
-                       <layout class="QHBoxLayout" name="step1Layout_6">
-                        <item>
-                         <widget class="QCheckBox" name="step2FinishMeasureSecondCheckBox">
-                          <property name="text">
-                           <string>2. Zważ próbkę zanurzoną w wodzie</string>
-                          </property>
-                         </widget>
-                        </item>
-                        <item>
-                         <widget class="QPushButton" name="buttonFinishMeasureSecondExecuteStepTwo">
-                          <property name="maximumSize">
-                           <size>
-                            <width>100</width>
-                            <height>25</height>
-                           </size>
-                          </property>
-                          <property name="text">
-                           <string>Wykonaj</string>
-                          </property>
-                         </widget>
-                        </item>
-                       </layout>
-                      </item>
-                      <item>
-                       <layout class="QHBoxLayout" name="step2Layout_6">
-                        <item>
-                         <widget class="QCheckBox" name="step3FinishMeasureSecondCheckBox">
-                          <property name="text">
-                           <string>3. Zapisz wynik</string>
-                          </property>
-                         </widget>
-                        </item>
-                        <item>
-                         <widget class="QPushButton" name="buttonFinishMeasureSecondExecuteStepTree">
-                          <property name="maximumSize">
-                           <size>
-                            <width>100</width>
-                            <height>25</height>
-                           </size>
-                          </property>
-                          <property name="text">
-                           <string>Zatwierdź</string>
-                          </property>
-                         </widget>
-                        </item>
-                       </layout>
-                      </item>
-                     </layout>
-                    </widget>
-                   </item>
-                   <item>
-                    <spacer name="verticalSpacer_5">
-                     <property name="orientation">
-                      <enum>Qt::Orientation::Vertical</enum>
-                     </property>
-                     <property name="sizeType">
-                      <enum>QSizePolicy::Policy::MinimumExpanding</enum>
-                     </property>
-                     <property name="sizeHint" stdset="0">
-                      <size>
-                       <width>20</width>
-                       <height>40</height>
-                      </size>
-                     </property>
-                    </spacer>
-                   </item>
-                  </layout>
-                 </widget>
-                </item>
-                <item row="6" column="0" colspan="2">
-                 <layout class="QHBoxLayout" name="navigationButtonsLayout_4">
-                  <property name="sizeConstraint">
-                   <enum>QLayout::SizeConstraint::SetMinimumSize</enum>
-                  </property>
-                  <item>
-                   <spacer name="horizontalSpacer_12">
-                    <property name="orientation">
-                     <enum>Qt::Orientation::Horizontal</enum>
-                    </property>
-                    <property name="sizeHint" stdset="0">
-                     <size>
-                      <width>454</width>
-                      <height>20</height>
-                     </size>
-                    </property>
-                   </spacer>
-                  </item>
-                  <item>
-                   <widget class="QPushButton" name="buttonPrevFluidMass">
-                    <property name="minimumSize">
-                     <size>
-                      <width>150</width>
-                      <height>30</height>
-                     </size>
-                    </property>
-                    <property name="text">
-                     <string>Wróć</string>
-                    </property>
-                   </widget>
-                  </item>
-                  <item>
-                   <widget class="QPushButton" name="buttonFinishMeasurementSecond">
-                    <property name="enabled">
-                     <bool>true</bool>
-                    </property>
-                    <property name="minimumSize">
-                     <size>
-                      <width>150</width>
-                      <height>30</height>
-                     </size>
-                    </property>
-                    <property name="text">
-                     <string>Zakończ pomiar</string>
-                    </property>
-                   </widget>
-                  </item>
-                 </layout>
-                </item>
                 <item row="0" column="1" rowspan="6">
                  <widget class="QGroupBox" name="calculationHydroGroupBox">
                   <property name="minimumSize">
@@ -2734,6 +2395,9 @@ umieszczając ją w komorze próźniowej na czas zaniku ostatniego pęcherzyka</
                         <property name="readOnly">
                          <bool>true</bool>
                         </property>
+                        <property name="placeholderText">
+                         <string>0.0 g</string>
+                        </property>
                        </widget>
                       </item>
                       <item row="1" column="0">
@@ -2766,6 +2430,9 @@ umieszczając ją w komorze próźniowej na czas zaniku ostatniego pęcherzyka</
                         <property name="readOnly">
                          <bool>true</bool>
                         </property>
+                        <property name="placeholderText">
+                         <string>0.0 g</string>
+                        </property>
                        </widget>
                       </item>
                      </layout>
@@ -2775,6 +2442,134 @@ umieszczając ją w komorze próźniowej na czas zaniku ostatniego pęcherzyka</
                     <spacer name="verticalSpacer_3">
                      <property name="orientation">
                       <enum>Qt::Orientation::Vertical</enum>
+                     </property>
+                     <property name="sizeHint" stdset="0">
+                      <size>
+                       <width>20</width>
+                       <height>40</height>
+                      </size>
+                     </property>
+                    </spacer>
+                   </item>
+                  </layout>
+                 </widget>
+                </item>
+                <item row="0" column="0" rowspan="3">
+                 <widget class="QGroupBox" name="groupBoxGuideFinishMeasureSecond">
+                  <property name="minimumSize">
+                   <size>
+                    <width>0</width>
+                    <height>0</height>
+                   </size>
+                  </property>
+                  <property name="title">
+                   <string>Przewodnik koniec pomiaru DWUSTOPNIOWEGO</string>
+                  </property>
+                  <layout class="QVBoxLayout" name="verticalLayout_2">
+                   <item>
+                    <widget class="QLabel" name="labelGuideDescriptionFinishMeasureSecond">
+                     <property name="font">
+                      <font>
+                       <pointsize>9</pointsize>
+                      </font>
+                     </property>
+                     <property name="text">
+                      <string>Wykonaj poniższe kroki aby zmierzyć masę próbki w cieczy:</string>
+                     </property>
+                     <property name="wordWrap">
+                      <bool>true</bool>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="QFrame" name="frameFluidMassSteps">
+                     <property name="frameShape">
+                      <enum>QFrame::Shape::StyledPanel</enum>
+                     </property>
+                     <property name="frameShadow">
+                      <enum>QFrame::Shadow::Raised</enum>
+                     </property>
+                     <layout class="QVBoxLayout" name="stepsLayout_6">
+                      <property name="spacing">
+                       <number>6</number>
+                      </property>
+                      <property name="leftMargin">
+                       <number>9</number>
+                      </property>
+                      <property name="topMargin">
+                       <number>9</number>
+                      </property>
+                      <property name="rightMargin">
+                       <number>9</number>
+                      </property>
+                      <property name="bottomMargin">
+                       <number>9</number>
+                      </property>
+                      <item>
+                       <widget class="QCheckBox" name="step3CheckBox_6">
+                        <property name="text">
+                         <string>1. Upewnij się, że próbka jest całkowicie zanurzona</string>
+                        </property>
+                       </widget>
+                      </item>
+                      <item>
+                       <layout class="QHBoxLayout" name="step1Layout_6">
+                        <item>
+                         <widget class="QCheckBox" name="step2FinishMeasureSecondCheckBox">
+                          <property name="text">
+                           <string>2. Zważ próbkę zanurzoną w wodzie</string>
+                          </property>
+                         </widget>
+                        </item>
+                        <item>
+                         <widget class="QPushButton" name="buttonFinishMeasureSecondExecuteStepTwo">
+                          <property name="maximumSize">
+                           <size>
+                            <width>100</width>
+                            <height>25</height>
+                           </size>
+                          </property>
+                          <property name="text">
+                           <string>Wykonaj</string>
+                          </property>
+                         </widget>
+                        </item>
+                       </layout>
+                      </item>
+                      <item>
+                       <layout class="QHBoxLayout" name="step2Layout_6">
+                        <item>
+                         <widget class="QCheckBox" name="step3FinishMeasureSecondCheckBox">
+                          <property name="text">
+                           <string>3. Zapisz wynik</string>
+                          </property>
+                         </widget>
+                        </item>
+                        <item>
+                         <widget class="QPushButton" name="buttonFinishMeasureSecondExecuteStepTree">
+                          <property name="maximumSize">
+                           <size>
+                            <width>100</width>
+                            <height>25</height>
+                           </size>
+                          </property>
+                          <property name="text">
+                           <string>Zatwierdź</string>
+                          </property>
+                         </widget>
+                        </item>
+                       </layout>
+                      </item>
+                     </layout>
+                    </widget>
+                   </item>
+                   <item>
+                    <spacer name="verticalSpacer_5">
+                     <property name="orientation">
+                      <enum>Qt::Orientation::Vertical</enum>
+                     </property>
+                     <property name="sizeType">
+                      <enum>QSizePolicy::Policy::MinimumExpanding</enum>
                      </property>
                      <property name="sizeHint" stdset="0">
                       <size>
@@ -2943,6 +2738,9 @@ umieszczając ją w komorze próźniowej na czas zaniku ostatniego pęcherzyka</
                         <property name="readOnly">
                          <bool>true</bool>
                         </property>
+                        <property name="placeholderText">
+                         <string>0.0</string>
+                        </property>
                        </widget>
                       </item>
                       <item>
@@ -3019,7 +2817,7 @@ umieszczając ją w komorze próźniowej na czas zaniku ostatniego pęcherzyka</
                     <rect>
                      <x>0</x>
                      <y>0</y>
-                     <width>480</width>
+                     <width>845</width>
                      <height>709</height>
                     </rect>
                    </property>
@@ -3596,6 +3394,149 @@ umieszczając ją w komorze próźniowej na czas zaniku ostatniego pęcherzyka</
               </widget>
               <widget class="QWidget" name="pageSatruationMassTriple">
                <layout class="QGridLayout" name="gridLayout">
+                <item row="0" column="0" rowspan="2">
+                 <widget class="QGroupBox" name="groupBoxSaturatedFluidMassGuide">
+                  <property name="minimumSize">
+                   <size>
+                    <width>380</width>
+                    <height>220</height>
+                   </size>
+                  </property>
+                  <property name="title">
+                   <string>Przewodnik</string>
+                  </property>
+                  <layout class="QVBoxLayout" name="guideLayout_5">
+                   <property name="spacing">
+                    <number>8</number>
+                   </property>
+                   <property name="topMargin">
+                    <number>12</number>
+                   </property>
+                   <item>
+                    <widget class="QLabel" name="labelSaturatedFluidMassGuide">
+                     <property name="font">
+                      <font>
+                       <pointsize>9</pointsize>
+                      </font>
+                     </property>
+                     <property name="text">
+                      <string>Wykonaj poniższe kroki aby zmierzyć masę próbki nasyconej w cieczy:</string>
+                     </property>
+                     <property name="wordWrap">
+                      <bool>true</bool>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="QFrame" name="frameSaturatedFluidMassSteps_2">
+                     <property name="frameShape">
+                      <enum>QFrame::Shape::StyledPanel</enum>
+                     </property>
+                     <property name="frameShadow">
+                      <enum>QFrame::Shadow::Raised</enum>
+                     </property>
+                     <layout class="QVBoxLayout" name="stepsLayout_5">
+                      <property name="spacing">
+                       <number>6</number>
+                      </property>
+                      <property name="leftMargin">
+                       <number>9</number>
+                      </property>
+                      <property name="topMargin">
+                       <number>9</number>
+                      </property>
+                      <property name="rightMargin">
+                       <number>9</number>
+                      </property>
+                      <property name="bottomMargin">
+                       <number>9</number>
+                      </property>
+                      <item>
+                       <widget class="QCheckBox" name="step1FinishTriple">
+                        <property name="text">
+                         <string>1. Upewnij się, że próbka jest całkowicie zanurzona</string>
+                        </property>
+                       </widget>
+                      </item>
+                      <item>
+                       <layout class="QHBoxLayout" name="step1Layout_5">
+                        <item>
+                         <widget class="QCheckBox" name="step2FinishTriple">
+                          <property name="text">
+                           <string>2. Zważ próbkę zanurzoną w cieczy</string>
+                          </property>
+                         </widget>
+                        </item>
+                        <item>
+                         <widget class="QPushButton" name="buttonFinishMeasureTripleExecuteStepTwo">
+                          <property name="minimumSize">
+                           <size>
+                            <width>100</width>
+                            <height>25</height>
+                           </size>
+                          </property>
+                          <property name="maximumSize">
+                           <size>
+                            <width>100</width>
+                            <height>25</height>
+                           </size>
+                          </property>
+                          <property name="text">
+                           <string>Wykonaj</string>
+                          </property>
+                         </widget>
+                        </item>
+                       </layout>
+                      </item>
+                      <item>
+                       <layout class="QHBoxLayout" name="step2Layout_5">
+                        <item>
+                         <widget class="QCheckBox" name="step3FinishTriple">
+                          <property name="text">
+                           <string>3. Zapisz wynik</string>
+                          </property>
+                         </widget>
+                        </item>
+                        <item>
+                         <widget class="QPushButton" name="buttonFinishMeasureTripleExecuteStepThree">
+                          <property name="minimumSize">
+                           <size>
+                            <width>100</width>
+                            <height>25</height>
+                           </size>
+                          </property>
+                          <property name="maximumSize">
+                           <size>
+                            <width>100</width>
+                            <height>25</height>
+                           </size>
+                          </property>
+                          <property name="text">
+                           <string>Zatwierdź</string>
+                          </property>
+                         </widget>
+                        </item>
+                       </layout>
+                      </item>
+                     </layout>
+                    </widget>
+                   </item>
+                   <item>
+                    <spacer name="verticalSpacer_16">
+                     <property name="orientation">
+                      <enum>Qt::Orientation::Vertical</enum>
+                     </property>
+                     <property name="sizeHint" stdset="0">
+                      <size>
+                       <width>20</width>
+                       <height>40</height>
+                      </size>
+                     </property>
+                    </spacer>
+                   </item>
+                  </layout>
+                 </widget>
+                </item>
                 <item row="0" column="1" rowspan="5">
                  <widget class="QGroupBox" name="calculationHydroGroupBox_3">
                   <property name="minimumSize">
@@ -3767,6 +3708,9 @@ umieszczając ją w komorze próźniowej na czas zaniku ostatniego pęcherzyka</
                         <property name="readOnly">
                          <bool>true</bool>
                         </property>
+                        <property name="placeholderText">
+                         <string>0.0 g</string>
+                        </property>
                        </widget>
                       </item>
                       <item row="1" column="0">
@@ -3793,6 +3737,9 @@ umieszczając ją w komorze próźniowej na czas zaniku ostatniego pęcherzyka</
                         </property>
                         <property name="readOnly">
                          <bool>true</bool>
+                        </property>
+                        <property name="placeholderText">
+                         <string>0.0 g</string>
                         </property>
                        </widget>
                       </item>
@@ -3852,52 +3799,6 @@ umieszczając ją w komorze próźniowej na czas zaniku ostatniego pęcherzyka</
                    </item>
                   </layout>
                  </widget>
-                </item>
-                <item row="5" column="0" colspan="2">
-                 <layout class="QHBoxLayout" name="navigationButtonsLayout_5">
-                  <item>
-                   <spacer name="horizontalSpacer_41">
-                    <property name="orientation">
-                     <enum>Qt::Orientation::Horizontal</enum>
-                    </property>
-                    <property name="sizeHint" stdset="0">
-                     <size>
-                      <width>454</width>
-                      <height>20</height>
-                     </size>
-                    </property>
-                   </spacer>
-                  </item>
-                  <item>
-                   <widget class="QPushButton" name="buttonPrevSaturation">
-                    <property name="minimumSize">
-                     <size>
-                      <width>150</width>
-                      <height>30</height>
-                     </size>
-                    </property>
-                    <property name="text">
-                     <string>Wróć</string>
-                    </property>
-                   </widget>
-                  </item>
-                  <item>
-                   <widget class="QPushButton" name="buttonNextSaturation">
-                    <property name="enabled">
-                     <bool>true</bool>
-                    </property>
-                    <property name="minimumSize">
-                     <size>
-                      <width>150</width>
-                      <height>30</height>
-                     </size>
-                    </property>
-                    <property name="text">
-                     <string>Przejdź dalej</string>
-                    </property>
-                   </widget>
-                  </item>
-                 </layout>
                 </item>
                 <item row="2" column="0" rowspan="3">
                  <widget class="QGroupBox" name="groupBoxFinishMeasureSecond_2">
@@ -4043,6 +3944,18 @@ umieszczając ją w komorze próźniowej na czas zaniku ostatniego pęcherzyka</
                           <height>16777215</height>
                          </size>
                         </property>
+                        <property name="font">
+                         <font>
+                          <pointsize>10</pointsize>
+                          <bold>true</bold>
+                         </font>
+                        </property>
+                        <property name="alignment">
+                         <set>Qt::AlignmentFlag::AlignCenter</set>
+                        </property>
+                        <property name="placeholderText">
+                         <string>0.0</string>
+                        </property>
                        </widget>
                       </item>
                       <item>
@@ -4105,280 +4018,10 @@ umieszczając ją w komorze próźniowej na czas zaniku ostatniego pęcherzyka</
                   </layout>
                  </widget>
                 </item>
-                <item row="0" column="0" rowspan="2">
-                 <widget class="QGroupBox" name="groupBoxSaturatedFluidMassGuide">
-                  <property name="minimumSize">
-                   <size>
-                    <width>380</width>
-                    <height>220</height>
-                   </size>
-                  </property>
-                  <property name="title">
-                   <string>Przewodnik</string>
-                  </property>
-                  <layout class="QVBoxLayout" name="guideLayout_5">
-                   <property name="spacing">
-                    <number>8</number>
-                   </property>
-                   <property name="topMargin">
-                    <number>12</number>
-                   </property>
-                   <item>
-                    <widget class="QLabel" name="labelSaturatedFluidMassGuide">
-                     <property name="font">
-                      <font>
-                       <pointsize>9</pointsize>
-                      </font>
-                     </property>
-                     <property name="text">
-                      <string>Wykonaj poniższe kroki aby zmierzyć masę próbki nasyconej w cieczy:</string>
-                     </property>
-                     <property name="wordWrap">
-                      <bool>true</bool>
-                     </property>
-                    </widget>
-                   </item>
-                   <item>
-                    <widget class="QFrame" name="frameSaturatedFluidMassSteps_2">
-                     <property name="frameShape">
-                      <enum>QFrame::Shape::StyledPanel</enum>
-                     </property>
-                     <property name="frameShadow">
-                      <enum>QFrame::Shadow::Raised</enum>
-                     </property>
-                     <layout class="QVBoxLayout" name="stepsLayout_5">
-                      <property name="spacing">
-                       <number>6</number>
-                      </property>
-                      <property name="leftMargin">
-                       <number>9</number>
-                      </property>
-                      <property name="topMargin">
-                       <number>9</number>
-                      </property>
-                      <property name="rightMargin">
-                       <number>9</number>
-                      </property>
-                      <property name="bottomMargin">
-                       <number>9</number>
-                      </property>
-                      <item>
-                       <widget class="QCheckBox" name="step1FinishTriple">
-                        <property name="text">
-                         <string>1. Upewnij się, że próbka jest całkowicie zanurzona</string>
-                        </property>
-                       </widget>
-                      </item>
-                      <item>
-                       <layout class="QHBoxLayout" name="step1Layout_5">
-                        <item>
-                         <widget class="QCheckBox" name="step2FinishTriple">
-                          <property name="text">
-                           <string>2. Zważ próbkę zanurzoną w cieczy</string>
-                          </property>
-                         </widget>
-                        </item>
-                        <item>
-                         <widget class="QPushButton" name="buttonFinishMeasureTripleExecuteStepTwo">
-                          <property name="minimumSize">
-                           <size>
-                            <width>100</width>
-                            <height>25</height>
-                           </size>
-                          </property>
-                          <property name="maximumSize">
-                           <size>
-                            <width>100</width>
-                            <height>25</height>
-                           </size>
-                          </property>
-                          <property name="text">
-                           <string>Wykonaj</string>
-                          </property>
-                         </widget>
-                        </item>
-                       </layout>
-                      </item>
-                      <item>
-                       <layout class="QHBoxLayout" name="step2Layout_5">
-                        <item>
-                         <widget class="QCheckBox" name="step3FinishTriple">
-                          <property name="text">
-                           <string>3. Zapisz wynik</string>
-                          </property>
-                         </widget>
-                        </item>
-                        <item>
-                         <widget class="QPushButton" name="buttonFinishMeasureTripleExecuteStepThree">
-                          <property name="minimumSize">
-                           <size>
-                            <width>100</width>
-                            <height>25</height>
-                           </size>
-                          </property>
-                          <property name="maximumSize">
-                           <size>
-                            <width>100</width>
-                            <height>25</height>
-                           </size>
-                          </property>
-                          <property name="text">
-                           <string>Zatwierdź</string>
-                          </property>
-                         </widget>
-                        </item>
-                       </layout>
-                      </item>
-                     </layout>
-                    </widget>
-                   </item>
-                   <item>
-                    <spacer name="verticalSpacer_16">
-                     <property name="orientation">
-                      <enum>Qt::Orientation::Vertical</enum>
-                     </property>
-                     <property name="sizeHint" stdset="0">
-                      <size>
-                       <width>20</width>
-                       <height>40</height>
-                      </size>
-                     </property>
-                    </spacer>
-                   </item>
-                  </layout>
-                 </widget>
-                </item>
                </layout>
               </widget>
               <widget class="QWidget" name="pageFinishSaturatedMassTriple">
                <layout class="QGridLayout" name="gridLayout_3">
-                <item row="0" column="1">
-                 <widget class="QGroupBox" name="groupBoxSaturatedMassGuide">
-                  <property name="minimumSize">
-                   <size>
-                    <width>0</width>
-                    <height>150</height>
-                   </size>
-                  </property>
-                  <property name="title">
-                   <string>Przewodnik - Pomiar masy próbki nasyconej w powietrzu</string>
-                  </property>
-                  <layout class="QVBoxLayout" name="verticalLayout_3">
-                   <item>
-                    <widget class="QLabel" name="labelSaturatedMassGuide">
-                     <property name="font">
-                      <font>
-                       <pointsize>9</pointsize>
-                      </font>
-                     </property>
-                     <property name="text">
-                      <string>Wykonaj poniższe kroki aby zmierzyć masę próbki nasyconej w powietrzu:</string>
-                     </property>
-                     <property name="wordWrap">
-                      <bool>true</bool>
-                     </property>
-                    </widget>
-                   </item>
-                   <item>
-                    <widget class="QCheckBox" name="step1CheckBox_2">
-                     <property name="text">
-                      <string>1. Wyjmij próbkę z cieczy</string>
-                     </property>
-                    </widget>
-                   </item>
-                   <item>
-                    <widget class="QCheckBox" name="step2CheckBox_2">
-                     <property name="text">
-                      <string>2. Delikatnie osusz powierzchnię próbki wilgotną tkaniną</string>
-                     </property>
-                    </widget>
-                   </item>
-                   <item>
-                    <widget class="QCheckBox" name="step3CheckBox_2">
-                     <property name="text">
-                      <string>3. Usuń tylko nadmiar cieczy z powierzchni</string>
-                     </property>
-                    </widget>
-                   </item>
-                   <item>
-                    <layout class="QHBoxLayout" name="step4Layout_2">
-                     <item>
-                      <widget class="QCheckBox" name="step4CheckBoxSaturatedTriple">
-                       <property name="text">
-                        <string>4. Natychmiast po osuszeniu zważ próbkę nasyconą</string>
-                       </property>
-                      </widget>
-                     </item>
-                     <item>
-                      <widget class="QPushButton" name="buttonSaturatedMassExecuteStepFour">
-                       <property name="minimumSize">
-                        <size>
-                         <width>100</width>
-                         <height>25</height>
-                        </size>
-                       </property>
-                       <property name="maximumSize">
-                        <size>
-                         <width>100</width>
-                         <height>25</height>
-                        </size>
-                       </property>
-                       <property name="text">
-                        <string>Wykonaj</string>
-                       </property>
-                      </widget>
-                     </item>
-                    </layout>
-                   </item>
-                   <item>
-                    <layout class="QHBoxLayout" name="step5Layout_2">
-                     <item>
-                      <widget class="QCheckBox" name="step5CheckBoxSaturatedTriple">
-                       <property name="text">
-                        <string>5. Zapisz wynik</string>
-                       </property>
-                      </widget>
-                     </item>
-                     <item>
-                      <widget class="QPushButton" name="buttonSaturatedMassExecuteStepFive">
-                       <property name="minimumSize">
-                        <size>
-                         <width>100</width>
-                         <height>25</height>
-                        </size>
-                       </property>
-                       <property name="maximumSize">
-                        <size>
-                         <width>100</width>
-                         <height>25</height>
-                        </size>
-                       </property>
-                       <property name="text">
-                        <string>Zatwierdź</string>
-                       </property>
-                      </widget>
-                     </item>
-                    </layout>
-                   </item>
-                   <item>
-                    <spacer name="verticalSpacer_15">
-                     <property name="orientation">
-                      <enum>Qt::Orientation::Vertical</enum>
-                     </property>
-                     <property name="sizeType">
-                      <enum>QSizePolicy::Policy::Minimum</enum>
-                     </property>
-                     <property name="sizeHint" stdset="0">
-                      <size>
-                       <width>20</width>
-                       <height>40</height>
-                      </size>
-                     </property>
-                    </spacer>
-                   </item>
-                  </layout>
-                 </widget>
-                </item>
                 <item row="0" column="2" rowspan="4">
                  <widget class="QGroupBox" name="calculationHydroGroupBox_2">
                   <property name="minimumSize">
@@ -4550,6 +4193,9 @@ umieszczając ją w komorze próźniowej na czas zaniku ostatniego pęcherzyka</
                         <property name="readOnly">
                          <bool>true</bool>
                         </property>
+                        <property name="placeholderText">
+                         <string>0.0 g</string>
+                        </property>
                        </widget>
                       </item>
                       <item row="1" column="0">
@@ -4582,6 +4228,9 @@ umieszczając ją w komorze próźniowej na czas zaniku ostatniego pęcherzyka</
                         </property>
                         <property name="readOnly">
                          <bool>true</bool>
+                        </property>
+                        <property name="placeholderText">
+                         <string>0.0 g</string>
                         </property>
                        </widget>
                       </item>
@@ -4616,6 +4265,9 @@ umieszczając ją w komorze próźniowej na czas zaniku ostatniego pęcherzyka</
                         <property name="readOnly">
                          <bool>true</bool>
                         </property>
+                        <property name="placeholderText">
+                         <string>0.0 g</string>
+                        </property>
                        </widget>
                       </item>
                      </layout>
@@ -4636,52 +4288,6 @@ umieszczając ją w komorze próźniowej na czas zaniku ostatniego pęcherzyka</
                    </item>
                   </layout>
                  </widget>
-                </item>
-                <item row="4" column="1" colspan="2">
-                 <layout class="QHBoxLayout" name="navigationButtonsLayout_6">
-                  <item>
-                   <spacer name="horizontalSpacer_13">
-                    <property name="orientation">
-                     <enum>Qt::Orientation::Horizontal</enum>
-                    </property>
-                    <property name="sizeHint" stdset="0">
-                     <size>
-                      <width>454</width>
-                      <height>20</height>
-                     </size>
-                    </property>
-                   </spacer>
-                  </item>
-                  <item>
-                   <widget class="QPushButton" name="buttonPrevSaturatedMass">
-                    <property name="minimumSize">
-                     <size>
-                      <width>150</width>
-                      <height>30</height>
-                     </size>
-                    </property>
-                    <property name="text">
-                     <string>Wróć</string>
-                    </property>
-                   </widget>
-                  </item>
-                  <item>
-                   <widget class="QPushButton" name="buttonFinishMeasurementTriple">
-                    <property name="enabled">
-                     <bool>true</bool>
-                    </property>
-                    <property name="minimumSize">
-                     <size>
-                      <width>150</width>
-                      <height>30</height>
-                     </size>
-                    </property>
-                    <property name="text">
-                     <string>Zakończ pomiar</string>
-                    </property>
-                   </widget>
-                  </item>
-                 </layout>
                 </item>
                 <item row="2" column="1">
                  <widget class="QGroupBox" name="measureSaturatedGroupBox">
@@ -4827,6 +4433,18 @@ umieszczając ją w komorze próźniowej na czas zaniku ostatniego pęcherzyka</
                           <height>16777215</height>
                          </size>
                         </property>
+                        <property name="font">
+                         <font>
+                          <pointsize>10</pointsize>
+                          <bold>true</bold>
+                         </font>
+                        </property>
+                        <property name="alignment">
+                         <set>Qt::AlignmentFlag::AlignCenter</set>
+                        </property>
+                        <property name="placeholderText">
+                         <string>0.0</string>
+                        </property>
                        </widget>
                       </item>
                       <item>
@@ -4889,6 +4507,133 @@ umieszczając ją w komorze próźniowej na czas zaniku ostatniego pęcherzyka</
                   </layout>
                  </widget>
                 </item>
+                <item row="0" column="1">
+                 <widget class="QGroupBox" name="groupBoxSaturatedMassGuide">
+                  <property name="minimumSize">
+                   <size>
+                    <width>0</width>
+                    <height>150</height>
+                   </size>
+                  </property>
+                  <property name="title">
+                   <string>Przewodnik - Pomiar masy próbki nasyconej w powietrzu</string>
+                  </property>
+                  <layout class="QVBoxLayout" name="verticalLayout_3">
+                   <item>
+                    <widget class="QLabel" name="labelSaturatedMassGuide">
+                     <property name="font">
+                      <font>
+                       <pointsize>9</pointsize>
+                      </font>
+                     </property>
+                     <property name="text">
+                      <string>Wykonaj poniższe kroki aby zmierzyć masę próbki nasyconej w powietrzu:</string>
+                     </property>
+                     <property name="wordWrap">
+                      <bool>true</bool>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="QCheckBox" name="step1CheckBox_2">
+                     <property name="text">
+                      <string>1. Wyjmij próbkę z cieczy</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="QCheckBox" name="step2CheckBox_2">
+                     <property name="text">
+                      <string>2. Delikatnie osusz powierzchnię próbki wilgotną tkaniną</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="QCheckBox" name="step3CheckBox_2">
+                     <property name="text">
+                      <string>3. Usuń tylko nadmiar cieczy z powierzchni</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <layout class="QHBoxLayout" name="step4Layout_2">
+                     <item>
+                      <widget class="QCheckBox" name="step4CheckBoxSaturatedTriple">
+                       <property name="text">
+                        <string>4. Natychmiast po osuszeniu zważ próbkę nasyconą</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item>
+                      <widget class="QPushButton" name="buttonSaturatedMassExecuteStepFour">
+                       <property name="minimumSize">
+                        <size>
+                         <width>100</width>
+                         <height>25</height>
+                        </size>
+                       </property>
+                       <property name="maximumSize">
+                        <size>
+                         <width>100</width>
+                         <height>25</height>
+                        </size>
+                       </property>
+                       <property name="text">
+                        <string>Wykonaj</string>
+                       </property>
+                      </widget>
+                     </item>
+                    </layout>
+                   </item>
+                   <item>
+                    <layout class="QHBoxLayout" name="step5Layout_2">
+                     <item>
+                      <widget class="QCheckBox" name="step5CheckBoxSaturatedTriple">
+                       <property name="text">
+                        <string>5. Zapisz wynik</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item>
+                      <widget class="QPushButton" name="buttonSaturatedMassExecuteStepFive">
+                       <property name="minimumSize">
+                        <size>
+                         <width>100</width>
+                         <height>25</height>
+                        </size>
+                       </property>
+                       <property name="maximumSize">
+                        <size>
+                         <width>100</width>
+                         <height>25</height>
+                        </size>
+                       </property>
+                       <property name="text">
+                        <string>Zatwierdź</string>
+                       </property>
+                      </widget>
+                     </item>
+                    </layout>
+                   </item>
+                   <item>
+                    <spacer name="verticalSpacer_15">
+                     <property name="orientation">
+                      <enum>Qt::Orientation::Vertical</enum>
+                     </property>
+                     <property name="sizeType">
+                      <enum>QSizePolicy::Policy::Minimum</enum>
+                     </property>
+                     <property name="sizeHint" stdset="0">
+                      <size>
+                       <width>20</width>
+                       <height>40</height>
+                      </size>
+                     </property>
+                    </spacer>
+                   </item>
+                  </layout>
+                 </widget>
+                </item>
                </layout>
               </widget>
               <widget class="QWidget" name="pageSummaryTriple">
@@ -4902,7 +4647,7 @@ umieszczając ją w komorze próźniowej na czas zaniku ostatniego pęcherzyka</
                    <property name="geometry">
                     <rect>
                      <x>0</x>
-                     <y>0</y>
+                     <y>-146</y>
                      <width>845</width>
                      <height>1474</height>
                     </rect>
