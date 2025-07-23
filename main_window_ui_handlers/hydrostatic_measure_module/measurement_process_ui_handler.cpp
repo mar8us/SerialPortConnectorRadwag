@@ -329,7 +329,9 @@ bool MeasurementProcessUiHandler::onStartMeasurePageDataExit()
 }
 
 bool MeasurementProcessUiHandler::onInitialDataPageExit()
-{   
+{
+    if(radwagMeasureControler.getType() == MeasurementType::None)
+        radwagMeasureControler.setType(ui->radioMeasureSecond->isChecked() ? MeasurementType::TwoStage : MeasurementType::ThreeStage);
     return validateInitialDataPage();
 }
 
