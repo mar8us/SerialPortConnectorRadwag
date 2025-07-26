@@ -5,6 +5,7 @@
 #include <QDateTime>
 #include "../fluid_tabels/fluid.h"
 #include "../sample/sample.h"
+#include "measurement_results.h"
 #include <QDebug>
 
 enum class MeasurementType
@@ -55,9 +56,9 @@ enum class SaturationMethod
 class Measurement
 {
 public:
-    Measurement();
-    Measurement(MeasurementType type, const Sample &sample, const Fluid &fluid, const QString &author);
-    Measurement(const Measurement& other);
+    explicit Measurement();
+    explicit Measurement(MeasurementType type, const Sample &sample, const Fluid &fluid, const QString &author);
+    explicit Measurement(const Measurement& other);
     ~Measurement();
 
     QString getId() const;
@@ -76,7 +77,7 @@ public:
     void setSaturationMethod(SaturationMethod method);
     void setSaturationTime(int saturationTimeMiuntes);
     void setSaturationBeginDate(QDateTime beginDate);
-    QDateTime getSaturationBeginDate();
+    QDateTime getSaturationBeginDate() const;
 
     void setDate(const QDateTime& newDate);
     void setAuthor(const QString &authorName);
@@ -103,6 +104,10 @@ public:
     bool isCompleted() const;
     bool hasAllRequiredMeasurements() const;
 
+    bool calculateResults();
+    const MeasurementResults &getResults() const;
+    bool hasResults() const;
+
     QJsonObject toJson() const;
     void fromJson(const QJsonObject &json);
 
@@ -124,6 +129,8 @@ private:
 
     Sample sample;
     Fluid fluid;
+
+    MeasurementResults results;
 };
 
 #endif // MEASUREMENT_H

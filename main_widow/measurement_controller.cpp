@@ -334,8 +334,7 @@ MeasurementResults MeasurementController::calculateResults()
     if(!hasActiveMeasurement() || !measurement->hasAllRequiredMeasurements())
         return MeasurementResults();
 
-    measurementManager->calculateResults(measurement->getId());
-    return measurementManager->getResults(measurement->getId());
+    return measurement->calculateResults() ? measurement->getResults() : MeasurementResults();
 }
 
 bool MeasurementController::canCalculateResult() const

@@ -11,17 +11,11 @@ MeasurementManager::MeasurementManager(QObject *parent)
     : QObject(parent)
 {
     loadMeasurements();
-    loadResults();
 }
 
 const QMap<QString, std::shared_ptr<const Measurement>>& MeasurementManager::getMeasurements() const
 {
     return measurements;
-}
-
-const QMap<QString, MeasurementResults>& MeasurementManager::getResultsMap() const
-{
-    return results;
 }
 
 std::shared_ptr<const Measurement> MeasurementManager::getMeasurement(const QString& id) const
@@ -55,55 +49,11 @@ bool MeasurementManager::removeMeasurement(const QString& id)
     if(!measurementExists(id))
         return false;
 
-    if(results.contains(id))
-    {
-        results.remove(id);
-        saveResults();
-    }
-
     measurements.remove(id);
     saveMeasurements();
 
     emit measurementRemoved(id);
     emit measurementsChanged();
-
-    return true;
-}
-
-MeasurementResults MeasurementManager::getResults(const QString& measurementId) const
-{
-    return results.value(measurementId);
-}
-
-bool MeasurementManager::hasResults(const QString& measurementId) const
-{
-    return results.contains(measurementId);
-}
-
-bool MeasurementManager::calculateResults(const QString& measurementId)
-{
-    if(!measurementExists(measurementId))
-        return false;
-
-    std::shared_ptr<const Measurement> measurement = measurements[measurementId];
-
-    if(!measurement->hasAllRequiredMeasurements())
-        return false;
-
-    MeasurementResults &measurementResults = results[measurementId];
-    if(!hasResults(measurement->getId()))
-        measurementResults.setMeasurementId(measurementId);
-
-    double materialDensity = measurement->getSampleMaterialDensity();
-    if(materialDensity <= 0.0)
-        return false;
-
-    if(!measurementResults.calculateResults(measurement))
-        return false;
-
-    saveResults();
-
-    emit resultsCalculated(measurementId);
 
     return true;
 }
@@ -121,59 +71,7 @@ QVector<std::shared_ptr<const Measurement>> MeasurementManager::getMeasurementsF
 bool MeasurementManager::reloadData()
 {
     loadMeasurements();
-    loadResults();
     emit measurementsChanged();
-    return true;
-}
-
-void MeasurementManager::loadResults()
-{
-    results.clear();
-    QFile file(getResultsFilePath());
-    if(!file.exists())
-        return;
-
-    if(!file.open(QIODevice::ReadOnly))
-        return;
-
-    QByteArray jsonData = file.readAll();
-    file.close();
-
-    QJsonDocument document = QJsonDocument::fromJson(jsonData);
-    if(document.isNull() || !document.isArray())
-        return;
-
-    QJsonArray resultsArray = document.array();
-    for (const QJsonValue& value : resultsArray)
-    {
-        if(!value.isObject())
-            continue;
-
-        QJsonObject obj = value.toObject();
-        MeasurementResults result;
-        result.fromJson(obj);
-        results.insert(result.getMeasurementId(), result);
-    }
-}
-
-bool MeasurementManager::saveResults()
-{
-    QJsonArray resultsArray;
-    for(const MeasurementResults& result : results)
-    {
-        QJsonObject obj = result.toJson();
-        resultsArray.append(obj);
-    }
-
-    QJsonDocument document(resultsArray);
-    QByteArray jsonData = document.toJson(QJsonDocument::Indented);
-
-    QFile file(getResultsFilePath());
-    if(!file.open(QIODevice::WriteOnly))
-        return false;
-
-    file.write(jsonData);
-    file.close();
     return true;
 }
 
@@ -236,14 +134,4 @@ QString MeasurementManager::getMeasurementsFilePath() const
         dir.mkpath(".");
 
     return dir.filePath("measurements.json");
-}
-
-QString MeasurementManager::getResultsFilePath() const
-{
-    QString appDataPath = QStandardPaths::writableLocation(QStandardPaths::AppLocalDataLocation);
-    QDir dir(appDataPath);
-    if(!dir.exists())
-        dir.mkpath(".");
-
-    return dir.filePath("measurement_results.json");
 }

@@ -1,4 +1,5 @@
 #include "measurement_results.h"
+#include "measurement.h"
 #include <cmath>
 
 MeasurementResults::MeasurementResults()
@@ -15,15 +16,18 @@ MeasurementResults::MeasurementResults()
 
 }
 
-MeasurementResults::MeasurementResults(const QString& id, const QString& measurementId)
-    : measurementId(measurementId)
-    , apparentVolume(0.0)
-    , apparentDensity(0.0)
-    , relativeDensity(0.0)
-    , openPoresVolume(0.0)
-    , openPorosity(0.0)
-    , closedPorosity(0.0)
-    , waterAbsorption(0.0)
+MeasurementResults::MeasurementResults(const MeasurementResults& other)
+    : apparentVolume(other.apparentVolume)
+    , apparentDensity(other.apparentDensity)
+    , relativeDensity(other.relativeDensity)
+    , totalPorosity(other.totalPorosity)
+    , openPoresVolume(other.openPoresVolume)
+    , openPorosity(other.openPorosity)
+    , closedPorosity(other.closedPorosity)
+    , waterAbsorption(other.waterAbsorption)
+    , materialTheoreticalDensity(other.materialTheoreticalDensity)
+    , fluidDensity(other.fluidDensity)
+    , measurementId(other.measurementId)
 {
 
 }
@@ -128,7 +132,7 @@ void MeasurementResults::setWaterAbsorption(double newWaterAbsorption)
     waterAbsorption = newWaterAbsorption;
 }
 
-bool MeasurementResults::calculateResults(std::shared_ptr<const Measurement>& measurement)
+bool MeasurementResults::calculateResults(const Measurement* measurement)
 {
     if(!measurement)
         return false;
@@ -162,10 +166,11 @@ bool MeasurementResults::calculateResults(std::shared_ptr<const Measurement>& me
         waterAbsorption = calculateWaterAbsorption(measurement);
     }
 
+    setMeasurementId(measurement->getId());
     return true;
 }
 
-double MeasurementResults::calculateApparentVolume(std::shared_ptr<const Measurement> &measurement)
+double MeasurementResults::calculateApparentVolume(const Measurement* measurement)
 {
     // Obliczenie objętości pozornej: V = (m_s - m_w) / ρ_cieczy
     double sampleDryMass = measurement->getSampleDryMass();
@@ -178,7 +183,7 @@ double MeasurementResults::calculateApparentVolume(std::shared_ptr<const Measure
     return (sampleDryMass - sampleInFluidMass) / fluidDensity;
 }
 
-// double MeasurementResults::calculateApparentVolume(std::shared_ptr<const Measurement> &measurement)
+// double MeasurementResults::calculateApparentVolume(const Measurement* measurement)
 // {
 //     // Obliczenie objętości pozornej: V = (m_n - m_w) / ρ_cieczy
 //     // Zgodnie z wzorem laboratoryjnym z dokumentacji
@@ -193,7 +198,7 @@ double MeasurementResults::calculateApparentVolume(std::shared_ptr<const Measure
 //     return (saturatedMass - sampleInFluidMass) / fluidDensity;
 // }
 
-double MeasurementResults::calculateApparentDensity(std::shared_ptr<const Measurement> &measurement)
+double MeasurementResults::calculateApparentDensity(const Measurement* measurement)
 {
     // Obliczenie gęstości pozornej: ρ_p = m_s / V = m_s * ρ_cieczy / (m_s - m_w)
     double sampleDryMass = measurement->getSampleDryMass();
@@ -216,7 +221,7 @@ double MeasurementResults::calculateRelativeDensity(double apparentDensity, doub
     return (apparentDensity / materialDensity) * 100.0;
 }
 
-double MeasurementResults::calculateOpenPoresVolume(std::shared_ptr<const Measurement> &measurement)
+double MeasurementResults::calculateOpenPoresVolume(const Measurement* measurement)
 {
     // Obliczenie objętości porów otwartych: V_porów = (m_n - m_s) / ρ_cieczy
     double sampleDryMass = measurement->getSampleDryMass();         // m_s
@@ -236,7 +241,7 @@ double MeasurementResults::calculateTotalPorosity(double apparentDensity, double
     return (1.0 - (apparentDensity / materialDensity)) * 100.0;
 }
 
-double MeasurementResults::calculateOpenPorosity(std::shared_ptr<const Measurement> &measurement)
+double MeasurementResults::calculateOpenPorosity(const Measurement* measurement)
 {
     // Obliczenie porowatości otwartej: P_o = [(m_n - m_s) / (m_n - m_w)] * 100%
     double sampleDryMass = measurement->getSampleDryMass();             // m_s
@@ -262,7 +267,7 @@ double MeasurementResults::calculateClosedPorosity()
     return std::max(0.0, result);
 }
 
-double MeasurementResults::calculateWaterAbsorption(std::shared_ptr<const Measurement> &measurement)
+double MeasurementResults::calculateWaterAbsorption(const Measurement* measurement)
 {
     // Obliczenie nasiąkliwości wagowej: N = [(m_n - m_s) / m_s] * 100%
     double sampleDryMass = measurement->getSampleDryMass();             // m_s
