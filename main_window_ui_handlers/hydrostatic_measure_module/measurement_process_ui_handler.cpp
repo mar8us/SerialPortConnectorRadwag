@@ -15,6 +15,9 @@ MeasurementProcessUiHandler::MeasurementProcessUiHandler(MainWindow *mainWindow,
     , mainWindow(mainWindow)
     , ui(mainWindow->getUi())
     , measureStateMachine(nullptr)
+    , porosityChart(nullptr)
+    , denistyChart(nullptr)
+    , denistyChartSecond(nullptr)
 {
 
 }
@@ -1127,49 +1130,45 @@ void MeasurementProcessUiHandler::updateFinishMeasureSecondLabels()
     ui->editSavedValueFinishMeasureSecond->setText(QString::number(massInFluid, 'f', 4) + " g");
     ui->editLiquidMeasureFinishMeasureSecond->setText(QString::number(massInFluid, 'f', 4) + " g");
 }
-
 void MeasurementProcessUiHandler::updateMeasureSecondLabelsSummary()
 {
     if(!radwagMeasureControler.hasActiveMeasurement())
         return;
 
-    auto measurement = radwagMeasureControler.getActiveMeasure();
+    auto measure = radwagMeasureControler.getActiveMeasure();
     auto results = radwagMeasureControler.calculateResults();
 
-    ui->valueSecondMeasureID->setText(measurement->getSampleId());
-    ui->valueSecondMeasureType->setText(measurement->getType() == MeasurementType::TwoStage ? "Dwustopniowy" : "Trzystopniowy");
-    ui->valueSecondMeasureOperator->setText(measurement->getAuthor());
-
-    QString dateTime = measurement->getDate().toString("dd-MM-yyyy HH:mm");
+    ui->valueSecondMeasureID->setText(measure->getSampleId());
+    ui->valueSecondMeasureType->setText(measure->getType() == MeasurementType::TwoStage ? "Dwustopniowy" : "Trzystopniowy");
+    ui->valueSecondMeasureOperator->setText(measure->getAuthor());
+    QString dateTime = measure->getDate().toString("dd-MM-yyyy HH:mm");
     ui->valueSecondMeasureDateTime->setText(dateTime);
 
-    auto sample = measurement->getSample();
+    Sample sample = measure->getSample();
     ui->valueSecondSampleName->setText(sample.getName());
     ui->valueSecondMaterial->setText(sample.getMaterialName());
     ui->valueSecondTheoreticalDensity->setText(QString::number(sample.getMaterialDensity(), 'f', 3) + " g/cm³");
 
-    Fluid fluid = measurement->getFluid();
+    Fluid fluid = measure->getFluid();
     ui->valueSecondLiquidType->setText(fluid.getName());
-    ui->valueSecondFluidTemp->setText(QString::number(measurement->getFluidTemperature()));
-    ui->valueSecondLiquidDensity->setText(QString::number(measurement->getFluidDensity(), 'f', 5) + " g/cm³");
+    ui->valueSecondFluidTemp->setText(QString::number(measure->getFluidTemperature()) + " °C");
+    ui->valueSecondLiquidDensity->setText(QString::number(measure->getFluidDensity(), 'f', 5) + " g/cm³");
 
-    double dryMass = measurement->getSampleDryMass();
+    double dryMass = measure->getSampleDryMass();
     ui->valueSecondMeasureDryMass->setText(QString::number(dryMass, 'f', 3) + " g");
-
-    double massInFluid = measurement->getSampleInFluidMass();
+    double massInFluid = measure->getSampleInFluidMass();
     ui->valueSecondMeasureWetMass->setText(QString::number(massInFluid, 'f', 3) + " g");
 
     double apparentVolume = results.getApparentVolume();
     ui->valueSecondMeasureApparentVolume->setText(QString::number(apparentVolume, 'f', 3) + " cm³");
-
     double apparentDensity = results.getApparentDensity();
     ui->valueSecondMeasureApparentDensity->setText(QString::number(apparentDensity, 'f', 3) + " g/cm³");
-
     double relativeDensity = results.getRelativeDensity();
     ui->valueSecondMeasureRelativeDensity->setText(QString::number(relativeDensity, 'f', 3) + " %");
-
     double totalPorosity = results.getTotalPorosity();
     ui->valueSecondMeasureTotalPorosity->setText(QString::number(totalPorosity, 'f', 3) + " %");
+
+    updateDenistyChart(results);
 }
 
 void MeasurementProcessUiHandler::updatePrepareSaturationDataLabels()
@@ -1304,62 +1303,56 @@ void MeasurementProcessUiHandler::updateMeasureTripleLabelsSummary()
     if(!radwagMeasureControler.hasActiveMeasurement())
         return;
 
-    auto measurement = radwagMeasureControler.getActiveMeasure();
+    auto measure = radwagMeasureControler.getActiveMeasure();
     auto results = radwagMeasureControler.calculateResults();
-    auto sample = measurement->getSample();
-    Fluid fluid = measurement->getFluid();
 
-    ui->valueTripleMeasureID->setText(measurement->getSampleId());
+    Sample sample = measure->getSample();
+    ui->valueTripleMeasureID->setText(measure->getSampleId());
     ui->valueTripleSampleName->setText(sample.getName());
     ui->valueTripleMaterialName->setText(sample.getMaterialName());
     ui->valueTripleTheoreticalDensity->setText(QString::number(sample.getMaterialDensity(), 'f', 4) + " g/cm³");
 
+    Fluid fluid = measure->getFluid();
     ui->valueTripleMeasureLiquidName->setText(fluid.getName());
-    ui->valueTripleMeasureLiquidDensity->setText(QString::number(measurement->getFluidDensity(), 'f', 5) + " g/cm³");
-    ui->valueTripleMeasureSaturationMethod->setText(utils::getSaturationMethodName(measurement->getSaturationMethod()));
-    ui->valueSaturationBeginDate->setText(radwagMeasureControler.getSaturationBeginDate().toString("dd-MM-yyyy hh:mm:ss"));
-    ui->valueTripleMeasureSaturationTime->setText(QString::number(measurement->getSaturationTime()) + " min");
+    ui->valueTripleFluidTemp->setText(QString::number(measure->getFluidTemperature()) + " °C");
+    ui->valueTripleMeasureLiquidDensity->setText(QString::number(measure->getFluidDensity(), 'f', 5) + " g/cm³");
 
-    ui->valueTripleMeasureType->setText(measurement->getType() == MeasurementType::TwoStage ? "Dwustopniowy" : "Trzystopniowy");
-    ui->valueTripleMeasureOperator->setText(measurement->getAuthor());
-    QString dateTime = measurement->getDate().toString("dd-MM-yyyy HH:mm");
+    ui->valueTripleMeasureSaturationMethod->setText(utils::getSaturationMethodName(measure->getSaturationMethod()));
+    ui->valueSaturationBeginDate->setText(measure->getSaturationBeginDate().toString("dd-MM-yyyy hh:mm:ss"));
+    ui->valueTripleMeasureSaturationTime->setText(QString::number(measure->getSaturationTime()) + " min");
+
+    ui->valueTripleMeasureType->setText(measure->getType() == MeasurementType::TwoStage ? "Dwustopniowy" : "Trzystopniowy");
+    ui->valueTripleMeasureOperator->setText(measure->getAuthor());
+    QString dateTime = measure->getDate().toString("dd-MM-yyyy HH:mm");
     ui->valueTripleMeasureDateTime->setText(dateTime);
 
-    double dryMass = measurement->getSampleDryMass();
+    double dryMass = measure->getSampleDryMass();
     ui->valueTripleMeasureDryMass->setText(QString::number(dryMass, 'f', 3) + " g");
-
-    double massInFluid = measurement->getSampleInFluidMass();
+    double massInFluid = measure->getSampleInFluidMass();
     ui->valueTripleMeasureWetMass->setText(QString::number(massInFluid, 'f', 3) + " g");
-
-    double saturatedMass = measurement->getSampleSaturatedMass();
+    double saturatedMass = measure->getSampleSaturatedMass();
     ui->valueTripleMeasureSaturatedMass->setText(QString::number(saturatedMass, 'f', 3) + " g");
+
 
     double apparentDensity = results.getApparentDensity();
     ui->valueTripleMeasureApparentDensity->setText(QString::number(apparentDensity, 'f', 3) + " g/cm³");
-
     double relativeDensity = results.getRelativeDensity();
     ui->valueTripleMeasureRelativeDensity->setText(QString::number(relativeDensity, 'f', 2) + " %");
-
     double apparentVolume = results.getApparentVolume();
     ui->valueTripleMeasureApparentVolume->setText(QString::number(apparentVolume, 'f', 3) + " cm³");
-
     double openPoresVolume = results.getOpenPoresVolume();
     ui->valueTripleMeasureOpenPoresVolume->setText(QString::number(openPoresVolume, 'f', 3) + " cm³");
-
     double totalPorosity = results.getTotalPorosity();
     ui->valueTripleMeasureTotalPorosity->setText(QString::number(totalPorosity, 'f', 2) + " %");
-
     double openPorosity = results.getOpenPorosity();
     ui->valueTripleMeasureOpenPorosity->setText(QString::number(openPorosity, 'f', 2) + " %");
-
     double closedPorosity = results.getClosedPorosity();
     ui->valueTripleMeasureClosedPorosity->setText(QString::number(closedPorosity, 'f', 2) + " %");
-
     double waterAbsorption = results.getWaterAbsorption();
     ui->valueTripleMeasureWaterAbsorbability->setText(QString::number(waterAbsorption, 'f', 2) + " %");
 
-    updatePorosityChart();
-    updateDenistyChart();
+    updatePorosityChart(results);
+    updateDenistyChart(results);
 }
 
 void MeasurementProcessUiHandler::updateSaveCurrentDryMeasureButtonState()
@@ -1490,38 +1483,37 @@ void MeasurementProcessUiHandler::setupCharts()
         denistyChart->setChartType(BaseChartType::BarChart);
 
         auto layoutDensity = new QVBoxLayout(ui->frameDensityChart);
+        layoutDensity->setContentsMargins(0, 0, 0, 0);
         layoutDensity->addWidget(denistyChart);
+
+        denistyChartSecond = new DensityChartWidget(mainWindow);
+        denistyChartSecond->setChartType(BaseChartType::BarChart);
+
+        auto layoutDensitySecond = new QVBoxLayout(ui->frameDensityChartSecond);
+        layoutDensitySecond->setContentsMargins(0, 0, 0, 0);
+        layoutDensitySecond->addWidget(denistyChartSecond);
     }
 }
 
-void MeasurementProcessUiHandler::updatePorosityChart()
+void MeasurementProcessUiHandler::updatePorosityChart(const MeasurementResults &results)
 {
     if(!porosityChart)
         return;
 
-    auto activeMeasure = radwagMeasureControler.getActiveMeasure();
-    if(activeMeasure)
-    {
-        auto results = dataHolder.measurementManager->getResults(activeMeasure->getId());
-        porosityChart->updateChart(results);
-    }
-    else
-        porosityChart->clearChart();
+    porosityChart->clearChart();
+    porosityChart->updateChart(results);
 }
 
-void MeasurementProcessUiHandler::updateDenistyChart()
+void MeasurementProcessUiHandler::updateDenistyChart(const MeasurementResults &results)
 {
     if(!denistyChart)
         return;
 
-    auto activeMeasure = radwagMeasureControler.getActiveMeasure();
-    if(activeMeasure)
-    {
-        auto results = dataHolder.measurementManager->getResults(activeMeasure->getId());
-        denistyChart->updateChart(results);
-    }
-    else
-        denistyChart->clearChart();
+    denistyChart->clearChart();
+    denistyChartSecond->clearChart();
+
+    denistyChart->updateChart(results);
+    denistyChartSecond->updateChart(results);
 }
 
 bool MeasurementProcessUiHandler::checkGuidePrepareWorkstation(bool showMessage)

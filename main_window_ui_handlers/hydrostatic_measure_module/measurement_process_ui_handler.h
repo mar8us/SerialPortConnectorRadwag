@@ -163,8 +163,8 @@ private:
     void updateWigdetVisibility(MeasurementStages::Stage currentStage);
 
     void setupCharts();
-    void updatePorosityChart();
-    void updateDenistyChart();
+    void updatePorosityChart(const MeasurementResults &results);
+    void updateDenistyChart(const MeasurementResults &results);
 
     bool checkGuidePrepareWorkstation(bool showMessage = true);
     bool checkGuidePrepareMeasureSecondButton();
@@ -224,6 +224,7 @@ private:
 
     PorosityChartWidget *porosityChart;
     DensityChartWidget *denistyChart;
+    DensityChartWidget *denistyChartSecond;
 
     bool saveStageData(MeasurementStages::Stage stage);
     bool saveDataToStage(MeasurementStages::Stage currentStage);
