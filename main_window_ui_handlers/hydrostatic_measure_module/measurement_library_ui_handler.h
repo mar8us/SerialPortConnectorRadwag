@@ -6,6 +6,9 @@
 #include <qitemselectionmodel.h>
 #include "../../radwag/view/measurement_tree_model.h"
 #include "../../radwag/view/measurement_sort_filter_proxy_model.h"
+#include "library_dialogs/summary_measure_dialog.h"
+#include <QPointer>
+#include <QMap>
 
 class MainWindow;
 
@@ -35,6 +38,7 @@ private slots:
     void onLibraryReplyMeasureClicked();
     void onLibraryContinueMeasureButtonClicked();
     void onLibraryDeleteMeasureButtonClicked();
+    void onLibraryShowMeasureResultButtonClicked();
 
     void onSelectionChanged(const QItemSelection &selected, const QItemSelection &deselected);
     void onMeasurementDoubleClicked(const QModelIndex& index);
@@ -55,6 +59,8 @@ private:
     int countVisibleItems(QAbstractItemModel* model, const QModelIndex& parent);
     void updateButtonsState();
 
+    void showMeasureResult(std::shared_ptr<const Measurement> sourceMeasure);
+
     void fillComboLibSearchIn();
     void fillComboLibGroupBy();
 
@@ -68,6 +74,8 @@ private:
 
     MeasurementTreeModel* measurementModel;
     MeasurementSortFilterProxyModel* measurementProxyModel;
+
+    QMap<std::shared_ptr<const Measurement>, QPointer<SummaryMeasureDialog>> openDialogs;
 };
 
 #endif

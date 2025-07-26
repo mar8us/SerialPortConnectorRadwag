@@ -1,6 +1,7 @@
 #include "measurement_library_ui_handler.h"
 #include "../../main_window.h"
-
+#include <QDialog>
+#include "library_dialogs/summary_measure_dialog.h"
 
 MeasurementLibraryUiHandler::MeasurementLibraryUiHandler(MainWindow *mainWindow, HydrostaticDataHolder &dataHolder, QObject *parent)
     : QObject(parent)
@@ -83,6 +84,13 @@ void MeasurementLibraryUiHandler::onLibraryDeleteMeasureButtonClicked()
 
     for(const auto measure : measures)
         dataHolder.measurementManager->removeMeasurement(measure->getId());
+}
+
+void MeasurementLibraryUiHandler::onLibraryShowMeasureResultButtonClicked()
+{
+    auto measures = getSelectedMeasures();
+    foreach(const auto& measure, measures)
+        showMeasureResult(measure);
 }
 
 void MeasurementLibraryUiHandler::onSelectionChanged(const QItemSelection &selected, const QItemSelection &deselected)
@@ -266,6 +274,44 @@ void MeasurementLibraryUiHandler::updateButtonsState()
     ui->buttonLibDeleteMeasure->setEnabled(measure != nullptr);
     ui->buttonLibReplyMeasure->setEnabled(measures.size() == 1);
     ui->buttonLibContinueMeasure->setEnabled(measures.size() == 1 && !measures.first()->isCompleted());
+    ui->buttonLibPreviewMeasure->setEnabled(std::any_of(measures.begin(), measures.end(), [](const auto& m) { return m->isCompleted(); }));
+}
+
+void MeasurementLibraryUiHandler::showMeasureResult(std::shared_ptr<const Measurement> sourceMeasure)
+{
+    if(!sourceMeasure)
+        return;
+    if(!sourceMeasure->isCompleted())
+        return;
+
+    if(openDialogs.contains(sourceMeasure))
+    {
+        QPointer<SummaryMeasureDialog> existingDialog = openDialogs[sourceMeasure];
+        if(!existingDialog)
+            openDialogs.remove(sourceMeasure);
+
+        existingDialog->raise();
+        existingDialog->activateWindow();
+        existingDialog->showNormal();
+        return;
+    }
+
+    SummaryMeasureDialog* dialog = new SummaryMeasureDialog(sourceMeasure, mainWindow);
+    QScreen* screen = QGuiApplication::primaryScreen();
+
+    QRect screenGeometry = screen->geometry();
+    int width = screenGeometry.width() * 0.8;
+    int height = screenGeometry.height() * 0.8;
+
+    dialog->resize(width, height);
+    dialog->move((screenGeometry.width() - width) / 2, (screenGeometry.height() - height) / 2);
+    dialog->setMinimumSize(400, 300);
+    dialog->setAttribute(Qt::WA_DeleteOnClose);
+
+    openDialogs[sourceMeasure] = dialog;
+    connect(dialog, &SummaryMeasureDialog::destroyed, this, [this, sourceMeasure]() { openDialogs.remove(sourceMeasure); });
+
+    dialog->show();
 }
 
 void MeasurementLibraryUiHandler::fillComboLibSearchIn()
@@ -307,6 +353,7 @@ void MeasurementLibraryUiHandler::connectLibraryMeasureButtons()
     connect(ui->buttonLibReplyMeasure, &QPushButton::clicked, this, &MeasurementLibraryUiHandler::onLibraryReplyMeasureClicked);
     connect(ui->buttonLibContinueMeasure, &QPushButton::clicked, this, &MeasurementLibraryUiHandler::onLibraryContinueMeasureButtonClicked);
     connect(ui->buttonLibDeleteMeasure, &QPushButton::clicked, this, &MeasurementLibraryUiHandler::onLibraryDeleteMeasureButtonClicked);
+    connect(ui->buttonLibPreviewMeasure, &QPushButton::clicked, this, &MeasurementLibraryUiHandler::onLibraryShowMeasureResultButtonClicked);
 }
 
 void MeasurementLibraryUiHandler::connectMeasurementTreeSignals()
