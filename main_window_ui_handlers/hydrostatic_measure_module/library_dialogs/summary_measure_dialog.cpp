@@ -32,7 +32,7 @@ SummaryMeasureDialog::~SummaryMeasureDialog()
 
 void SummaryMeasureDialog::updateMeasureSecondLabelsSummary()
 {
-    if(!sourceMeasure || sourceMeasure->hasResults())
+    if(!sourceMeasure || !sourceMeasure->hasResults())
         return;
 
     auto results = sourceMeasure->getResults();
@@ -72,7 +72,7 @@ void SummaryMeasureDialog::updateMeasureSecondLabelsSummary()
 
 void SummaryMeasureDialog::updateMeasureTripleLabelsSummary()
 {
-    if(!sourceMeasure || sourceMeasure->hasResults())
+    if(!sourceMeasure || !sourceMeasure->hasResults())
         return;
 
     auto results = sourceMeasure->getResults();

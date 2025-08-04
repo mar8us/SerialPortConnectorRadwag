@@ -272,7 +272,7 @@ const MeasurementResults& Measurement::getResults() const
 
 bool Measurement::hasResults() const
 {
-    return results.getMeasurementId().isEmpty();
+    return !results.getMeasurementId().isEmpty();
 }
 
 QJsonObject Measurement::toJson() const
