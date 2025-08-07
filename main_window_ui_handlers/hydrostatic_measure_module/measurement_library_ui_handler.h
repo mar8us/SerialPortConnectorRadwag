@@ -39,6 +39,7 @@ private slots:
     void onLibraryContinueMeasureButtonClicked();
     void onLibraryDeleteMeasureButtonClicked();
     void onLibraryShowMeasureResultButtonClicked();
+    void onLibraryShowAnalysisMeasuresButtonClicked();
 
     void onSelectionChanged(const QItemSelection &selected, const QItemSelection &deselected);
     void onMeasurementDoubleClicked(const QModelIndex& index);
@@ -47,7 +48,7 @@ private:
     MeasurementTreeModel::TreeItem* getSelectedItem() const;
     QList<MeasurementTreeModel::TreeItem*> getSelectedItems() const;
     std::shared_ptr<const Measurement> getSelectedMeasure() const;
-    QList<std::shared_ptr<const Measurement>> getSelectedMeasures() const;
+    std::vector<std::shared_ptr<const Measurement>> getSelectedMeasures() const;
 
     void setupLibraryView();
     void setupLibraryControls();
