@@ -1,16 +1,18 @@
 #ifndef MEASUREMENT_RESULTS_H
 #define MEASUREMENT_RESULTS_H
 
-#include "measurement.h"
+// #include "measurement.h"
+#include <QString>
+#include <qjsonobject.h>
+class Measurement;
 
 class MeasurementResults
 {
 public:
     MeasurementResults();
-    MeasurementResults(const QString& id, const QString& measurementId);
+    MeasurementResults(const MeasurementResults& other);
 
     QString getMeasurementId() const;
-    void setMeasurementId(const QString& newMeasurementId);
 
     // Podstawowe wyniki
     double getApparentVolume() const;     // Objętość pozorna
@@ -36,7 +38,7 @@ public:
     void setClosedPorosity(double newClosedPorosity);
     void setWaterAbsorption(double newWaterAbsorption);
 
-    bool calculateResults(std::shared_ptr<const Measurement> &measurement);
+    bool calculateResults(const Measurement* measurement);
 
     QJsonObject toJson() const;
     void fromJson(const QJsonObject &json);
@@ -56,14 +58,16 @@ private:
     double materialTheoreticalDensity;
     double fluidDensity;
 
-    double calculateApparentVolume(std::shared_ptr<const Measurement> &measurement);
-    double calculateApparentDensity(std::shared_ptr<const Measurement> &measurement);
+    double calculateApparentVolume(const Measurement* measurement);
+    double calculateApparentDensity(const Measurement* measurement);
     double calculateRelativeDensity(double apparentDensity, double materialDensity);
-    double calculateOpenPoresVolume(std::shared_ptr<const Measurement> &measurement);
+    double calculateOpenPoresVolume(const Measurement* measurement);
     double calculateTotalPorosity(double apparentDensity, double materialDensity);
-    double calculateOpenPorosity(std::shared_ptr<const Measurement> &measurement);
+    double calculateOpenPorosity(const Measurement* measurement);
     double calculateClosedPorosity();
-    double calculateWaterAbsorption(std::shared_ptr<const Measurement> &measurement);
+    double calculateWaterAbsorption(const Measurement* measurement);
+
+    void setMeasurementId(const QString& newMeasurementId);
 };
 
 #endif // MEASUREMENT_RESULTS_H

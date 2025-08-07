@@ -24,10 +24,6 @@ public:
     bool addMeasurement(const std::shared_ptr<Measurement> &measurement);
     bool removeMeasurement(const QString& id);
 
-    MeasurementResults getResults(const QString& measurementId) const;
-    bool hasResults(const QString& measurementId) const;
-    bool calculateResults(const QString& measurementId);
-
     QVector<std::shared_ptr<const Measurement>> getMeasurementsForSample(const QString& sampleId) const;
 
     bool reloadData();
@@ -44,15 +40,11 @@ signals:
 
 private:
     QMap<QString, std::shared_ptr<const Measurement>> measurements;
-    QMap<QString, MeasurementResults> results;
 
     MeasurementManager(const MeasurementManager&) = delete;
     MeasurementManager& operator=(const MeasurementManager&) = delete;
 
-    void loadResults();
-    bool saveResults();
     QString getMeasurementsFilePath() const;
-    QString getResultsFilePath() const;
 };
 
 #endif // MEASUREMENT_MANAGER_H

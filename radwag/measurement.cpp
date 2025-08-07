@@ -13,6 +13,7 @@ Measurement::Measurement()
     , date(QDateTime::currentDateTime())
     , saturationMethod(SaturationMethod::None)
     , saturationTimeMin(0)
+    , results(MeasurementResults())
 {
 
 }
@@ -33,6 +34,7 @@ Measurement::Measurement(MeasurementType type, const Sample &sample, const Fluid
     , sampleSaturatedMass(0.0)
     , saturationMethod(SaturationMethod::None)
     , saturationTimeMin(0)
+    , results(MeasurementResults())
 {
 
 }
@@ -53,7 +55,7 @@ Measurement::Measurement(const Measurement& other)
     , sampleSaturatedMass(other.sampleSaturatedMass)
     , saturationMethod(other.saturationMethod)
     , saturationTimeMin(other.saturationTimeMin)
-
+    , results(other.results)
 {
 
 }
@@ -132,7 +134,7 @@ void Measurement::setSaturationBeginDate(QDateTime beginDate)
     saturationBeginDate = beginDate;
 }
 
-QDateTime Measurement::getSaturationBeginDate()
+QDateTime Measurement::getSaturationBeginDate() const
 {
     return saturationBeginDate;
 }
@@ -251,6 +253,28 @@ bool Measurement::hasAllRequiredMeasurements() const
     return true;
 }
 
+bool Measurement::calculateResults()
+{
+    if(!hasAllRequiredMeasurements())
+        return false;
+
+    double materialDensity = getSampleMaterialDensity();
+    if(materialDensity <= 0.0)
+        return false;
+
+    return results.calculateResults(this);
+}
+
+const MeasurementResults& Measurement::getResults() const
+{
+    return results;
+}
+
+bool Measurement::hasResults() const
+{
+    return !results.getMeasurementId().isEmpty();
+}
+
 QJsonObject Measurement::toJson() const
 {
     QJsonObject obj;
@@ -269,6 +293,7 @@ QJsonObject Measurement::toJson() const
     obj["fluid"] = fluid.toJson();
     obj["saturationMethod"] = static_cast<int>(saturationMethod);
     obj["saturationTimeMin"] = saturationTimeMin;
+    obj["results"] = results.toJson();
 
     return obj;
 }
@@ -294,4 +319,7 @@ void Measurement::fromJson(const QJsonObject &json)
 
     if(json.contains("fluid") && json["fluid"].isObject())
         fluid.fromJson(json["fluid"].toObject());
+
+    if(json.contains("results") && json["results"].isObject())
+        results.fromJson(json["results"].toObject());
 }
