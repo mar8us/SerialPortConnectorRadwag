@@ -147,9 +147,10 @@ RadwagMeasure::Unit RadwagMeasure::parseUnitFromString(const QString &unitStr)
 }
 
 // Gettery i settery
-double RadwagMeasure::getValue() const
+double RadwagMeasure::getValue(int precision) const
 {
-    return _value;
+    double factor = std::pow(10.0, precision);
+    return std::round(_value * factor) / factor;
 }
 
 void RadwagMeasure::setValue(double value)

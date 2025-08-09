@@ -37,55 +37,68 @@ QString MeasurementResults::getMeasurementId() const
     return measurementId;
 }
 
-double MeasurementResults::getApparentVolume() const
+#include <cmath>
+
+double MeasurementResults::getApparentVolume(int precision) const
 {
-    return apparentVolume;
+    double factor = std::pow(10.0, precision);
+    return std::round(apparentVolume * factor) / factor;
 }
 
-double MeasurementResults::getApparentDensity() const
+double MeasurementResults::getApparentDensity(int precision) const
 {
-    return apparentDensity;
+    double factor = std::pow(10.0, precision);
+    return std::round(apparentDensity * factor) / factor;
 }
 
-double MeasurementResults::getRelativeDensity() const
+double MeasurementResults::getRelativeDensity(int precision) const
 {
-    return relativeDensity;
+    double factor = std::pow(10.0, precision);
+    return std::round(relativeDensity * factor) / factor;
 }
 
-double MeasurementResults::getOpenPoresVolume() const
+double MeasurementResults::getOpenPoresVolume(int precision) const
 {
-    return openPoresVolume;
+    double factor = std::pow(10.0, precision);
+    return std::round(openPoresVolume * factor) / factor;
 }
 
-double MeasurementResults::getTotalPorosity() const
+double MeasurementResults::getTotalPorosity(int precision) const
 {
-    return totalPorosity;
+    double factor = std::pow(10.0, precision);
+    return std::round(totalPorosity * factor) / factor;
 }
 
-double MeasurementResults::getOpenPorosity() const
+double MeasurementResults::getOpenPorosity(int precision) const
 {
-    return openPorosity;
+    double factor = std::pow(10.0, precision);
+    return std::round(openPorosity * factor) / factor;
 }
 
-double MeasurementResults::getClosedPorosity() const
+double MeasurementResults::getClosedPorosity(int precision) const
 {
-    return closedPorosity;
+    double factor = std::pow(10.0, precision);
+    return std::round(closedPorosity * factor) / factor;
 }
 
-double MeasurementResults::getWaterAbsorption() const
+double MeasurementResults::getWaterAbsorption(int precision) const
 {
-    return waterAbsorption;
+    double factor = std::pow(10.0, precision);
+    return std::round(waterAbsorption * factor) / factor;
 }
 
-double MeasurementResults::getTheoreticalDensity() const
+double MeasurementResults::getTheoreticalDensity(int precision) const
 {
-    return materialTheoreticalDensity;
+    double factor = std::pow(10.0, precision);
+    return std::round(materialTheoreticalDensity * factor) / factor;
 }
 
-double MeasurementResults::getFluidDensity() const
+double MeasurementResults::getFluidDensity(int precision) const
 {
-    return fluidDensity;
+    double factor = std::pow(10.0, precision);
+    return std::round(fluidDensity * factor) / factor;
 }
+
 
 void MeasurementResults::setMeasurementId(const QString& newMeasurementId)
 {

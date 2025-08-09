@@ -106,13 +106,13 @@ void MainWindow::onRadwagMeasueReady(const RadwagMeasure &data)
 {
     MeasurementStages::Stage currentStage = ui->measureDensityStage->property("currentStage").value<MeasurementStages::Stage>();
     if(currentStage == MeasurementStages::Stage::DryMeasure)
-        ui->editCurrentDryMeasure->setText(QString::number(data.getValue(), 'f', 3) );
+        ui->editCurrentDryMeasure->setText(QString::number(data.getValue()));
     else if(currentStage == MeasurementStages::Stage::FinishSecond)
-        ui->editCurrentValueFinishSecond->setText(QString::number(data.getValue(), 'f', 3));
+        ui->editCurrentValueFinishSecond->setText(QString::number(data.getValue()));
     else if(currentStage == MeasurementStages::Stage::SaturationMass)
-        ui->editCurrentValueFinishMeasurementTriple->setText(QString::number(data.getValue(), 'f', 3));
+        ui->editCurrentValueFinishMeasurementTriple->setText(QString::number(data.getValue()));
     else if(currentStage == MeasurementStages::Stage::FinishTriple)
-        ui->editCurrentMeasureSaturated->setText(QString::number(data.getValue(), 'f', 3));
+        ui->editCurrentMeasureSaturated->setText(QString::number(data.getValue()));
 }
 
 void MainWindow::onConnectResult(bool connected)

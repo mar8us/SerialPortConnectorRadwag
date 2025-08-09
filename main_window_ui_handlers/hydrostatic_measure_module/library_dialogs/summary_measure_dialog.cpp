@@ -46,7 +46,7 @@ void SummaryMeasureDialog::updateMeasureSecondLabelsSummary()
     Sample sample = sourceMeasure->getSample();
     ui->valueSecondSampleName->setText(sample.getName());
     ui->valueSecondMaterial->setText(sample.getMaterialName());
-    ui->valueSecondTheoreticalDensity->setText(QString::number(sample.getMaterialDensity(), 'f', 3) + " g/cm³");
+    ui->valueSecondTheoreticalDensity->setText(QString::number(sample.getMaterialDensity()) + " g/cm³");
 
     Fluid fluid = sourceMeasure->getFluid();
     ui->valueSecondLiquidType->setText(fluid.getName());
@@ -54,18 +54,18 @@ void SummaryMeasureDialog::updateMeasureSecondLabelsSummary()
     ui->valueSecondLiquidDensity->setText(QString::number(sourceMeasure->getFluidDensity(), 'f', 5) + " g/cm³");
 
     double dryMass = sourceMeasure->getSampleDryMass();
-    ui->valueSecondMeasureDryMass->setText(QString::number(dryMass, 'f', 3) + " g");
+    ui->valueSecondMeasureDryMass->setText(QString::number(dryMass) + " g");
     double massInFluid = sourceMeasure->getSampleInFluidMass();
-    ui->valueSecondMeasureWetMass->setText(QString::number(massInFluid, 'f', 3) + " g");
+    ui->valueSecondMeasureWetMass->setText(QString::number(massInFluid) + " g");
 
     double apparentVolume = results.getApparentVolume();
-    ui->valueSecondMeasureApparentVolume->setText(QString::number(apparentVolume, 'f', 3) + " cm³");
+    ui->valueSecondMeasureApparentVolume->setText(QString::number(apparentVolume) + " cm³");
     double apparentDensity = results.getApparentDensity();
-    ui->valueSecondMeasureApparentDensity->setText(QString::number(apparentDensity, 'f', 3) + " g/cm³");
+    ui->valueSecondMeasureApparentDensity->setText(QString::number(apparentDensity) + " g/cm³");
     double relativeDensity = results.getRelativeDensity();
-    ui->valueSecondMeasureRelativeDensity->setText(QString::number(relativeDensity, 'f', 3) + " %");
+    ui->valueSecondMeasureRelativeDensity->setText(QString::number(relativeDensity) + " %");
     double totalPorosity = results.getTotalPorosity();
-    ui->valueSecondMeasureTotalPorosity->setText(QString::number(totalPorosity, 'f', 3) + " %");
+    ui->valueSecondMeasureTotalPorosity->setText(QString::number(totalPorosity) + " %");
 
     updateSecondCharts(results);
 }
@@ -81,7 +81,7 @@ void SummaryMeasureDialog::updateMeasureTripleLabelsSummary()
     ui->valueTripleMeasureID->setText(sourceMeasure->getSampleId());
     ui->valueTripleSampleName->setText(sample.getName());
     ui->valueTripleMaterialName->setText(sample.getMaterialName());
-    ui->valueTripleTheoreticalDensity->setText(QString::number(sample.getMaterialDensity(), 'f', 4) + " g/cm³");
+    ui->valueTripleTheoreticalDensity->setText(QString::number(sample.getMaterialDensity()) + " g/cm³");
 
     Fluid fluid = sourceMeasure->getFluid();
     ui->valueTripleMeasureLiquidName->setText(fluid.getName());
@@ -98,28 +98,28 @@ void SummaryMeasureDialog::updateMeasureTripleLabelsSummary()
     ui->valueTripleMeasureDateTime->setText(dateTime);
 
     double dryMass = sourceMeasure->getSampleDryMass();
-    ui->valueTripleMeasureDryMass->setText(QString::number(dryMass, 'f', 3) + " g");
+    ui->valueTripleMeasureDryMass->setText(QString::number(dryMass) + " g");
     double massInFluid = sourceMeasure->getSampleInFluidMass();
-    ui->valueTripleMeasureWetMass->setText(QString::number(massInFluid, 'f', 3) + " g");
+    ui->valueTripleMeasureWetMass->setText(QString::number(massInFluid) + " g");
     double saturatedMass = sourceMeasure->getSampleSaturatedMass();
-    ui->valueTripleMeasureSaturatedMass->setText(QString::number(saturatedMass, 'f', 3) + " g");
+    ui->valueTripleMeasureSaturatedMass->setText(QString::number(saturatedMass) + " g");
 
     double apparentDensity = results.getApparentDensity();
-    ui->valueTripleMeasureApparentDensity->setText(QString::number(apparentDensity, 'f', 3) + " g/cm³");
+    ui->valueTripleMeasureApparentDensity->setText(QString::number(apparentDensity) + " g/cm³");
     double relativeDensity = results.getRelativeDensity();
-    ui->valueTripleMeasureRelativeDensity->setText(QString::number(relativeDensity, 'f', 2) + " %");
+    ui->valueTripleMeasureRelativeDensity->setText(QString::number(relativeDensity) + " %");
     double apparentVolume = results.getApparentVolume();
-    ui->valueTripleMeasureApparentVolume->setText(QString::number(apparentVolume, 'f', 3) + " cm³");
+    ui->valueTripleMeasureApparentVolume->setText(QString::number(apparentVolume) + " cm³");
     double openPoresVolume = results.getOpenPoresVolume();
-    ui->valueTripleMeasureOpenPoresVolume->setText(QString::number(openPoresVolume, 'f', 3) + " cm³");
+    ui->valueTripleMeasureOpenPoresVolume->setText(QString::number(openPoresVolume) + " cm³");
     double totalPorosity = results.getTotalPorosity();
-    ui->valueTripleMeasureTotalPorosity->setText(QString::number(totalPorosity, 'f', 2) + " %");
+    ui->valueTripleMeasureTotalPorosity->setText(QString::number(totalPorosity) + " %");
     double openPorosity = results.getOpenPorosity();
-    ui->valueTripleMeasureOpenPorosity->setText(QString::number(openPorosity, 'f', 2) + " %");
+    ui->valueTripleMeasureOpenPorosity->setText(QString::number(openPorosity) + " %");
     double closedPorosity = results.getClosedPorosity();
-    ui->valueTripleMeasureClosedPorosity->setText(QString::number(closedPorosity, 'f', 2) + " %");
+    ui->valueTripleMeasureClosedPorosity->setText(QString::number(closedPorosity) + " %");
     double waterAbsorption = results.getWaterAbsorption();
-    ui->valueTripleMeasureWaterAbsorbability->setText(QString::number(waterAbsorption, 'f', 2) + " %");
+    ui->valueTripleMeasureWaterAbsorbability->setText(QString::number(waterAbsorption) + " %");
 
     updateTripleCharts(results);
 }

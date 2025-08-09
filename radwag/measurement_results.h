@@ -15,19 +15,19 @@ public:
     QString getMeasurementId() const;
 
     // Podstawowe wyniki
-    double getApparentVolume() const;     // Objętość pozorna
-    double getApparentDensity() const;    // Gęstość pozorna
-    double getRelativeDensity() const;    // Gęstość względna
-    double getOpenPoresVolume() const;    // Objętość porów otwartych
-    double getTotalPorosity() const;      // Porowatość całkowita
+    double getApparentVolume(int precision = 4) const;     // Objętość pozorna
+    double getApparentDensity(int precision = 4) const;    // Gęstość pozorna
+    double getRelativeDensity(int precision = 4) const;    // Gęstość względna
+    double getOpenPoresVolume(int precision = 4) const;    // Objętość porów otwartych
+    double getTotalPorosity(int precision = 2) const;      // Porowatość całkowita
 
     // Wyniki dla pomiarów trzystopniowych
-    double getOpenPorosity() const;       // Porowatość otwarta
-    double getClosedPorosity() const;       // Porowatość zamknięta
-    double getWaterAbsorption() const;    // Nasiąkliwość wagowa
+    double getOpenPorosity(int precision = 2) const;       // Porowatość otwarta
+    double getClosedPorosity(int precision = 2) const;     // Porowatość zamknięta
+    double getWaterAbsorption(int precision = 4) const;    // Nasiąkliwość wagowa
 
-    double getTheoreticalDensity() const;
-    double getFluidDensity() const;
+    double getTheoreticalDensity(int precision = 5) const;
+    double getFluidDensity(int precision = 5) const;
 
     void setApparentVolume(double newApparentVolume);
     void setApparentDensity(double newApparentDensity);

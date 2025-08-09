@@ -23,7 +23,7 @@ public:
     virtual bool parse() override;
 
     // Gettery i settery
-    double getValue() const;
+    double getValue(int precision = 4) const;
     void setValue(double value);
 
     QString getUnitString() const;
