@@ -115,8 +115,9 @@ QVariant MeasurementTreeModel::data(const QModelIndex& index, int role) const
     if(!measurement)
         return QVariant();
 
-    if (role == Qt::DisplayRole)
+    if(role == Qt::DisplayRole)
     {
+        const auto &results = measurement->getResults();
         switch (index.column())
         {
             case MeasureType:
@@ -133,6 +134,12 @@ QVariant MeasurementTreeModel::data(const QModelIndex& index, int role) const
 
             case Fluid:
                 return measurement->getFluidName();
+
+            case ApparetDenisty:
+                return results.getApparentDensity();
+
+            case TotalPorosity:
+                return results.getTotalPorosity();
 
             case Status:
             {
@@ -214,6 +221,12 @@ QVariant MeasurementTreeModel::headerData(int section, Qt::Orientation orientati
 
             case Fluid:
                 return tr("Ciecz");
+
+            case ApparetDenisty:
+                return tr("Gęstość pozorna [g]");
+
+            case TotalPorosity:
+                return tr("Porowatość całkowita [%]");
 
             case Status:
                 return tr("Status");

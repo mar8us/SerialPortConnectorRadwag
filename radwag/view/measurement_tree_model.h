@@ -20,6 +20,8 @@ public:
         SampleName,
         Material,
         Fluid,
+        ApparetDenisty,
+        TotalPorosity,
         Status,
         Author,
         Date,
