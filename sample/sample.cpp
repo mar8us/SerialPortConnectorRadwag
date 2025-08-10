@@ -6,9 +6,8 @@ Sample::Sample()
     date = QDateTime::currentDateTime();
 }
 
-Sample::Sample(const QString &id, const QString &name, const QString &description, const Material &material)
-    : id(id)
-    , name(name)
+Sample::Sample(const QString &name, const QString &description, const Material &material)
+    : name(name)
     , description(description)
     , material(material)
 {
@@ -16,8 +15,7 @@ Sample::Sample(const QString &id, const QString &name, const QString &descriptio
 }
 
 Sample::Sample(const Sample &sourceSample)
-    : id(sourceSample.id)
-    , name(sourceSample.name)
+    : name(sourceSample.name)
     , description(sourceSample.description)
     , material(sourceSample.material)
     , date(sourceSample.date)
@@ -25,9 +23,9 @@ Sample::Sample(const Sample &sourceSample)
 
 }
 
-QString Sample::getId() const
+Sample::~Sample()
 {
-    return id;
+
 }
 
 QString Sample::getName() const
@@ -43,6 +41,11 @@ QString Sample::getDescription() const
 QDateTime Sample::getDate() const
 {
     return date;
+}
+
+const Material &Sample::getMaterial() const
+{
+    return material;
 }
 
 QString Sample::getMaterialName() const
@@ -65,17 +68,12 @@ double Sample::getMaterialDensity() const
     return material.getDensity();
 }
 
-void Sample::setId(const QString &newId)
-{
-    id = newId;
-}
-
-void Sample::setName(const QString &newName)
+void Sample::setName(const QString &newName) const
 {
     name = newName;
 }
 
-void Sample::setDescription(const QString &newDescription)
+void Sample::setDescription(const QString &newDescription) const
 {
     description = newDescription;
 }
@@ -93,7 +91,6 @@ void Sample::setMaterial(const Material &newMaterial)
 QJsonObject Sample::toJson() const
 {
     QJsonObject sampleObj;
-    sampleObj["id"] = getId();
     sampleObj["name"] = getName();
     sampleObj["description"] = getDescription();
     sampleObj["date"] = getDate().toString(Qt::ISODate);
@@ -104,7 +101,6 @@ QJsonObject Sample::toJson() const
 
 void Sample::fromJson(const QJsonObject &json)
 {
-    setId(json["id"].toString());
     setName(json["name"].toString());
     setDescription(json["description"].toString());
     setDate(QDateTime::fromString(json["date"].toString(), Qt::ISODate));
