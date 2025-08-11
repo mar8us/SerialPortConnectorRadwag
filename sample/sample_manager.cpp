@@ -76,14 +76,6 @@ bool SampleManager::sampleExists(const QString &name) const
     return samples.contains(name);
 }
 
-bool SampleManager::reloadSamples()
-{
-    samples.clear();
-    loadSamples();
-    emit samplesChanged();
-    return true;
-}
-
 QStringList SampleManager::getSampleNames() const
 {
     return samples.keys();

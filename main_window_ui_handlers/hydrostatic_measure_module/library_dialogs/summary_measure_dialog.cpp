@@ -37,7 +37,6 @@ void SummaryMeasureDialog::updateMeasureSecondLabelsSummary()
 
     auto results = sourceMeasure->getResults();
 
-    ui->valueSecondMeasureID->setText(sourceMeasure->getSampleName());
     ui->valueSecondMeasureType->setText(sourceMeasure->getType() == MeasurementType::TwoStage ? "Dwustopniowy" : "Trzystopniowy");
     ui->valueSecondMeasureOperator->setText(sourceMeasure->getAuthor());
     QString dateTime = sourceMeasure->getDate().toString("dd-MM-yyyy HH:mm");
