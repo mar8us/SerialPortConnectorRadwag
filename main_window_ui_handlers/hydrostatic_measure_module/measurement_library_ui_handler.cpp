@@ -71,8 +71,8 @@ void MeasurementLibraryUiHandler::onLibraryDeleteMeasureButtonClicked()
         if(!measurement)
             return;
 
-        QString sampleName = measurement->getSample().getName();
-        QString materialName = measurement->getSample().getMaterialName();
+        QString sampleName = measurement->getSample()->getName();
+        QString materialName = measurement->getSample()->getMaterialName();
 
         QString displayInfo = QString(":\n");
         displayInfo = sampleName.isEmpty() ? QString(): QString(": \"%1 - %2\"").arg(sampleName).arg(materialName);
@@ -337,7 +337,6 @@ void MeasurementLibraryUiHandler::fillComboLibSearchIn()
 {
     ui->comboLibSearchIn->clear();
     ui->comboLibSearchIn->addItem("Wszystkie pola", -1);
-    ui->comboLibSearchIn->addItem("ID próbki", MeasurementTreeModel::Columns::SampleId);
     ui->comboLibSearchIn->addItem("Nazwa próbki", MeasurementTreeModel::Columns::SampleName);
     ui->comboLibSearchIn->addItem("Materiał", MeasurementTreeModel::Columns::Material);
     ui->comboLibSearchIn->addItem("Ciecz", MeasurementTreeModel::Columns::Fluid);
@@ -351,7 +350,6 @@ void MeasurementLibraryUiHandler::fillComboLibGroupBy()
     ui->comboLibGroupBy->clear();
     ui->comboLibGroupBy->addItem("Brak grupowania", -1);
     ui->comboLibGroupBy->addItem("Typ pomiaru", MeasurementTreeModel::Columns::MeasureType);
-    ui->comboLibGroupBy->addItem("ID próbki", MeasurementTreeModel::Columns::SampleId);
     ui->comboLibGroupBy->addItem("Nazwa próbki", MeasurementTreeModel::Columns::SampleName);
     ui->comboLibGroupBy->addItem("Materiał", MeasurementTreeModel::Columns::Material);
     ui->comboLibGroupBy->addItem("Ciecz", MeasurementTreeModel::Columns::Fluid);

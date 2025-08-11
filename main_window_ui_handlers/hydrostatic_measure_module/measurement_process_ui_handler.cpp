@@ -31,7 +31,6 @@ void MeasurementProcessUiHandler::initialize()
     connectSignals();
     clearSecondMeasurePages();
     clearTripleMeasurePages();
-    fillSampleCombo();
     fillFluidCombo();
     updateSaveCurrentDryMeasureButtonState();
 
@@ -396,20 +395,20 @@ bool MeasurementProcessUiHandler::onSummaryTriplePageExit()
 void MeasurementProcessUiHandler::buttonTableFluidsOnClicked()
 {
     QMap<QString, Fluid> fluids = dataHolder.fluidManager->getFluids();
-    auto dialog = new FluidTablesDialog(fluids, mainWindow);
-    dialog->exec();
+    FluidTablesDialog dialog(fluids, mainWindow);
+    dialog.exec();
     dataHolder.fluidManager->setFluids(fluids);
     fillFluidCombo();
 }
 
-void MeasurementProcessUiHandler::buttonSamplesOnClicked()
+void MeasurementProcessUiHandler::onButtonSeriesOnClicked()
 {
-    QMap<QString, Sample> samples = dataHolder.sampleManager->getSamples();
     QMap<QString, Material> materials = dataHolder.materialManager->getMaterials();
-    auto dialog = new SampleDialog(samples, materials, mainWindow);
-    connect(dialog, &SampleDialog::materialsChanged, this, &MeasurementProcessUiHandler::onMaterialsChanged);
-    dialog->exec();
-    dataHolder.sampleManager->setSamples(samples);
+    SampleDialog dialog(dataHolder.sampleManager.get(), materials, mainWindow);
+
+    connect(&dialog, &SampleDialog::materialsChanged, this, &MeasurementProcessUiHandler::onMaterialsChanged);
+
+    dialog.exec();
     fillSampleCombo();
     upadteSampleEditors();
 }
@@ -914,12 +913,12 @@ void MeasurementProcessUiHandler::fillSampleCombo()
     ui->comboBoxSampleSelection->blockSignals(true);
 
     ui->comboBoxSampleSelection->clear();
-    const QMap<QString, Sample> &samples = dataHolder.sampleManager->getSamples();
+    const QMap<QString, std::shared_ptr<const Sample>> &samples = dataHolder.sampleManager->getSamples();
     for(auto it = samples.constBegin(); it != samples.constEnd(); it++)
     {
-        QString id = it.value().getId();
-        QString name = it.value().getName();
-        ui->comboBoxSampleSelection->addItem(it.value().getName(), it.value().getId());
+        QString id = it.value()->getName();
+        QString name = it.value()->getName();
+        ui->comboBoxSampleSelection->addItem(it.value()->getName(), it.value()->getName());
     }
     ui->comboBoxSampleSelection->setCurrentIndex(-1);
 
@@ -991,17 +990,17 @@ void MeasurementProcessUiHandler::upadteSampleEditors()
     clearSampleEditors();
 
     QString smapleId = ui->comboBoxSampleSelection->currentData().toString();
-    Sample sample = dataHolder.sampleManager->getSample(smapleId);
-    if(sample.getId().isEmpty())
+    auto sample = dataHolder.sampleManager->getSample(smapleId);
+    if(!sample)
+        return;
+    if(sample->getName().isEmpty())
         return;
 
-    ui->editSampleId->setText(smapleId);
-    ui->editSampleName->setText(sample.getName());
-    ui->editMaterial->setText(sample.getMaterialName());
-    ui->editMaterialDensity->setText(QString::number(sample.getMaterialDensity(), 'f', 4) +  " g/cm³");
-    ui->editSampleDescription->setPlainText(sample.getDescription());
+    ui->editSampleName->setText(sample->getName());
+    ui->editMaterial->setText(sample->getMaterialName());
+    ui->editMaterialDensity->setText(QString::number(sample->getMaterialDensity(), 'f', 4) +  " g/cm³");
+    ui->editSampleDescription->setPlainText(sample->getDescription());
 }
-
 
 bool MeasurementProcessUiHandler::updateInitialDataLabels()
 {
@@ -1009,13 +1008,15 @@ bool MeasurementProcessUiHandler::updateInitialDataLabels()
         return false;
 
     auto activeMeasure = radwagMeasureControler.getActiveMeasure();
-    ui->comboBoxSampleSelection->setCurrentText(activeMeasure->getSample().getName());
+    auto sample = activeMeasure->getSample();
+    if(!sample)
+        return true;
 
-    ui->editSampleId->setText(activeMeasure->getSample().getId());
-    ui->editSampleName->setText(activeMeasure->getSample().getName());
-    ui->editMaterial->setText(activeMeasure->getSample().getMaterialName());
-    ui->editMaterialDensity->setText(QString::number(activeMeasure->getSample().getMaterialDensity()) + " g/cm³");
-    ui->editSampleDescription->setPlainText(activeMeasure->getSample().getDescription());
+    ui->comboBoxSampleSelection->setCurrentText(sample->getName());
+    ui->editSampleName->setText(sample->getName());
+    ui->editMaterial->setText(sample->getMaterialName());
+    ui->editMaterialDensity->setText(QString::number(sample->getMaterialDensity()) + " g/cm³");
+    ui->editSampleDescription->setPlainText(sample->getDescription());
     ui->comboBoxFluid->setCurrentText(activeMeasure->getFluidName());
     ui->editAuthor->setText(activeMeasure->getAuthor());
 
@@ -1051,10 +1052,10 @@ void MeasurementProcessUiHandler::updateSampleInfoLabels()
     if(!radwagMeasureControler.hasActiveMeasurement())
         return;
 
-    const Sample &currentSample = radwagMeasureControler.getActiveMeasure()->getSample();
+    const auto &currentSample = radwagMeasureControler.getActiveMeasure()->getSample();
 
-    ui->editSampleIdValuePrepareMeasureSecond->setText(currentSample.getId());
-    ui->editSampleMaterialValuePrepareMeasureSecond->setText(currentSample.getMaterialName());
+    ui->editSampleIdValuePrepareMeasureSecond->setText(currentSample->getName());
+    ui->editSampleMaterialValuePrepareMeasureSecond->setText(currentSample->getMaterialName());
 
     double airMass = radwagMeasureControler.getDryMass();
     QString formattedAirMass = QString::number(airMass) + " g";
@@ -1106,11 +1107,11 @@ void MeasurementProcessUiHandler::updateFinishMeasureSecondLabels()
     if(!radwagMeasureControler.hasActiveMeasurement())
         return;
 
-    const Sample &currentSample = radwagMeasureControler.getActiveMeasure()->getSample();
-    const Fluid &currentFluid = radwagMeasureControler.getActiveMeasure()->getFluid();
+    const auto currentSample = radwagMeasureControler.getActiveMeasure()->getSample();
+    const Fluid currentFluid = radwagMeasureControler.getActiveMeasure()->getFluid();
 
-    ui->editSampleIdValueFinishMeasureSecond->setText(currentSample.getId());
-    ui->editSampleMaterialValueFinishMeasureSecond->setText(currentSample.getMaterialName());
+    ui->editSampleIdValueFinishMeasureSecond->setText(currentSample->getName());
+    ui->editSampleMaterialValueFinishMeasureSecond->setText(currentSample->getMaterialName());
     ui->editLiquidFinishMeasureSecond->setText(currentFluid.getName());
 
     double airMass = radwagMeasureControler.getDryMass();
@@ -1138,16 +1139,15 @@ void MeasurementProcessUiHandler::updateMeasureSecondLabelsSummary()
     auto measure = radwagMeasureControler.getActiveMeasure();
     auto results = radwagMeasureControler.calculateResults();
 
-    ui->valueSecondMeasureID->setText(measure->getSampleId());
     ui->valueSecondMeasureType->setText(measure->getType() == MeasurementType::TwoStage ? "Dwustopniowy" : "Trzystopniowy");
     ui->valueSecondMeasureOperator->setText(measure->getAuthor());
     QString dateTime = measure->getDate().toString("dd-MM-yyyy HH:mm");
     ui->valueSecondMeasureDateTime->setText(dateTime);
 
-    Sample sample = measure->getSample();
-    ui->valueSecondSampleName->setText(sample.getName());
-    ui->valueSecondMaterial->setText(sample.getMaterialName());
-    ui->valueSecondTheoreticalDensity->setText(QString::number(sample.getMaterialDensity()) + " g/cm³");
+    auto sample = measure->getSample();
+    ui->valueSecondSampleName->setText(sample->getName());
+    ui->valueSecondMaterial->setText(sample->getMaterialName());
+    ui->valueSecondTheoreticalDensity->setText(QString::number(sample->getMaterialDensity()) + " g/cm³");
 
     Fluid fluid = measure->getFluid();
     ui->valueSecondLiquidType->setText(fluid.getName());
@@ -1184,9 +1184,9 @@ void MeasurementProcessUiHandler::updateSaturationSampleInfoLabels()
     if(!radwagMeasureControler.hasActiveMeasurement())
         return;
 
-    const Sample &currentSample = radwagMeasureControler.getActiveMeasure()->getSample();
-    ui->ediSampleIdValuePrepareMeasureTriple->setText(currentSample.getId());
-    ui->editSampleMaterialValuePrepareMeasureTriple->setText(currentSample.getMaterialName());
+    const auto currentSample = radwagMeasureControler.getActiveMeasure()->getSample();
+    ui->ediSampleIdValuePrepareMeasureTriple->setText(currentSample->getName());
+    ui->editSampleMaterialValuePrepareMeasureTriple->setText(currentSample->getMaterialName());
 
     double airMass = radwagMeasureControler.getDryMass();
     QString formattedAirMass = QString::number(airMass) + " g";
@@ -1239,14 +1239,14 @@ void MeasurementProcessUiHandler::updateFinishMeasureTripleLabels()
     if(!radwagMeasureControler.hasActiveMeasurement())
         return;
 
-    const Sample &currentSample = radwagMeasureControler.getActiveMeasure()->getSample();
+    const auto currentSample = radwagMeasureControler.getActiveMeasure()->getSample();
     const Fluid &currentFluid = radwagMeasureControler.getActiveMeasure()->getFluid();
 
     double airMass = radwagMeasureControler.getDryMass();
     double fluidDensity = radwagMeasureControler.getFluidDensity();
 
-    ui->editSampleIdValueSaturationTriple->setText(currentSample.getId());
-    ui->editMaterialNameSaturationTriple->setText(currentSample.getMaterialName());
+    ui->editSampleIdValueSaturationTriple->setText(currentSample->getName());
+    ui->editMaterialNameSaturationTriple->setText(currentSample->getMaterialName());
     ui->editFluidNameSaturationTriple->setText(currentFluid.getName());
     ui->editSaturationMethodSaturationTriple->setText(utils::getSaturationMethodName(static_cast<SaturationMethod>(radwagMeasureControler.getActiveMeasure()->getSaturationMethod())));
     ui->editFluidDensitySaturationTriple->setText(QString::number(fluidDensity, 'f', 5) + " g");
@@ -1269,11 +1269,11 @@ void MeasurementProcessUiHandler::updateAirSaturatedTripleLabels()
     if(!radwagMeasureControler.hasActiveMeasurement())
         return;
 
-    const Sample &currentSample = radwagMeasureControler.getActiveMeasure()->getSample();
+    const auto currentSample = radwagMeasureControler.getActiveMeasure()->getSample();
     const Fluid &currentFluid = radwagMeasureControler.getActiveMeasure()->getFluid();
 
-    ui->editSampleIdAirSaturatedTriple->setText(currentSample.getId());
-    ui->editMaterialAirSaturatedTriple->setText(currentSample.getMaterialName());
+    ui->editSampleIdAirSaturatedTriple->setText(currentSample->getName());
+    ui->editMaterialAirSaturatedTriple->setText(currentSample->getMaterialName());
     ui->editFluidAirSaturatedTriple->setText(currentFluid.getName());
     ui->editSaturationAirSaturatedTriple->setText(utils::getSaturationMethodName(static_cast<SaturationMethod>(radwagMeasureControler.getActiveMeasure()->getSaturationMethod())));
 
@@ -1306,11 +1306,10 @@ void MeasurementProcessUiHandler::updateMeasureTripleLabelsSummary()
     auto measure = radwagMeasureControler.getActiveMeasure();
     auto results = radwagMeasureControler.calculateResults();
 
-    Sample sample = measure->getSample();
-    ui->valueTripleMeasureID->setText(measure->getSampleId());
-    ui->valueTripleSampleName->setText(sample.getName());
-    ui->valueTripleMaterialName->setText(sample.getMaterialName());
-    ui->valueTripleTheoreticalDensity->setText(QString::number(sample.getMaterialDensity()) + " g/cm³");
+    const auto sample = measure->getSample();
+    ui->valueTripleSampleName->setText(sample->getName());
+    ui->valueTripleMaterialName->setText(sample->getMaterialName());
+    ui->valueTripleTheoreticalDensity->setText(QString::number(sample->getMaterialDensity()) + " g/cm³");
 
     Fluid fluid = measure->getFluid();
     ui->valueTripleMeasureLiquidName->setText(fluid.getName());
@@ -1462,7 +1461,6 @@ void MeasurementProcessUiHandler::updateWigdetVisibility(MeasurementStages::Stag
     }
 
     ui->frame->setVisible(currentStage != MeasurementStages::Stage::StartMeasure);
-    ui->groupBoxAdditionalSettings->setVisible(currentStage == MeasurementStages::Stage::InitialData);
 }
 
 
@@ -1579,7 +1577,6 @@ void MeasurementProcessUiHandler::clearTripleMeasurePages()
 
 void MeasurementProcessUiHandler::clearSampleEditors()
 {
-    ui->editSampleId->clear();
     ui->editSampleName->clear();
     ui->editMaterial->clear();
     ui->editMaterialDensity->clear();
@@ -1589,7 +1586,6 @@ void MeasurementProcessUiHandler::clearSampleEditors()
 void MeasurementProcessUiHandler::clearInitialDataPage()
 {
     ui->comboBoxSampleSelection->setCurrentIndex(-1);
-    ui->editSampleId->clear();
     ui->editSampleName->clear();
     ui->editMaterial->clear();
     ui->editMaterialDensity->clear();
@@ -1855,10 +1851,12 @@ void MeasurementProcessUiHandler::onReplyMeasure(const std::shared_ptr<const Mea
         return;
 
     radwagMeasureControler.replyMeasure(sourceMeasure);
+    ui->comboBoxSampleSelection->blockSignals(true);
     if(!checkGuidePrepareWorkstation())
         measureStateMachine->goToStage(MeasurementStages::Stage::StartMeasure, true);
     else
         measureStateMachine->goToStage(radwagMeasureControler.getStage(), true);
+    ui->comboBoxSampleSelection->blockSignals(false);
 }
 
 void MeasurementProcessUiHandler::onContinueMeasure(const std::shared_ptr<const Measurement> &sourceMeasure)
@@ -1932,6 +1930,7 @@ void MeasurementProcessUiHandler::connectInitialDataPageButtons()
     connect(ui->comboBoxFluid, &QComboBox::currentIndexChanged, this, &MeasurementProcessUiHandler::onFluidComboBoxChanged);
 
     connect(ui->editAuthor, &QLineEdit::editingFinished, this, &MeasurementProcessUiHandler::onAuthorEditingFinished);
+    connect(ui->buttonNewSeries, &QPushButton::clicked, this, &MeasurementProcessUiHandler::onButtonSeriesOnClicked);
 }
 
 void MeasurementProcessUiHandler::connectPrepareMeasureSecondPageButtons()
@@ -2013,7 +2012,6 @@ void MeasurementProcessUiHandler::connectSummaryMeasureTriplePageButtons()
 void MeasurementProcessUiHandler::connectCatalogsButtons()
 {
     connect(ui->buttonTableFluids, &QPushButton::clicked, this, &MeasurementProcessUiHandler::buttonTableFluidsOnClicked);
-    connect(ui->buttonSamples, &QPushButton::clicked, this, &MeasurementProcessUiHandler::buttonSamplesOnClicked);
 }
 
 void MeasurementProcessUiHandler::updateStageLabels()

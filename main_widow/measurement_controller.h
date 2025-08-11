@@ -39,7 +39,7 @@ public:
     bool setMeasureStatus(MeasurementStatus status);
     bool setStage(MeasurementStages::Stage stage);
     bool setType(MeasurementType type);
-    bool setSample(const Sample &sample);
+    bool setSample(std::shared_ptr<const Sample> newSample);
     bool setFluid(const Fluid &fluid);
     bool setFluidTemperature(double temperature);
     bool setAuthor(const QString &text);

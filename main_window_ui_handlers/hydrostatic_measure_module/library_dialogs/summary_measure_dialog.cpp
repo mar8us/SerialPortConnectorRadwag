@@ -37,16 +37,16 @@ void SummaryMeasureDialog::updateMeasureSecondLabelsSummary()
 
     auto results = sourceMeasure->getResults();
 
-    ui->valueSecondMeasureID->setText(sourceMeasure->getSampleId());
+    ui->valueSecondMeasureID->setText(sourceMeasure->getSampleName());
     ui->valueSecondMeasureType->setText(sourceMeasure->getType() == MeasurementType::TwoStage ? "Dwustopniowy" : "Trzystopniowy");
     ui->valueSecondMeasureOperator->setText(sourceMeasure->getAuthor());
     QString dateTime = sourceMeasure->getDate().toString("dd-MM-yyyy HH:mm");
     ui->valueSecondMeasureDateTime->setText(dateTime);
 
-    Sample sample = sourceMeasure->getSample();
-    ui->valueSecondSampleName->setText(sample.getName());
-    ui->valueSecondMaterial->setText(sample.getMaterialName());
-    ui->valueSecondTheoreticalDensity->setText(QString::number(sample.getMaterialDensity()) + " g/cm³");
+    auto sample = sourceMeasure->getSample();
+    ui->valueSecondSampleName->setText(sample->getName());
+    ui->valueSecondMaterial->setText(sample->getMaterialName());
+    ui->valueSecondTheoreticalDensity->setText(QString::number(sample->getMaterialDensity()) + " g/cm³");
 
     Fluid fluid = sourceMeasure->getFluid();
     ui->valueSecondLiquidType->setText(fluid.getName());
@@ -77,11 +77,10 @@ void SummaryMeasureDialog::updateMeasureTripleLabelsSummary()
 
     auto results = sourceMeasure->getResults();
 
-    Sample sample = sourceMeasure->getSample();
-    ui->valueTripleMeasureID->setText(sourceMeasure->getSampleId());
-    ui->valueTripleSampleName->setText(sample.getName());
-    ui->valueTripleMaterialName->setText(sample.getMaterialName());
-    ui->valueTripleTheoreticalDensity->setText(QString::number(sample.getMaterialDensity()) + " g/cm³");
+    auto sample = sourceMeasure->getSample();
+    ui->valueTripleSampleName->setText(sample->getName());
+    ui->valueTripleMaterialName->setText(sample->getMaterialName());
+    ui->valueTripleTheoreticalDensity->setText(QString::number(sample->getMaterialDensity()) + " g/cm³");
 
     Fluid fluid = sourceMeasure->getFluid();
     ui->valueTripleMeasureLiquidName->setText(fluid.getName());

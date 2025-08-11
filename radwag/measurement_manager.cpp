@@ -10,7 +10,7 @@
 MeasurementManager::MeasurementManager(QObject *parent)
     : QObject(parent)
 {
-    loadMeasurements();
+
 }
 
 const QMap<QString, std::shared_ptr<const Measurement>>& MeasurementManager::getMeasurements() const
@@ -44,13 +44,14 @@ bool MeasurementManager::addMeasurement(const std::shared_ptr<Measurement> &meas
     return true;
 }
 
-bool MeasurementManager::removeMeasurement(const QString& id)
+bool MeasurementManager::removeMeasurement(const QString& id, bool saveToFile)
 {
     if(!measurementExists(id))
         return false;
 
     measurements.remove(id);
-    saveMeasurements();
+    if(saveToFile)
+        saveMeasurements();
 
     emit measurementRemoved(id);
     emit measurementsChanged();
@@ -58,24 +59,17 @@ bool MeasurementManager::removeMeasurement(const QString& id)
     return true;
 }
 
-QVector<std::shared_ptr<const Measurement>> MeasurementManager::getMeasurementsForSample(const QString& sampleId) const
+QVector<std::shared_ptr<const Measurement>> MeasurementManager::getMeasurementsForSample(const QString& sampleName) const
 {
     QVector<std::shared_ptr<const Measurement>> sampleMeasurements;
     for(auto& measurement : measurements)
-        if(measurement->getSampleId() == sampleId)
+        if(measurement->getSampleName() == sampleName)
             sampleMeasurements.append(measurement);
 
     return sampleMeasurements;
 }
 
-bool MeasurementManager::reloadData()
-{
-    loadMeasurements();
-    emit measurementsChanged();
-    return true;
-}
-
-void MeasurementManager::loadMeasurements()
+void MeasurementManager::loadMeasurements(std::shared_ptr<const SampleManager> sampleManager)
 {
     measurements.clear();
     QFile file(getMeasurementsFilePath());
@@ -98,8 +92,8 @@ void MeasurementManager::loadMeasurements()
         if(!value.isObject())
             continue;
         QJsonObject obj = value.toObject();
-        auto measurement = std::make_shared<Measurement>();
-        measurement->fromJson(obj);
+        auto measurement = std::make_shared<Measurement>(nullptr);
+        measurement->fromJson(obj, sampleManager.get());
         measurements.insert(measurement->getId(), measurement);
     }
 }
@@ -124,6 +118,15 @@ bool MeasurementManager::saveMeasurements()
     file.close();
 
     return true;
+}
+
+void MeasurementManager::onRemoveMeasurementsForSample(QString sampleName)
+{
+    const auto measurements = getMeasurementsForSample(sampleName);
+
+    for(auto it = measurements.begin(); it != measurements.end(); it++)
+        removeMeasurement(it->get()->getId(), false);
+    saveMeasurements();
 }
 
 QString MeasurementManager::getMeasurementsFilePath() const

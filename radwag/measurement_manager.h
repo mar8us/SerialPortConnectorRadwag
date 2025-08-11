@@ -5,6 +5,7 @@
 #include <QMap>
 #include "measurement.h"
 #include "measurement_results.h"
+#include "../sample/sample_manager.h"
 
 class MeasurementManager : public QObject
 {
@@ -17,18 +18,14 @@ public:
     }
 
     const QMap<QString, std::shared_ptr<const Measurement>>& getMeasurements() const;
-    const QMap<QString, MeasurementResults>& getResultsMap() const;
-
     std::shared_ptr<const Measurement> getMeasurement(const QString& id) const;
     bool measurementExists(const QString& id) const;
     bool addMeasurement(const std::shared_ptr<Measurement> &measurement);
-    bool removeMeasurement(const QString& id);
+    bool removeMeasurement(const QString& id, bool saveToFile = true);
 
-    QVector<std::shared_ptr<const Measurement>> getMeasurementsForSample(const QString& sampleId) const;
+    QVector<std::shared_ptr<const Measurement>> getMeasurementsForSample(const QString& sampleName) const;
 
-    bool reloadData();
-
-    void loadMeasurements();
+    void loadMeasurements(std::shared_ptr<const SampleManager> sampleManager);
     bool saveMeasurements();
 
 signals:
@@ -37,6 +34,9 @@ signals:
     void measurementUpdated(const QString& id);
     void measurementRemoved(const QString& id);
     void resultsCalculated(const QString& measurementId);
+
+public slots:
+    void onRemoveMeasurementsForSample(QString sampleName);
 
 private:
     QMap<QString, std::shared_ptr<const Measurement>> measurements;

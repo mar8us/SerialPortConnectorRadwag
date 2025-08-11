@@ -2,12 +2,12 @@
 #include "ui_sample_dialog.h"
 #include "../material_tabels/material_tabels_dialog.h"
 
-SampleDialog::SampleDialog(QMap<QString, Sample> &samples, QMap<QString, Material> &materials, QWidget *parent) :
-    QDialog(parent),
-    ui(new Ui::SampleDialog),
-    samples(samples),
-    materials(materials),
-    modified(false)
+SampleDialog::SampleDialog(SampleManager* sampleManager, QMap<QString, Material> &materials, QWidget *parent)
+    : QDialog(parent)
+    , ui(new Ui::SampleDialog)
+    , sampleManager(sampleManager)
+    , materials(materials)
+    , modified(false)
 {
     ui->setupUi(this);
     ui->groupBoxSampleDetails->setEnabled(false);
@@ -18,7 +18,7 @@ SampleDialog::SampleDialog(QMap<QString, Sample> &samples, QMap<QString, Materia
     connectSignalsAndSlots();
     connectSignalsForModification();
     if(ui->tableWidgetSamples->selectedItems().count() > 0)
-        updateSampleDetails(ui->tableWidgetSamples->item(ui->tableWidgetSamples->currentRow(), 1)->text());
+        updateSampleDetails(ui->tableWidgetSamples->item(ui->tableWidgetSamples->currentRow(), 0)->text());
 }
 
 void SampleDialog::fillMaterialCombo()
@@ -34,16 +34,13 @@ SampleDialog::~SampleDialog()
     delete ui;
 }
 
-QMap<QString, Sample> SampleDialog::getSamples() const
-{
-    return samples;
-}
-
 void SampleDialog::buttonAddSampleOnClicked()
 {
     clearSampleDetails();
     ui->groupBoxSampleDetails->setEnabled(true);
-    ui->editSampleId->setText(generateSampleId());
+
+    ui->comboBoxMaterial->setEnabled(true);
+
     modified = true;
     updateButtonsState();
 }
@@ -58,8 +55,11 @@ void SampleDialog::buttonEditSampleOnClicked()
     if(ui->tableWidgetSamples->selectedItems().isEmpty())
         return;
 
-    editingSampleId = ui->tableWidgetSamples->item(ui->tableWidgetSamples->currentRow(), 1)->text();
+    editingSampleName = ui->tableWidgetSamples->item(ui->tableWidgetSamples->currentRow(), 0)->text();
     ui->groupBoxSampleDetails->setEnabled(true);
+
+    ui->comboBoxMaterial->setEnabled(false);
+
     modified = true;
     updateButtonsState();
 }
@@ -70,26 +70,32 @@ void SampleDialog::buttonRemoveSampleOnClicked()
         return;
 
     int currentRow = ui->tableWidgetSamples->currentRow();
-    QString sampleId = ui->tableWidgetSamples->item(currentRow, 1)->text();
     QString sampleName = ui->tableWidgetSamples->item(currentRow, 0)->text();
 
     QMessageBox::StandardButton reply;
-    reply = QMessageBox::question(this, "Potwierdzenie usunięcia", QString("Czy na pewno chcesz usunąć próbkę '%1' (%2)?").arg(sampleName).arg(sampleId), QMessageBox::Yes|QMessageBox::No);
+    reply = QMessageBox::question(this, "Potwierdzenie usunięcia",
+                                  QString("Czy na pewno chcesz usunąć wybraną serie '%1'? Spowoduje to usunięcie wszyskich powiązany pomiarów.").arg(sampleName),
+                                  QMessageBox::Yes|QMessageBox::No);
 
     if(reply == QMessageBox::Yes)
     {
-        samples.remove(sampleId);
-        ui->tableWidgetSamples->removeRow(currentRow);
-        clearSampleDetails();
+        auto sample = sampleManager->getSample(sampleName);
+        if(sample)
+        {
+            sampleManager->removeSample(sampleName);
 
-        if(ui->tableWidgetSamples->rowCount() == 0)
-            ui->groupBoxSampleDetails->setEnabled(false);
+            ui->tableWidgetSamples->removeRow(currentRow);
+            clearSampleDetails();
 
-        emit samplesChanged();
+            if(ui->tableWidgetSamples->rowCount() == 0)
+                ui->groupBoxSampleDetails->setEnabled(false);
+
+            emit samplesChanged();
+        }
     }
 
     if(!ui->tableWidgetSamples->selectedItems().isEmpty())
-        updateSampleDetails(ui->tableWidgetSamples->item(ui->tableWidgetSamples->currentRow(), 1)->text());
+        updateSampleDetails(ui->tableWidgetSamples->item(ui->tableWidgetSamples->currentRow(), 0)->text());
 }
 
 void SampleDialog::buttonSaveSampleOnClicked()
@@ -97,47 +103,41 @@ void SampleDialog::buttonSaveSampleOnClicked()
     if(!validateSampleDetails())
         return;
 
-    QString id = ui->editSampleId->text().trimmed();
     QString name = ui->editSampleName->text().trimmed();
-    QString materialName = ui->comboBoxMaterial->currentText();
     QString description = ui->editSampleDescription->toPlainText();
 
-    Sample sample(id, name, description, materials.value(materialName));
+    std::shared_ptr<const Sample> newSample;
 
-    if(editingSampleId.isEmpty())
+    int row = -1;
+    if(editingSampleName.isEmpty())
     {
-        int row = ui->tableWidgetSamples->rowCount();
+        newSample = std::make_shared<const Sample>(name, description, materials.value(ui->comboBoxMaterial->currentText()));
+
+        sampleManager->addSample(newSample);
+
+        row = ui->tableWidgetSamples->rowCount();
         ui->tableWidgetSamples->insertRow(row);
-        ui->tableWidgetSamples->setItem(row, 0, new QTableWidgetItem(sample.getName()));
-        ui->tableWidgetSamples->setItem(row, 1, new QTableWidgetItem(sample.getId()));
+        setSampleToRow(row, newSample);
     }
     else
     {
-        samples.remove(editingSampleId);
-        for(int row = 0; row < ui->tableWidgetSamples->rowCount(); row++)
+        auto editedSample = sampleManager->getSample(editingSampleName);
+        if(!editedSample)
         {
-            if(ui->tableWidgetSamples->item(row, 1)->text() != editingSampleId)
-                continue;
-            ui->tableWidgetSamples->setItem(row, 0, new QTableWidgetItem(sample.getName()));
-            ui->tableWidgetSamples->setItem(row, 1, new QTableWidgetItem(sample.getId()));
-            break;
+            QMessageBox::warning(this, "Błąd", "Nie znaleziono serii.");
+            return;
         }
+        QString oldName = editedSample->getName();
+        editedSample->setName(name);
+        editedSample->setDescription(description);
+        sampleManager->updateSample(oldName, editedSample);
     }
-
-    samples[sample.getId()] = sample;
-    editingSampleId.clear();
     modified = false;
-
-    ui->groupBoxSampleDetails->setEnabled(false);
-
-    for(int row = 0; row < ui->tableWidgetSamples->rowCount(); row++)
-    {
-        if(ui->tableWidgetSamples->item(row, 1)->text() != sample.getId())
-            continue;
+    editingSampleName.clear();
+    updateSampleList();
+    if(row != -1)
         ui->tableWidgetSamples->selectRow(row);
-        break;
-    }
-
+    ui->groupBoxSampleDetails->setEnabled(false);
     updateButtonsState();
     emit samplesChanged();
 }
@@ -153,35 +153,47 @@ void SampleDialog::buttonCancelEditSampleOnClicked()
 void SampleDialog::updateSampleList()
 {
     ui->tableWidgetSamples->setRowCount(0);
+
+    const auto& samples = sampleManager->getSamples();
     int row = 0;
-    for(auto sampleIt = samples.begin(); sampleIt != samples.end(); sampleIt++)
+    for(auto sampleIt = samples.begin(); sampleIt != samples.end(); ++sampleIt)
     {
         ui->tableWidgetSamples->insertRow(row);
-        ui->tableWidgetSamples->setItem(row, 0, new QTableWidgetItem(sampleIt->getName()));
-        ui->tableWidgetSamples->setItem(row, 1, new QTableWidgetItem(sampleIt->getId()));
+        setSampleToRow(row, sampleIt.value());
         row++;
     }
+}
 
-    if(ui->tableWidgetSamples->rowCount() > 0)
-        ui->tableWidgetSamples->selectRow(0);
+std::shared_ptr<const Sample> SampleDialog::getSampleFromRow(int row) const
+{
+    if(row < 0 || row >= ui->tableWidgetSamples->rowCount())
+        return nullptr;
+
+    QTableWidgetItem* item = ui->tableWidgetSamples->item(row, 0);
+    if(!item)
+        return nullptr;
+
+    QString sampleName = item->text();
+    return sampleManager->getSample(sampleName);
+}
+
+void SampleDialog::setSampleToRow(int row, std::shared_ptr<const Sample> sample)
+{
+    if(row < 0 || row >= ui->tableWidgetSamples->rowCount())
+        return;
+
+    QTableWidgetItem* item = ui->tableWidgetSamples->item(row, 0);
+    if(!item)
+    {
+        item = new QTableWidgetItem();
+        ui->tableWidgetSamples->setItem(row, 0, item);
+    }
+
+    item->setText(sample->getName());
 }
 
 bool SampleDialog::validateSampleDetails()
 {
-    QString sampleId = ui->editSampleId->text().trimmed();
-    if(sampleId.isEmpty())
-    {
-        QMessageBox::warning(this, tr("Brak ID"), tr("Pole ID próbki nie może być puste."), QMessageBox::Ok);
-        ui->editSampleId->setFocus();
-        return false;
-    }
-
-    if(editingSampleId != sampleId && !isUniqueSampleId(sampleId))
-    {
-        QMessageBox::warning(this, "Błąd zapisu", "Próbka o tym ID już istnieje.");
-        return false;
-    }
-
     QString sampleName = ui->editSampleName->text().trimmed();
     if(sampleName.isEmpty())
     {
@@ -190,55 +202,50 @@ bool SampleDialog::validateSampleDetails()
         return false;
     }
 
+    if(editingSampleName != sampleName && sampleManager->sampleExists(sampleName))
+    {
+        QMessageBox::warning(this, "Błąd zapisu", "Próbka o tej nazwie już istnieje.");
+        ui->editSampleName->setFocus();
+        return false;
+    }
+
+    if(editingSampleName.isEmpty() && ui->comboBoxMaterial->currentText().isEmpty())
+    {
+        QMessageBox::warning(this, tr("Brak materiału"), tr("Musisz wybrać materiał."), QMessageBox::Ok);
+        ui->comboBoxMaterial->setFocus();
+        return false;
+    }
+
     return true;
 }
 
-void SampleDialog::updateSampleDetails(const QString &sampleId)
+void SampleDialog::updateSampleDetails(const QString &sampleName)
 {
     clearSampleDetails();
-    if(!samples.contains(sampleId))
+
+    auto sample = sampleManager->getSample(sampleName);
+    if(!sample)
         return;
 
-    const Sample &sample = samples[sampleId];
+    ui->editSampleName->setText(sample->getName());
 
-    ui->editSampleId->setText(sample.getId());
-    ui->editSampleName->setText(sample.getName());
-
-    int materialIndex = ui->comboBoxMaterial->findText(sample.getMaterialName());
+    int materialIndex = ui->comboBoxMaterial->findText(sample->getMaterialName());
     if(materialIndex >= 0)
         ui->comboBoxMaterial->setCurrentIndex(materialIndex);
 
-    ui->editMaterialDensity->setText(QString::number(sample.getMaterialDensity(), 'f', 3));
-    ui->editSampleDescription->setPlainText(sample.getDescription());
+    ui->editMaterialDensity->setText(QString::number(sample->getMaterialDensity(), 'f', 5));
+    ui->editSampleDescription->setPlainText(sample->getDescription());
 }
 
 void SampleDialog::clearSampleDetails()
 {
-    ui->editSampleId->clear();
     ui->editSampleName->clear();
     ui->comboBoxMaterial->setCurrentIndex(-1);
+    ui->comboBoxMaterial->setEnabled(true);
     ui->editMaterialDensity->clear();
     ui->editSampleDescription->clear();
-    editingSampleId.clear();
+    editingSampleName.clear();
     modified = false;
-}
-
-QString SampleDialog::generateSampleId() const
-{
-    int counter = 1;
-    QString newSampleId;
-    do
-    {
-        newSampleId = "PRB-" + QString("%1").arg(counter, 3, 10, QChar('0'));
-        counter++;
-    } while(samples.contains(newSampleId));
-
-    return newSampleId;
-}
-
-bool SampleDialog::isUniqueSampleId(const QString &id) const
-{
-    return !samples.contains(id);
 }
 
 void SampleDialog::connectSignalsAndSlots()
@@ -261,16 +268,12 @@ void SampleDialog::connectSignalsAndSlots()
 
 void SampleDialog::connectSignalsForModification()
 {
-    connect(ui->editSampleId, &QLineEdit::textChanged, [this]() {
-        modified = ui->groupBoxSampleDetails->isEnabled() && true;
-    });
-
     connect(ui->editSampleName, &QLineEdit::textChanged, [this]() {
         modified = ui->groupBoxSampleDetails->isEnabled() && true;
     });
 
     connect(ui->comboBoxMaterial, &QComboBox::currentTextChanged, [this]() {
-        modified = ui->groupBoxSampleDetails->isEnabled() && true;
+        modified = ui->groupBoxSampleDetails->isEnabled() && ui->comboBoxMaterial->isEnabled() && true;
     });
 
     connect(ui->editSampleDescription, &QPlainTextEdit::textChanged, [this]() {
@@ -308,7 +311,7 @@ void SampleDialog::tableWidgetSamplesOnSelectionChanged()
     if(currentRow >= 0)
     {
         ui->groupBoxSampleDetails->setEnabled(false);
-        updateSampleDetails(ui->tableWidgetSamples->item(currentRow, 1)->text());
+        updateSampleDetails(ui->tableWidgetSamples->item(currentRow, 0)->text());
         updateButtonsState();
     }
 }

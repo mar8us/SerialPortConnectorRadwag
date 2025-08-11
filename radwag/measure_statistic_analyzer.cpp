@@ -85,8 +85,8 @@ BaseAnalysisResult::BaseAnalysisResult(const std::vector<std::shared_ptr<const M
     if(!measurements.empty())
     {
         auto &measure = measurements[0];
-        seriesName = measure->getSample().getName();
-        materialName = measure->getSample().getMaterialName();
+        seriesName = measure->getSample()->getName();
+        materialName = measure->getSample()->getMaterialName();
         theoreticalDensity = measure->getSampleMaterialDensity();
 
         for(const auto& measure : measurements)
@@ -477,7 +477,7 @@ QDateTime AnalysisResult::getAnalysisDate() const
 QString AnalysisResult::getMaterialName() const
 {
     if(!measurements.empty())
-        return measurements[0]->getSample().getMaterialName();
+        return measurements[0]->getSample()->getMaterialName();
     return QString();
 }
 
@@ -485,6 +485,7 @@ QString AnalysisResult::getSeriesName() const
 {
     if(!measurements.empty())
         return measurements[0]->getSample().getName();
+        return measurements[0]->getSample()->getName();
     return QString();
 }
 
@@ -691,7 +692,7 @@ bool StatisticalAnalyzer::validateMeasurementData(const Measurement* measurement
 
 bool StatisticalAnalyzer::areEqualSeries(const Measurement* m1, const Measurement* m2)
 {
-    return m1->getSample().getName() == m2->getSample().getName() && utils::compareDouble(m1->getSampleMaterialDensity(), m2->getSampleMaterialDensity());
+    return m1->getSample()->getName() == m2->getSample()->getName() && utils::compareDouble(m1->getSampleMaterialDensity(), m2->getSampleMaterialDensity());
 }
 
 bool StatisticalAnalyzer::areEqualMethods(const Measurement& m1, const Measurement& m2)

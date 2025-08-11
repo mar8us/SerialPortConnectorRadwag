@@ -10,25 +10,25 @@ class SampleManager : public QObject
 public:
     explicit SampleManager(QObject *parent = nullptr);
 
-    const QMap<QString, Sample> &getSamples() const;
-    void setSamples(const QMap<QString, Sample> &newSamples);
+    const QMap<QString, std::shared_ptr<const Sample>>& getSamples() const;
+    std::shared_ptr<const Sample> getSample(const QString &name) const;
+    bool addSample(std::shared_ptr<const Sample> sample);
+    bool updateSample(const QString &oldName, std::shared_ptr<const Sample> newSample);
+    bool removeSample(const QString &name);
+    bool sampleExists(const QString &name) const;
 
-    Sample getSample(const QString &number) const;
-    bool sampleExists(const QString &number) const;
-    bool addSample(const Sample &sample);
-    bool updateSample(const Sample &sample);
-    bool removeSample(const QString &number);
-
-    bool reloadSamples();
+    QStringList getSampleNames() const;
+    int getSampleCount() const;
+    void clear();
 
 signals:
     void samplesChanged();
-    void sampleAdded(const QString &number);
-    void sampleUpdated(const QString &number);
-    void sampleRemoved(const QString &number);
+    void sampleAdded(const QString &name);
+    void sampleUpdated(const QString &oldName, const QString &newName);
+    void sampleRemoved(const QString &name);
 
 private:
-    QMap<QString, Sample> samples;
+    QMap<QString, std::shared_ptr<const Sample>> samples;
 
     SampleManager(const SampleManager&) = delete;
     SampleManager& operator=(const SampleManager&) = delete;

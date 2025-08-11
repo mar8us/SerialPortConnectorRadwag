@@ -7,6 +7,7 @@
 #include "../sample/sample.h"
 #include "measurement_results.h"
 #include <QDebug>
+#include "../sample/sample_manager.h"
 
 enum class MeasurementType
 {
@@ -56,8 +57,7 @@ enum class SaturationMethod
 class Measurement
 {
 public:
-    explicit Measurement();
-    explicit Measurement(MeasurementType type, const Sample &sample, const Fluid &fluid, const QString &author);
+    explicit Measurement(std::shared_ptr<const Sample> sample);
     explicit Measurement(const Measurement& other);
     ~Measurement();
 
@@ -82,13 +82,13 @@ public:
     void setDate(const QDateTime& newDate);
     void setAuthor(const QString &authorName);
 
-    const Sample &getSample() const;
-    QString getSampleId() const;
+    std::shared_ptr<const Sample> getSample() const;
+    QString getSampleName() const;
     double getSampleMaterialDensity() const;
     double getSampleDryMass() const;
     double getSampleInFluidMass() const;
     double getSampleSaturatedMass() const;
-    void setSample(const Sample &sample);
+    void setSample(std::shared_ptr<const Sample> newSample);
     void setSampleDryMass(double newSampleInDryMass);
     void setSampleInFluidMass(double newSampleInFluidMass);
     void setSampleSaturatedMass(double newSampleSaturatedMass);
@@ -109,7 +109,7 @@ public:
     bool hasResults() const;
 
     QJsonObject toJson() const;
-    void fromJson(const QJsonObject &json);
+    void fromJson(const QJsonObject &json, const SampleManager *sampleManager);
 
 private:
     QString id;
@@ -127,7 +127,7 @@ private:
     double sampleInFluidMass;
     double sampleSaturatedMass;
 
-    Sample sample;
+    std::shared_ptr<const Sample> sample;
     Fluid fluid;
 
     MeasurementResults results;

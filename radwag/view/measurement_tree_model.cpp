@@ -123,14 +123,11 @@ QVariant MeasurementTreeModel::data(const QModelIndex& index, int role) const
             case MeasureType:
                 return measurement->isThreeType() ? "Trzystopniowy" : "Dwustopniowy";
 
-            case SampleId:
-                return measurement->getSample().getId();
-
             case SampleName:
-                return measurement->getSample().getName();
+                return measurement->getSample()->getName();
 
             case Material:
-                return measurement->getSample().getMaterialName();
+                return measurement->getSample()->getMaterialName();
 
             case Fluid:
                 return measurement->getFluidName();
@@ -210,11 +207,8 @@ QVariant MeasurementTreeModel::headerData(int section, Qt::Orientation orientati
             case MeasureType:
                 return tr("Typ pomiaru");
 
-            case SampleId:
-                return tr("ID próbki");
-
             case SampleName:
-                return tr("Nazwa próbki");
+                return tr("Nazwa serii");
 
             case Material:
                 return tr("Materiał");
@@ -377,14 +371,11 @@ bool MeasurementTreeModel::matchesFilter(const std::shared_ptr<const Measurement
             return QString(measurement->isThreeType() ? "Trzystopniowy" : "Dwustopniowy")
                 .contains(filterText, Qt::CaseInsensitive);
 
-        case SampleId:
-            return measurement->getSample().getId().contains(filterText, Qt::CaseInsensitive);
-
         case SampleName:
-            return measurement->getSample().getName().contains(filterText, Qt::CaseInsensitive);
+            return measurement->getSample()->getName().contains(filterText, Qt::CaseInsensitive);
 
         case Material:
-            return measurement->getSample().getMaterialName().contains(filterText, Qt::CaseInsensitive);
+            return measurement->getSample()->getMaterialName().contains(filterText, Qt::CaseInsensitive);
 
         case Fluid:
             return measurement->getFluidName().contains(filterText, Qt::CaseInsensitive);
@@ -401,9 +392,8 @@ bool MeasurementTreeModel::matchesFilter(const std::shared_ptr<const Measurement
         default:
             return QString(measurement->isThreeType() ? "Pomiar trzystopniowy" : "Pomiar dwustopniowy").contains(filterText, Qt::CaseInsensitive) ||
                    measurement->getId().contains(filterText, Qt::CaseInsensitive) ||
-                   measurement->getSample().getId().contains(filterText, Qt::CaseInsensitive) ||
-                   measurement->getSample().getName().contains(filterText, Qt::CaseInsensitive) ||
-                   measurement->getSample().getMaterialName().contains(filterText, Qt::CaseInsensitive) ||
+                   measurement->getSample()->getName().contains(filterText, Qt::CaseInsensitive) ||
+                   measurement->getSample()->getMaterialName().contains(filterText, Qt::CaseInsensitive) ||
                    measurement->getFluidName().contains(filterText, Qt::CaseInsensitive) ||
                    measurement->getAuthor().contains(filterText, Qt::CaseInsensitive) ||
                    measurement->getDate().toString("dd-MM-yyyy hh:mm").contains(filterText, Qt::CaseInsensitive) ||
@@ -418,17 +408,14 @@ QString MeasurementTreeModel::getGroupKey(const std::shared_ptr<const Measuremen
         case MeasureType:
             return measurement->isThreeType() ? tr("Trzystopniowy") : tr("Dwustopniowy");
 
-        case SampleId:
-            return measurement->getSample().getId();
-
         case Material:
-            return measurement->getSample().getMaterialName();
+            return measurement->getSample()->getMaterialName();
 
         case Author:
             return measurement->getAuthor();
 
         case SampleName:
-            return measurement->getSample().getName();
+            return measurement->getSample()->getName();
 
         case Fluid:
             return measurement->getFluidName();

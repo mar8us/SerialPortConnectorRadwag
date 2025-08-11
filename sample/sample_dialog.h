@@ -14,6 +14,8 @@
 #include <QFileDialog>
 #include "sample.h"
 #include "../material_tabels/material.h"
+#include "../radwag/measurement.h"
+#include "sample_manager.h"
 
 namespace Ui {
 class SampleDialog;
@@ -22,15 +24,14 @@ class SampleDialog;
 class SampleDialog : public QDialog
 {
     Q_OBJECT
-
 public:
-    explicit SampleDialog(QMap<QString, Sample> &samples, QMap<QString, Material> &materials, QWidget *parent = nullptr);
+    explicit SampleDialog(SampleManager* sampleManager, QMap<QString, Material> &materials, QWidget *parent = nullptr);
     ~SampleDialog();
-    QMap<QString, Sample> getSamples() const;
 
 signals:
     void samplesChanged();
     void materialsChanged(const QMap<QString, Material> &materials);
+    void removeMeasurementsForSample(std::shared_ptr<const Sample> sample);
 
 private slots:
     void buttonAddSampleOnClicked();
@@ -45,21 +46,21 @@ private slots:
 
 private:
     Ui::SampleDialog *ui;
-    QMap<QString, Sample> &samples;
+    SampleManager* sampleManager;
     QMap<QString, Material> &materials;
     bool modified;
-    QString editingSampleId;
+    QString editingSampleName;
 
     void updateSampleList();
+    std::shared_ptr<const Sample> getSampleFromRow(int row) const;
+    void setSampleToRow(int row, std::shared_ptr<const Sample> sample);
+
     bool validateSampleDetails();
-    void updateSampleDetails(const QString &sampleId);
+    void updateSampleDetails(const QString &sampleName);
     void clearSampleDetails();
-    QString generateSampleId() const;
-    bool isUniqueSampleId(const QString &id) const;
     void updateButtonsState();
     void connectSignalsAndSlots();
     void connectSignalsForModification();
-
     void fillMaterialCombo();
 };
 

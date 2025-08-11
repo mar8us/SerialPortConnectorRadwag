@@ -16,7 +16,6 @@ public:
     enum Columns
     {
         MeasureType,
-        SampleId,
         SampleName,
         Material,
         Fluid,

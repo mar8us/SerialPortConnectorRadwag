@@ -64,7 +64,7 @@ private slots:
     void onStageChanged();
 
     void buttonTableFluidsOnClicked();
-    void buttonSamplesOnClicked();
+    void onButtonSeriesOnClicked();
     void onMaterialsChanged(const QMap<QString, Material> &materials);
 
     void onShowHydroSetSchemeButtonClicked();

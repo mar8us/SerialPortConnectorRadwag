@@ -1,6 +1,6 @@
 #include "measurement.h"
 
-Measurement::Measurement()
+Measurement::Measurement(std::shared_ptr<const Sample> sample)
     : id(QUuid::createUuid().toString(QUuid::WithoutBraces))
     , type(MeasurementType::None)
     , stage(MeasurementStages::Stage::None)
@@ -14,27 +14,7 @@ Measurement::Measurement()
     , saturationMethod(SaturationMethod::None)
     , saturationTimeMin(0)
     , results(MeasurementResults())
-{
-
-}
-
-Measurement::Measurement(MeasurementType type, const Sample &sample, const Fluid &fluid, const QString &author)
-    : id(QUuid::createUuid().toString(QUuid::WithoutBraces))
-    , type(type)
     , sample(sample)
-    , fluid(fluid)
-    , author(author)
-    , stage(MeasurementStages::Stage::None)
-    , status(MeasurementStatus::InProgress)
-    , saturationBeginDate()
-    , date(QDateTime::currentDateTime())
-    , fluidTemperature(0.0)
-    , sampleDryMass(0.0)
-    , sampleInFluidMass(0.0)
-    , sampleSaturatedMass(0.0)
-    , saturationMethod(SaturationMethod::None)
-    , saturationTimeMin(0)
-    , results(MeasurementResults())
 {
 
 }
@@ -149,19 +129,20 @@ void Measurement::setAuthor(const QString &authorName)
     author = authorName;
 }
 
-const Sample& Measurement::getSample() const
+std::shared_ptr<const Sample> Measurement::getSample() const
 {
     return sample;
 }
 
-QString Measurement::getSampleId() const
+QString Measurement::getSampleName() const
 {
-    return sample.getId();
+    return sample ? sample->getName() : QString();
 }
 
 double Measurement::getSampleMaterialDensity() const
 {
-    return sample.getMaterialDensity();
+    auto sample = getSample();
+    return sample ? sample->getMaterialDensity() : -1.0;
 }
 
 double Measurement::getSampleDryMass() const
@@ -179,7 +160,7 @@ double Measurement::getSampleSaturatedMass() const
     return sampleSaturatedMass;
 }
 
-void Measurement::setSample(const Sample &newSample)
+void Measurement::setSample(std::shared_ptr<const Sample> newSample)
 {
     sample = newSample;
 }
@@ -289,7 +270,7 @@ QJsonObject Measurement::toJson() const
     obj["sampleInFluidMass"] = sampleInFluidMass;
     obj["sampleSaturatedMass"] = sampleSaturatedMass;
     obj["saturationBeginDate"] = saturationBeginDate.toString();
-    obj["sample"] = sample.toJson();
+    obj["sample"] = sample ? sample->getName() : QString();
     obj["fluid"] = fluid.toJson();
     obj["saturationMethod"] = static_cast<int>(saturationMethod);
     obj["saturationTimeMin"] = saturationTimeMin;
@@ -298,7 +279,7 @@ QJsonObject Measurement::toJson() const
     return obj;
 }
 
-void Measurement::fromJson(const QJsonObject &json)
+void Measurement::fromJson(const QJsonObject &json, const SampleManager *sampleManager)
 {
     id = json["id"].toString();
     type = static_cast<MeasurementType>(json["type"].toInt());
@@ -313,9 +294,7 @@ void Measurement::fromJson(const QJsonObject &json)
     saturationBeginDate = QDateTime::fromString(json["saturationBeginDate"].toString());
     saturationMethod = static_cast<SaturationMethod>(json["saturationMethod"].toInt());
     saturationTimeMin = json["saturationTimeMin"].toInt();
-
-    if(json.contains("sample") && json["sample"].isObject())
-        sample.fromJson(json["sample"].toObject());
+    sample = sampleManager->getSample(json["sample"].toString());
 
     if(json.contains("fluid") && json["fluid"].isObject())
         fluid.fromJson(json["fluid"].toObject());

@@ -19,39 +19,19 @@
      <item>
       <widget class="QGroupBox" name="groupBoxSampleDetails">
        <property name="title">
-        <string>Szczegóły próbki</string>
+        <string>Szczegóły serii</string>
        </property>
        <layout class="QVBoxLayout" name="verticalLayout_3">
         <item>
          <layout class="QFormLayout" name="formLayout">
           <item row="0" column="0">
-           <widget class="QLabel" name="labelSampleId">
+           <widget class="QLabel" name="labelSampleName">
             <property name="text">
-             <string>ID próbki:</string>
+             <string>Nazwa:</string>
             </property>
            </widget>
           </item>
           <item row="0" column="1">
-           <widget class="QLineEdit" name="editSampleId">
-            <property name="minimumSize">
-             <size>
-              <width>0</width>
-              <height>30</height>
-             </size>
-            </property>
-            <property name="readOnly">
-             <bool>true</bool>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="0">
-           <widget class="QLabel" name="labelSampleName">
-            <property name="text">
-             <string>Nazwa próbki:</string>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="1">
            <widget class="QLineEdit" name="editSampleName">
             <property name="minimumSize">
              <size>
@@ -61,14 +41,14 @@
             </property>
            </widget>
           </item>
-          <item row="2" column="0">
+          <item row="1" column="0">
            <widget class="QLabel" name="labelMaterial">
             <property name="text">
              <string>Materiał:</string>
             </property>
            </widget>
           </item>
-          <item row="2" column="1">
+          <item row="1" column="1">
            <widget class="QComboBox" name="comboBoxMaterial">
             <property name="minimumSize">
              <size>
@@ -78,14 +58,14 @@
             </property>
            </widget>
           </item>
-          <item row="3" column="0">
+          <item row="2" column="0">
            <widget class="QLabel" name="labelMaterialDensity">
             <property name="text">
              <string>Gęstość teoretyczna materiału:</string>
             </property>
            </widget>
           </item>
-          <item row="3" column="1">
+          <item row="2" column="1">
            <widget class="QLineEdit" name="editMaterialDensity">
             <property name="minimumSize">
              <size>
@@ -98,17 +78,17 @@
             </property>
            </widget>
           </item>
-          <item row="5" column="0">
+          <item row="4" column="0">
            <widget class="QLabel" name="labelSampleDescription">
             <property name="text">
-             <string>Opis próbki:</string>
+             <string>Opis:</string>
             </property>
             <property name="alignment">
              <set>Qt::AlignmentFlag::AlignTop</set>
             </property>
            </widget>
           </item>
-          <item row="5" column="1">
+          <item row="4" column="1">
            <widget class="QPlainTextEdit" name="editSampleDescription">
             <property name="maximumSize">
              <size>
@@ -175,25 +155,9 @@
         </size>
        </property>
        <property name="title">
-        <string>Lista próbek</string>
+        <string>Lista serii</string>
        </property>
        <layout class="QVBoxLayout" name="verticalLayout_2">
-        <item>
-         <widget class="QLineEdit" name="editSearchSample">
-          <property name="minimumSize">
-           <size>
-            <width>0</width>
-            <height>30</height>
-           </size>
-          </property>
-          <property name="placeholderText">
-           <string>Szukaj próbki...</string>
-          </property>
-          <property name="clearButtonEnabled">
-           <bool>true</bool>
-          </property>
-         </widget>
-        </item>
         <item>
          <widget class="QTableWidget" name="tableWidgetSamples">
           <property name="selectionMode">
@@ -203,16 +167,11 @@
            <enum>QAbstractItemView::SelectionBehavior::SelectRows</enum>
           </property>
           <property name="columnCount">
-           <number>2</number>
+           <number>1</number>
           </property>
           <column>
            <property name="text">
             <string>Nazwa</string>
-           </property>
-          </column>
-          <column>
-           <property name="text">
-            <string>ID</string>
            </property>
           </column>
          </widget>

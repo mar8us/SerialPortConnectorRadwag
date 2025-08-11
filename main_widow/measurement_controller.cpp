@@ -14,7 +14,7 @@ MeasurementController::MeasurementController(const std::shared_ptr<MeasurementMa
 
 bool MeasurementController::beginNewMeasure()
 {
-    measurement.reset(new Measurement());
+    measurement.reset(new Measurement(nullptr));
     measurement->setStage(MeasurementStages::Stage::StartMeasure);
     hasChanges = false;
     return true;
@@ -170,19 +170,26 @@ bool MeasurementController::setType(MeasurementType type)
     return true;
 }
 
-bool MeasurementController::setSample(const Sample &sample)
+bool MeasurementController::setSample(std::shared_ptr<const Sample> newSample)
 {
     if(!hasActiveMeasurement())
         return false;
 
-    QString newSampleId = sample.getId();
-    if(newSampleId.isEmpty())
+    if(!newSample)
+    {
+        measurement->setSample(nullptr);
+        return true;
+    }
+
+    QString newSampleName = newSample->getName();
+    if(newSampleName.isEmpty())
         return false;
 
-    if(newSampleId == measurement->getSample().getId())
+    auto sample = measurement->getSample();
+    if(sample && newSampleName == sample->getName())
         return true;
 
-    measurement->setSample(sample);
+    measurement->setSample(newSample);
     hasChanges = true;
     return true;
 }
