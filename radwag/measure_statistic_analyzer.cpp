@@ -484,7 +484,7 @@ QString AnalysisResult::getMaterialName() const
 QString AnalysisResult::getSeriesName() const
 {
     if(!measurements.empty())
-        return measurements[0]->getSample().getName();
+        return measurements[0]->getSample()->getName();
         return measurements[0]->getSample()->getName();
     return QString();
 }
@@ -605,19 +605,19 @@ QJsonObject AnalysisResult::toJson() const
 
 void AnalysisResult::fromJson(const QJsonObject& json)
 {
-    measurements.clear();
-    QJsonArray measurementsArray = json["measurements"].toArray();
-    for(const auto& value : measurementsArray)
-    {
-        auto measurement = std::make_shared<Measurement>();
-        measurement->fromJson(value.toObject());
-        measurements.push_back(measurement);
-    }
-    analysisId = json["analysisId"].toString();
-    analysisDate = QDateTime::fromString(json["analysisDate"].toString(), Qt::ISODate);
-    confidenceLevel = json["confidenceLevel"].toDouble();
+    // measurements.clear();
+    // QJsonArray measurementsArray = json["measurements"].toArray();
+    // for(const auto& value : measurementsArray)
+    // {
+    //     auto measurement = std::make_shared<Measurement>();
+    //     measurement->fromJson(value.toObject());
+    //     measurements.push_back(measurement);
+    // }
+    // analysisId = json["analysisId"].toString();
+    // analysisDate = QDateTime::fromString(json["analysisDate"].toString(), Qt::ISODate);
+    // confidenceLevel = json["confidenceLevel"].toDouble();
 
-    calculateCompleteAnalysis();
+    // calculateCompleteAnalysis();
 }
 
 
