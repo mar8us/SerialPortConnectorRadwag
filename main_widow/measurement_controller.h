@@ -22,6 +22,7 @@ public:
 
     const std::shared_ptr<Measurement>& getActiveMeasure();
     bool hasActiveMeasurement() const;
+    bool hasInitialData() const;
 
     MeasurementStages::Stage getStage() const;
     MeasurementType getType();

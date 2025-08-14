@@ -489,6 +489,15 @@ void MeasurementProcessUiHandler::onSaveMeasureButtonClicekd()
     if(!radwagMeasureControler.hasActiveMeasurement())
         return;
 
+    bool canSaveMeasure = radwagMeasureControler.hasInitialData();
+    if(!canSaveMeasure && measureStateMachine->getCurrentStage() == MeasurementStages::Stage::InitialData)
+    {
+        mainWindow->showInfo("Niekompletne dane", "Wymagane uzupełnienie wszyskich pól przed wykonaniem zapisu");
+        return;
+    }
+    else if(!canSaveMeasure)
+        return;
+
     if(!radwagMeasureControler.needSave())
         return;
 

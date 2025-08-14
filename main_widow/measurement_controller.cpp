@@ -90,6 +90,14 @@ bool MeasurementController::hasActiveMeasurement() const
     return measurement && measurement->getStatus() != MeasurementStatus::Error;
 }
 
+bool MeasurementController::hasInitialData() const
+{
+    return measurement->getType() != MeasurementType::None
+        && measurement->getSample()
+        && !measurement->getFluid().getName().isEmpty()
+        && !measurement->getAuthor().isEmpty();
+}
+
 MeasurementStages::Stage MeasurementController::getStage() const
 {
     if(!hasActiveMeasurement())

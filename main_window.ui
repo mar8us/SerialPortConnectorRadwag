@@ -269,8 +269,11 @@ Odpowiedni dla materiałów o zwartej strukturze, nienasiąkliwych.</string>
                        <property name="text">
                         <string>Pomiar dwustopniowy</string>
                        </property>
-                       <property name="checked">
+                       <property name="checkable">
                         <bool>true</bool>
+                       </property>
+                       <property name="checked">
+                        <bool>false</bool>
                        </property>
                       </widget>
                      </item>
@@ -282,6 +285,9 @@ Odpowiedni dla materiałów wchłaniających wodę (ceramika, skały osadowe, be
                        </property>
                        <property name="text">
                         <string>Pomiar trzystopniowy</string>
+                       </property>
+                       <property name="checkable">
+                        <bool>true</bool>
                        </property>
                       </widget>
                      </item>
