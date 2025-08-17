@@ -111,6 +111,11 @@ void MeasurementLibraryUiHandler::onLibraryShowAnalysisMeasuresButtonClicked()
     dialog->showNormal();
 }
 
+void MeasurementLibraryUiHandler::onColumnsConfigButtonClicked(bool checked)
+{
+    ui->treeViewLibMeasure->setColumnHidden(MeasurementTreeModel::Columns::MeasureId, !checked);
+}
+
 void MeasurementLibraryUiHandler::onSelectionChanged(const QItemSelection &selected, const QItemSelection &deselected)
 {
     ui->labelLibSelectedCount->setText(QString("Zaznaczone: %1").arg(selected.indexes().count()));
@@ -213,6 +218,7 @@ void MeasurementLibraryUiHandler::setupLibraryView()
     setupLibraryModels();
     setupLibraryTreeView();
     updateMeasurementCounter();
+    onColumnsConfigButtonClicked(false);
 }
 
 void MeasurementLibraryUiHandler::setupLibraryControls()
@@ -373,6 +379,7 @@ void MeasurementLibraryUiHandler::connectLibraryMeasureButtons()
     connect(ui->buttonLibPreviewMeasure, &QPushButton::clicked, this, &MeasurementLibraryUiHandler::onLibraryShowMeasureResultButtonClicked);
 
     connect(ui->buttonLibCompareMeasures, &QPushButton::clicked, this, &MeasurementLibraryUiHandler::onLibraryShowAnalysisMeasuresButtonClicked);
+    connect(ui->buttonColumnsConfig, &QPushButton::clicked, this, &MeasurementLibraryUiHandler::onColumnsConfigButtonClicked);
 }
 
 void MeasurementLibraryUiHandler::connectMeasurementTreeSignals()

@@ -37,7 +37,7 @@
            </size>
           </property>
           <property name="currentIndex">
-           <number>0</number>
+           <number>2</number>
           </property>
           <property name="iconSize">
            <size>
@@ -97,7 +97,7 @@
                </size>
               </property>
               <property name="currentIndex">
-               <number>6</number>
+               <number>1</number>
               </property>
               <widget class="QWidget" name="pageStartMeasure">
                <layout class="QVBoxLayout" name="verticalLayout_12">
@@ -2403,7 +2403,7 @@ umieszczając ją w komorze próźniowej na czas zaniku ostatniego pęcherzyka</
                     <rect>
                      <x>0</x>
                      <y>0</y>
-                     <width>983</width>
+                     <width>750</width>
                      <height>1176</height>
                     </rect>
                    </property>
@@ -4284,7 +4284,7 @@ umieszczając ją w komorze próźniowej na czas zaniku ostatniego pęcherzyka</
                     <rect>
                      <x>0</x>
                      <y>0</y>
-                     <width>983</width>
+                     <width>856</width>
                      <height>1252</height>
                     </rect>
                    </property>
@@ -6373,12 +6373,66 @@ umieszczając ją w komorze próźniowej na czas zaniku ostatniego pęcherzyka</
                 </rect>
                </property>
                <layout class="QGridLayout" name="gridLayout_26">
+                <item row="1" column="0">
+                 <layout class="QHBoxLayout" name="statisticsLayout_2">
+                  <item>
+                   <widget class="QLabel" name="labelLibAllCount">
+                    <property name="text">
+                     <string>Liczba pomiarów: 25</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QLabel" name="labelLibVisibleCount">
+                    <property name="text">
+                     <string>Widoczne: 12</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QLabel" name="labelLibSelectedCount">
+                    <property name="text">
+                     <string>Zaznaczone: 0</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <spacer name="horizontalSpacer3_2">
+                    <property name="orientation">
+                     <enum>Qt::Orientation::Horizontal</enum>
+                    </property>
+                    <property name="sizeHint" stdset="0">
+                     <size>
+                      <width>40</width>
+                      <height>20</height>
+                     </size>
+                    </property>
+                   </spacer>
+                  </item>
+                 </layout>
+                </item>
                 <item row="0" column="0">
                  <layout class="QGridLayout" name="gridLayout_29">
                   <item row="0" column="5">
                    <widget class="QLabel" name="label">
                     <property name="text">
                      <string>Grupuj według:</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item row="0" column="4">
+                   <widget class="QPushButton" name="buttonLibSearch">
+                    <property name="minimumSize">
+                     <size>
+                      <width>30</width>
+                      <height>30</height>
+                     </size>
+                    </property>
+                    <property name="text">
+                     <string/>
+                    </property>
+                    <property name="icon">
+                     <iconset theme="QIcon::ThemeIcon::EditFind"/>
                     </property>
                    </widget>
                   </item>
@@ -6399,54 +6453,6 @@ umieszczając ją w komorze próźniowej na czas zaniku ostatniego pęcherzyka</
                     </property>
                     <property name="editable">
                      <bool>false</bool>
-                    </property>
-                   </widget>
-                  </item>
-                  <item row="0" column="1">
-                   <widget class="QLineEdit" name="searchLineEdit">
-                    <property name="minimumSize">
-                     <size>
-                      <width>100</width>
-                      <height>30</height>
-                     </size>
-                    </property>
-                    <property name="placeholderText">
-                     <string>Wprowadź tekst do wyszukania...</string>
-                    </property>
-                    <property name="clearButtonEnabled">
-                     <bool>true</bool>
-                    </property>
-                   </widget>
-                  </item>
-                  <item row="0" column="4">
-                   <widget class="QPushButton" name="buttonLibSearch">
-                    <property name="minimumSize">
-                     <size>
-                      <width>30</width>
-                      <height>30</height>
-                     </size>
-                    </property>
-                    <property name="text">
-                     <string/>
-                    </property>
-                    <property name="icon">
-                     <iconset theme="QIcon::ThemeIcon::EditFind"/>
-                    </property>
-                   </widget>
-                  </item>
-                  <item row="0" column="6">
-                   <widget class="QComboBox" name="comboLibGroupBy">
-                    <property name="minimumSize">
-                     <size>
-                      <width>150</width>
-                      <height>30</height>
-                     </size>
-                    </property>
-                    <property name="maximumSize">
-                     <size>
-                      <width>130</width>
-                      <height>16777215</height>
-                     </size>
                     </property>
                    </widget>
                   </item>
@@ -6487,6 +6493,35 @@ umieszczając ją w komorze próźniowej na czas zaniku ostatniego pęcherzyka</
                     </property>
                    </widget>
                   </item>
+                  <item row="0" column="6">
+                   <widget class="QComboBox" name="comboLibGroupBy">
+                    <property name="minimumSize">
+                     <size>
+                      <width>150</width>
+                      <height>30</height>
+                     </size>
+                    </property>
+                    <property name="maximumSize">
+                     <size>
+                      <width>130</width>
+                      <height>16777215</height>
+                     </size>
+                    </property>
+                   </widget>
+                  </item>
+                  <item row="0" column="7">
+                   <widget class="QToolButton" name="buttonColumnsConfig">
+                    <property name="text">
+                     <string>Pokazuj ID</string>
+                    </property>
+                    <property name="checkable">
+                     <bool>true</bool>
+                    </property>
+                    <property name="checked">
+                     <bool>false</bool>
+                    </property>
+                   </widget>
+                  </item>
                   <item row="0" column="2">
                    <widget class="QLabel" name="label_3">
                     <property name="text">
@@ -6494,43 +6529,21 @@ umieszczając ją w komorze próźniowej na czas zaniku ostatniego pęcherzyka</
                     </property>
                    </widget>
                   </item>
-                 </layout>
-                </item>
-                <item row="1" column="0">
-                 <layout class="QHBoxLayout" name="statisticsLayout_2">
-                  <item>
-                   <widget class="QLabel" name="labelLibAllCount">
-                    <property name="text">
-                     <string>Liczba pomiarów: 25</string>
-                    </property>
-                   </widget>
-                  </item>
-                  <item>
-                   <widget class="QLabel" name="labelLibVisibleCount">
-                    <property name="text">
-                     <string>Widoczne: 12</string>
-                    </property>
-                   </widget>
-                  </item>
-                  <item>
-                   <widget class="QLabel" name="labelLibSelectedCount">
-                    <property name="text">
-                     <string>Zaznaczone: 0</string>
-                    </property>
-                   </widget>
-                  </item>
-                  <item>
-                   <spacer name="horizontalSpacer3_2">
-                    <property name="orientation">
-                     <enum>Qt::Orientation::Horizontal</enum>
-                    </property>
-                    <property name="sizeHint" stdset="0">
+                  <item row="0" column="1">
+                   <widget class="QLineEdit" name="searchLineEdit">
+                    <property name="minimumSize">
                      <size>
-                      <width>40</width>
-                      <height>20</height>
+                      <width>100</width>
+                      <height>30</height>
                      </size>
                     </property>
-                   </spacer>
+                    <property name="placeholderText">
+                     <string>Wprowadź tekst do wyszukania...</string>
+                    </property>
+                    <property name="clearButtonEnabled">
+                     <bool>true</bool>
+                    </property>
+                   </widget>
                   </item>
                  </layout>
                 </item>

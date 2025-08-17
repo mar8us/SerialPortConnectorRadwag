@@ -159,6 +159,9 @@ QVariant MeasurementTreeModel::data(const QModelIndex& index, int role) const
             case Date:
                 return measurement->getDate().toString("dd-MM-yyyy hh:mm");
 
+            case MeasureId:
+                return measurement->getId();
+
             default:
                 return QVariant();
         }
@@ -230,6 +233,9 @@ QVariant MeasurementTreeModel::headerData(int section, Qt::Orientation orientati
 
             case Date:
                 return tr("Data");
+
+            case MeasureId:
+                return tr("ID");
 
             default:
                 return QVariant();
@@ -388,6 +394,9 @@ bool MeasurementTreeModel::matchesFilter(const std::shared_ptr<const Measurement
 
         case Date:
             return measurement->getDate().toString("dd-MM-yyyy hh:mm").contains(filterText, Qt::CaseInsensitive);
+
+        case MeasureId:
+            return measurement->getId().contains(filterText, Qt::CaseInsensitive);
 
         default:
             return QString(measurement->isThreeType() ? "Pomiar trzystopniowy" : "Pomiar dwustopniowy").contains(filterText, Qt::CaseInsensitive) ||

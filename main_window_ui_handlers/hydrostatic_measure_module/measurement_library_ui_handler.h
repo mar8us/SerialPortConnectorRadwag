@@ -40,6 +40,7 @@ private slots:
     void onLibraryDeleteMeasureButtonClicked();
     void onLibraryShowMeasureResultButtonClicked();
     void onLibraryShowAnalysisMeasuresButtonClicked();
+    void onColumnsConfigButtonClicked(bool checked);
 
     void onSelectionChanged(const QItemSelection &selected, const QItemSelection &deselected);
     void onMeasurementDoubleClicked(const QModelIndex& index);
