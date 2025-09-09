@@ -17,14 +17,14 @@ public:
     // Podstawowe wyniki
     double getApparentVolume(int precision = 4) const;     // Objętość pozorna
     double getApparentDensity(int precision = 4) const;    // Gęstość pozorna
-    double getRelativeDensity(int precision = 4) const;    // Gęstość względna
+    double getRelativeDensity(int precision = 2) const;    // Gęstość względna
     double getOpenPoresVolume(int precision = 4) const;    // Objętość porów otwartych
     double getTotalPorosity(int precision = 2) const;      // Porowatość całkowita
 
     // Wyniki dla pomiarów trzystopniowych
     double getOpenPorosity(int precision = 2) const;       // Porowatość otwarta
     double getClosedPorosity(int precision = 2) const;     // Porowatość zamknięta
-    double getWaterAbsorption(int precision = 4) const;    // Nasiąkliwość wagowa
+    double getWaterAbsorption(int precision = 2) const;    // Nasiąkliwość wagowa
 
     double getTheoreticalDensity(int precision = 5) const;
     double getFluidDensity(int precision = 5) const;
