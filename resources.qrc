@@ -7,5 +7,6 @@
         <file>icons/settings_selected.png</file>
         <file>icons/balance_selected.png</file>
         <file>icons/image.jpg</file>
+        <file>schema_img/schema_density_solids.png</file>
     </qresource>
 </RCC>

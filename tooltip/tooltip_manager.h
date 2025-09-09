@@ -31,6 +31,7 @@ public:
     void setGlobalStyle(const QString& styleSheet);
     void registerTooltip(QWidget* widget, const QString& title, const QString& text, const QString& imageKey = QString(), TooltipMode mode = TEXT_ONLY);
     bool registerImage(const QString& key, const QString& imagePath, int width = -1, int height = -1);
+    void unregisterTooltip(QWidget* widget);
 
 
     void updateTooltipText(QWidget* widget, const QString& text);

@@ -52,6 +52,8 @@ private:
     void connectSignalsAndSlots();
     void connectSignalsForModification();
     void updateButtonsState();
+
+    void fillComboMaterialCategory();
 };
 
 #endif // MATERIAL_TABELS_DIALOG_H

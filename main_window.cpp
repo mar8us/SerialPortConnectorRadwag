@@ -1,21 +1,28 @@
 #include "main_window.h"
 #include "./ui_main_window.h"
-#include "fluid_tabels/fluid_tables_form.h"
-#include "material_tabels/material_tabels_dialog.h"
-#include "tooltip/tooltip_manager.h"
+
 #include <QMessageBox>
+
+#include "sieveAnalysis/sieve_analysis_stages.h"
+#include "tooltip/tooltip_manager.h"
+#include "radwag/measurement.h"
+#include "app_core.h"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
-    , devicesListModel(this)
-    , devicesListControler(devicesListModel, this)
-    , fluidManager(std::make_unique<FluidManager>(new FluidManager()))
-    , materialManager(std::make_unique<MaterialManager>(new MaterialManager(this)))
+    , deviceManagerUiHandler(this)
+    , hydrostaticMeasurementModule(this)
+    , sieveAnalysisModule(this)
 {
     initControls();
     connectButtons();
+    connectScaleSignals();
     QLocale::setDefault(QLocale(QLocale::Polish, QLocale::Poland));
+
+    deviceManagerUiHandler.initialize();
+    hydrostaticMeasurementModule.initialize();
+    sieveAnalysisModule.initialize();
 
     // tooltip i.e
     TooltipManager& tooltipManager = TooltipManager::getInstance();
@@ -29,53 +36,73 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-void MainWindow::onAddDeviceButtonClicked()
+Ui::MainWindow* MainWindow::getUi() const
 {
-    devicesListControler.beginNew();
-    if(!deviceConnector.connectionIsActive())
-        fillDevicesCombo();
+    return ui;
 }
 
-void MainWindow::onEditDeviceButtonClicked()
+void MainWindow::showWarning(const QString& title, const QString& message)
 {
-    auto selectedDeivce = getSelectedDevice();
-    if(!canEditDevice(selectedDeivce))
-    {
-        QMessageBox::warning(this, "Ostrzeżenie", QString("Nie możesz edytować urządzenia z aktywnym połączeniem"));
-        return;
-    }
-    devicesListControler.beginEdit(selectedDeivce);
-    if(!deviceConnector.connectionIsActive())
-        fillDevicesCombo();
+    QMessageBox::warning(this, title, message);
 }
 
-void MainWindow::onRemoveDeviceButtonClicked()
+void MainWindow::showInfo(const QString& title, const QString& message)
 {
-    auto selectedDeivce = getSelectedDevice();
-    if(!canEditDevice(selectedDeivce))
-    {
-        QMessageBox::warning(this, "Ostrzeżenie", QString("Nie możesz usunąć urządzenia z aktywnym połączeniem"));
-        return;
-    }
-    devicesListControler.beginRemove(selectedDeivce);
-    if(!deviceConnector.connectionIsActive())
-        fillDevicesCombo();
+    QMessageBox::information(this, title, message);
 }
 
-void MainWindow::onDeviceComboSelectionChanged()
+bool MainWindow::showQuestion(const QString& title, const QString& message)
 {
-    deviceConnector.setActiveDevice(ui->comboBoxSelectDevice->currentData().value<std::shared_ptr<const Device>>());
+    QMessageBox msgBox(this);
+    msgBox.setWindowTitle(title);
+    msgBox.setText(message);
+    msgBox.setIcon(QMessageBox::Question);
+
+    QPushButton *yesButton = msgBox.addButton("Tak", QMessageBox::YesRole);
+    QPushButton *noButton = msgBox.addButton("Nie", QMessageBox::NoRole);
+
+    msgBox.setDefaultButton(noButton);
+
+    msgBox.exec();
+
+    return msgBox.clickedButton() == yesButton;
 }
 
-void MainWindow::onConnectDeviceClicked()
+QString MainWindow::showSaveFileDialog(const QString &titleDialog, const QString &suggestedName, const QString& filters)
 {
-    deviceConnector.connectDevice(ui->comboBoxSelectPort->currentText());
+    QDir::homePath();
+    QString filePath = QFileDialog::getSaveFileName(this, titleDialog, QDir::homePath() + "/" + suggestedName, filters);
+
+    if(filePath.isEmpty())
+        return QString();
+
+    if(!filePath.endsWith(".xlsx", Qt::CaseInsensitive))
+        filePath += ".xlsx";
+
+    return filePath;
 }
 
-void MainWindow::onDisconnectDeviceClicked()
+MainWindow::MessageResult MainWindow::showQuestionWithCancel(const QString& title, const QString& message)
 {
-    deviceConnector.closeActiveConnection();
-    fillDevicesCombo(true);
+    QMessageBox msgBox(this);
+    msgBox.setWindowTitle(title);
+    msgBox.setText(message);
+    msgBox.setIcon(QMessageBox::Question);
+
+    QPushButton *yesButton = msgBox.addButton("Tak", QMessageBox::YesRole);
+    QPushButton *noButton = msgBox.addButton("Nie", QMessageBox::NoRole);
+    QPushButton *cancelButton = msgBox.addButton("Anuluj", QMessageBox::RejectRole);
+
+    msgBox.setDefaultButton(cancelButton);
+
+    int result = msgBox.exec();
+
+    if(msgBox.clickedButton() == yesButton)
+        return MessageResult::Yes;
+    else if (msgBox.clickedButton() == noButton)
+        return MessageResult::No;
+    else
+        return MessageResult::Cancel;
 }
 
 void MainWindow::navigateToToolBoxPage(QWidget* page)
@@ -84,146 +111,32 @@ void MainWindow::navigateToToolBoxPage(QWidget* page)
         ui->stackedWidget->setCurrentWidget(page);
 }
 
-// void MainWindow::goToPreviousMeasureStage()
-// {
-//     MeasurementStage currentStage = ui->measureDensityStage->property("currentStage").value<MeasurementStage>();
-//     int prevIndex = static_cast<int>(currentStage) - 1;
-
-//     if (prevIndex >= 0)
-//     {
-//         MeasurementStage prevStage = static_cast<MeasurementStage>(prevIndex);
-//         ui->measureDensityStage->setCurrentIndex(prevIndex);
-//         ui->measureDensityStage->setProperty("currentStage", QVariant::fromValue(prevStage));
-//         updateStageLabels();
-//     }
-// }
-
-// void MainWindow::goToNextMeasureStage()
-// {
-//     MeasurementStage currentStage = ui->measureDensityStage->property("currentStage").value<MeasurementStage>();
-//     int nextIndex = static_cast<int>(currentStage) + 1;
-
-//     if (nextIndex < ui->measureDensityStage->count())
-//     {
-//         MeasurementStage nextStage = static_cast<MeasurementStage>(nextIndex);
-//         ui->measureDensityStage->setCurrentIndex(nextIndex);
-//         ui->measureDensityStage->setProperty("currentStage", QVariant::fromValue(nextStage));
-//         updateStageLabels();
-//     }
-// }
-
-void MainWindow::goToPreviousMeasureStage()
-{
-    MeasurementStage currentStage = ui->measureDensityStage->property("currentStage").value<MeasurementStage>();
-    bool isTripleMeasurement = ui->radioMeasureTriple->isChecked();
-
-    // Określenie poprzedniego etapu pomiaru
-    MeasurementStage prevStage;
-    switch (currentStage)
-    {
-    case MeasurementStage::DryMeasure:
-        prevStage = MeasurementStage::InitialData;
-        ui->measureDensityStage->setCurrentWidget(ui->pageInitialData);
-        break;
-
-    case MeasurementStage::PrepareSecond:
-    case MeasurementStage::PrepareTriple:
-        prevStage = MeasurementStage::DryMeasure;
-        ui->measureDensityStage->setCurrentWidget(ui->pageDryMeasure);
-        break;
-
-    case MeasurementStage::FinishSecond:
-        prevStage = MeasurementStage::PrepareSecond;
-        ui->measureDensityStage->setCurrentWidget(ui->pagePrepareMeasureSecond);
-        break;
-
-    case MeasurementStage::SaturatedMass:
-        prevStage = MeasurementStage::PrepareTriple;
-        ui->measureDensityStage->setCurrentWidget(ui->pagePrepareMeasureTriple);
-        break;
-
-    case MeasurementStage::FinishTriple:
-        prevStage = MeasurementStage::SaturatedMass;
-        ui->measureDensityStage->setCurrentWidget(ui->pageMeasureTriple);
-        break;
-
-    default:
-        // Dla pierwszego etapu nie ma już poprzedniej strony
-        return;
-    }
-
-    // Zapisanie aktualnego etapu pomiaru
-    ui->measureDensityStage->setProperty("currentStage", QVariant::fromValue(prevStage));
-    updateStageLabels();
-}
-
-void MainWindow::goToNextMeasureStage()
-{
-    MeasurementStage currentStage = ui->measureDensityStage->property("currentStage").value<MeasurementStage>();
-    bool isTripleMeasurement = ui->radioMeasureTriple->isChecked();
-
-    // Określenie następnego etapu pomiaru
-    MeasurementStage nextStage;
-    switch (currentStage)
-    {
-    case MeasurementStage::InitialData:
-        nextStage = MeasurementStage::DryMeasure;
-        ui->measureDensityStage->setCurrentWidget(ui->pageDryMeasure);
-        break;
-
-    case MeasurementStage::DryMeasure:
-        if (isTripleMeasurement) {
-            nextStage = MeasurementStage::PrepareTriple;
-            ui->measureDensityStage->setCurrentWidget(ui->pagePrepareMeasureTriple);
-        } else {
-            nextStage = MeasurementStage::PrepareSecond;
-            ui->measureDensityStage->setCurrentWidget(ui->pagePrepareMeasureSecond);
-        }
-        break;
-
-    case MeasurementStage::PrepareSecond:
-        nextStage = MeasurementStage::FinishSecond;
-        ui->measureDensityStage->setCurrentWidget(ui->pageFinishMeasurementSecond);
-        break;
-
-    case MeasurementStage::PrepareTriple:
-        nextStage = MeasurementStage::SaturatedMass;
-        ui->measureDensityStage->setCurrentWidget(ui->pageMeasureTriple);
-        break;
-
-    case MeasurementStage::SaturatedMass:
-        nextStage = MeasurementStage::FinishTriple;
-        ui->measureDensityStage->setCurrentWidget(ui->pageFinishMeasurementTriple);
-        break;
-
-    default:
-        // Dla ostatnich etapów nie ma już następnej strony
-        return;
-    }
-
-    // Zapisanie aktualnego etapu pomiaru
-    ui->measureDensityStage->setProperty("currentStage", QVariant::fromValue(nextStage));
-    updateStageLabels();
-}
-
-void MainWindow::onMeasurementTypeChanged()
-{
-    // Aktualizacja panelu bocznego z etapami pomiaru
-    if (ui->radioMeasureSecond->isChecked()) {
-        ui->stackedWidgetStepsMeasure->setCurrentWidget(ui->stageSecondMeasure);
-    } else {
-        ui->stackedWidgetStepsMeasure->setCurrentWidget(ui->stageTripleMeasure);
-    }
-
-    // Resetowanie etapu pomiaru do strony początkowej
-    ui->measureDensityStage->setCurrentWidget(ui->pageInitialData);
-    ui->measureDensityStage->setProperty("currentStage", QVariant::fromValue(MeasurementStage::InitialData));
-    updateStageLabels();
-}
-
 void MainWindow::onMainPageChanged(int index)
 {
     updateActionIcons(index);
+}
+
+void MainWindow::onRadwagMeasueReady(const RadwagMeasure &data)
+{
+    MeasurementStages::Stage currentStage = ui->measureDensityStage->property("currentStage").value<MeasurementStages::Stage>();
+    if(currentStage == MeasurementStages::Stage::DryMeasure)
+        ui->editCurrentDryMeasure->setText(QString::number(data.getValue()));
+    else if(currentStage == MeasurementStages::Stage::FinishSecond)
+        ui->editCurrentValueFinishSecond->setText(QString::number(data.getValue()));
+    else if(currentStage == MeasurementStages::Stage::SaturationMass)
+        ui->editCurrentValueFinishMeasurementTriple->setText(QString::number(data.getValue()));
+    else if(currentStage == MeasurementStages::Stage::FinishTriple)
+        ui->editCurrentMeasureSaturated->setText(QString::number(data.getValue()));
+}
+
+void MainWindow::onConnectResult(bool connected)
+{
+    updateConnectonLabelsStatusBar(connected);
+}
+
+void MainWindow::onDeviceComboSelectionChanged()
+{
+    updateConnectonLabelsStatusBar(appCore.hasConnectionWithScale());
 }
 
 void MainWindow::updateActionIcons(int index)
@@ -232,305 +145,42 @@ void MainWindow::updateActionIcons(int index)
     ui->actionMeasureDensity->setIcon(ui->stackedWidget->widget(index) == ui->measureDensityPage ? activeRadwagIcon : defaultRadwagIcon);
 }
 
-void MainWindow::buttonTableFluidsOnClicked()
+void MainWindow::updateConnectonLabelsStatusBar(bool connectionStatus)
 {
-    QMap<QString, Fluid> fluids = fluidManager->getFluids();
-    auto dialog = new FluidTablesDialog(fluids, this);
-    dialog->exec();
-    fluidManager->setFluids(fluids);
-    fillFluidCombo();
-}
-
-void MainWindow::buttonTableMatrialsOnClicked()
-{
-    QMap<QString, Material> materials = materialManager->getMaterials();
-    auto dialog = new MaterialTablesDialog(materials, this);
-    dialog->exec();
-    materialManager->setMaterials(materials);
-}
-
-void MainWindow::onMaterialComboBoxChanged(int index)
-{
-    ui->editMaterialDensity->setText(QString::number(materialManager->getMaterial(ui->comboBoxMaterial->currentText()).getDensity(), 'f', 3) + " g/cm³");
-}
-
-std::shared_ptr<const Device> MainWindow::getSelectedDevice()
-{
-    QModelIndex currentIndex = ui->devicesListView->currentIndex();
-    if (!currentIndex.isValid())
-        return nullptr;
-
-    DeviceListModel* model = qobject_cast<DeviceListModel*>(ui->devicesListView->model());
-    if (!model)
-        return nullptr;
-
-    return model->getDevice(currentIndex.row());
+    if(connectionStatus)
+    {
+        ui->labelDeviceNameStatusBar->setText("Urządzenie: " + ui->comboBoxSelectDevice->currentText());
+        ui->labelConnectionStatusStatusBar->setText("Status: <font color='green'><b>Połączono</b></font>");
+        ui->comboBoxSelectDevice->setEnabled(false);
+    }
+    else
+    {
+        QString deviceName = ui->comboBoxSelectDevice->currentText();
+        ui->labelDeviceNameStatusBar->setText("Urządzenie: " + (deviceName.isEmpty() ? "Nie wybrano" : ui->comboBoxSelectDevice->currentText()));
+        ui->labelConnectionStatusStatusBar->setText("Status: <font color='red'><b>Brak połączenia</b></font>");
+        ui->comboBoxSelectDevice->setEnabled(true);
+    }
 }
 
 void MainWindow::initControls()
 {
     ui->setupUi(this);
+    ui->statusbar->addPermanentWidget(ui->labelDeviceNameStatusBar);
+    ui->statusbar->addPermanentWidget(ui->labelConnectionStatusStatusBar);
     setIcons();
-    setProperty();
+    setPalette();
     navigateToToolBoxPage(ui->measureDensityPage);
-    updateStageLabels();
     updateActionIcons(0);
-    ui->devicesListView->setModel(&devicesListModel);
-    fillDevicesCombo();
-    fillSerialPortCombo();
-    fillFluidCombo();
-    fillMaterialCombo();
-    onMeasurementTypeChanged();
-    updateStatusConnectionLabel(false);
+    updateConnectonLabelsStatusBar(false);
+    QTimer::singleShot(0, this, &MainWindow::resizeAllTablesColumnsToContents);
 }
 
-void MainWindow::onConnectResult(bool connected)
+void MainWindow::resizeAllTablesColumnsToContents()
 {
-    updateStatusConnectionLabel(connected);
-}
+    QList<QTableWidget*> tables = this->findChildren<QTableWidget*>();
 
-void MainWindow::connectButtons()
-{
-    connect(ui->actionSettings, &QAction::triggered, this, [this]() {
-        navigateToToolBoxPage(ui->settingsPage);
-    });
-
-    connect(ui->actionMeasureDensity, &QAction::triggered, this, [this]() {
-        navigateToToolBoxPage(ui->measureDensityPage);
-    });
-
-    connect(ui->stackedWidget, &QStackedWidget::currentChanged, this, &MainWindow::onMainPageChanged);
-
-    // Połączenie przycisków nawigacji
-    connect(ui->buttonNextData, &QPushButton::clicked, this, &MainWindow::goToNextMeasureStage);
-
-    connect(ui->buttonNextDryMass, &QPushButton::clicked, this, &MainWindow::goToNextMeasureStage);
-    connect(ui->buttonPrevDryMass, &QPushButton::clicked, this, &MainWindow::goToPreviousMeasureStage);
-
-    // Przyciski dla pomiaru dwustopniowego
-    connect(ui->buttonNextPreparation, &QPushButton::clicked, this, &MainWindow::goToNextMeasureStage);
-    connect(ui->buttonPrevPreparation, &QPushButton::clicked, this, &MainWindow::goToPreviousMeasureStage);
-
-    connect(ui->buttonFinishMeasurementSecond, &QPushButton::clicked, this, &MainWindow::finishMeasurement);
-    connect(ui->buttonPrevFluidMass, &QPushButton::clicked, this, &MainWindow::goToPreviousMeasureStage);
-
-    // Przyciski dla pomiaru trzystopniowego
-    connect(ui->buttonNextSaturation, &QPushButton::clicked, this, &MainWindow::goToNextMeasureStage);
-    connect(ui->buttonPrevSaturation, &QPushButton::clicked, this, &MainWindow::goToPreviousMeasureStage);
-
-    connect(ui->buttonNextSaturatedMass, &QPushButton::clicked, this, &MainWindow::goToNextMeasureStage);
-    connect(ui->buttonPrevSaturatedMass, &QPushButton::clicked, this, &MainWindow::goToPreviousMeasureStage);
-
-    connect(ui->buttonFinishMeasurementTriple, &QPushButton::clicked, this, &MainWindow::finishMeasurement);
-    connect(ui->buttonPrevSaturatedFluidMass, &QPushButton::clicked, this, &MainWindow::goToPreviousMeasureStage);
-
-    // Przyciski wyboru typu pomiaru
-    connect(ui->radioMeasureSecond, &QRadioButton::toggled, this, &MainWindow::onMeasurementTypeChanged);
-    connect(ui->radioMeasureTriple, &QRadioButton::toggled, this, &MainWindow::onMeasurementTypeChanged);
-
-    // connect(ui->buttonNextData, &QPushButton::clicked, this, &MainWindow::goToNextMeasureStage);
-    // connect(ui->buttonNextDryMass, &QPushButton::clicked, this, &MainWindow::goToNextMeasureStage);
-    // connect(ui->buttonPrevDryMass, &QPushButton::clicked, this, &MainWindow::goToPreviousMeasureStage);
-    // connect(ui->buttonNextPreparation, &QPushButton::clicked, this, &MainWindow::goToNextMeasureStage);
-    // connect(ui->buttonPrevPreparation, &QPushButton::clicked, this, &MainWindow::goToPreviousMeasureStage);
-    // connect(ui->buttonFinishMeasurementSecond, &QPushButton::clicked, this, &MainWindow::goToNextMeasureStage);
-    // connect(ui->buttonPrevFluidMass, &QPushButton::clicked, this, &MainWindow::goToPreviousMeasureStage);
-
-    // connect(ui->buttonPrevSaturatedFluidMass, &QPushButton::clicked, this, &MainWindow::goToPreviousMeasureStage);
-
-    connect(ui->addDeviceButton, &QPushButton::clicked, this, &MainWindow::onAddDeviceButtonClicked);
-    connect(ui->editDeviceButton, &QPushButton::clicked, this, &MainWindow::onEditDeviceButtonClicked);
-    connect(ui->deleteDeviceButton, &QPushButton::clicked, this, &MainWindow::onRemoveDeviceButtonClicked);
-
-    connect(ui->comboBoxSelectDevice, &QComboBox::currentIndexChanged, this, &MainWindow::onDeviceComboSelectionChanged);
-    connect(ui->buttonConnectDevice, &QPushButton::clicked, this, &MainWindow::onConnectDeviceClicked);
-    connect(ui->buttonDisconnectDevice, &QPushButton::clicked, this, &MainWindow::onDisconnectDeviceClicked);
-
-    connect(ui->buttonTableFluids, &QPushButton::clicked, this, &MainWindow::buttonTableFluidsOnClicked);
-    connect(ui->buttonTableMatrials, &QPushButton::clicked, this, &MainWindow::buttonTableMatrialsOnClicked);
-
-    connect(ui->comboBoxMaterial, &QComboBox::currentIndexChanged, this, &MainWindow::onMaterialComboBoxChanged);
-
-    connect(&deviceConnector, &DeviceConnector::connectionResult, this, &MainWindow::onConnectResult);
-}
-
-void MainWindow::updateStageLabels()
-{
-    QFont normalFont;
-    normalFont.setBold(false);
-    normalFont.setPixelSize(12);
-
-    QFont boldFont = normalFont;
-    boldFont.setBold(true);
-    boldFont.setPixelSize(13);
-
-    QPalette normalPalette;
-    QPalette activePalette;
-    activePalette.setColor(QPalette::WindowText, ACTIVE_LABEL_COLOR);
-
-    MeasurementStage currentStage = ui->measureDensityStage->property("currentStage").value<MeasurementStage>();
-    bool isTripleMeasurement = ui->radioMeasureTriple->isChecked();
-
-    // Resetowanie wszystkich etykiet do stanu normalnego
-    if (isTripleMeasurement)
-    {
-        // Etykiety dla pomiaru trzystopniowego
-        QList<QLabel*> tripleLabels = {
-            ui->labelStageDataTriple,
-            ui->labelStageDryMassTriple,
-            ui->labelStageSaturation,
-            ui->labelStageSaturatedMass,
-            ui->labelStageSaturatedFluidMass,
-            ui->labelStageSummaryTriple
-        };
-
-        for (QLabel* label : tripleLabels) {
-            label->setFont(normalFont);
-            label->setPalette(normalPalette);
-        }
-
-        // Podświetlenie aktualnego etapu
-        switch (currentStage) {
-        case MeasurementStage::InitialData:
-            ui->labelStageDataTriple->setFont(boldFont);
-            ui->labelStageDataTriple->setPalette(activePalette);
-            break;
-        case MeasurementStage::DryMeasure:
-            ui->labelStageDryMassTriple->setFont(boldFont);
-            ui->labelStageDryMassTriple->setPalette(activePalette);
-            break;
-        case MeasurementStage::PrepareTriple:
-            ui->labelStageSaturation->setFont(boldFont);
-            ui->labelStageSaturation->setPalette(activePalette);
-            break;
-        case MeasurementStage::SaturatedMass:
-            ui->labelStageSaturatedMass->setFont(boldFont);
-            ui->labelStageSaturatedMass->setPalette(activePalette);
-            break;
-        case MeasurementStage::FinishTriple:
-            ui->labelStageSummaryTriple->setFont(boldFont);
-            ui->labelStageSummaryTriple->setPalette(activePalette);
-            break;
-        default:
-            break;
-        }
-    } else {
-        // Etykiety dla pomiaru dwustopniowego
-        QList<QLabel*> secondLabels = {
-            ui->labelStageData,
-            ui->labelStageDryMass,
-            ui->labelStagePreparation,
-            ui->labelStageFluidMass,
-            ui->labelStageSummary
-        };
-
-        for (QLabel* label : secondLabels) {
-            label->setFont(normalFont);
-            label->setPalette(normalPalette);
-        }
-
-        // Podświetlenie aktualnego etapu
-        switch (currentStage) {
-        case MeasurementStage::InitialData:
-            ui->labelStageData->setFont(boldFont);
-            ui->labelStageData->setPalette(activePalette);
-            break;
-        case MeasurementStage::DryMeasure:
-            ui->labelStageDryMass->setFont(boldFont);
-            ui->labelStageDryMass->setPalette(activePalette);
-            break;
-        case MeasurementStage::PrepareSecond:
-            ui->labelStagePreparation->setFont(boldFont);
-            ui->labelStagePreparation->setPalette(activePalette);
-            break;
-        case MeasurementStage::FinishSecond:
-            ui->labelStageFluidMass->setFont(boldFont);
-            ui->labelStageFluidMass->setPalette(activePalette);
-            break;
-        default:
-            break;
-        }
-    }
-}
-
-// void MainWindow::updateStageLabels()
-// {
-//     QFont normalFont = ui->labelStageData->font();
-//     normalFont.setBold(false);
-//     normalFont.setPixelSize(12);
-
-//     QFont boldFont = normalFont;
-//     boldFont.setBold(true);
-//     boldFont.setPixelSize(13);
-
-//     QPalette activePalette;
-//     activePalette.setColor(QPalette::WindowText, ACTIVE_LABEL_COLOR);
-
-//     ui->labelStageData->setPalette(QPalette());
-//     ui->labelStageDryMass->setPalette(QPalette());
-//     ui->labelStagePreparation->setPalette(QPalette());
-//     ui->labelStageFluidMass->setPalette(QPalette());
-//     // ui->measureAirStageLabel_2->setPalette(QPalette());
-
-//     ui->labelStageData->setFont(normalFont);
-//     ui->labelStageDryMass->setFont(normalFont);
-//     ui->labelStagePreparation->setFont(normalFont);
-//     ui->labelStageFluidMass->setFont(normalFont);
-//     // ui->measureAirStageLabel_2->setFont(normalFont);
-
-//     MeasurementStage currentStage = ui->measureDensityStage->property("currentStage").value<MeasurementStage>();
-//     switch(currentStage)
-//     {
-//         case MeasurementStage::Data:
-//             ui->labelStageData->setFont(boldFont);
-//             ui->labelStageData->setPalette(activePalette);
-//             break;
-
-//         case MeasurementStage::AirMeasure:
-//             ui->labelStageDryMass->setFont(boldFont);
-//             ui->labelStageDryMass->setPalette(activePalette);
-//             break;
-
-//         case MeasurementStage::PrepareHydro:
-//             ui->labelStagePreparation->setFont(boldFont);
-//             ui->labelStagePreparation->setPalette(activePalette);
-//             break;
-
-//         case MeasurementStage::HydroMeasure:
-//             ui->labelStageFluidMass->setFont(boldFont);
-//             ui->labelStageFluidMass->setPalette(activePalette);
-//             break;
-
-//         case MeasurementStage::AirEndMeasure:
-//             //ui->measureAirStageLabel_2->setFont(boldFont);
-//             //ui->measureAirStageLabel_2->setPalette(activePalette);
-//             break;
-//     }
-// }
-
-void MainWindow::finishMeasurement()
-{
-    bool isTripleMeasurement = ui->radioMeasureTriple->isChecked();
-
-    // Tutaj można dodać logikę zapisywania wyników pomiaru
-
-    // Informacja o zakończeniu pomiaru
-    QString message = isTripleMeasurement ?
-                          tr("Pomiar trzystopniowy zakończony pomyślnie.") :
-                          tr("Pomiar dwustopniowy zakończony pomyślnie.");
-
-    QMessageBox::information(this, tr("Pomiar zakończony"), message);
-
-    // Powrót do pierwszej strony
-    ui->measureDensityStage->setCurrentWidget(ui->pageInitialData);
-    ui->measureDensityStage->setProperty("currentStage", QVariant::fromValue(MeasurementStage::InitialData));
-    updateStageLabels();
-}
-
-void MainWindow::setProperty()
-{
-    ui->stackedWidget->setProperty("currentStage", QVariant::fromValue(MeasurementStage::InitialData));
-    ui->scrollAreaInitialData->setBackgroundRole(QPalette::Base);
+    for(QTableWidget* table : tables)
+        table->resizeColumnsToContents();
 }
 
 void MainWindow::setIcons()
@@ -541,74 +191,56 @@ void MainWindow::setIcons()
     activeRadwagIcon = QIcon(":/icons/balance_selected.png");
 }
 
-void MainWindow::fillDevicesCombo(bool keepActiveDevice)
+void MainWindow::setPalette()
 {
-    DeviceListModel* model = qobject_cast<DeviceListModel*>(ui->devicesListView->model());
-    if(!model)
-        return;
-
-    ui->comboBoxSelectDevice->blockSignals(true);
-    const QList<std::shared_ptr<const Device>>& devicesList = model->getDevicesList();
-
-    QString currentDeviceName;
-    if(keepActiveDevice)
-        currentDeviceName = ui->comboBoxSelectDevice->currentText();
-    ui->comboBoxSelectDevice->clear();
-
-    for(const auto& device : devicesList)
-    {
-        QVariant deviceData;
-        deviceData.setValue(device);
-        ui->comboBoxSelectDevice->addItem(device->getName(), deviceData);
-    }
-    if(currentDeviceName.isEmpty())
-        ui->comboBoxSelectDevice->setCurrentIndex(-1);
-    else
-        ui->comboBoxSelectDevice->setCurrentText(currentDeviceName);
-    onDeviceComboSelectionChanged();
-    ui->comboBoxSelectDevice->blockSignals(false);
+    ui->scrollAreaInitialData->setBackgroundRole(QPalette::Base);
+    ui->scrollAreaFinishSecond->setBackgroundRole(QPalette::Base);
+    ui->scrollAreaFinishTriple->setBackgroundRole(QPalette::Base);
+    ui->scrollAreaLibrary->setBackgroundRole(QPalette::Base);
+    ui->scrollAreaLibrary->setBackgroundRole(QPalette::Base);
+    ui->scrollAreaSieveMain->setBackgroundRole(QPalette::Base);
+    ui->scrollAreaSieveProcess->setBackgroundRole(QPalette::Base);
+    ui->scrollAreaFinalWeighting->setBackgroundRole(QPalette::Base);
+    ui->scrollAreaSummarySieve->setBackgroundRole(QPalette::Base);
 }
 
-void MainWindow::fillSerialPortCombo()
+void MainWindow::connectButtons()
 {
-    ui->comboBoxSelectPort->addItems(deviceConnector.getAvaiablePorts());
+    connectMainNavButtons();
 }
 
-void MainWindow::fillFluidCombo()
+void MainWindow::connectMainNavButtons()
 {
-    ui->comboBoxFluid->clear();
-    const QMap<QString, Fluid> &fluids = fluidManager->getFluids();
-    for(auto &fluid : fluids)
-        ui->comboBoxFluid->addItem(fluid.getName());
-    ui->comboBoxFluid->setCurrentIndex(-1);
+    connect(ui->actionSettings, &QAction::triggered, this, [this]() {
+        if(hydrostaticMeasurementModule.hasActiveMeasurement())
+        {
+            QMessageBox::warning(this, tr("Aktywny proces pomiarowy"), "Zakończ aktywny proces pomiarowy aby przejść do menadzera urządzeń.");
+            return;
+        }
+        navigateToToolBoxPage(ui->settingsPage);
+    });
+
+    connect(ui->actionMeasureDensity, &QAction::triggered, this, [this]() {
+        navigateToToolBoxPage(ui->measureDensityPage);
+    });
+
+    connect(ui->actionSieveAnalysis, &QAction::triggered, this, [this]() {
+        if(hydrostaticMeasurementModule.hasActiveMeasurement())
+        {
+            QMessageBox::warning(this, tr("Aktywny proces pomiarowy"), "Zakończ aktywny proces pomiarowy aby przejść do procesu analizy sitowej.");
+            return;
+        }
+        navigateToToolBoxPage(ui->sieveAnalysisPage);
+        ui->stackedWidgetSieveAnalysis->setCurrentWidget(ui->pageInitialSieveData);
+        ui->stackedWidgetSieveAnalysis->setProperty("currentStage", QVariant::fromValue(SieveAnalysisStages::Stage::InitialSieveData));
+    });
+
+    connect(ui->stackedWidget, &QStackedWidget::currentChanged, this, &MainWindow::onMainPageChanged);
 }
 
-void MainWindow::fillMaterialCombo()
+void MainWindow::connectScaleSignals()
 {
-    ui->comboBoxMaterial->clear();
-    const QMap<QString, Material> &materials = materialManager->getMaterials();
-    for(auto &material : materials)
-        ui->comboBoxMaterial->addItem(material.getName());
-    ui->comboBoxMaterial->setCurrentIndex(-1);
-}
-
-void MainWindow::updateStatusConnectionLabel(bool connectionStatus)
-{
-    if(connectionStatus)
-    {
-        ui->labelEditStatusConnection->setStyleSheet("color: green; font-weight: bold;");
-        ui->labelEditStatusConnection->setText("Połączono");
-        ui->comboBoxSelectDevice->setEnabled(false);
-    }
-    else
-    {
-        ui->labelEditStatusConnection->setStyleSheet("color: red; font-weight: bold;");
-        ui->labelEditStatusConnection->setText("Brak połączenia");
-        ui->comboBoxSelectDevice->setEnabled(true);
-    }
-}
-
-bool MainWindow::canEditDevice(std::shared_ptr<const Device> &device)
-{
-    return !deviceConnector.connectionIsActive() || (deviceConnector.connectionIsActive() && device != deviceConnector.getActiveDevice());
+    connect(appCore.getScaleConnector(), &DeviceConnector::connectionResult, this, &MainWindow::onConnectResult);
+    connect(appCore.getScaleConnector(), &RadwagScaleConnector::radwagDataReady, this, &MainWindow::onRadwagMeasueReady);
+    connect(ui->comboBoxSelectDevice, &QComboBox::currentIndexChanged, this, &MainWindow::onDeviceComboSelectionChanged);
 }

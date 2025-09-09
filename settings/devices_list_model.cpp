@@ -10,6 +10,9 @@ DeviceListModel::OperationResult DeviceListModel::addDevice(const std::shared_pt
     if(!newDevice)
         return OperationResult::NullDevice;
 
+    if(newDevice->getDeviceType() == DeviceType::None)
+        return OperationResult::DeviceNoneType;
+
     const QString &deviceName = newDevice->getName();
     if(deviceName.isEmpty())
         return OperationResult::DeviceNameIsEmpty;

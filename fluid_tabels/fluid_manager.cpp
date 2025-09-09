@@ -1,5 +1,7 @@
 #include "fluid_manager.h"
 #include <QDebug>
+#include <qdir.h>
+#include <qstandardpaths.h>
 
 FluidManager::FluidManager(QObject *parent) : QObject(parent)
 {
@@ -31,8 +33,11 @@ bool FluidManager::fluidExists(const QString &name) const
 
 QString FluidManager::getFluidsFilePath() const
 {
-    QSettings settings;
-    return settings.value("FluidTablesPath", QCoreApplication::applicationDirPath() + "/fluids.json").toString();
+    QString appDataPath = QStandardPaths::writableLocation(QStandardPaths::AppLocalDataLocation);
+    QDir dir(appDataPath);
+    if(!dir.exists())
+        dir.mkpath(".");
+    return dir.filePath("fluids.json");
 }
 
 void FluidManager::loadFluids()
@@ -48,74 +53,44 @@ void FluidManager::loadFluids()
     QByteArray data = file.readAll();
     QJsonDocument doc = QJsonDocument::fromJson(data);
     file.close();
+
     if(!doc.isArray())
     {
         qWarning() << "Nieprawidłowy format pliku cieczy. Oczekiwano tablicy JSON.";
         return;
     }
+
     QJsonArray fluidsArray = doc.array();
-    for(int i = 0; i < fluidsArray.size(); i++)
+    for(const QJsonValue &fluidValue : fluidsArray)
     {
-        QJsonObject fluidObj = fluidsArray[i].toObject();
-
-        // Pobranie podstawowych informacji o cieczy
-        QString name = fluidObj["name"].toString();
-        QString description = fluidObj["description"].toString();
-
-        // Pobranie tabeli gęstości
-        QMap<double, double> densityTable;
-        QJsonArray densityArray = fluidObj["densityTable"].toArray();
-
-        for(int j = 0; j < densityArray.size(); j++)
-        {
-            QJsonObject pointObj = densityArray[j].toObject();
-            double temperature = pointObj["temperature"].toDouble();
-            double density = pointObj["density"].toDouble();
-            densityTable[temperature] = density;
-        }
-
-        Fluid fluid(name, description, densityTable);
-        fluids[name] = fluid;
+        QJsonObject fluidObj = fluidValue.toObject();
+        Fluid fluid;
+        fluid.fromJson(fluidObj);
+        fluids[fluid.getName()] = fluid;
     }
 }
 
 bool FluidManager::saveFluids()
 {
     QJsonArray fluidsArray;
-    for (auto it = fluids.begin(); it != fluids.end(); ++it)
+    for(const Fluid &fluid : fluids)
     {
-        Fluid fluid = it.value();
-        QJsonObject fluidObj;
-        fluidObj["name"] = fluid.getName();
-        fluidObj["description"] = fluid.getDescription();
-
-        // Zapisanie tabeli gęstości jako tablicy punktów
-        QJsonArray densityArray;
-        QMap<double, double> densityTable = fluid.getDensityTableMap();
-        QMapIterator<double, double> i(densityTable);
-
-        while(i.hasNext())
-        {
-            i.next();
-            QJsonObject pointObj;
-            pointObj["temperature"] = i.key();
-            pointObj["density"] = i.value();
-            densityArray.append(pointObj);
-        }
-
-        fluidObj["densityTable"] = densityArray;
+        QJsonObject fluidObj = fluid.toJson();
         fluidsArray.append(fluidObj);
     }
 
     QJsonDocument doc(fluidsArray);
     QString filePath = getFluidsFilePath();
     QFile file(filePath);
-    if (!file.open(QIODevice::WriteOnly)) {
+    if (!file.open(QIODevice::WriteOnly))
+    {
         qWarning() << "Nie można zapisać cieczy do pliku:" << filePath;
         return false;
     }
+
     file.write(doc.toJson());
     file.close();
+
     return true;
 }
 

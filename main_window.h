@@ -2,95 +2,65 @@
 #define MAIN_WINDOW_H
 
 #include <QMainWindow>
-#include "fluid_tabels/fluid_manager.h"
-#include "material_tabels/material_manager.h"
-#include "settings/device.h"
-#include "settings/device_connector.h"
-#include "settings/devices_list_model.h"
-#include "settings/devices_list_controler.h"
+#include "main_window_ui_handlers/devices_manager_module/devices_manager_ui_handler.h"
+#include "main_window_ui_handlers/sieve_analysis_module/sieve_analysis_module.h"
+#include "radwag/radwag_measure.h"
 
-QT_BEGIN_NAMESPACE
-namespace Ui {
-class MainWindow;
-}
-QT_END_NAMESPACE
+#include "ui_main_window.h"
 
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
-
 public:
-    enum class MeasurementStage
-    {
-        InitialData = 0,       // pageInitialData
-        DryMeasure = 1,        // pageDryMeasure
-
-        // Etapy dla pomiaru dwustopniowego
-        PrepareSecond = 2,     // pagePrepareMeasureSecond
-        FinishSecond = 3,      // pageFinishMeasurementSecond
-
-        // Etapy dla pomiaru trzystopniowego
-        PrepareTriple = 4,     // pagePrepareMeasureTriple
-        SaturatedMass = 5,     // pageMeasureTriple
-        FinishTriple = 6       // pageFinishMeasurementTriple
-    };
-    Q_ENUM(MeasurementStage)
-
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
-signals:
+    Ui::MainWindow *getUi() const;
+    void navigateToToolBoxPage(QWidget* page);
+
+    void showWarning(const QString& title, const QString& message);
+    void showInfo(const QString& title, const QString& message);
+    bool showQuestion(const QString& title, const QString& message);
+
+    QString showSaveFileDialog(const QString& titleDialog, const QString& suggestedName, const QString& filters);
+
+    enum class MessageResult
+    {
+        Yes,
+        No,
+        Cancel
+    };
+
+    MessageResult showQuestionWithCancel(const QString& title, const QString& message);
 
 private slots:
-    void onAddDeviceButtonClicked();
-    void onEditDeviceButtonClicked();
-    void onRemoveDeviceButtonClicked();
-    void onDeviceComboSelectionChanged();
-    void onConnectDeviceClicked();
-    void onDisconnectDeviceClicked();
     void onConnectResult(bool connected);
+    void onDeviceComboSelectionChanged();
+    void onRadwagMeasueReady(const RadwagMeasure &data);
 
-    void navigateToToolBoxPage(QWidget* page);
-    void goToPreviousMeasureStage();
-    void goToNextMeasureStage();
-    void onMeasurementTypeChanged();
     void onMainPageChanged(int index);
 
-    void buttonTableFluidsOnClicked();
-    void buttonTableMatrialsOnClicked();
-
-    void onMaterialComboBoxChanged(int index);
-
 private:
-    std::shared_ptr<const Device> getSelectedDevice();
+    void updateActionIcons(int index);
+    void updateConnectonLabelsStatusBar(bool connectionStatus);
 
     void initControls();
-    void connectButtons();
-    void updateStageLabels();
-    void finishMeasurement();
-    void setProperty();
+    void resizeAllTablesColumnsToContents();
     void setIcons();
-    void fillDevicesCombo(bool keepActiveDevice = false);
-    void fillSerialPortCombo();
-    void fillFluidCombo();
-    void fillMaterialCombo();
-    void updateActionIcons(int index);
-    void updateStatusConnectionLabel(bool connectionStatus);
-
-     bool canEditDevice(std::shared_ptr<const Device> &device);
+    void setPalette();
+    void connectButtons();
+    void connectMainNavButtons();
+    void connectScaleSignals();
 
     Ui::MainWindow *ui;
-    DeviceListModel devicesListModel;
-    DeviceControler devicesListControler;
-    DeviceConnector deviceConnector;
-    std::unique_ptr<FluidManager> fluidManager;
-    std::unique_ptr<MaterialManager> materialManager;
+
+    DevicesManagerUiHandler deviceManagerUiHandler;
+    HydrostaticMeasurementModule hydrostaticMeasurementModule;
+    SieveAnalysisModule sieveAnalysisModule;
 
     QIcon defaultSettingsIcon;
     QIcon activeSettingsIcon;
     QIcon defaultRadwagIcon;
     QIcon activeRadwagIcon;
-
-    static inline const QColor ACTIVE_LABEL_COLOR = QColor(0, 0, 255);
 };
-#endif // MAIN_WINDOW_H
+#endif

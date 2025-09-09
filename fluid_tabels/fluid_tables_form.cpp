@@ -80,7 +80,8 @@ void FluidTablesDialog::buttonRemoveFluidOnClicked()
         if(ui->listWidgetFluids->count() == 0)
             ui->groupBoxFluidDetails->setEnabled(false);
     }
-    updateFluidDetails(ui->listWidgetFluids->selectedItems().first()->text());
+    if(ui->listWidgetFluids->count())
+        updateFluidDetails(ui->listWidgetFluids->selectedItems().first()->text());
 }
 
 void FluidTablesDialog::buttonSaveEditFluidOnClicked()
@@ -388,7 +389,8 @@ void FluidTablesDialog::listWidgetFluidsOnCurrentItemChanged(QListWidgetItem *cu
         return;
     }
     ui->groupBoxFluidDetails->setEnabled(false);
-    updateFluidDetails(current->text());
+    if(current)
+        updateFluidDetails(current->text());
     updateButtonsState();
 }
 
