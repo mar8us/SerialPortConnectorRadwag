@@ -22,6 +22,8 @@ public:
     void showInfo(const QString& title, const QString& message);
     bool showQuestion(const QString& title, const QString& message);
 
+    QString showSaveFileDialog(const QString& titleDialog, const QString& suggestedName, const QString& filters);
+
     enum class MessageResult
     {
         Yes,

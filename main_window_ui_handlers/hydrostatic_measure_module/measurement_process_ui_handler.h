@@ -32,6 +32,9 @@ public slots:
     void onReplyMeasure(const std::shared_ptr<const Measurement> &sourceMeasure);
     void onContinueMeasure(const std::shared_ptr<const Measurement> &sourceMeasure);
 
+signals:
+    void exportMeasuresExcel(const QList<const Measurement*>& measures);
+
 private slots:
     void initializeStateMachine();
 
@@ -108,6 +111,7 @@ private slots:
 
     void onNewMeasureSummaryButtonClicked();
     void onReplyMeasureSummaryButtonClicked();
+    void onButtonExportExcelCilcked();
 
     void onConfrimPrepareWorkstationButtonClicked();
     void onConfrimPrepareMeasureSecondButtonClicked();

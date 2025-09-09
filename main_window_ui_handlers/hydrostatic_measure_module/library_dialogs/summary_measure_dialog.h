@@ -18,6 +18,9 @@ public:
     explicit SummaryMeasureDialog(std::shared_ptr<const Measurement> sourceMeasure, QWidget *parent = nullptr);
     ~SummaryMeasureDialog();
 
+signals:
+    void exportMeasuresExcel(const QList<const Measurement*>& measures);
+
 private:
     Ui::SummaryMeasureDialog *ui;
 
@@ -35,6 +38,9 @@ private:
     PorosityChartWidget *porosityChart;
     DensityChartWidget *denistyChart;
     DensityChartWidget *denistyChartSecond;
+
+private slots:
+    void onExcelExportButtonClicked();
 };
 
 #endif // SUMMARY_MEASURE_DIALOG_H

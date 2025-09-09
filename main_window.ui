@@ -97,7 +97,7 @@
                </size>
               </property>
               <property name="currentIndex">
-               <number>6</number>
+               <number>9</number>
               </property>
               <widget class="QWidget" name="pageStartMeasure">
                <layout class="QVBoxLayout" name="verticalLayout_12">
@@ -378,8 +378,8 @@ Odpowiedni dla materiałów wchłaniających wodę (ceramika, skały osadowe, be
                        <rect>
                         <x>0</x>
                         <y>0</y>
-                        <width>967</width>
-                        <height>359</height>
+                        <width>440</width>
+                        <height>244</height>
                        </rect>
                       </property>
                       <layout class="QGridLayout" name="gridLayout_17">
@@ -2492,100 +2492,8 @@ umieszczając ją w komorze próźniowej na czas zaniku ostatniego pęcherzyka</
                            <string>Dane ogólne</string>
                           </property>
                           <layout class="QGridLayout" name="gridLayout_16">
-                           <item row="0" column="0">
-                            <widget class="QLabel" name="labelSampleName_3">
-                             <property name="text">
-                              <string>Seria:</string>
-                             </property>
-                            </widget>
-                           </item>
-                           <item row="1" column="1">
-                            <widget class="QLabel" name="valueSecondMaterial">
-                             <property name="font">
-                              <font>
-                               <bold>true</bold>
-                              </font>
-                             </property>
-                             <property name="text">
-                              <string>Q</string>
-                             </property>
-                            </widget>
-                           </item>
-                           <item row="0" column="1">
-                            <widget class="QLabel" name="valueSecondSampleName">
-                             <property name="font">
-                              <font>
-                               <bold>true</bold>
-                              </font>
-                             </property>
-                             <property name="text">
-                              <string>Q</string>
-                             </property>
-                            </widget>
-                           </item>
-                           <item row="14" column="0">
-                            <widget class="QLabel" name="labelMeasurementType">
-                             <property name="text">
-                              <string>Typ pomiaru:</string>
-                             </property>
-                            </widget>
-                           </item>
-                           <item row="12" column="0" colspan="2">
-                            <widget class="Line" name="line_second_summary2">
-                             <property name="orientation">
-                              <enum>Qt::Orientation::Horizontal</enum>
-                             </property>
-                            </widget>
-                           </item>
-                           <item row="3" column="0" colspan="2">
-                            <widget class="Line" name="line_second_summary1">
-                             <property name="orientation">
-                              <enum>Qt::Orientation::Horizontal</enum>
-                             </property>
-                            </widget>
-                           </item>
-                           <item row="2" column="0">
-                            <widget class="QLabel" name="labelTheoreticalDensity_3">
-                             <property name="text">
-                              <string>Gęstość teoretyczna materiału:</string>
-                             </property>
-                            </widget>
-                           </item>
-                           <item row="1" column="0">
-                            <widget class="QLabel" name="labelMaterial_4">
-                             <property name="text">
-                              <string>Materiał:</string>
-                             </property>
-                            </widget>
-                           </item>
-                           <item row="16" column="1">
-                            <widget class="QLabel" name="valueSecondMeasureDateTime">
-                             <property name="font">
-                              <font>
-                               <bold>true</bold>
-                              </font>
-                             </property>
-                             <property name="text">
-                              <string>Q</string>
-                             </property>
-                            </widget>
-                           </item>
-                           <item row="8" column="0">
-                            <widget class="QLabel" name="labelLiquidDensity">
-                             <property name="text">
-                              <string>Gęstość cieczy:</string>
-                             </property>
-                            </widget>
-                           </item>
-                           <item row="15" column="0">
-                            <widget class="QLabel" name="labelOperator_2">
-                             <property name="text">
-                              <string>Wykonawca:</string>
-                             </property>
-                            </widget>
-                           </item>
-                           <item row="2" column="1">
-                            <widget class="QLabel" name="valueSecondTheoreticalDensity">
+                           <item row="15" column="1">
+                            <widget class="QLabel" name="valueSecondMeasureOperator">
                              <property name="font">
                               <font>
                                <bold>true</bold>
@@ -2608,8 +2516,8 @@ umieszczając ją w komorze próźniowej na czas zaniku ostatniego pęcherzyka</
                              </property>
                             </widget>
                            </item>
-                           <item row="15" column="1">
-                            <widget class="QLabel" name="valueSecondMeasureOperator">
+                           <item row="0" column="1">
+                            <widget class="QLabel" name="valueSecondSampleName">
                              <property name="font">
                               <font>
                                <bold>true</bold>
@@ -2620,10 +2528,48 @@ umieszczając ją w komorze próźniowej na czas zaniku ostatniego pęcherzyka</
                              </property>
                             </widget>
                            </item>
-                           <item row="5" column="0">
-                            <widget class="QLabel" name="labelLiquidType">
+                           <item row="2" column="0">
+                            <widget class="QLabel" name="labelTheoreticalDensity_3">
                              <property name="text">
-                              <string>Ciecz:</string>
+                              <string>Gęstość teoretyczna materiału:</string>
+                             </property>
+                            </widget>
+                           </item>
+                           <item row="15" column="0">
+                            <widget class="QLabel" name="labelOperator_2">
+                             <property name="text">
+                              <string>Wykonawca:</string>
+                             </property>
+                            </widget>
+                           </item>
+                           <item row="8" column="0">
+                            <widget class="QLabel" name="labelLiquidDensity">
+                             <property name="text">
+                              <string>Gęstość cieczy:</string>
+                             </property>
+                            </widget>
+                           </item>
+                           <item row="5" column="1">
+                            <widget class="QLabel" name="valueSecondLiquidType">
+                             <property name="font">
+                              <font>
+                               <bold>true</bold>
+                              </font>
+                             </property>
+                             <property name="text">
+                              <string>Q</string>
+                             </property>
+                            </widget>
+                           </item>
+                           <item row="1" column="1">
+                            <widget class="QLabel" name="valueSecondMaterial">
+                             <property name="font">
+                              <font>
+                               <bold>true</bold>
+                              </font>
+                             </property>
+                             <property name="text">
+                              <string>Q</string>
                              </property>
                             </widget>
                            </item>
@@ -2634,8 +2580,67 @@ umieszczając ją w komorze próźniowej na czas zaniku ostatniego pęcherzyka</
                              </property>
                             </widget>
                            </item>
+                           <item row="1" column="0">
+                            <widget class="QLabel" name="labelMaterial_4">
+                             <property name="text">
+                              <string>Materiał:</string>
+                             </property>
+                            </widget>
+                           </item>
+                           <item row="0" column="0">
+                            <widget class="QLabel" name="labelSampleName_3">
+                             <property name="text">
+                              <string>Seria:</string>
+                             </property>
+                            </widget>
+                           </item>
+                           <item row="12" column="0" colspan="2">
+                            <widget class="Line" name="line_second_summary2">
+                             <property name="orientation">
+                              <enum>Qt::Orientation::Horizontal</enum>
+                             </property>
+                            </widget>
+                           </item>
                            <item row="7" column="1">
                             <widget class="QLabel" name="valueSecondFluidTemp">
+                             <property name="font">
+                              <font>
+                               <bold>true</bold>
+                              </font>
+                             </property>
+                             <property name="text">
+                              <string>Q</string>
+                             </property>
+                            </widget>
+                           </item>
+                           <item row="16" column="1">
+                            <widget class="QLabel" name="valueSecondMeasureDateTime">
+                             <property name="font">
+                              <font>
+                               <bold>true</bold>
+                              </font>
+                             </property>
+                             <property name="text">
+                              <string>Q</string>
+                             </property>
+                            </widget>
+                           </item>
+                           <item row="7" column="0">
+                            <widget class="QLabel" name="labelFluidTemp">
+                             <property name="text">
+                              <string>Temperatura cieczy:</string>
+                             </property>
+                            </widget>
+                           </item>
+                           <item row="14" column="0">
+                            <widget class="QLabel" name="labelMeasurementType">
+                             <property name="text">
+                              <string>Typ pomiaru:</string>
+                             </property>
+                            </widget>
+                           </item>
+                           <item row="2" column="1">
+                            <widget class="QLabel" name="valueSecondTheoreticalDensity">
                              <property name="font">
                               <font>
                                <bold>true</bold>
@@ -2658,22 +2663,17 @@ umieszczając ją w komorze próźniowej na czas zaniku ostatniego pęcherzyka</
                              </property>
                             </widget>
                            </item>
-                           <item row="7" column="0">
-                            <widget class="QLabel" name="labelFluidTemp">
-                             <property name="text">
-                              <string>Temperatura cieczy:</string>
+                           <item row="3" column="0" colspan="2">
+                            <widget class="Line" name="line_second_summary1">
+                             <property name="orientation">
+                              <enum>Qt::Orientation::Horizontal</enum>
                              </property>
                             </widget>
                            </item>
-                           <item row="5" column="1">
-                            <widget class="QLabel" name="valueSecondLiquidType">
-                             <property name="font">
-                              <font>
-                               <bold>true</bold>
-                              </font>
-                             </property>
+                           <item row="5" column="0">
+                            <widget class="QLabel" name="labelLiquidType">
                              <property name="text">
-                              <string>Q</string>
+                              <string>Ciecz:</string>
                              </property>
                             </widget>
                            </item>
@@ -2929,7 +2929,7 @@ umieszczając ją w komorze próźniowej na czas zaniku ostatniego pęcherzyka</
                 <item row="1" column="0">
                  <layout class="QHBoxLayout" name="horizontalLayout_18">
                   <item>
-                   <widget class="QPushButton" name="buttonExportSecondCSV">
+                   <widget class="QPushButton" name="buttonExportExcelSecond">
                     <property name="minimumSize">
                      <size>
                       <width>130</width>
@@ -2943,7 +2943,7 @@ umieszczając ją w komorze próźniowej na czas zaniku ostatniego pęcherzyka</
                      </size>
                     </property>
                     <property name="text">
-                     <string>Eksportuj do CSV</string>
+                     <string>Eksportuj do Excel</string>
                     </property>
                     <property name="icon">
                      <iconset>
@@ -5070,7 +5070,7 @@ umieszczając ją w komorze próźniowej na czas zaniku ostatniego pęcherzyka</
                    </widget>
                   </item>
                   <item>
-                   <widget class="QPushButton" name="buttonExportTripleCSV">
+                   <widget class="QPushButton" name="buttonExportExcelTriple">
                     <property name="minimumSize">
                      <size>
                       <width>130</width>
@@ -5084,7 +5084,7 @@ umieszczając ją w komorze próźniowej na czas zaniku ostatniego pęcherzyka</
                      </size>
                     </property>
                     <property name="text">
-                     <string>Eksportuj do CSV</string>
+                     <string>Eksportuj do Excel</string>
                     </property>
                     <property name="icon">
                      <iconset>

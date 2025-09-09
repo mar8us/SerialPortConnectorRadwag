@@ -29,6 +29,9 @@ signals:
     void replySelectedMeasure(const std::shared_ptr<const Measurement> &sourceMeasure);
     void continueSelectedMeasure(const std::shared_ptr<const Measurement> &sourceMeasure);
 
+public slots:
+    void onExportMeasuresExcel(const QList<const Measurement*>& measures);
+
 private slots:
     void onLibrarySearchTextChanged(const QString& text);
     void onLibrarySearchInChanged(int index);
@@ -40,6 +43,7 @@ private slots:
     void onLibraryDeleteMeasureButtonClicked();
     void onLibraryShowMeasureResultButtonClicked();
     void onLibraryShowAnalysisMeasuresButtonClicked();
+    void onExcelExportButtonClicked();
     void onColumnsConfigButtonClicked(bool checked);
 
     void onSelectionChanged(const QItemSelection &selected, const QItemSelection &deselected);
@@ -50,6 +54,10 @@ private:
     QList<MeasurementTreeModel::TreeItem*> getSelectedItems() const;
     std::shared_ptr<const Measurement> getSelectedMeasure() const;
     std::vector<std::shared_ptr<const Measurement>> getSelectedMeasures() const;
+
+    QList<const Measurement*> getSelectedMeasuresList() const;
+
+    QString generateExportFileName(const QList<const Measurement*>& measures) const;
 
     void setupLibraryView();
     void setupLibraryControls();

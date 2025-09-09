@@ -23,6 +23,8 @@ SummaryMeasureDialog::SummaryMeasureDialog(std::shared_ptr<const Measurement> so
         ui->stackedWidget->setCurrentIndex(0);
         updateMeasureSecondLabelsSummary();
     }
+
+    connect(ui->buttonExcelExport, &QPushButton::clicked, this, &SummaryMeasureDialog::onExcelExportButtonClicked);
 }
 
 SummaryMeasureDialog::~SummaryMeasureDialog()
@@ -176,4 +178,9 @@ void SummaryMeasureDialog::updateTripleCharts(const MeasurementResults &results)
         return;
     denistyChart->clearChart();
     denistyChart->updateChart(results);
+}
+
+void SummaryMeasureDialog::onExcelExportButtonClicked()
+{
+    emit exportMeasuresExcel(QList<const Measurement*>{sourceMeasure.get()});
 }

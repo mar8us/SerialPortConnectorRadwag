@@ -801,6 +801,11 @@ void MeasurementProcessUiHandler::onReplyMeasureSummaryButtonClicked()
     onReplyMeasure(measureToReply);
 }
 
+void MeasurementProcessUiHandler::onButtonExportExcelCilcked()
+{
+    emit exportMeasuresExcel(QList<const Measurement*>{radwagMeasureControler.getActiveMeasure().get()});
+}
+
 bool MeasurementProcessUiHandler::validateInitialDataPage()
 {
     if(!radwagMeasureControler.hasActiveMeasurement())
@@ -2010,12 +2015,14 @@ void MeasurementProcessUiHandler::connectSummaryMeasureSecondPageButtons()
 {
     connect(ui->buttonNewSecondMeasure, &QPushButton::clicked, this, &MeasurementProcessUiHandler::onNewMeasureSummaryButtonClicked);
     connect(ui->buttonReplySecondMeasure, &QPushButton::clicked, this, &MeasurementProcessUiHandler::onReplyMeasureSummaryButtonClicked);
+    connect(ui->buttonExportExcelSecond, &QPushButton::clicked, this, &MeasurementProcessUiHandler::onButtonExportExcelCilcked);
 }
 
 void MeasurementProcessUiHandler::connectSummaryMeasureTriplePageButtons()
 {
     connect(ui->buttonNewTripleMeasure, &QPushButton::clicked, this, &MeasurementProcessUiHandler::onNewMeasureSummaryButtonClicked);
     connect(ui->buttonReplyTripleMeasure, &QPushButton::clicked, this, &MeasurementProcessUiHandler::onReplyMeasureSummaryButtonClicked);
+    connect(ui->buttonExportExcelTriple, &QPushButton::clicked, this, &MeasurementProcessUiHandler::onButtonExportExcelCilcked);
 }
 
 void MeasurementProcessUiHandler::connectCatalogsButtons()

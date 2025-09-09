@@ -1,9 +1,17 @@
 #include "measurement_library_ui_handler.h"
 #include "../../main_window.h"
-#include <QDialog>
 #include "library_dialogs/analysis_measures_dialog.h"
 #include "library_dialogs/summary_measure_dialog.h"
 #include "../../radwag/measure_statistic_analyzer.h"
+#include "../../excel/measurement_exporter.h"
+#include <QFileDialog>
+#include <QMessageBox>
+#include <QProgressDialog>
+#include <QDesktopServices>
+#include <QDir>
+#include <QUrl>
+#include <QRegularExpression>
+
 
 MeasurementLibraryUiHandler::MeasurementLibraryUiHandler(MainWindow *mainWindow, HydrostaticDataHolder &dataHolder, QObject *parent)
     : QObject(parent)
@@ -111,6 +119,11 @@ void MeasurementLibraryUiHandler::onLibraryShowAnalysisMeasuresButtonClicked()
     dialog->showNormal();
 }
 
+void MeasurementLibraryUiHandler::onExcelExportButtonClicked()
+{
+    onExportMeasuresExcel(getSelectedMeasuresList());
+}
+
 void MeasurementLibraryUiHandler::onColumnsConfigButtonClicked(bool checked)
 {
     ui->treeViewLibMeasure->setColumnHidden(MeasurementTreeModel::Columns::MeasureId, !checked);
@@ -144,6 +157,79 @@ void MeasurementLibraryUiHandler::onMeasurementDoubleClicked(const QModelIndex& 
     //     openMeasurement(measurementId);
     // }
 }
+
+void MeasurementLibraryUiHandler::onExportMeasuresExcel(const QList<const Measurement*>& measures)
+{
+    if(measures.isEmpty())
+    {
+        mainWindow->showWarning("Błąd eksportu", "Brak danych do eksportu.");
+        return;
+    }
+
+    QStringList invalidSamples;
+    for(const Measurement* measure : measures)
+        if(measure && !measure->hasResults())
+            invalidSamples << measure->getSampleName();
+
+    if(!invalidSamples.isEmpty())
+    {
+        mainWindow->showWarning("Błąd eksportu", QString("Następujące próbki nie mają wyników:\n- %1\n\nNajpierw wykonaj obliczenia.").arg(invalidSamples.join("\n- ")));
+        return;
+    }
+
+    QString suggestedFileName = generateExportFileName(measures);
+    QString filePath = mainWindow->showSaveFileDialog("Zapisz do Excel", suggestedFileName, "Pliki Excel (*.xlsx);");
+    if(filePath.isEmpty())
+        return;
+
+    MeasurementExporter exporter(filePath, measures);
+
+    try
+    {
+        if(!exporter.exportData())
+        {
+            QMessageBox::critical(mainWindow, "Błąd eksportu", "Nie udało się wyeksportować danych do pliku Excel.\n");
+            return;
+        }
+
+        if(!exporter.saveDocument())
+        {
+            QMessageBox::critical(mainWindow, "Błąd zapisu", "Nie udało się zapisać pliku Excel.\n" "Sprawdź czy masz uprawnienia do zapisu w wybranej lokalizacji.");
+            return;
+        }
+
+        QMessageBox::StandardButton result = QMessageBox::information(mainWindow, "Eksport zakończony",
+                                                                      QString("Dane zostały pomyślnie wyeksportowane do pliku:\n%1\n\n"
+                                                                              "Czy chcesz otworzyć plik w domyślnej aplikacji?").arg(QDir::toNativeSeparators(filePath)),
+                                                                      QMessageBox::Yes | QMessageBox::No, QMessageBox::Yes);
+
+
+
+        if(result == QMessageBox::Yes && !QDesktopServices::openUrl(QUrl::fromLocalFile(filePath)))
+            QMessageBox::warning(mainWindow, "Ostrzeżenie", "Nie udało się otworzyć pliku w domyślnej aplikacji.\n""Możesz otworzyć go ręcznie z lokalizacji:\n" + QDir::toNativeSeparators(filePath));
+    }
+    catch (const std::exception& e)
+    {
+        QMessageBox::critical(mainWindow, "Błąd eksportu", QString("Wystąpił błąd podczas eksportu:\n%1").arg(e.what()));
+    }
+    catch (...)
+    {
+        QMessageBox::critical(mainWindow, "Błąd eksportu", "Wystąpił nieznany błąd podczas eksportu.");
+    }
+}
+
+QString MeasurementLibraryUiHandler::generateExportFileName(const QList<const Measurement*>& measures) const
+{
+    if(measures.isEmpty())
+        return QString();
+
+    bool allIsSecond = std::all_of(measures.begin(), measures.end(), [](const Measurement* m) { return m && !m->isThreeType(); });
+    bool allIsThree = std::all_of(measures.begin(), measures.end(), [](const Measurement* m)  { return m && m->isThreeType();  });
+
+    QString type = allIsSecond ?  "_2st" : (allIsThree ? "_3st" : "_2st_3st");
+    return QString("%1.xlsx").arg(type);
+}
+
 
 // Metoda otwierająca pomiar
 // void MeasurementLibraryUiHandler::openMeasurement(const QString& measurementId)
@@ -209,6 +295,22 @@ std::vector<std::shared_ptr<const Measurement>> MeasurementLibraryUiHandler::get
     for(auto &item : items)
         if(item && item->measurementIds.size() == 1)
             measures.push_back(dataHolder.measurementManager->getMeasurement(item->measurementIds.first()));
+    return measures;
+}
+
+QList<const Measurement *> MeasurementLibraryUiHandler::getSelectedMeasuresList() const
+{
+    QList<const Measurement*> measures;
+    auto items = getSelectedItems();
+    for(auto &item : items)
+    {
+        if(item && item->measurementIds.size() == 1)
+        {
+            auto measurement = dataHolder.measurementManager->getMeasurement(item->measurementIds.first());
+            if(measurement)
+                measures.append(measurement.get());
+        }
+    }
     return measures;
 }
 
@@ -335,6 +437,7 @@ void MeasurementLibraryUiHandler::showMeasureResult(std::shared_ptr<const Measur
 
     openDialogs[sourceMeasure] = dialog;
     connect(dialog, &SummaryMeasureDialog::destroyed, this, [this, sourceMeasure]() { openDialogs.remove(sourceMeasure); });
+    connect(dialog, &SummaryMeasureDialog::exportMeasuresExcel, this, &MeasurementLibraryUiHandler::onExportMeasuresExcel);
 
     dialog->show();
 }
@@ -379,6 +482,7 @@ void MeasurementLibraryUiHandler::connectLibraryMeasureButtons()
     connect(ui->buttonLibPreviewMeasure, &QPushButton::clicked, this, &MeasurementLibraryUiHandler::onLibraryShowMeasureResultButtonClicked);
 
     connect(ui->buttonLibCompareMeasures, &QPushButton::clicked, this, &MeasurementLibraryUiHandler::onLibraryShowAnalysisMeasuresButtonClicked);
+    connect(ui->buttonExportLibraryMeasure, &QPushButton::clicked, this, &MeasurementLibraryUiHandler::onExcelExportButtonClicked);
     connect(ui->buttonColumnsConfig, &QPushButton::clicked, this, &MeasurementLibraryUiHandler::onColumnsConfigButtonClicked);
 }
 

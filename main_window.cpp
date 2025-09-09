@@ -68,6 +68,20 @@ bool MainWindow::showQuestion(const QString& title, const QString& message)
     return msgBox.clickedButton() == yesButton;
 }
 
+QString MainWindow::showSaveFileDialog(const QString &titleDialog, const QString &suggestedName, const QString& filters)
+{
+    QDir::homePath();
+    QString filePath = QFileDialog::getSaveFileName(this, titleDialog, QDir::homePath() + "/" + suggestedName, filters);
+
+    if(filePath.isEmpty())
+        return QString();
+
+    if(!filePath.endsWith(".xlsx", Qt::CaseInsensitive))
+        filePath += ".xlsx";
+
+    return filePath;
+}
+
 MainWindow::MessageResult MainWindow::showQuestionWithCancel(const QString& title, const QString& message)
 {
     QMessageBox msgBox(this);

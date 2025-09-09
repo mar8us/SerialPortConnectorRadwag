@@ -1,7 +1,7 @@
 #include <QMessageBox>
 #include "hydrostatic_measure_module.h"
 #include "../../main_window.h"
-#include "../../app_core.h"
+
 
 HydrostaticMeasurementModule::HydrostaticMeasurementModule(MainWindow *mainWindow)
     : QObject(mainWindow)
@@ -37,4 +37,5 @@ void HydrostaticMeasurementModule::connectSignals()
     connect(&libraryUiHandler, &MeasurementLibraryUiHandler::newMeasure, &processUiHandler, &MeasurementProcessUiHandler::onNewMeasure);
     connect(&libraryUiHandler, &MeasurementLibraryUiHandler::replySelectedMeasure, &processUiHandler, &MeasurementProcessUiHandler::onReplyMeasure);
     connect(&libraryUiHandler, &MeasurementLibraryUiHandler::continueSelectedMeasure, &processUiHandler, &MeasurementProcessUiHandler::onContinueMeasure);
+    connect(&processUiHandler, &MeasurementProcessUiHandler::exportMeasuresExcel, &libraryUiHandler, &MeasurementLibraryUiHandler::onExportMeasuresExcel);
 }
