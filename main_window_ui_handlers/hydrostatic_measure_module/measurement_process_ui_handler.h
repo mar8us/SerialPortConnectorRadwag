@@ -128,7 +128,7 @@ private:
     bool validateSaturationMassMeasurePage();
     bool validateFinishTripleMeasurePage();
 
-    void fillSampleCombo();
+    void fillSampleCombo(bool preserveSelection = false);
     void fillFluidCombo();
     void fillSaturationMethodsCombo();
 

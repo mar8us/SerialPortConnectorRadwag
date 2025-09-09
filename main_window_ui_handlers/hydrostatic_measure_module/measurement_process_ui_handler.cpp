@@ -922,19 +922,21 @@ bool MeasurementProcessUiHandler::validateFinishTripleMeasurePage()
     return true;
 }
 
-void MeasurementProcessUiHandler::fillSampleCombo()
+void MeasurementProcessUiHandler::fillSampleCombo(bool preserveSelection)
 {
-    ui->comboBoxSampleSelection->blockSignals(true);
+    QString currentText;
+    if(preserveSelection && ui->comboBoxSampleSelection->currentIndex() >= 0)
+        currentText = ui->comboBoxSampleSelection->currentText();
 
     ui->comboBoxSampleSelection->clear();
     const QMap<QString, std::shared_ptr<const Sample>> &samples = dataHolder.sampleManager->getSamples();
     for(auto it = samples.constBegin(); it != samples.constEnd(); it++)
-    {
-        QString id = it.value()->getName();
-        QString name = it.value()->getName();
         ui->comboBoxSampleSelection->addItem(it.value()->getName(), it.value()->getName());
-    }
-    ui->comboBoxSampleSelection->setCurrentIndex(-1);
+
+    if(preserveSelection && !currentText.isEmpty())
+        ui->comboBoxSampleSelection->setCurrentIndex(ui->comboBoxSampleSelection->findText(currentText));
+    else
+        ui->comboBoxSampleSelection->setCurrentIndex(-1);
 
     ui->comboBoxSampleSelection->blockSignals(false);
 }
@@ -1021,12 +1023,15 @@ bool MeasurementProcessUiHandler::updateInitialDataLabels()
     if(!radwagMeasureControler.hasActiveMeasurement())
         return false;
 
+    fillSampleCombo(true);
+
     auto activeMeasure = radwagMeasureControler.getActiveMeasure();
     auto sample = activeMeasure->getSample();
     if(!sample)
         return true;
 
-    ui->comboBoxSampleSelection->setCurrentText(sample->getName());
+    int index = ui->comboBoxSampleSelection->findData(sample->getName());
+    ui->comboBoxSampleSelection->setCurrentIndex(index >= 0 ? index : -1);
     ui->editSampleName->setText(sample->getName());
     ui->editMaterial->setText(sample->getMaterialName());
     ui->editMaterialDensity->setText(QString::number(sample->getMaterialDensity()) + " g/cm³");
