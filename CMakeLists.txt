@@ -12,17 +12,20 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets SerialPort)
 find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets SerialPort Charts)
 
+include(FetchContent)
+FetchContent_Declare(
+    QXlsx
+    GIT_REPOSITORY https://github.com/QtExcel/QXlsx.git
+    GIT_TAG        v1.5.0
+    SOURCE_SUBDIR  QXlsx
+)
+FetchContent_MakeAvailable(QXlsx)
+
 set(PROJECT_SOURCES
         main.cpp
         main_window.cpp
         main_window.h
         main_window.ui
-)
-
-if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
-    qt_add_executable(SerialPortConnectorRadwag
-        MANUAL_FINALIZATION
-        ${PROJECT_SOURCES}
         resources.qrc
         settings/device_form.ui
         settings/device_form.cpp settings/device_form.h
@@ -77,6 +80,18 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         main_window_ui_handlers/hydrostatic_measure_module/library_dialogs/summary_measure_dialog.h main_window_ui_handlers/hydrostatic_measure_module/library_dialogs/summary_measure_dialog.cpp main_window_ui_handlers/hydrostatic_measure_module/library_dialogs/summary_measure_dialog.ui
         main_window_ui_handlers/hydrostatic_measure_module/library_dialogs/analysis_measures_dialog.h main_window_ui_handlers/hydrostatic_measure_module/library_dialogs/analysis_measures_dialog.cpp main_window_ui_handlers/hydrostatic_measure_module/library_dialogs/analysis_measures_dialog.ui
         radwag/measure_statistic_analyzer.h radwag/measure_statistic_analyzer.cpp
+)
+
+if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
+    qt_add_executable(SerialPortConnectorRadwag
+        MANUAL_FINALIZATION
+        ${PROJECT_SOURCES}
+        excel/export_excel_base.h excel/export_excel_base.cpp
+
+        excel/measurement_exporter.h excel/measurement_exporter.cpp
+        excel/section_excel.h excel/section.cpp
+        excel/style_formatter.h excel/style_formatter.cpp
+
 
 
 
@@ -104,6 +119,7 @@ target_link_libraries(SerialPortConnectorRadwag PRIVATE
     Qt${QT_VERSION_MAJOR}::Widgets
     Qt${QT_VERSION_MAJOR}::SerialPort
     Qt${QT_VERSION_MAJOR}::Charts
+    QXlsx::QXlsx
 )
 
 # Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.
