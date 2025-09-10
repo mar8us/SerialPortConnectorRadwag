@@ -91,6 +91,8 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         excel/measurement_exporter.h excel/measurement_exporter.cpp
         excel/section_excel.h excel/section.cpp
         excel/style_formatter.h excel/style_formatter.cpp
+        themes/dark/darkstyle.qrc
+        themes/light/lightstyle.qrc
 
 
 
