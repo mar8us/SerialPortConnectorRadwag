@@ -53,7 +53,7 @@ bool MeasurementProcessUiHandler::canStartMeasureProcces()
     }
 
     ui->actionMeasureDensity->trigger();
-    ui->tabWidgetMain->setCurrentIndex(0);
+    ui->tabWidgetMain->setCurrentIndex(1);
     return true;
 }
 
@@ -924,6 +924,7 @@ bool MeasurementProcessUiHandler::validateFinishTripleMeasurePage()
 
 void MeasurementProcessUiHandler::fillSampleCombo(bool preserveSelection)
 {
+    ui->comboBoxSampleSelection->blockSignals(true);
     QString currentText;
     if(preserveSelection && ui->comboBoxSampleSelection->currentIndex() >= 0)
         currentText = ui->comboBoxSampleSelection->currentText();
