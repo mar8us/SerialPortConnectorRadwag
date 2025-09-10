@@ -341,10 +341,6 @@ void MeasurementLibraryUiHandler::setupLibraryTreeView()
 {
     ui->treeViewLibMeasure->setModel(measurementProxyModel);
 
-    const int defaultColumnWidth = 100;
-    for(int col = MeasurementTreeModel::MeasureType; col < MeasurementTreeModel::ColumnCount; col++)
-        ui->treeViewLibMeasure->setColumnWidth(col, defaultColumnWidth);
-
     ui->treeViewLibMeasure->sortByColumn(MeasurementTreeModel::Date, Qt::DescendingOrder);
     ui->treeViewLibMeasure->setStyleSheet("QTreeView::item:selected { background-color: #0064FF; }");
     ui->treeViewLibMeasure->expandAll();
@@ -354,6 +350,10 @@ void MeasurementLibraryUiHandler::setupLibraryTreeView()
     connect(ui->comboLibSearchIn, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &MeasurementLibraryUiHandler::onLibrarySearchInChanged);
     connect(ui->comboLibGroupBy, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &MeasurementLibraryUiHandler::onLibraryGroupByChanged);
     connect(dataHolder.measurementManager.get(), &MeasurementManager::measurementsChanged, this, &MeasurementLibraryUiHandler::refreshLibraryView);
+
+    QHeaderView* header = ui->treeViewLibMeasure->header();
+    for(int i = 0; i < ui->treeViewLibMeasure->model()->columnCount(); i++)
+        header->setSectionResizeMode(i, QHeaderView::ResizeToContents);
 }
 
 void MeasurementLibraryUiHandler::refreshLibraryView()
