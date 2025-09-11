@@ -1,4 +1,7 @@
 #include "utils.h"
+#include <QSettings>
+#include <QFile>
+#include <QApplication>
 
 namespace utils
 {
@@ -53,4 +56,34 @@ QString getSaturationMethodName(SaturationMethod method)
     }
 }
 
+}// end__ namespace utils
+
+#ifdef USE_THEME
+namespace theme_utils
+{
+
+ThemeMode detectSystemThemeMode()
+{
+    QSettings settings("HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\CurrentVersion\\Themes\\Personalize", QSettings::NativeFormat);
+    if(settings.value("AppsUseLightTheme", static_cast<int>(ThemeMode::Dark)).toInt() == 0)
+        return ThemeMode::Dark;
+    else
+        return ThemeMode::Light;
 }
+
+void useTheme()
+{
+    ThemeMode mode = detectSystemThemeMode();
+    QString path;
+    if (mode == ThemeMode::Dark)
+        path = ":/qdarkstyle/dark/darkstyle.qss";
+    else
+        path = ":/qdarkstyle/dark/lightstyle.qss";
+
+    QFile f(path);
+    if(f.open(QFile::ReadOnly | QFile::Text))
+        qApp->setStyleSheet(f.readAll());
+}
+
+}// end__ namespace theme_utils
+#endif

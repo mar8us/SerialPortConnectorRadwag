@@ -1,6 +1,7 @@
 #ifndef UTILS_H
 #define UTILS_H
 
+#include "config.h"
 #include "radwag/measurement.h"
 #include <QString>
 #include <QColor.h>
@@ -14,7 +15,6 @@ double getDouble(const QString &text);
 bool compareDouble(double a, double b, double epsilon = 1.0e-9);
 QString getSaturationMethodName(SaturationMethod method);
 SaturationMethod getSaturationMethodFromIndex(int index);
-
 
 namespace stage
 {
@@ -46,5 +46,21 @@ namespace stage
 }
 
 }
+
+#ifdef USE_THEME
+namespace theme_utils
+{
+
+enum class ThemeMode
+{
+    Dark,
+    Light
+};
+
+ThemeMode detectSystemThemeMode();
+void useTheme();
+
+}
+#endif
 
 #endif // UTILS_H

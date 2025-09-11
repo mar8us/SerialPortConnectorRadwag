@@ -327,6 +327,11 @@ void MeasurementLibraryUiHandler::setupLibraryControls()
 {
     fillComboLibSearchIn();
     fillComboLibGroupBy();
+
+    #ifdef USE_THEME
+    ui->scrollAreaLibrary->setObjectName("scrollAreaLibrary");
+    ui->frameLibraryGrid->setObjectName("frameLibraryGrid");
+    #endif
 }
 
 void MeasurementLibraryUiHandler::setupLibraryModels()
