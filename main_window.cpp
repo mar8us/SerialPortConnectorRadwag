@@ -7,6 +7,7 @@
 #include "tooltip/tooltip_manager.h"
 #include "radwag/measurement.h"
 #include "app_core.h"
+#include "utils.h"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -29,6 +30,8 @@ MainWindow::MainWindow(QWidget *parent)
     tooltipManager.setGlobalStyle("QToolTip { background-color: #2C3E50; color: white; }");
     tooltipManager.registerImage("info", ":/icons/image.jpg", 424, 424);
     tooltipManager.registerTooltip(ui->buttonDryMassExecuteStepOne, ui->buttonDryMassExecuteStepOne->text(), "Wyzeruj wagę wskazanym na ilustracji przyciskiem", "info", TooltipManager::IMAGE_BOTTOM);
+
+    showMaximized();
 }
 
 MainWindow::~MainWindow()
@@ -150,14 +153,14 @@ void MainWindow::updateConnectonLabelsStatusBar(bool connectionStatus)
     if(connectionStatus)
     {
         ui->labelDeviceNameStatusBar->setText("Urządzenie: " + ui->comboBoxSelectDevice->currentText());
-        ui->labelConnectionStatusStatusBar->setText("Status: <font color='green'><b>Połączono</b></font>");
+        ui->labelConnectionStatusStatusBar->setText("Status: <font color='#2ECC71'><b>Połączono</b></font>");
         ui->comboBoxSelectDevice->setEnabled(false);
     }
     else
     {
         QString deviceName = ui->comboBoxSelectDevice->currentText();
         ui->labelDeviceNameStatusBar->setText("Urządzenie: " + (deviceName.isEmpty() ? "Nie wybrano" : ui->comboBoxSelectDevice->currentText()));
-        ui->labelConnectionStatusStatusBar->setText("Status: <font color='red'><b>Brak połączenia</b></font>");
+        ui->labelConnectionStatusStatusBar->setText("Status: <font color='#E74C3C'><b>Brak połączenia</b></font>");
         ui->comboBoxSelectDevice->setEnabled(true);
     }
 }

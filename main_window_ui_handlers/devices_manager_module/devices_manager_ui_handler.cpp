@@ -91,7 +91,7 @@ void DevicesManagerUiHandler::updateStatusConnectionLabel(bool connectionStatus)
     if(connectionStatus)
     {
         ui->labelEditStatusConnection->setStyleSheet("color: green; font-weight: bold;");
-        ui->labelEditStatusConnection->setText("Połączono");
+        ui->labelEditStatusConnection->setText("Status: <font color='#2ECC71'><b>Połączono</b></font>");
         ui->comboBoxSelectDevice->setEnabled(false);
     }
     else

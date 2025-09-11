@@ -93,6 +93,7 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         excel/style_formatter.h excel/style_formatter.cpp
         themes/dark/darkstyle.qrc
         themes/light/lightstyle.qrc
+        config.h
 
 
 

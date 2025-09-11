@@ -2038,19 +2038,47 @@ void MeasurementProcessUiHandler::connectCatalogsButtons()
 
 void MeasurementProcessUiHandler::updateStageLabels()
 {
-    static const QFont normalFont = utils::stage::getNormalFont();
-    static const QFont boldFont = utils::stage::getBoldFont();
-    static const QPalette normalPalette;
-    static const QPalette activePalette = utils::stage::getActivePalette();
-
-
     MeasurementStages::Stage currentStage = measureStateMachine->getCurrentStage();
     MeasurementStages::Stage radwagStage = radwagMeasureControler.getStage();
     bool isTripleMeasurement = radwagMeasureControler.getType() == MeasurementType::ThreeStage;
+
     ui->stackedWidgetStepsMeasure->setCurrentWidget(isTripleMeasurement ? ui->stageTripleMeasure : ui->stageSecondMeasure);
 
     const auto& currentStageToLabelMap = isTripleMeasurement ? tripleStageToLabelMap : secondStageToLabelMap;
     const auto& currentAllLabels = isTripleMeasurement ? allTripleLabels : allSecondLabels;
+
+#ifdef USE_THEME
+    for(QLabel* label : currentAllLabels)
+    {
+        label->setProperty("active", false);
+        label->setProperty("radwagActive", false);
+        label->style()->unpolish(label);
+        label->style()->polish(label);
+    }
+
+    if (currentStageToLabelMap.contains(currentStage))
+    {
+        QLabel* activeLabel = currentStageToLabelMap[currentStage];
+        activeLabel->setProperty("active", true);
+        activeLabel->style()->unpolish(activeLabel);
+        activeLabel->style()->polish(activeLabel);
+    }
+
+    if(static_cast<int>(radwagStage) != static_cast<int>(currentStage))
+    {
+        if(currentStageToLabelMap.contains(radwagStage))
+        {
+            QLabel* radwagLabel = currentStageToLabelMap[radwagStage];
+            radwagLabel->setProperty("radwagActive", true);
+            radwagLabel->style()->unpolish(radwagLabel);
+            radwagLabel->style()->polish(radwagLabel);
+        }
+    }
+#else
+    static const QFont normalFont = utils::stage::getNormalFont();
+    static const QFont boldFont = utils::stage::getBoldFont();
+    static const QPalette normalPalette;
+    static const QPalette activePalette = utils::stage::getActivePalette();
 
     for(QLabel* label : currentAllLabels)
     {
@@ -2070,7 +2098,7 @@ void MeasurementProcessUiHandler::updateStageLabels()
 
     if(currentStageToLabelMap.contains(radwagStage))
         currentStageToLabelMap[radwagStage]->setPalette(activePalette);
-
+#endif
 }
 
 void MeasurementProcessUiHandler::initializeMappings()
