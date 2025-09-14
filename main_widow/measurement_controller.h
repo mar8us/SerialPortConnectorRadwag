@@ -19,6 +19,7 @@ public:
     void endMeasure();
     bool save();
     bool needSave();
+    void updateStatus();
 
     const std::shared_ptr<Measurement>& getActiveMeasure();
     bool hasActiveMeasurement() const;

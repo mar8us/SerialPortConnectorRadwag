@@ -224,11 +224,13 @@ void MeasurementProcessUiHandler::onFinishTriplePageEnter()
 void MeasurementProcessUiHandler::onSummarySecondPageEnter()
 {
     updateMeasureSecondLabelsSummary();
+    radwagMeasureControler.updateStatus();
 }
 
 void MeasurementProcessUiHandler::onSummaryTriplePageEnter()
 {
     updateMeasureTripleLabelsSummary();
+    radwagMeasureControler.updateStatus();
 }
 
 bool MeasurementProcessUiHandler::onExitStage(MeasurementStages::Stage stage, MeasurementStages::Stage toStage)
@@ -1163,6 +1165,8 @@ void MeasurementProcessUiHandler::updateMeasureSecondLabelsSummary()
     ui->valueSecondMeasureOperator->setText(measure->getAuthor());
     QString dateTime = measure->getDate().toString("dd-MM-yyyy HH:mm");
     ui->valueSecondMeasureDateTime->setText(dateTime);
+    QString endDateTime = measure->getEndDate().toString("dd-MM-yyyy HH:mm");
+    ui->valueSecondMeasureEndDateTime->setText(endDateTime);
 
     auto sample = measure->getSample();
     ui->valueSecondSampleName->setText(sample->getName());
@@ -1344,6 +1348,8 @@ void MeasurementProcessUiHandler::updateMeasureTripleLabelsSummary()
     ui->valueTripleMeasureOperator->setText(measure->getAuthor());
     QString dateTime = measure->getDate().toString("dd-MM-yyyy HH:mm");
     ui->valueTripleMeasureDateTime->setText(dateTime);
+    QString endDateTime = measure->getEndDate().toString("dd-MM-yyyy HH:mm");
+    ui->valueTripleMeasureEndDateTime->setText(endDateTime);
 
     double dryMass = measure->getSampleDryMass();
     ui->valueTripleMeasureDryMass->setText(QString::number(dryMass) + " g");

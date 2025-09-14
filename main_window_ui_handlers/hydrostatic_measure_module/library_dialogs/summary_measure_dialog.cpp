@@ -43,6 +43,8 @@ void SummaryMeasureDialog::updateMeasureSecondLabelsSummary()
     ui->valueSecondMeasureOperator->setText(sourceMeasure->getAuthor());
     QString dateTime = sourceMeasure->getDate().toString("dd-MM-yyyy HH:mm");
     ui->valueSecondMeasureDateTime->setText(dateTime);
+    QString endDateTime = sourceMeasure->getEndDate().toString("dd-MM-yyyy HH:mm");
+    ui->valueSecondMeasureEndDateTime->setText(endDateTime);
 
     auto sample = sourceMeasure->getSample();
     ui->valueSecondSampleName->setText(sample->getName());
@@ -96,6 +98,8 @@ void SummaryMeasureDialog::updateMeasureTripleLabelsSummary()
     ui->valueTripleMeasureOperator->setText(sourceMeasure->getAuthor());
     QString dateTime = sourceMeasure->getDate().toString("dd-MM-yyyy HH:mm");
     ui->valueTripleMeasureDateTime->setText(dateTime);
+    QString endDateTime = sourceMeasure->getEndDate().toString("dd-MM-yyyy HH:mm");
+    ui->valueTripleMeasureEndDateTime->setText(endDateTime);
 
     double dryMass = sourceMeasure->getSampleDryMass();
     ui->valueTripleMeasureDryMass->setText(QString::number(dryMass) + " g");

@@ -24,6 +24,7 @@ public:
         Status,
         Author,
         Date,
+        EndDate,
         MeasureId,
         ColumnCount
     };
