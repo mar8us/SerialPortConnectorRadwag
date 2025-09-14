@@ -176,7 +176,7 @@ SectionRange MeasurementExporter::exportCalculationResultsSection(const Measurem
     setupStandardSectionFormat(resultsSection);
 
     int apparentDensityRow = resultsSection.addRow({"Gęstość pozorna (ρp):", results.getApparentDensity(), "g/cm³"});
-    int relativeDensityRow = resultsSection.addRow({"Gęstość względna:", results.getRelativeDensity()  / 100, "%"});
+    int relativeDensityRow = resultsSection.addRow({"Gęstość względna:", results.getRelativeDensityFraction(), "%"});
     int apparentVolumeRow = resultsSection.addRow({"Objętość pozorna (Vp):", results.getApparentVolume(), "cm³"});
 
     resultsSection.setCellFormat(apparentDensityRow, VALUE_COL, getDecimalFormat(4));
@@ -186,10 +186,10 @@ SectionRange MeasurementExporter::exportCalculationResultsSection(const Measurem
     if(measurement->isThreeType())
     {
         int openPoresRow = resultsSection.addRow({"Objętość porów otwartych:", results.getOpenPoresVolume(), "cm³"});
-        int totalPorosityRow = resultsSection.addRow({"Porowatość całkowita:", results.getTotalPorosity() / 100, "%"});
-        int openPorosityRow = resultsSection.addRow({"Porowatość otwarta:", results.getOpenPorosity() / 100, "%"});
-        int closedPorosityRow = resultsSection.addRow({"Porowatość zamknięta:", results.getClosedPorosity() / 100, "%"});
-        int absorptionRow = resultsSection.addRow({"Nasiąkliwość wagowa:", results.getWaterAbsorption() / 100, "%"});
+        int totalPorosityRow = resultsSection.addRow({"Porowatość całkowita:", results.getTotalPorosityFraction(), "%"});
+        int openPorosityRow = resultsSection.addRow({"Porowatość otwarta:", results.getOpenPorosityFraction(), "%"});
+        int closedPorosityRow = resultsSection.addRow({"Porowatość zamknięta:", results.getClosedPorosityFraction(), "%"});
+        int absorptionRow = resultsSection.addRow({"Nasiąkliwość wagowa:", results.getWaterAbsorptionFraction(), "%"});
 
         resultsSection.setCellFormat(openPoresRow, VALUE_COL, getDecimalFormat(4));
         resultsSection.setCellFormat(totalPorosityRow, VALUE_COL, getPercentageFormat(2));
@@ -199,7 +199,7 @@ SectionRange MeasurementExporter::exportCalculationResultsSection(const Measurem
     }
     else
     {
-        int totalPorosityRow = resultsSection.addRow({"Porowatość całkowita:", results.getTotalPorosity() / 100, "%"});
+        int totalPorosityRow = resultsSection.addRow({"Porowatość całkowita:", results.getTotalPorosityFraction(), "%"});
         resultsSection.setCellFormat(totalPorosityRow, VALUE_COL, getPercentageFormat(2));
     }
 
@@ -226,19 +226,19 @@ SectionRange MeasurementExporter::exportMeasurementTableSection(const QList<cons
     int headerRowIndex = tableSection.addRow(headerRow);
 
     QVariantList dryMassRow;
-    dryMassRow << "ms [g]";
+    dryMassRow << "Masa sucha [g]";
     for(const Measurement* m : measurements)
         dryMassRow << m->getSampleDryMass();
     int dryMassRowIndex = tableSection.addRow(dryMassRow);
 
     QVariantList fluidMassRow;
-    fluidMassRow << "mw [g]";
+    fluidMassRow << "Masa w cieczy [g]";
     for(const Measurement* m : measurements)
         fluidMassRow << m->getSampleInFluidMass();
     int fluidMassRowIndex = tableSection.addRow(fluidMassRow);
 
     QVariantList saturatedMassRow;
-    saturatedMassRow << "mn [g]";
+    saturatedMassRow << "Masa nasycona [g]";
     for(const Measurement* m : measurements)
     {
         if(m->isThreeType())
@@ -249,15 +249,15 @@ SectionRange MeasurementExporter::exportMeasurementTableSection(const QList<cons
     int saturatedMassRowIndex = tableSection.addRow(saturatedMassRow);
 
     QVariantList densityRow;
-    densityRow << "dp [g/cm³]";
+    densityRow << "Gęstość pozorna [g/cm³]";
     for(const Measurement* m : measurements)
         densityRow << m->getResults().getApparentDensity();
     int densityRowIndex = tableSection.addRow(densityRow);
 
     QVariantList porosityRow;
-    porosityRow << "Pc [%]";
+    porosityRow << "Porowatość całkowita [%]";
     for(const Measurement* m : measurements)
-        porosityRow << m->getResults().getTotalPorosity() / 100;
+        porosityRow << m->getResults().getTotalPorosityFraction();
     int porosityRowIndex = tableSection.addRow(porosityRow);
 
     for(int col = 1; col <= measurements.size(); col++)

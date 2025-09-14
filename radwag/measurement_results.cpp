@@ -57,6 +57,13 @@ double MeasurementResults::getRelativeDensity(int precision) const
     return std::round(relativeDensity * factor) / factor;
 }
 
+double MeasurementResults::getRelativeDensityFraction(int precision) const
+{
+    double fraction = relativeDensity / 100.0;
+    double factor = std::pow(10.0, precision);
+    return std::round(fraction * factor) / factor;
+}
+
 double MeasurementResults::getOpenPoresVolume(int precision) const
 {
     double factor = std::pow(10.0, precision);
@@ -69,10 +76,24 @@ double MeasurementResults::getTotalPorosity(int precision) const
     return std::round(totalPorosity * factor) / factor;
 }
 
+double MeasurementResults::getTotalPorosityFraction(int precision) const
+{
+    double fraction = totalPorosity / 100.0;
+    double factor = std::pow(10.0, precision);
+    return std::round(fraction * factor) / factor;
+}
+
 double MeasurementResults::getOpenPorosity(int precision) const
 {
     double factor = std::pow(10.0, precision);
     return std::round(openPorosity * factor) / factor;
+}
+
+double MeasurementResults::getOpenPorosityFraction(int precision) const
+{
+    double fraction = openPorosity / 100.0;
+    double factor = std::pow(10.0, precision);
+    return std::round(fraction * factor) / factor;
 }
 
 double MeasurementResults::getClosedPorosity(int precision) const
@@ -81,10 +102,24 @@ double MeasurementResults::getClosedPorosity(int precision) const
     return std::round(closedPorosity * factor) / factor;
 }
 
+double MeasurementResults::getClosedPorosityFraction(int precision) const
+{
+    double fraction = closedPorosity / 100.0;
+    double factor = std::pow(10.0, precision);
+    return std::round(fraction * factor) / factor;
+}
+
 double MeasurementResults::getWaterAbsorption(int precision) const
 {
     double factor = std::pow(10.0, precision);
     return std::round(waterAbsorption * factor) / factor;
+}
+
+double MeasurementResults::getWaterAbsorptionFraction(int precision) const
+{
+    double fraction = waterAbsorption / 100.0;
+    double factor = std::pow(10.0, precision);
+    return std::round(fraction * factor) / factor;
 }
 
 double MeasurementResults::getTheoreticalDensity(int precision) const
