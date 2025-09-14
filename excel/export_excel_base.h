@@ -43,7 +43,7 @@ public:
     double calculateTextWidth(const QString& text, const QFont& font = QFont()) const;
     int calculateRequiredCells(const QString& text, const QFont& font = QFont(), double cellWidth = COL_WIDTH) const;
 
-    int calculateRequiredMergeCells(const QString& text, const QFont& font = QFont(), double cellWidth = COL_WIDTH) const;
+    int calculateRequiredMergeCells(const QString& text, const QFont& font = QFont(), double cellWidth = -1.0) const;
 
     void mergeCells(int fromRow, int fromCol, int toRow, int toCol);
     void mergeCells(const QString& range); // np. "A1:C1"

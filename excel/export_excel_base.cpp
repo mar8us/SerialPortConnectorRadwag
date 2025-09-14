@@ -146,8 +146,8 @@ int ExportExcelBase::calculateRequiredCells(const QString& text, const QFont& fo
 int ExportExcelBase::calculateRequiredMergeCells(const QString& text, const QFont& font, double cellWidth) const
 {
     double textWidth = calculateTextWidth(text, font);
-    int requiredCells = qMax(1, qCeil(textWidth / cellWidth));
-
+    double actualColumnWidth = cellWidth <= 0 ? getColumnWidth(getCurrentColumn()) : cellWidth;
+    int requiredCells = qMax(1, qCeil(textWidth / actualColumnWidth));
     return requiredCells;
 }
 
