@@ -53,7 +53,7 @@ double TStudentTable::getValue(int degreesOfFreedom, double confidenceLevel)
 
 BaseAnalysisResult::BaseAnalysisResult()
     : confidenceLevel(0.0)
-    , analysisType(AnalysisType::Density)
+    , analysisType(AnalysisType::None)
     , theoreticalDensity(0.0)
     , mean(0.0)
     , standardDeviation(0.0)
@@ -62,26 +62,21 @@ BaseAnalysisResult::BaseAnalysisResult()
     , variationCoefficient(0.0)
     , valid(false)
 {
-    analysisDate = QDateTime::currentDateTime();
-    generateAnalysisId();
+
 }
 
-BaseAnalysisResult::BaseAnalysisResult(const std::vector<std::shared_ptr<const Measurement>>& measurements,
-                                       AnalysisType analysisType,
-                                       double mean,
-                                       double stdDev,
-                                       double uncertainty,
-                                       double confidenceLevel)
-    : mean(mean)
-    , standardDeviation(stdDev)
-    , uncertainty(uncertainty)
-    , confidenceLevel(confidenceLevel)
-    , analysisType(analysisType)
-    , measurements(measurements)
+BaseAnalysisResult::BaseAnalysisResult(const std::vector<std::shared_ptr<const Measurement>>& measurements, AnalysisType analysisType, double confidenceLevel)
+                                        : measurements(measurements)
+                                        , analysisType(analysisType)
+                                        , confidenceLevel(confidenceLevel)
+                                        , theoreticalDensity(0.0)
+                                        , mean(0.0)
+                                        , standardDeviation(0.0)
+                                        , standardError(0.0)
+                                        , uncertainty(0.0)
+                                        , variationCoefficient(0.0)
+                                        , valid(false)
 {
-    analysisDate = QDateTime::currentDateTime();
-    generateAnalysisId();
-
     if(!measurements.empty())
     {
         auto &measure = measurements[0];
@@ -96,25 +91,6 @@ BaseAnalysisResult::BaseAnalysisResult(const std::vector<std::shared_ptr<const M
             authors.push_back(measure->getAuthor());
         }
     }
-
-    calculateStatistics();
-    validateResults();
-}
-
-void BaseAnalysisResult::generateAnalysisId()
-{
-    QString typePrefix = (analysisType == AnalysisType::Density) ? "DENS" : "POR";
-    analysisId = typePrefix + "_" + QUuid::createUuid().toString().remove('{').remove('}');
-}
-
-void BaseAnalysisResult::calculateStatistics()
-{
-    int measuresCount = getMeasuresCount();
-    if(measuresCount <= 1)
-        return;
-
-    standardError = standardDeviation / std::sqrt(measuresCount);
-    variationCoefficient = (standardDeviation / mean) * 100.0;
 }
 
 void BaseAnalysisResult::validateResults()
@@ -144,27 +120,6 @@ void BaseAnalysisResult::validateResults()
 
     if(variationCoefficient > 5.0)
         warnings.append(QString("Duży współczynnik zmienności: %1%").arg(variationCoefficient, 0, 'f', 2));
-
-    if(analysisType == AnalysisType::Density)
-        double relativeDensity = mean / theoreticalDensity;
-    else if(analysisType == AnalysisType::Porosity)
-    {
-        if(mean < 0 || mean > 100)
-        {
-            validationErrors.append("Porowatość musi być w zakresie 0-100%");
-            valid = false;
-        }
-    }
-}
-
-QString BaseAnalysisResult::getAnalysisId() const
-{
-    return analysisId;
-}
-
-QDateTime BaseAnalysisResult::getAnalysisDate() const
-{
-    return analysisDate;
 }
 
 int BaseAnalysisResult::getMeasuresCount() const
@@ -252,6 +207,26 @@ QStringList BaseAnalysisResult::getValidationErrors() const
     return validationErrors;
 }
 
+bool BaseAnalysisResult::calculate()
+{
+    if(!canCalculate())
+        return false;
+
+    extractValues();
+
+    mean = StatisticalAnalyzer::calculateMean(individualValues);
+    standardDeviation = StatisticalAnalyzer::calculateStandardDeviation(individualValues, mean);
+    double stdError = StatisticalAnalyzer::calculateStandardError(standardDeviation, static_cast<int>(individualValues.size()));
+    int degreesOfFreedom = static_cast<int>(individualValues.size()) - 1;
+    uncertainty = StatisticalAnalyzer::calculateUncertainty(stdError, degreesOfFreedom, confidenceLevel);
+
+    standardError = standardDeviation / std::sqrt(getMeasuresCount());
+    variationCoefficient = (standardDeviation / mean) * 100.0;
+
+    validateResults();
+    return isValid();
+}
+
 const std::vector<std::shared_ptr<const Measurement>>& BaseAnalysisResult::getMeasurements() const
 {
     return measurements;
@@ -280,16 +255,10 @@ DensityAnalysisResult::DensityAnalysisResult()
     analysisType = AnalysisType::Density;
 }
 
-DensityAnalysisResult::DensityAnalysisResult(const std::vector<std::shared_ptr<const Measurement>>& measurements,
-                                             double mean,
-                                             double stdDev,
-                                             double uncertainty,
-                                             double confidenceLevel)
-    : BaseAnalysisResult(measurements, AnalysisType::Density, mean, stdDev, uncertainty, confidenceLevel)
+DensityAnalysisResult::DensityAnalysisResult(const std::vector<std::shared_ptr<const Measurement>>& measurements, double confidenceLevel)
+    : BaseAnalysisResult(measurements, AnalysisType::Density, confidenceLevel)
 {
-    for(const auto& measure : measurements)
-        if(measure->hasResults())
-            individualValues.push_back(measure->getResults().getApparentDensity());
+
 }
 
 QString DensityAnalysisResult::getFinalResult() const
@@ -307,6 +276,18 @@ QString DensityAnalysisResult::getAnalysisTypeName() const
     return "Gęstość pozorna";
 }
 
+void DensityAnalysisResult::extractValues()
+{
+    for(const auto& measure : measurements)
+        if(measure->hasResults())
+            individualValues.push_back(measure->getResults().getApparentDensity());
+}
+
+bool DensityAnalysisResult::canCalculate() const
+{
+    return StatisticalAnalyzer::validateGroupCriteria(measurements, AnalysisType::Density);
+}
+
 // =============================================================================
 // PorosityAnalysisResult Implementation
 // =============================================================================
@@ -317,16 +298,10 @@ PorosityAnalysisResult::PorosityAnalysisResult()
     analysisType = AnalysisType::Porosity;
 }
 
-PorosityAnalysisResult::PorosityAnalysisResult(const std::vector<std::shared_ptr<const Measurement>>& measurements,
-                                               double mean,
-                                               double stdDev,
-                                               double uncertainty,
-                                               double confidenceLevel)
-    : BaseAnalysisResult(measurements, AnalysisType::Porosity, mean, stdDev, uncertainty, confidenceLevel)
+PorosityAnalysisResult::PorosityAnalysisResult(const std::vector<std::shared_ptr<const Measurement>>& measurements, double confidenceLevel)
+    : BaseAnalysisResult(measurements, AnalysisType::Porosity, confidenceLevel)
 {
-    for(const auto& measure : measurements)
-        if(measure->hasResults())
-            individualValues.push_back(measure->getResults().getTotalPorosity());
+
 }
 
 QString PorosityAnalysisResult::getFinalResult() const
@@ -344,6 +319,146 @@ QString PorosityAnalysisResult::getAnalysisTypeName() const
     return "Porowatość całkowita";
 }
 
+void PorosityAnalysisResult::extractValues()
+{
+    for(const auto& measure : measurements)
+        if(measure->hasResults())
+            individualValues.push_back(measure->getResults().getTotalPorosity());
+}
+
+bool PorosityAnalysisResult::canCalculate() const
+{
+    return StatisticalAnalyzer::validateGroupCriteria(measurements, AnalysisType::Porosity);
+}
+
+// =============================================================================
+// DryMassAnalysisResult
+// =============================================================================
+
+DryMassAnalysisResult::DryMassAnalysisResult()
+    : BaseAnalysisResult()
+{
+    analysisType = AnalysisType::Mass;
+}
+
+DryMassAnalysisResult::DryMassAnalysisResult(const std::vector<std::shared_ptr<const Measurement>>& measurements, double confidenceLevel)
+    : BaseAnalysisResult(measurements, AnalysisType::Mass, confidenceLevel)
+{
+
+}
+
+
+
+QString DryMassAnalysisResult::getFinalResult() const
+{
+    return QString("%1 ± %2 g").arg(mean, 0, 'f', 4).arg(uncertainty, 0, 'f', 4);
+}
+
+QString DryMassAnalysisResult::getUnitSymbol() const
+{
+    return "g";
+}
+
+QString DryMassAnalysisResult::getAnalysisTypeName() const
+{
+    return "Masa sucha (ms)";
+}
+
+void DryMassAnalysisResult::extractValues()
+{
+    for(const auto& measure : measurements)
+        individualValues.push_back(measure->getSampleDryMass());
+}
+
+bool DryMassAnalysisResult::canCalculate() const
+{
+    return measurements.size() >= 2;
+}
+
+// =============================================================================
+// WetMassAnalysisResult
+// =============================================================================
+
+WetMassAnalysisResult::WetMassAnalysisResult()
+    : BaseAnalysisResult()
+{
+    analysisType = AnalysisType::Mass;
+}
+
+WetMassAnalysisResult::WetMassAnalysisResult(const std::vector<std::shared_ptr<const Measurement>>& measurements, double confidenceLevel)
+    : BaseAnalysisResult(measurements, AnalysisType::Mass, confidenceLevel)
+{
+
+}
+
+QString WetMassAnalysisResult::getFinalResult() const
+{
+    return QString("%1 ± %2 g").arg(mean, 0, 'f', 4).arg(uncertainty, 0, 'f', 4);
+}
+
+QString WetMassAnalysisResult::getUnitSymbol() const
+{
+    return "g";
+}
+
+QString WetMassAnalysisResult::getAnalysisTypeName() const
+{
+    return "Masa w cieczy (mw)";
+}
+
+void WetMassAnalysisResult::extractValues()
+{
+    for(const auto& measure : measurements)
+        individualValues.push_back(measure->getSampleInFluidMass());
+}
+
+bool WetMassAnalysisResult::canCalculate() const
+{
+    return measurements.size() >= 2;
+}
+
+// =============================================================================
+// SaturatedMassAnalysisResult
+// =============================================================================
+
+SaturatedMassAnalysisResult::SaturatedMassAnalysisResult()
+    : BaseAnalysisResult()
+{
+    analysisType = AnalysisType::Mass;
+}
+
+SaturatedMassAnalysisResult::SaturatedMassAnalysisResult(const std::vector<std::shared_ptr<const Measurement>>& measurements, double confidenceLevel)
+    : BaseAnalysisResult(measurements, AnalysisType::Mass, confidenceLevel)
+{
+
+}
+
+QString SaturatedMassAnalysisResult::getFinalResult() const
+{
+    return QString("%1 ± %2 g").arg(mean, 0, 'f', 4).arg(uncertainty, 0, 'f', 4);
+}
+
+QString SaturatedMassAnalysisResult::getUnitSymbol() const
+{
+    return "g";
+}
+
+QString SaturatedMassAnalysisResult::getAnalysisTypeName() const
+{
+    return "Masa nasycona (mn)";
+}
+
+void SaturatedMassAnalysisResult::extractValues()
+{
+    for(const auto& measure : measurements)
+        individualValues.push_back(measure->getSampleSaturatedMass());
+}
+
+bool SaturatedMassAnalysisResult::canCalculate() const
+{
+    return measurements.size() >= 2;
+}
+
 
 // =============================================================================
 // AnalysisResult.cpp
@@ -353,7 +468,6 @@ AnalysisResult::AnalysisResult()
     : confidenceLevel(0.0)
 {
     analysisDate = QDateTime::currentDateTime();
-    generateAnalysisId();
 }
 
 AnalysisResult::AnalysisResult(const std::vector<std::shared_ptr<const Measurement>>& measurements, double confidenceLevel)
@@ -361,13 +475,7 @@ AnalysisResult::AnalysisResult(const std::vector<std::shared_ptr<const Measureme
     , confidenceLevel(confidenceLevel)
 {
     analysisDate = QDateTime::currentDateTime();
-    generateAnalysisId();
     calculateCompleteAnalysis();
-}
-
-void AnalysisResult::generateAnalysisId()
-{
-    analysisId = "COMPLETE_" + QUuid::createUuid().toString().remove('{').remove('}');
 }
 
 const std::vector<std::shared_ptr<const Measurement>>& AnalysisResult::getMeasurements() const
@@ -393,14 +501,19 @@ const PorosityAnalysisResult& AnalysisResult::getPorosityResult() const
     return porosityResult;
 }
 
-bool AnalysisResult::hasDensityResult() const
+const DryMassAnalysisResult& AnalysisResult::getDryMassResult() const
 {
-    return densityResult.isValid();
+    return dryMassResult;
 }
 
-bool AnalysisResult::hasPorosityResult() const
+const WetMassAnalysisResult& AnalysisResult::getWetMassResult() const
 {
-    return porosityResult.isValid();
+    return wetMassResult;
+}
+
+const SaturatedMassAnalysisResult& AnalysisResult::getSaturatedMassResult() const
+{
+    return saturatedMassResult;
 }
 
 double AnalysisResult::getConfidenceLevel() const
@@ -419,54 +532,32 @@ void AnalysisResult::setConfidenceLevel(double newConfidenceLevel)
 
 bool AnalysisResult::calculateDensityAnalysis()
 {
-    if(!canCalculateDenistyAnalysis())
-        return false;
-
-    std::vector<double> densityValues = extractDensityValues();
-
-    double mean = StatisticalAnalyzer::calculateMean(densityValues);
-    double stdDev = StatisticalAnalyzer::calculateStandardDeviation(densityValues, mean);
-    double stdError = StatisticalAnalyzer::calculateStandardError(stdDev, static_cast<int>(densityValues.size()));
-    int degreesOfFreedom = static_cast<int>(densityValues.size()) - 1;
-    double uncertainty = StatisticalAnalyzer::calculateUncertainty(stdError, degreesOfFreedom, confidenceLevel);
-
-    densityResult = DensityAnalysisResult(measurements, mean, stdDev, uncertainty, confidenceLevel);
-
-    return densityResult.isValid();
+    densityResult = DensityAnalysisResult(measurements, confidenceLevel);
+    return densityResult.calculate();
 }
 
 bool AnalysisResult::calculatePorosityAnalysis()
 {
-    if(!canCalculatePorosityAnalysis())
-        return false;
+    porosityResult = PorosityAnalysisResult(measurements, confidenceLevel);
+    return porosityResult.calculate();
+}
 
-    std::vector<double> porosityValues = extractPorosityValues();
+bool AnalysisResult::calculateMassAnalyses()
+{
+    dryMassResult = DryMassAnalysisResult(measurements, confidenceLevel);
+    wetMassResult = WetMassAnalysisResult(measurements, confidenceLevel);
+    saturatedMassResult = SaturatedMassAnalysisResult(measurements, confidenceLevel);
 
-    double mean = StatisticalAnalyzer::calculateMean(porosityValues);
-    double stdDev = StatisticalAnalyzer::calculateStandardDeviation(porosityValues, mean);
-    double stdError = StatisticalAnalyzer::calculateStandardError(stdDev, static_cast<int>(porosityValues.size()));
-    int degreesOfFreedom = static_cast<int>(porosityValues.size()) - 1;
-    double uncertainty = StatisticalAnalyzer::calculateUncertainty(stdError, degreesOfFreedom, confidenceLevel);
-
-    porosityResult = PorosityAnalysisResult(measurements, mean, stdDev, uncertainty, confidenceLevel);
-
-    return porosityResult.isValid();
+    return dryMassResult.calculate() && wetMassResult.calculate() && saturatedMassResult.calculate();
 }
 
 bool AnalysisResult::calculateCompleteAnalysis()
 {
-    if(!calculateDensityAnalysis())
-        return false;
+    bool massSuccess = calculateMassAnalyses();
+    bool densitySuccess = calculateDensityAnalysis();
+    bool porositySuccess = calculatePorosityAnalysis();
 
-    if(!calculatePorosityAnalysis())
-        return false;
-
-    return densityResult.isValid() && porosityResult.isValid();
-}
-
-QString AnalysisResult::getAnalysisId() const
-{
-    return analysisId;
+    return massSuccess && densitySuccess && porositySuccess;
 }
 
 QDateTime AnalysisResult::getAnalysisDate() const
@@ -485,7 +576,6 @@ QString AnalysisResult::getSeriesName() const
 {
     if(!measurements.empty())
         return measurements[0]->getSample()->getName();
-        return measurements[0]->getSample()->getName();
     return QString();
 }
 
@@ -501,104 +591,26 @@ bool AnalysisResult::isValid() const
 
 bool AnalysisResult::isComplete() const
 {
-    return hasDensityResult() && hasPorosityResult();
+    return densityResult.isValid() && porosityResult.isValid() && dryMassResult.isValid() && wetMassResult.isValid() && saturatedMassResult.isValid();
 }
 
 bool AnalysisResult::canCalculate() const
 {
-    return canCalculateDenistyAnalysis() && canCalculatePorosityAnalysis();
-}
-
-bool AnalysisResult::canCalculateDenistyAnalysis() const
-{
-    return StatisticalAnalyzer::validateGroupCriteria(measurements, AnalysisType::Density);
-}
-
-bool AnalysisResult::canCalculatePorosityAnalysis() const
-{
-    return StatisticalAnalyzer::validateGroupCriteria(measurements, AnalysisType::Porosity);
-}
-
-QStringList AnalysisResult::getWarnings() const
-{
-    QStringList warnings;
-
-    if(!canCalculate())
-    {
-        warnings.append("Nieprawidłowe pomiary - nie można obliczyć analiz");
-        return warnings;
-    }
-
-    if(hasDensityResult())
-    {
-        QStringList densityWarnings = densityResult.getWarnings();
-        for(const QString& warning : densityWarnings)
-            warnings.append("Gęstość: " + warning);
-    }
-
-    if(hasPorosityResult())
-    {
-        QStringList porosityWarnings = porosityResult.getWarnings();
-        for(const QString& warning : porosityWarnings)
-            warnings.append("Porowatość: " + warning);
-    }
-
-    return warnings;
-}
-
-QStringList AnalysisResult::getValidationErrors() const
-{
-    QStringList errors;
-
-    if(!densityResult.isValid())
-    {
-        QStringList densityErrors = densityResult.getValidationErrors();
-        for(const QString& error : densityErrors)
-            errors.append("Gęstość: " + error);
-    }
-
-    if(!porosityResult.isValid())
-    {
-        QStringList porosityErrors = porosityResult.getValidationErrors();
-        for(const QString& error : porosityErrors)
-            errors.append("Porowatość: " + error);
-    }
-
-    return errors;
-}
-
-QString AnalysisResult::getSummary() const
-{
-    QString summary;
-
-    if(hasDensityResult())
-        summary += densityResult.getFinalResult();
-
-    if(hasPorosityResult())
-    {
-        if(!summary.isEmpty())
-            summary += " | ";
-        summary += porosityResult.getFinalResult();
-    }
-
-    if(summary.isEmpty())
-        summary = "Brak wyników analizy";
-
-    return summary;
+    return densityResult.canCalculate() && porosityResult.canCalculate() && dryMassResult.canCalculate() && wetMassResult.canCalculate() && saturatedMassResult.canCalculate();
 }
 
 QJsonObject AnalysisResult::toJson() const
 {
     QJsonObject json;
 
-    QJsonArray measurementsArray;
-    for(const auto& measurement : measurements)
-        measurementsArray.append(measurement->toJson());
+    // QJsonArray measurementsArray;
+    // for(const auto& measurement : measurements)
+    //     measurementsArray.append(measurement->toJson());
 
-    json["measurements"] = measurementsArray;
-    json["analysisId"] = analysisId;
-    json["analysisDate"] = analysisDate.toString(Qt::ISODate);
-    json["confidenceLevel"] = confidenceLevel;
+    // json["measurements"] = measurementsArray;
+    // json["analysisId"] = analysisId;
+    // json["analysisDate"] = analysisDate.toString(Qt::ISODate);
+    // json["confidenceLevel"] = confidenceLevel;
 
     return json;
 }
@@ -618,41 +630,6 @@ void AnalysisResult::fromJson(const QJsonObject& json)
     // confidenceLevel = json["confidenceLevel"].toDouble();
 
     // calculateCompleteAnalysis();
-}
-
-
-bool AnalysisResult::operator==(const AnalysisResult& other) const
-{
-    return analysisId == other.analysisId;
-}
-
-bool AnalysisResult::operator!=(const AnalysisResult& other) const
-{
-    return !(*this == other);
-}
-
-std::vector<double> AnalysisResult::extractDensityValues()
-{
-    std::vector<double> values;
-    values.reserve(measurements.size());
-
-    for(const auto& measurement : measurements)
-        if(measurement->hasResults())
-            values.push_back(measurement->getResults().getApparentDensity());
-
-    return values;
-}
-
-std::vector<double> AnalysisResult::extractPorosityValues()
-{
-    std::vector<double> values;
-    values.reserve(measurements.size());
-
-    for(const auto& measurement : measurements)
-        if(measurement->hasResults())
-            values.push_back(measurement->getResults().getTotalPorosity());
-
-    return values;
 }
 
 

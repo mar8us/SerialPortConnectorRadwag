@@ -110,11 +110,10 @@ void MeasurementLibraryUiHandler::onLibraryShowAnalysisMeasuresButtonClicked()
 
     QRect screenGeometry = screen->geometry();
     int width = screenGeometry.width() * 0.8;
-    int height = screenGeometry.height() * 0.8;
+    int height = screenGeometry.height() * 0.85;
 
     dialog->resize(width, height);
     dialog->move((screenGeometry.width() - width) / 2, (screenGeometry.height() - height) / 2);
-    dialog->setMinimumSize(400, 300);
     dialog->setAttribute(Qt::WA_DeleteOnClose);
     dialog->showNormal();
 }

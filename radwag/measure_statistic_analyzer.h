@@ -20,20 +20,20 @@ private:
 
 enum class AnalysisType
 {
+    None,
     Density,
-    Porosity
+    Porosity,
+    Mass
 };
 
 class BaseAnalysisResult
 {
 public:
     BaseAnalysisResult();
-    BaseAnalysisResult(const std::vector<std::shared_ptr<const Measurement>>& measurements, AnalysisType analysisType, double mean, double stdDev, double uncertainty, double confidenceLevel);
+    BaseAnalysisResult(const std::vector<std::shared_ptr<const Measurement>>& measurements, AnalysisType analysisType, double confidenceLevel);
 
     virtual ~BaseAnalysisResult() = default;
 
-    QString getAnalysisId() const;
-    QDateTime getAnalysisDate() const;
     double getConfidenceLevel() const;
     AnalysisType getAnalysisType() const;
 
@@ -59,13 +59,16 @@ public:
     QStringList getWarnings() const;
     QStringList getValidationErrors() const;
 
+
+    bool calculate();
+
     virtual QString getFinalResult() const = 0;
     virtual QString getUnitSymbol() const = 0;
     virtual QString getAnalysisTypeName() const = 0;
+    virtual void extractValues() = 0;
+    virtual bool canCalculate() const = 0;
 
 protected:
-    QString analysisId;
-    QDateTime analysisDate;
     double confidenceLevel;
     AnalysisType analysisType;
 
@@ -87,8 +90,6 @@ protected:
     QStringList warnings;
     QStringList validationErrors;
 
-    void generateAnalysisId();
-    void calculateStatistics();
     void validateResults();
 
     std::vector<std::shared_ptr<const Measurement>> measurements;
@@ -98,30 +99,80 @@ class DensityAnalysisResult : public BaseAnalysisResult
 {
 public:
     DensityAnalysisResult();
-    DensityAnalysisResult(const std::vector<std::shared_ptr<const Measurement>>& measurements,
-                          double mean,
-                          double stdDev,
-                          double uncertainty,
-                          double confidenceLevel);
+    DensityAnalysisResult(const std::vector<std::shared_ptr<const Measurement>>& measurements, double confidenceLevel);
 
     QString getFinalResult() const override;
     QString getUnitSymbol() const override;
     QString getAnalysisTypeName() const override;
+    virtual void extractValues() override;
+    bool canCalculate() const override;
 };
 
 class PorosityAnalysisResult : public BaseAnalysisResult
 {
 public:
     PorosityAnalysisResult();
-    PorosityAnalysisResult(const std::vector<std::shared_ptr<const Measurement>>& measurements,
-                           double mean,
-                           double stdDev,
-                           double uncertainty,
-                           double confidenceLevel);
+    PorosityAnalysisResult(const std::vector<std::shared_ptr<const Measurement>>& measurements, double confidenceLevel);
 
     QString getFinalResult() const override;
     QString getUnitSymbol() const override;
     QString getAnalysisTypeName() const override;
+    virtual void extractValues() override;
+    bool canCalculate() const override;
+};
+
+
+// =============================================================================
+// DryMassAnalysisResult
+// =============================================================================
+
+class DryMassAnalysisResult : public BaseAnalysisResult
+{
+public:
+    DryMassAnalysisResult();
+    DryMassAnalysisResult(const std::vector<std::shared_ptr<const Measurement>>& measurements, double confidenceLevel);
+
+    QString getFinalResult() const override;
+    QString getUnitSymbol() const override;
+    QString getAnalysisTypeName() const override;
+    virtual void extractValues() override;
+    bool canCalculate() const override;
+};
+
+
+// =============================================================================
+// WetMassAnalysisResult
+// =============================================================================
+
+class WetMassAnalysisResult : public BaseAnalysisResult
+{
+public:
+    WetMassAnalysisResult();
+    WetMassAnalysisResult(const std::vector<std::shared_ptr<const Measurement>>& measurements, double confidenceLevel);
+
+    QString getFinalResult() const override;
+    QString getUnitSymbol() const override;
+    QString getAnalysisTypeName() const override;
+    virtual void extractValues() override;
+    bool canCalculate() const override;
+};
+
+
+// =============================================================================
+// SaturatedMassAnalysisResult
+// =============================================================================
+
+class SaturatedMassAnalysisResult : public BaseAnalysisResult
+{
+public:
+    SaturatedMassAnalysisResult();
+    SaturatedMassAnalysisResult(const std::vector<std::shared_ptr<const Measurement>>& measurements, double confidenceLevel);
+
+    QString getFinalResult() const override;
+    QString getUnitSymbol() const override;
+    QString getAnalysisTypeName() const override;
+    virtual void extractValues() override;
+    bool canCalculate() const override;
 };
 
 
@@ -136,33 +187,27 @@ public:
 
     const DensityAnalysisResult& getDensityResult() const;
     const PorosityAnalysisResult& getPorosityResult() const;
-
-    bool hasDensityResult() const;
-    bool hasPorosityResult() const;
+    const DryMassAnalysisResult& getDryMassResult() const;
+    const WetMassAnalysisResult& getWetMassResult() const;
+    const SaturatedMassAnalysisResult& getSaturatedMassResult() const;
 
     double getConfidenceLevel() const;
     void setConfidenceLevel(double confidenceLevel);
 
     bool calculateDensityAnalysis();
     bool calculatePorosityAnalysis();
+    bool calculateMassAnalyses();
     bool calculateCompleteAnalysis();
 
-    QString getAnalysisId() const;
     QDateTime getAnalysisDate() const;
     QString getMaterialName() const;
     QString getSeriesName() const;
     int getMeasuresCount() const;
-    QString getSummary() const;
 
     bool isValid() const;
     bool isComplete() const;
 
     bool canCalculate() const;
-    bool canCalculateDenistyAnalysis() const;
-    bool canCalculatePorosityAnalysis() const;
-
-    QStringList getWarnings() const;
-    QStringList getValidationErrors() const;
 
     QJsonObject toJson() const;
     void fromJson(const QJsonObject& json);
@@ -170,24 +215,17 @@ public:
     bool saveToFile(const QString& filename) const;
     bool loadFromFile(const QString& filename);
 
-    bool operator==(const AnalysisResult& other) const;
-    bool operator!=(const AnalysisResult& other) const;
-
 private:
-    std::vector<double> extractDensityValues();
-    std::vector<double> extractPorosityValues();
-
     std::vector<std::shared_ptr<const Measurement>> measurements;
     double confidenceLevel;
 
     DensityAnalysisResult densityResult;
     PorosityAnalysisResult porosityResult;
+    DryMassAnalysisResult dryMassResult;
+    WetMassAnalysisResult wetMassResult;
+    SaturatedMassAnalysisResult saturatedMassResult;
 
-    QString analysisId;
     QDateTime analysisDate;
-
-    void generateAnalysisId();
-    bool validateMeasurements();
 };
 
 
