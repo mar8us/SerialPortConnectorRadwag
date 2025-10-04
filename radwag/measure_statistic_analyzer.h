@@ -48,6 +48,7 @@ public:
     double getStandardError() const;           // Błąd standardowy
     double getUncertainty() const;             // Niepewność
     double getVariationCoefficient() const;    // Współczynnik zmienności [%]
+    double getVariationCoefficientFraction() const;
 
     const std::vector<std::shared_ptr<const Measurement>>& getMeasurements() const;
     std::vector<QString> getMeasurementsIDs() const;
@@ -183,6 +184,7 @@ public:
     AnalysisResult(const std::vector<std::shared_ptr<const Measurement>>& measurements, double confidenceLevel = 0.95);
 
     const std::vector<std::shared_ptr<const Measurement>>& getMeasurements() const;
+    const QList<const Measurement *> getMeasurementsList() const;
     void setMeasurements(const std::vector<std::shared_ptr<const Measurement>>& measurements);
 
     const DensityAnalysisResult& getDensityResult() const;

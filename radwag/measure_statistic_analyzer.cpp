@@ -177,6 +177,12 @@ double BaseAnalysisResult::getVariationCoefficient() const
     return variationCoefficient;
 }
 
+double BaseAnalysisResult::getVariationCoefficientFraction() const
+{
+    return round(variationCoefficient / 100.0 * 10000.0) / 10000.0;
+}
+
+
 std::vector<double> BaseAnalysisResult::getIndividualValues() const
 {
     return individualValues;
@@ -481,6 +487,14 @@ AnalysisResult::AnalysisResult(const std::vector<std::shared_ptr<const Measureme
 const std::vector<std::shared_ptr<const Measurement>>& AnalysisResult::getMeasurements() const
 {
     return measurements;
+}
+
+const QList<const Measurement*> AnalysisResult::getMeasurementsList() const
+{
+    QList<const Measurement*> list;
+    for(const auto& measure : measurements)
+        list.append(measure.get());
+    return list;
 }
 
 void AnalysisResult::setMeasurements(const std::vector<std::shared_ptr<const Measurement>>& newMeasurements)

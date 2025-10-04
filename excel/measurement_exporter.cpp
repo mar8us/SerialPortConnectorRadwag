@@ -26,6 +26,7 @@ constexpr int UNIT_COL   = START_ROW + 1;
 MeasurementExporter::MeasurementExporter(const QString& fileName, const Measurement* measurement)
     : ExportExcelBase(fileName)
     , m_formatsInitialized(false)
+    , m_analysisResult(nullptr)
 {
     if(measurement)
         m_measurements.append(measurement);
@@ -35,6 +36,16 @@ MeasurementExporter::MeasurementExporter(const QString& fileName, const Measurem
 MeasurementExporter::MeasurementExporter(const QString& fileName, const QList<const Measurement*>& measurements)
     : ExportExcelBase(fileName)
     , m_measurements(measurements)
+    , m_formatsInitialized(false)
+    , m_analysisResult(nullptr)
+{
+    initializeFormats();
+}
+
+MeasurementExporter::MeasurementExporter(const QString &fileName, const AnalysisResult *analysisResult)
+    : ExportExcelBase(fileName)
+    , m_analysisResult(analysisResult)
+    , m_measurements(analysisResult->getMeasurementsList())
     , m_formatsInitialized(false)
 {
     initializeFormats();
@@ -74,11 +85,14 @@ bool MeasurementExporter::exportData()
             measureCount++;
         }
 
-        if(m_measurements.size() > 1)
+        int tableStartCol = START_COL + maxWidth + SPACING_MEDIUM;
+        auto tableRange = exportMeasurementTableSection(m_measurements, START_ROW, tableStartCol);
+        currentRow = tableRange.endRow + SPACING_LARGE;
+
+        if(m_analysisResult)
         {
-            int tableStartCol = START_COL + maxWidth + SPACING_MEDIUM;
-            auto tableRange = exportMeasurementTableSection(m_measurements, START_ROW, tableStartCol);
-            currentRow = tableRange.endRow + SPACING_LARGE;
+            SectionRange analysisRange = exportAnalysisSection(m_analysisResult, currentRow, tableStartCol);
+            currentRow = analysisRange.endRow + SPACING_LARGE;
         }
 
         return true;
@@ -281,50 +295,211 @@ SectionRange MeasurementExporter::exportMeasurementTableSection(const QList<cons
 
     tableSection.render();
 
-    StyleFormatter formatTableSection(getDocument());
+    // StyleFormatter formatTableSection(getDocument());
 
-    formatTableSection.setGridBorder(tableSection.getStartRow(), tableSection.getStartCol(),
-                      tableSection.getStartRow() + tableSection.getRowCount(), tableSection.getStartCol() + tableSection.getTotalWidth() - 1,
-                      QXlsx::Format::BorderThin);
+    // formatTableSection.setGridBorder(tableSection.getStartRow(), tableSection.getStartCol(),
+    //                   tableSection.getStartRow() + tableSection.getRowCount(), tableSection.getStartCol() + tableSection.getTotalWidth() - 1,
+    //                   QXlsx::Format::BorderThin);
 
-    QXlsx::Format legendTitleFormat = getTitleFormat();
-    legendTitleFormat.setFontSize(10);
+    // QXlsx::Format legendTitleFormat = getTitleFormat();
+    // legendTitleFormat.setFontSize(10);
 
-    int legendStartRow = startRow + tableSection.getRange().endRow + SPACING_MEDIUM;
-    Section legendSection("Legenda oznaczeń", legendTitleFormat, this, legendStartRow, startCol);
+    // int legendStartRow = startRow + tableSection.getRange().endRow + SPACING_MEDIUM;
+    // Section legendSection("Legenda oznaczeń", legendTitleFormat, this, legendStartRow, startCol);
 
-    legendSection.addRow({"ms", "masa suchej próbki"});
-    legendSection.addRow({"mw", "masa próbki zanurzonej w cieczy"});
-    legendSection.addRow({"mn", "masa próbki nasyconej cieczą"});
-    legendSection.addRow({"dp", "gęstość pozorna próbki"});
-    legendSection.addRow({"Pc", "porowatość całkowita"});
+    // legendSection.addRow({"ms", "masa suchej próbki"});
+    // legendSection.addRow({"mw", "masa próbki zanurzonej w cieczy"});
+    // legendSection.addRow({"mn", "masa próbki nasyconej cieczą"});
+    // legendSection.addRow({"dp", "gęstość pozorna próbki"});
+    // legendSection.addRow({"Pc", "porowatość całkowita"});
 
-    QXlsx::Format symbolFormat = getTableHeaderFormat();
-    symbolFormat.setFontBold(true);
-    symbolFormat.setFontItalic(true);
+    // QXlsx::Format symbolFormat = getTableHeaderFormat();
+    // symbolFormat.setFontBold(true);
+    // symbolFormat.setFontItalic(true);
 
-    QXlsx::Format descriptionFormat = getKeyFormat();
-    descriptionFormat.setFontBold(false);
-    descriptionFormat.setPatternBackgroundColor(LIGHT_GRAY);
+    // QXlsx::Format descriptionFormat = getKeyFormat();
+    // descriptionFormat.setFontBold(false);
+    // descriptionFormat.setPatternBackgroundColor(LIGHT_GRAY);
 
-    for(int i = 0; i < legendSection.getRowCount(); i++)
-    {
-        legendSection.setCellFormat(i, 0, symbolFormat);
-        legendSection.setCellFormat(i, 1, descriptionFormat);
-    }
+    // for(int i = 0; i < legendSection.getRowCount(); i++)
+    // {
+    //     legendSection.setCellFormat(i, 0, symbolFormat);
+    //     legendSection.setCellFormat(i, 1, descriptionFormat);
+    // }
 
-    legendSection.render();
+    // legendSection.render();
 
-    SectionRange tableRange = tableSection.getRange();
-    SectionRange legendRange = legendSection.getRange();
+    // SectionRange tableRange = tableSection.getRange();
+    // SectionRange legendRange = legendSection.getRange();
+
+    // SectionRange totalRange;
+    // totalRange.startRow = startRow;
+    // totalRange.startCol = startCol;
+    // totalRange.endRow = legendRange.endRow;
+    // totalRange.endCol = std::max(tableRange.endCol, legendRange.endCol);
+
+    return tableSection.getRange();//totalRange;
+}
+
+
+SectionRange MeasurementExporter::exportAnalysisSection(const AnalysisResult* analysisResult, int startRow, int startCol)
+{
+    const DensityAnalysisResult& densityResult = analysisResult->getDensityResult();
+    const PorosityAnalysisResult& porosityResult = analysisResult->getPorosityResult();
+
+    SectionRange densityRange = exportDensityAnalysisSection(densityResult, startRow, startCol);
+    SectionRange porosityRange = exportPorosityAnalysisSection(porosityResult, densityRange.endRow + SPACING_LARGE, startCol);
 
     SectionRange totalRange;
-    totalRange.startRow = startRow;
-    totalRange.startCol = startCol;
-    totalRange.endRow = legendRange.endRow;
-    totalRange.endCol = std::max(tableRange.endCol, legendRange.endCol);
-
+    totalRange.startRow = densityRange.startRow;
+    totalRange.startCol = std::min(densityRange.startCol, porosityRange.startCol);
+    totalRange.endRow = porosityRange.endRow;
+    totalRange.endCol = std::max(densityRange.endCol, porosityRange.endCol);
     return totalRange;
+}
+
+SectionRange MeasurementExporter::exportDensityAnalysisSection(const DensityAnalysisResult& densityResult, int startRow, int startCol)
+{
+    Section densitySection(QString("Analiza gęstości pozornej (Seria: %1)").arg(m_analysisResult->getSeriesName()), getTitleFormat(), this, startRow, startCol);
+
+    // Nagłówki kolumn dla gęstości
+    QVariantList densityHeaderRow;
+    densityHeaderRow << "Parametr" << "Wartość";
+    int densityHeaderRowIndex = densitySection.addRow(densityHeaderRow);
+
+    // Średnia gęstość
+    QVariantList densityMeanRow;
+    densityMeanRow << "Średnia gęstość [g/cm³]" << densityResult.getMean();
+    int densityMeanRowIndex = densitySection.addRow(densityMeanRow);
+
+    // Odchylenie standardowe gęstości
+    QVariantList densityStdDevRow;
+    densityStdDevRow << "Odchylenie standardowe [g/cm³]" << densityResult.getStandardDeviation();
+    int densityStdDevRowIndex = densitySection.addRow(densityStdDevRow);
+
+    // Współczynnik zmienności gęstości
+    QVariantList densityCvRow;
+    densityCvRow << "Współczynnik zmienności [%]" << densityResult.getVariationCoefficient() / 100;
+    int densityCvRowIndex = densitySection.addRow(densityCvRow);
+
+    // Niepewność pomiarowa gęstości
+    QVariantList densityUncertaintyRow;
+    densityUncertaintyRow << "Niepewność pomiarowa [g/cm³]" << densityResult.getUncertainty();
+    int densityUncertaintyRowIndex = densitySection.addRow(densityUncertaintyRow);
+
+    // Podsumowanie gęstości
+    QVariantList densitySummaryRow;
+    densitySummaryRow << "Podsumowanie [g/cm³]" << densityResult.getFinalResult();
+    int densitySummaryRowIndex = densitySection.addRow(densitySummaryRow);
+
+    // Formatowanie tabeli gęstości
+    QXlsx::Format headerFormat = getTableHeaderFormat();
+    headerFormat.setPatternBackgroundColor(LIGHT_GRAY_H);
+    headerFormat.setFillPattern(QXlsx::Format::PatternSolid);
+    densitySection.setRowFormat(densityHeaderRowIndex, headerFormat);
+
+    QXlsx::Format labelFormat = getKeyFormat();
+    labelFormat.setPatternBackgroundColor(LIGHT_GRAY);
+    labelFormat.setFillPattern(QXlsx::Format::PatternSolid);
+    densitySection.setColumnFormat(0, labelFormat);
+
+    QXlsx::Format summaryFormat = getKeyFormat();
+    summaryFormat.setFontBold(true);
+    summaryFormat.setPatternBackgroundColor(QColor(220, 230, 241));
+    summaryFormat.setFillPattern(QXlsx::Format::PatternSolid);
+    densitySection.setRowFormat(densitySummaryRowIndex, summaryFormat);
+
+    // Formatowanie liczb dla gęstości
+    densitySection.setCellFormat(densityMeanRowIndex, 1, getDecimalFormat(3));
+    densitySection.setCellFormat(densityStdDevRowIndex, 1, getDecimalFormat(4));
+    densitySection.setCellFormat(densityCvRowIndex, 1, getPercentageFormat(2));
+    densitySection.setCellFormat(densityUncertaintyRowIndex, 1, getDecimalFormat(3));
+
+    densitySection.render();
+
+    // Obramowanie tabeli gęstości
+    StyleFormatter formatDensitySection(getDocument());
+    formatDensitySection.setGridBorder(
+        densitySection.getStartRow(),
+        densitySection.getStartCol(),
+        densitySection.getStartRow() + densitySection.getRowCount() - 1,
+        densitySection.getStartCol() + densitySection.getTotalWidth() - 1,
+        QXlsx::Format::BorderThin
+        );
+
+    return densitySection.getRange();
+}
+
+SectionRange MeasurementExporter::exportPorosityAnalysisSection(const PorosityAnalysisResult& porosityResult, int startRow, int startCol)
+{
+    Section porositySection(QString("Analiza porowatości całkowitej (Seria: %1)").arg(m_analysisResult->getSeriesName()), getTitleFormat(), this, startRow, startCol);
+
+    // Nagłówki kolumn dla porowatości
+    QVariantList porosityHeaderRow;
+    porosityHeaderRow << "Parametr" << "Wartość";
+    int porosityHeaderRowIndex = porositySection.addRow(porosityHeaderRow);
+
+    // Średnia porowatość
+    QVariantList porosityMeanRow;
+    porosityMeanRow << "Średnia porowatość [%]" << porosityResult.getMean() / 100;
+    int porosityMeanRowIndex = porositySection.addRow(porosityMeanRow);
+
+    // Odchylenie standardowe porowatości
+    QVariantList porosityStdDevRow;
+    porosityStdDevRow << "Odchylenie standardowe [%]" << porosityResult.getStandardDeviation() / 100;
+    int porosityStdDevRowIndex = porositySection.addRow(porosityStdDevRow);
+
+    // Współczynnik zmienności porowatości
+    QVariantList porosityCvRow;
+    porosityCvRow << "Współczynnik zmienności [%]" << porosityResult.getVariationCoefficient() / 100;
+    int porosityCvRowIndex = porositySection.addRow(porosityCvRow);
+
+    // Niepewność pomiarowa porowatości
+    QVariantList porosityUncertaintyRow;
+    porosityUncertaintyRow << "Niepewność pomiarowa [%]" << porosityResult.getUncertainty() / 100;
+    int porosityUncertaintyRowIndex = porositySection.addRow(porosityUncertaintyRow);
+
+    // Podsumowanie porowatości
+    QVariantList porositySummaryRow;
+    porositySummaryRow << "Podsumowanie [%]" << porosityResult.getFinalResult();
+    int porositySummaryRowIndex = porositySection.addRow(porositySummaryRow);
+
+    // Formatowanie tabeli porowatości
+    QXlsx::Format headerFormat = getTableHeaderFormat();
+    headerFormat.setPatternBackgroundColor(LIGHT_GRAY_H);
+    headerFormat.setFillPattern(QXlsx::Format::PatternSolid);
+    porositySection.setRowFormat(porosityHeaderRowIndex, headerFormat);
+
+    QXlsx::Format labelFormat = getKeyFormat();
+    labelFormat.setPatternBackgroundColor(LIGHT_GRAY);
+    labelFormat.setFillPattern(QXlsx::Format::PatternSolid);
+    porositySection.setColumnFormat(0, labelFormat);
+
+    QXlsx::Format summaryFormat = getKeyFormat();
+    summaryFormat.setFontBold(true);
+    summaryFormat.setPatternBackgroundColor(QColor(220, 230, 241));
+    summaryFormat.setFillPattern(QXlsx::Format::PatternSolid);
+    porositySection.setRowFormat(porositySummaryRowIndex, summaryFormat);
+
+    // Formatowanie liczb dla porowatości (wszystkie jako procenty)
+    porositySection.setCellFormat(porosityMeanRowIndex, 1, getPercentageFormat(2));
+    porositySection.setCellFormat(porosityStdDevRowIndex, 1, getPercentageFormat(2));
+    porositySection.setCellFormat(porosityCvRowIndex, 1, getPercentageFormat(2));
+    porositySection.setCellFormat(porosityUncertaintyRowIndex, 1, getPercentageFormat(2));
+
+    porositySection.render();
+
+    // Obramowanie tabeli porowatości
+    StyleFormatter formatPorositySection(getDocument());
+    formatPorositySection.setGridBorder(
+        porositySection.getStartRow(),
+        porositySection.getStartCol(),
+        porositySection.getStartRow() + porositySection.getRowCount() - 1,
+        porositySection.getStartCol() + porositySection.getTotalWidth() - 1,
+        QXlsx::Format::BorderThin
+        );
+
+    return porositySection.getRange();
 }
 
 void MeasurementExporter::setupColumnSize(int columns, int size)

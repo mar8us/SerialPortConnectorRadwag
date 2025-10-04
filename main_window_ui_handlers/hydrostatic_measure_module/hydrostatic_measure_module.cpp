@@ -37,5 +37,5 @@ void HydrostaticMeasurementModule::connectSignals()
     connect(&libraryUiHandler, &MeasurementLibraryUiHandler::newMeasure, &processUiHandler, &MeasurementProcessUiHandler::onNewMeasure);
     connect(&libraryUiHandler, &MeasurementLibraryUiHandler::replySelectedMeasure, &processUiHandler, &MeasurementProcessUiHandler::onReplyMeasure);
     connect(&libraryUiHandler, &MeasurementLibraryUiHandler::continueSelectedMeasure, &processUiHandler, &MeasurementProcessUiHandler::onContinueMeasure);
-    connect(&processUiHandler, &MeasurementProcessUiHandler::exportMeasuresExcel, &libraryUiHandler, &MeasurementLibraryUiHandler::onExportMeasuresExcel);
+    connect(&processUiHandler, &MeasurementProcessUiHandler::exportMeasuresExcel, &libraryUiHandler, &MeasurementLibraryUiHandler::onExportExcelMeasures);
 }

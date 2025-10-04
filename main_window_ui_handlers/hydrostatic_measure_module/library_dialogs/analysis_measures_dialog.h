@@ -79,6 +79,9 @@ public:
     void updateView();
     const AnalysisResult &getAnalysisResult() const;
 
+signals:
+    void exportAnalysisExcel(const AnalysisResult *results);
+
 private slots:
     void onConfidenceLevelChanged(int index);
     void onExportExcelButtonClicked();
@@ -93,7 +96,7 @@ private:
     Ui::AnalysisMeasuresDialog *ui;
 
     MeasurementTableModel* tableModel;
-    AnalysisResult results;
+    AnalysisResult *results;
     const std::vector<std::shared_ptr<const Measurement>>& measurements;
     // const DensityAnalysisResult &densityResult;
     // const PorosityAnalysisResult &porosityResult;

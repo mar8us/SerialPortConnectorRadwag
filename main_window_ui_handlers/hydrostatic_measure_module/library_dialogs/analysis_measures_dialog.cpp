@@ -7,7 +7,7 @@
 #include <QFileDialog>
 #include <QMessageBox>
 // #include "../../../utils.h"
-#include "../../../config.h"
+// #include "../../../config.h"
 
 
 MeasurementTableModel::MeasurementTableModel(QObject* parent)
@@ -266,10 +266,10 @@ int MeasurementTableModel::getPrecisionForValues(const BaseAnalysisResult& resul
 AnalysisMeasuresDialog::AnalysisMeasuresDialog(const std::vector<std::shared_ptr<const Measurement>>& measurements, QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::AnalysisMeasuresDialog)
-    , results(AnalysisResult(measurements))
+    , results(new AnalysisResult(measurements))
     // , densityResult(results.getDensityResult())
     // , porosityResult(results.getPorosityResult())
-    , measurements(results.getMeasurements())
+    , measurements(results->getMeasurements())
 {
     ui->setupUi(this);
     setWindowTitle("Analiza statystyczna wybranych pomiarów");
@@ -286,12 +286,13 @@ AnalysisMeasuresDialog::AnalysisMeasuresDialog(const std::vector<std::shared_ptr
 
 AnalysisMeasuresDialog::~AnalysisMeasuresDialog()
 {
+    delete results;
     delete ui;
 }
 
 void AnalysisMeasuresDialog::updateView()
 {
-    const auto &densityResult = results.getDensityResult();
+    const auto &densityResult = results->getDensityResult();
     ui->editMeasuresSeries->setText(densityResult.getSeriesName());
     ui->editSamplesMaterial->setText(densityResult.getMaterialName());
     ui->editMaterialDenisty->setText(QString::number(densityResult.getTheoreticalDensity()) + "g/cm3");
@@ -302,7 +303,7 @@ void AnalysisMeasuresDialog::updateView()
     ui->lineEditDensityUncertainty->setText(QString("±%1 g/cm³").arg(densityResult.getUncertainty(), 0, 'f', 3));
     ui->lineEditDensityFinalResult->setText(densityResult.getFinalResult());
 
-    const auto &porosityResult = results.getPorosityResult();
+    const auto &porosityResult = results->getPorosityResult();
     ui->lineEditPorosityMean->setText(QString("%1 %").arg(porosityResult.getMean(), 0, 'f', 2));
     ui->lineEditPorosityStdDev->setText(QString("%1 %").arg(porosityResult.getStandardDeviation(), 0, 'f', 3));
     ui->lineEditPorosityVariationCoeff->setText(QString("%1%").arg(porosityResult.getVariationCoefficient(), 0, 'f', 2));
@@ -312,7 +313,7 @@ void AnalysisMeasuresDialog::updateView()
 
 const AnalysisResult &AnalysisMeasuresDialog::getAnalysisResult() const
 {
-    return results;
+    return *results;
 }
 
 void AnalysisMeasuresDialog::setupTableView()
@@ -320,7 +321,7 @@ void AnalysisMeasuresDialog::setupTableView()
     tableModel = new MeasurementTableModel(this);
     ui->tableView->setModel(tableModel);
 
-    tableModel->setAnalysisResults(results);
+    tableModel->setAnalysisResults(*results);
 
     ui->tableView->verticalHeader()->setVisible(false);
     ui->tableView->setSelectionMode(QAbstractItemView::NoSelection);
@@ -334,22 +335,22 @@ void AnalysisMeasuresDialog::setupTableView()
 void AnalysisMeasuresDialog::onConfidenceLevelChanged(int index)
 {
     double newConfidence = ui->comboBoxConfidence->itemData(index).toDouble();
-    results.setConfidenceLevel(newConfidence);
+    results->setConfidenceLevel(newConfidence);
     tableModel->updateResults();
 
-    ui->lineEditSampleCount->setText(QString::number(results.getMeasuresCount()));
+    ui->lineEditSampleCount->setText(QString::number(results->getMeasuresCount()));
     updateView();
 }
 
 void AnalysisMeasuresDialog::onExportExcelButtonClicked()
 {
-    QMessageBox::information(this, "Funkcja w rozwoju", "Eksport Excel będzie dostępny w przyszłej wersji.");
+    emit exportAnalysisExcel(results);
 }
 
 void AnalysisMeasuresDialog::initialize()
 {
     setupTableView();
-    ui->lineEditSampleCount->setText(QString::number(results.getMeasuresCount()));
+    ui->lineEditSampleCount->setText(QString::number(results->getMeasuresCount()));
     fillConfidenceComboBox();
     connectSignals();
 }
