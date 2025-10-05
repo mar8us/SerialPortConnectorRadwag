@@ -17,7 +17,7 @@
    </size>
   </property>
   <property name="windowTitle">
-   <string>MainWindow</string>
+   <string>MetraLab</string>
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QVBoxLayout" name="verticalLayout">
@@ -4777,8 +4777,8 @@ umieszczając ją w komorze próźniowej na czas zaniku ostatniego pęcherzyka</
                    <property name="geometry">
                     <rect>
                      <x>0</x>
-                     <y>-43</y>
-                     <width>985</width>
+                     <y>0</y>
+                     <width>856</width>
                      <height>1275</height>
                     </rect>
                    </property>
@@ -8135,7 +8135,7 @@ QPushButton:disabled {
                     <rect>
                      <x>0</x>
                      <y>0</y>
-                     <width>1024</width>
+                     <width>508</width>
                      <height>594</height>
                     </rect>
                    </property>
@@ -11600,7 +11600,8 @@ QPushButton:disabled {
   </action>
   <action name="actionSieveAnalysis">
    <property name="icon">
-    <iconset theme="QIcon::ThemeIcon::EditSelectAll"/>
+    <iconset resource="resources.qrc">
+     <normaloff>:/icons/funnel_white.png</normaloff>:/icons/funnel_white.png</iconset>
    </property>
    <property name="text">
     <string>Analiza sitowa</string>

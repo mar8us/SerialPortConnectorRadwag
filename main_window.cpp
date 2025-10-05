@@ -146,6 +146,7 @@ void MainWindow::updateActionIcons(int index)
 {
     ui->actionSettings->setIcon(ui->stackedWidget->widget(index) == ui->settingsPage ? activeSettingsIcon : defaultSettingsIcon);
     ui->actionMeasureDensity->setIcon(ui->stackedWidget->widget(index) == ui->measureDensityPage ? activeRadwagIcon : defaultRadwagIcon);
+    ui->actionSieveAnalysis->setIcon(ui->stackedWidget->widget(index) == ui->sieveAnalysisPage ? activeSieveIcon : defaultSieveIcon);
 }
 
 void MainWindow::updateConnectonLabelsStatusBar(bool connectionStatus)
@@ -192,6 +193,8 @@ void MainWindow::setIcons()
     activeSettingsIcon = QIcon(":/icons/settings_selected.png");
     defaultRadwagIcon = QIcon(":/icons/balance_white.png");
     activeRadwagIcon = QIcon(":/icons/balance_selected.png");
+    defaultSieveIcon = QIcon(":/icons/funnel_white.png");
+    activeSieveIcon = QIcon(":/icons/funnel_selected.png");
 }
 
 void MainWindow::setPalette()

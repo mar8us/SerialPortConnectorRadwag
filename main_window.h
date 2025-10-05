@@ -62,5 +62,7 @@ private:
     QIcon activeSettingsIcon;
     QIcon defaultRadwagIcon;
     QIcon activeRadwagIcon;
+    QIcon defaultSieveIcon;
+    QIcon activeSieveIcon;
 };
 #endif
