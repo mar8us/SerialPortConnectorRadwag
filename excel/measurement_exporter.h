@@ -29,6 +29,7 @@ private:
 
     SectionRange exportDensityAnalysisSection(const DensityAnalysisResult& densityResult, int startRow, int startCol);
     SectionRange exportPorosityAnalysisSection(const PorosityAnalysisResult& porosityResult, int startRow, int startCol);
+    SectionRange exportFullStatisticalTable(const AnalysisResult* analysisResult, int startRow, int startCol);
 
     SectionRange exportCommentsSection(const Measurement* measurement); //TO DO
 

@@ -7,7 +7,7 @@
 #include <QFileDialog>
 #include <QMessageBox>
 // #include "../../../utils.h"
-// #include "../../../config.h"
+ #include "../../../config.h"
 
 
 MeasurementTableModel::MeasurementTableModel(QObject* parent)

@@ -1,6 +1,7 @@
 #include "measurement_exporter.h"
 
 #include "../utils.h"
+#include "../config.h"
 #include "section_excel.h"
 #include "style_formatter.h"
 #include <QDebug>
@@ -86,13 +87,21 @@ bool MeasurementExporter::exportData()
         }
 
         int tableStartCol = START_COL + maxWidth + SPACING_MEDIUM;
-        auto tableRange = exportMeasurementTableSection(m_measurements, START_ROW, tableStartCol);
-        currentRow = tableRange.endRow + SPACING_LARGE;
 
         if(m_analysisResult)
         {
+#ifdef TABLE_FULL_STAT
+            SectionRange fullTableRange = exportFullStatisticalTable(m_analysisResult, START_ROW, tableStartCol);
+            currentRow = fullTableRange.endRow + SPACING_LARGE;
+#else
             SectionRange analysisRange = exportAnalysisSection(m_analysisResult, currentRow, tableStartCol);
             currentRow = analysisRange.endRow + SPACING_LARGE;
+#endif
+        }
+        else
+        {
+            auto tableRange = exportMeasurementTableSection(m_measurements, START_ROW, tableStartCol);
+            currentRow = tableRange.endRow + SPACING_LARGE;
         }
 
         return true;
@@ -231,12 +240,12 @@ SectionRange MeasurementExporter::exportMeasurementTableSection(const QList<cons
     if(measurements.isEmpty())
         return SectionRange();
 
-    Section tableSection("Porównanie pomiarów", getTitleFormat(), this, startRow, startCol);
+    Section tableSection("Tabela pomiarów i wyników", getTitleFormat(), this, startRow, startCol);
 
     QVariantList headerRow;
-    headerRow << "Oznaczana wielkość";
+    headerRow << "Parametr";
     for(int i = 0; i < measurements.size(); i++)
-        headerRow << QString("Pomiar %1").arg(i + 1);
+        headerRow << QString("Pomiar %1 %2").arg(i + 1).arg(measurements[i]->getDate().toString("dd-MM-yyyy hh:mm"));
     int headerRowIndex = tableSection.addRow(headerRow);
 
     QVariantList dryMassRow;
@@ -295,50 +304,128 @@ SectionRange MeasurementExporter::exportMeasurementTableSection(const QList<cons
 
     tableSection.render();
 
-    // StyleFormatter formatTableSection(getDocument());
+    StyleFormatter formatTableSection(getDocument());
 
-    // formatTableSection.setGridBorder(tableSection.getStartRow(), tableSection.getStartCol(),
-    //                   tableSection.getStartRow() + tableSection.getRowCount(), tableSection.getStartCol() + tableSection.getTotalWidth() - 1,
-    //                   QXlsx::Format::BorderThin);
+    formatTableSection.setGridBorder(tableSection.getStartRow(), tableSection.getStartCol(),
+                      tableSection.getStartRow() + tableSection.getRowCount(), tableSection.getStartCol() + tableSection.getTotalWidth() - 1,
+                      QXlsx::Format::BorderThin);
 
-    // QXlsx::Format legendTitleFormat = getTitleFormat();
-    // legendTitleFormat.setFontSize(10);
 
-    // int legendStartRow = startRow + tableSection.getRange().endRow + SPACING_MEDIUM;
-    // Section legendSection("Legenda oznaczeń", legendTitleFormat, this, legendStartRow, startCol);
-
-    // legendSection.addRow({"ms", "masa suchej próbki"});
-    // legendSection.addRow({"mw", "masa próbki zanurzonej w cieczy"});
-    // legendSection.addRow({"mn", "masa próbki nasyconej cieczą"});
-    // legendSection.addRow({"dp", "gęstość pozorna próbki"});
-    // legendSection.addRow({"Pc", "porowatość całkowita"});
-
-    // QXlsx::Format symbolFormat = getTableHeaderFormat();
-    // symbolFormat.setFontBold(true);
-    // symbolFormat.setFontItalic(true);
-
-    // QXlsx::Format descriptionFormat = getKeyFormat();
-    // descriptionFormat.setFontBold(false);
-    // descriptionFormat.setPatternBackgroundColor(LIGHT_GRAY);
-
-    // for(int i = 0; i < legendSection.getRowCount(); i++)
-    // {
-    //     legendSection.setCellFormat(i, 0, symbolFormat);
-    //     legendSection.setCellFormat(i, 1, descriptionFormat);
-    // }
-
-    // legendSection.render();
-
-    // SectionRange tableRange = tableSection.getRange();
-    // SectionRange legendRange = legendSection.getRange();
-
-    // SectionRange totalRange;
-    // totalRange.startRow = startRow;
-    // totalRange.startCol = startCol;
-    // totalRange.endRow = legendRange.endRow;
-    // totalRange.endCol = std::max(tableRange.endCol, legendRange.endCol);
 
     return tableSection.getRange();//totalRange;
+}
+
+SectionRange MeasurementExporter::exportFullStatisticalTable(const AnalysisResult* analysisResult, int startRow, int startCol)
+{
+    if (!analysisResult || !analysisResult->isValid()) {
+        return SectionRange{startRow, startCol, startRow, startCol};
+    }
+
+    Section tableSection("Analiza statystyczna", getTitleFormat(), this, startRow, startCol);
+    tableSection.addRow({"Seria pomiarowa", analysisResult->getSeriesName()});
+    tableSection.addRow({"Materiał", analysisResult->getMaterialName()});
+    tableSection.addRow({"Liczba pomiarów", QString::number(analysisResult->getMeasuresCount())});
+    tableSection.addRow({"Poziom ufności", QString("%1%").arg(analysisResult->getConfidenceLevel() * 100, 0, 'f', 0)});
+
+    tableSection.render();
+    auto headerRange = tableSection.getRange();
+    int currentRow = headerRange.endRow + SPACING_MEDIUM;
+    struct ResultRow {
+        QString parameterName;
+        const BaseAnalysisResult* result;
+    };
+
+    QList<ResultRow> resultRows;
+
+    if(analysisResult->getDryMassResult().isValid())
+        resultRows.append({"Masa sucha [g]", &analysisResult->getDryMassResult()});
+    if(analysisResult->getWetMassResult().isValid())
+        resultRows.append({"Masa w cieczy [g]", &analysisResult->getWetMassResult()});
+    if(analysisResult->getSaturatedMassResult().isValid())
+        resultRows.append({"Masa nasycona [g]", &analysisResult->getSaturatedMassResult()});
+    if(analysisResult->getDensityResult().isValid())
+        resultRows.append({"Gęstość pozorna [g/cm³]", &analysisResult->getDensityResult()});
+    if(analysisResult->getPorosityResult().isValid())
+        resultRows.append({"Porowatość całkowita [%]", &analysisResult->getPorosityResult()});
+
+    if(resultRows.isEmpty())
+        return SectionRange{startRow, startCol, currentRow, startCol + 5};
+
+    QVariantList headers;
+    headers << "Parametr";
+
+    const auto& measurements = analysisResult->getMeasurements();
+    for(int i = 0; i < measurements.size(); ++i)
+        headers << QString("Pomiar %1 (%2)").arg(i + 1).arg(measurements[i]->getEndDate().toString("dd-MM-yyyy hh:mm"));
+
+    headers << "Średnia";
+    headers << "Odch. std.";
+    headers << "Współ. zmienności";
+    headers << "Niepewność pomiarowa";
+    headers << "Podsumowanie";
+
+    Section statisticalTable("", QXlsx::Format(), this, currentRow, startCol);
+
+    int headerRowIndex = statisticalTable.addRow(headers);
+
+    QList<int> dataRowIndices;
+    for (const auto& row : resultRows)
+    {
+        QVariantList rowData;
+        rowData << row.parameterName;
+
+        const auto& individualValues = row.result->getIndividualValues();
+        for(double value : individualValues)
+            rowData << value;
+
+        rowData << row.result->getMean();
+        rowData << row.result->getStandardDeviation();
+        rowData << row.result->getVariationCoefficient() / 100.0;
+        rowData << QString("±%1 %2").arg(QString::number(row.result->getUncertainty(), 'f', 4), row.result->getUnitSymbol());
+        rowData << row.result->getFinalResult();
+
+        int rowIndex = statisticalTable.addRow(rowData);
+        dataRowIndices.append(rowIndex);
+    }
+
+    QXlsx::Format headerFormat = getTableHeaderFormat();
+    headerFormat.setPatternBackgroundColor(LIGHT_GRAY_H);
+    headerFormat.setFillPattern(QXlsx::Format::PatternSolid);
+    statisticalTable.setRowFormat(headerRowIndex, headerFormat);
+
+    QXlsx::Format parameterFormat = getKeyFormat();
+    parameterFormat.setFontBold(true);
+
+    for(int i = 0; i < dataRowIndices.size(); ++i)
+    {
+        int rowIndex = dataRowIndices[i];
+        const auto& result = resultRows[i].result;
+        const auto& individualValues = result->getIndividualValues();
+
+        statisticalTable.setCellFormat(rowIndex, 0, parameterFormat);
+
+        for (int col = 1; col <= individualValues.size(); ++col)
+            statisticalTable.setCellFormat(rowIndex, col, getDecimalFormat(4));
+
+        int statStartCol = 1 + individualValues.size();
+        statisticalTable.setCellFormat(rowIndex, statStartCol, getDecimalFormat(4));
+        statisticalTable.setCellFormat(rowIndex, statStartCol + 1, getDecimalFormat(4));
+        statisticalTable.setCellFormat(rowIndex, statStartCol + 2, getPercentageFormat(2));
+    }
+
+    statisticalTable.render();
+    auto tableRange = statisticalTable.getRange();
+
+    StyleFormatter formatter(getDocument());
+    formatter.setGridBorder(tableRange.startRow, tableRange.startCol, tableRange.endRow, tableRange.endCol, QXlsx::Format::BorderThin);
+
+    SectionRange totalRange;
+    totalRange.startRow = headerRange.startRow;
+    totalRange.startCol = std::min(headerRange.startCol, tableRange.startCol);
+    totalRange.endRow = tableRange.endRow;
+    totalRange.endCol = std::max(headerRange.endCol, tableRange.endCol);
+
+    return totalRange;
 }
 
 
@@ -517,7 +604,7 @@ void MeasurementExporter::setupStandardSectionFormat(Section& section)
 
 SectionRange MeasurementExporter::addMeasurementTitle(const Measurement* measurement, int index, int startRow, int startCol)
 {
-    QString measureTitle = QString("POMIAR %1: %2 (ID: %3)").arg(index).arg(measurement->getSample()->getName()).arg(measurement->getId());    
+    QString measureTitle = QString("POMIAR %1 (%2): %3").arg(index).arg(measurement->getDate().toString("dd-MM-yyyy hh:mm")).arg(measurement->getSample()->getName());   //.arg(measurements[i]->getDate().toString("dd-MM-yyyy hh:mm")
 
     int width  = calculateRequiredMergeCells(measureTitle, getTitleFormat().font());
     int endRow = startRow;
