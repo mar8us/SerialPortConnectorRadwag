@@ -164,6 +164,8 @@ void MainWindow::updateConnectonLabelsStatusBar(bool connectionStatus)
         ui->labelConnectionStatusStatusBar->setText("Status: <font color='#E74C3C'><b>Brak połączenia</b></font>");
         ui->comboBoxSelectDevice->setEnabled(true);
     }
+    ui->labelDeviceNameStatusBar->setStyleSheet("background-color: transparent; border: none;");
+    ui->labelConnectionStatusStatusBar->setStyleSheet("background-color: transparent; border: none;");
 }
 
 void MainWindow::initControls()
@@ -176,6 +178,8 @@ void MainWindow::initControls()
     navigateToToolBoxPage(ui->measureDensityPage);
     updateActionIcons(0);
     updateConnectonLabelsStatusBar(false);
+    ui->tabWidgetMain->setTabVisible(2, false);
+    ui->tabWidgetMain->setTabVisible(3, false);
     QTimer::singleShot(0, this, &MainWindow::resizeAllTablesColumnsToContents);
 }
 

@@ -541,7 +541,7 @@
                </size>
               </property>
               <property name="currentIndex">
-               <number>6</number>
+               <number>9</number>
               </property>
               <widget class="QWidget" name="pageStartMeasure">
                <layout class="QVBoxLayout" name="verticalLayout_12">
@@ -822,8 +822,8 @@ Odpowiedni dla materiałów wchłaniających wodę (ceramika, skały osadowe, be
                        <rect>
                         <x>0</x>
                         <y>0</y>
-                        <width>440</width>
-                        <height>244</height>
+                        <width>967</width>
+                        <height>359</height>
                        </rect>
                       </property>
                       <layout class="QGridLayout" name="gridLayout_17">
@@ -4777,8 +4777,8 @@ umieszczając ją w komorze próźniowej na czas zaniku ostatniego pęcherzyka</
                    <property name="geometry">
                     <rect>
                      <x>0</x>
-                     <y>0</y>
-                     <width>856</width>
+                     <y>-501</y>
+                     <width>985</width>
                      <height>1275</height>
                     </rect>
                    </property>
@@ -5449,31 +5449,8 @@ umieszczając ją w komorze próźniowej na czas zaniku ostatniego pęcherzyka</
                           </size>
                          </property>
                          <property name="currentIndex">
-                          <number>0</number>
+                          <number>1</number>
                          </property>
-                         <widget class="QWidget" name="tabPorosityChart">
-                          <attribute name="title">
-                           <string>Porowatość</string>
-                          </attribute>
-                          <layout class="QVBoxLayout" name="verticalLayoutPorosity">
-                           <item>
-                            <widget class="QFrame" name="framePorosityChart">
-                             <property name="minimumSize">
-                              <size>
-                               <width>0</width>
-                               <height>350</height>
-                              </size>
-                             </property>
-                             <property name="frameShape">
-                              <enum>QFrame::Shape::StyledPanel</enum>
-                             </property>
-                             <property name="frameShadow">
-                              <enum>QFrame::Shadow::Raised</enum>
-                             </property>
-                            </widget>
-                           </item>
-                          </layout>
-                         </widget>
                          <widget class="QWidget" name="tabDensityChart">
                           <attribute name="title">
                            <string>Gęstość</string>
@@ -5497,13 +5474,13 @@ umieszczając ją w komorze próźniowej na czas zaniku ostatniego pęcherzyka</
                            </item>
                           </layout>
                          </widget>
-                         <widget class="QWidget" name="tabVolumeChart">
+                         <widget class="QWidget" name="tabPorosityChart">
                           <attribute name="title">
-                           <string>Objętości</string>
+                           <string>Porowatość</string>
                           </attribute>
-                          <layout class="QVBoxLayout" name="verticalLayoutVolume">
+                          <layout class="QVBoxLayout" name="verticalLayoutPorosity">
                            <item>
-                            <widget class="QFrame" name="frameVolumeChart">
+                            <widget class="QFrame" name="framePorosityChart">
                              <property name="minimumSize">
                               <size>
                                <width>0</width>
@@ -5532,29 +5509,6 @@ umieszczając ją w komorze próźniowej na czas zaniku ostatniego pęcherzyka</
                 <item>
                  <layout class="QHBoxLayout" name="horizontalLayout_2">
                   <item>
-                   <widget class="QPushButton" name="buttonSaveTripleMeasureToLibrary">
-                    <property name="minimumSize">
-                     <size>
-                      <width>130</width>
-                      <height>30</height>
-                     </size>
-                    </property>
-                    <property name="maximumSize">
-                     <size>
-                      <width>150</width>
-                      <height>16777215</height>
-                     </size>
-                    </property>
-                    <property name="text">
-                     <string>Zapisz do biblioteki</string>
-                    </property>
-                    <property name="icon">
-                     <iconset>
-                      <normaloff>:/icons/save.png</normaloff>:/icons/save.png</iconset>
-                    </property>
-                   </widget>
-                  </item>
-                  <item>
                    <widget class="QPushButton" name="buttonExportExcelTriple">
                     <property name="minimumSize">
                      <size>
@@ -5574,29 +5528,6 @@ umieszczając ją w komorze próźniowej na czas zaniku ostatniego pęcherzyka</
                     <property name="icon">
                      <iconset>
                       <normaloff>:/icons/csv.png</normaloff>:/icons/csv.png</iconset>
-                    </property>
-                   </widget>
-                  </item>
-                  <item>
-                   <widget class="QPushButton" name="buttonExportTriplePDF">
-                    <property name="minimumSize">
-                     <size>
-                      <width>130</width>
-                      <height>30</height>
-                     </size>
-                    </property>
-                    <property name="maximumSize">
-                     <size>
-                      <width>150</width>
-                      <height>16777215</height>
-                     </size>
-                    </property>
-                    <property name="text">
-                     <string>Eksportuj do PDF</string>
-                    </property>
-                    <property name="icon">
-                     <iconset>
-                      <normaloff>:/icons/pdf.png</normaloff>:/icons/pdf.png</iconset>
                     </property>
                    </widget>
                   </item>
