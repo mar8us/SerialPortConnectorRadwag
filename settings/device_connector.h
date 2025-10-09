@@ -7,8 +7,6 @@
 #include "../serialPort/serial_port.h"
 #include <memory>
 
-class DeviceData;
-
 class DeviceConnector : public QObject
 {
     Q_OBJECT

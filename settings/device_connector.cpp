@@ -60,18 +60,7 @@ bool DeviceConnector::sendCommand(const QByteArray &command) const
 {
     if(!connectionIsActive())
         return false;
-
-    qint64 bytesWritten = serialPort->write(command);
-    if (bytesWritten == -1)
-    {
-        qDebug() << "Błąd: Nie można wysłać komendy do wagi";
-        return false;
-    }
-    else
-    {
-        qDebug() << "Wysłano komendę: " << command << ". Zapisano bajtów:" << bytesWritten;
-        return true;
-    }
+    return serialPort->write(command) == -1 ? false : true;
 }
 
 void DeviceConnector::dataReceived(const QByteArray &deviceData)
