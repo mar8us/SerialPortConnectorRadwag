@@ -12,54 +12,54 @@ RadwagScaleConnector::~RadwagScaleConnector()
 
 }
 
-void RadwagScaleConnector::sendTareCommand() const
+bool RadwagScaleConnector::sendTareCommand() const
 {
-    sendCommand("T\r\n");
+    return sendCommand("T\r\n");
 }
 
-void RadwagScaleConnector::sendZeroCommand() const
+bool RadwagScaleConnector::sendZeroCommand() const
 {
-    sendCommand("Z\r\n");
+    return sendCommand("Z\r\n");
 }
 
-void RadwagScaleConnector::sendImmediateWeightCommand() const
+bool RadwagScaleConnector::sendImmediateWeightCommand() const
 {
-    sendCommand("SI\r\n");
+    return sendCommand("SI\r\n");
 }
 
-void RadwagScaleConnector::sendStableWeightCommand() const
+bool RadwagScaleConnector::sendStableWeightCommand() const
 {
-    sendCommand("S\r\n");
+    return sendCommand("S\r\n");
 }
 
-void RadwagScaleConnector::sendStableWeightCurrentUnitCommand() const
+bool RadwagScaleConnector::sendStableWeightCurrentUnitCommand() const
 {
-    sendCommand("SU\r\n");
+    return sendCommand("SU\r\n");
 }
 
-void RadwagScaleConnector::sendImmediateWeightCurrentUnitCommand() const
+bool RadwagScaleConnector::sendImmediateWeightCurrentUnitCommand() const
 {
-    sendCommand("SUI\r\n");
+    return sendCommand("SUI\r\n");
 }
 
-void RadwagScaleConnector::startContinuousTransmissionBasicUnit() const
+bool RadwagScaleConnector::startContinuousTransmissionBasicUnit() const
 {
-    sendCommand("C1\r\n");
+    return sendCommand("C1\r\n");
 }
 
-void RadwagScaleConnector::stopContinuousTransmissionBasicUnit() const
+bool RadwagScaleConnector::stopContinuousTransmissionBasicUnit() const
 {
-    sendCommand("C0\r\n");
+    return sendCommand("C0\r\n");
 }
 
-void RadwagScaleConnector::startContinuousTransmissionCurrentUnit() const
+bool RadwagScaleConnector::startContinuousTransmissionCurrentUnit() const
 {
-    sendCommand("CU1\r\n");
+    return sendCommand("CU1\r\n");
 }
 
-void RadwagScaleConnector::stopContinuousTransmissionCurrentUnit() const
+bool RadwagScaleConnector::stopContinuousTransmissionCurrentUnit() const
 {
-    sendCommand("CU0\r\n");
+    return sendCommand("CU0\r\n");
 }
 
 void RadwagScaleConnector::dataReceived(const QByteArray &deviceData)
