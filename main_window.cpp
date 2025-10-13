@@ -254,3 +254,38 @@ void MainWindow::connectScaleSignals()
     connect(appCore.getScaleConnector(), &RadwagScaleConnector::radwagDataReady, this, &MainWindow::onRadwagMeasueReady);
     connect(ui->comboBoxSelectDevice, &QComboBox::currentIndexChanged, this, &MainWindow::onDeviceComboSelectionChanged);
 }
+
+void MainWindow::on_pushButton_clicked()
+{
+    bool resul = appCore.connectScale(ui->comboBoxSelectPort->currentText(), ui->comboBoxSelectDevice->currentData().value<std::shared_ptr<const Device>>());
+    bool result2 = appCore.getScaleConnector()->sendImmediateWeightCommand();
+    if(result2)
+    {
+        int a;
+        a=result2;
+    }
+}
+
+#include "radwag/radwagcontroldialog.h"
+void MainWindow::on_pushButton_3_clicked()
+{
+    // bool result2 = appCore.getScaleConnector()->sendImmediateWeightCommand();
+    // bool result3 = appCore.getScaleConnector()->sendTareCommand();
+    // bool result4 = appCore.getScaleConnector()->sendZeroCommand();
+    // bool result7 =  appCore.getScaleConnector()->sendImmediateWeightCommand();
+    // bool result8 = appCore.getScaleConnector()->sendStableWeightCommand();
+    // bool result9 = appCore.getScaleConnector()->sendStableWeightCurrentUnitCommand();
+    // bool result29 = appCore.getScaleConnector()->sendImmediateWeightCurrentUnitCommand();
+    // bool result299 = appCore.getScaleConnector()->startContinuousTransmissionBasicUnit();
+    // bool result2999 = appCore.getScaleConnector()->stopContinuousTransmissionBasicUnit();
+    // bool result21 = appCore.getScaleConnector()->startContinuousTransmissionCurrentUnit();
+    // bool result22 = appCore.getScaleConnector()->stopContinuousTransmissionCurrentUnit();
+
+    auto m_controlDialog = new RadwagControlDialog(appCore.getScaleConnector(), this);
+
+    m_controlDialog->show();
+    m_controlDialog->raise();
+    m_controlDialog->activateWindow();
+
+}
+

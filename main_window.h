@@ -40,6 +40,8 @@ private slots:
 
     void onMainPageChanged(int index);
 
+    void on_pushButton_clicked();
+    void on_pushButton_3_clicked();
 private:
     void updateActionIcons(int index);
     void updateConnectonLabelsStatusBar(bool connectionStatus);

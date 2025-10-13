@@ -541,7 +541,7 @@
                </size>
               </property>
               <property name="currentIndex">
-               <number>9</number>
+               <number>0</number>
               </property>
               <widget class="QWidget" name="pageStartMeasure">
                <layout class="QVBoxLayout" name="verticalLayout_12">
@@ -661,6 +661,20 @@ a następnie wykonaj poniższe kroki:</string>
                     </widget>
                    </item>
                   </layout>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QPushButton" name="pushButton">
+                  <property name="text">
+                   <string>connect</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QPushButton" name="pushButton_3">
+                  <property name="text">
+                   <string>Tare</string>
+                  </property>
                  </widget>
                 </item>
                 <item>
@@ -2847,7 +2861,7 @@ umieszczając ją w komorze próźniowej na czas zaniku ostatniego pęcherzyka</
                     <rect>
                      <x>0</x>
                      <y>0</y>
-                     <width>983</width>
+                     <width>750</width>
                      <height>1206</height>
                     </rect>
                    </property>
@@ -4777,7 +4791,7 @@ umieszczając ją w komorze próźniowej na czas zaniku ostatniego pęcherzyka</
                    <property name="geometry">
                     <rect>
                      <x>0</x>
-                     <y>-501</y>
+                     <y>0</y>
                      <width>985</width>
                      <height>1275</height>
                     </rect>
