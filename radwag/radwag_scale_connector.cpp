@@ -62,8 +62,11 @@ bool RadwagScaleConnector::stopContinuousTransmissionCurrentUnit() const
     return sendCommand("CU0\r\n");
 }
 
+#include <QCoreApplication>
+
 void RadwagScaleConnector::dataReceived(const QByteArray &deviceData)
 {
+    RadwagLogger::logRawData(deviceData, QCoreApplication::applicationDirPath() + "/logs/dataReceived.log");
     QString hexData;
     for(char c : deviceData)
         hexData += QString("0x%1 ").arg((quint8)c, 2, 16, QLatin1Char('0'));
@@ -120,6 +123,9 @@ void RadwagScaleConnector::processCompleteLine(const QByteArray &lineData)
     if(lineData.isEmpty())
         return;
 
+    RadwagLogger::logRawData(lineData, QCoreApplication::applicationDirPath() + "/logs/processCompleteLine.log");
+
+    // Usuń wszelkie białe znaki z końca, ale zachowaj dane
     QString data = QString::fromUtf8(lineData).trimmed();
     qDebug() << "Po konwersji i przycinaniu:" << data;
 
@@ -127,6 +133,8 @@ void RadwagScaleConnector::processCompleteLine(const QByteArray &lineData)
         return;
 
     RadwagMeasure measure(lineData);
+    RadwagLogger::logParsedMeasure(measure, QCoreApplication::applicationDirPath() + "/logs/dataReceived.log");
+
     if(measure.getValue() != 0.0 || !measure.getUnitString().isEmpty())
     {
         qDebug() << "Pomiar:" << measure.getValue() << measure.getUnitString() << (measure.isStable() ? "(stabilny)" : "(niestabilny)");

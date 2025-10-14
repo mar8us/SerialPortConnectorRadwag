@@ -190,6 +190,166 @@ void RadwagMeasure::setStable(bool stable)
 }
 
 
+namespace RadwagLogger
+{
+// Statyczne zmienne wewnętrzne
+static QString s_defaultLogPath;
+static bool s_loggingEnabled = false;
+
+void setDefaultLogPath(const QString& path)
+{
+    s_defaultLogPath = path;
+
+    // Utwórz katalog jeśli nie istnieje
+    QFileInfo fileInfo(path);
+    QDir dir = fileInfo.absoluteDir();
+    if(!dir.exists())
+    {
+        dir.mkpath(".");
+        qDebug() << "Utworzono katalog dla logów:" << dir.absolutePath();
+    }
+}
+
+QString getDefaultLogPath()
+{
+    if(s_defaultLogPath.isEmpty())
+    {
+        QString logDir = QDir::currentPath() + "/logs";
+        QDir().mkpath(logDir);
+        QString timestamp = QDateTime::currentDateTime().toString("yyyyMMdd_HHmmss");
+        s_defaultLogPath = logDir + "/radwag_" + timestamp + ".log";
+    }
+    return s_defaultLogPath;
+}
+
+void enableLogging(bool enable)
+{
+    s_loggingEnabled = enable;
+    if(enable)
+        qDebug() << "Logowanie Radwag włączone. Plik:" << getDefaultLogPath();
+    else
+        qDebug() << "Logowanie Radwag wyłączone.";
+}
+
+bool isLoggingEnabled()
+{
+    return s_loggingEnabled;
+}
+
+
+void logRawData(const QByteArray& rawData, const QString& filePath)
+{
+    if(!s_loggingEnabled)
+        return;
+
+    QString logPath = filePath.isEmpty() ? getDefaultLogPath() : filePath;
+
+    QFile logFile(logPath);
+    if(!logFile.open(QIODevice::WriteOnly | QIODevice::Append | QIODevice::Text))
+    {
+        qWarning() << "Nie można otworzyć pliku logowania:" << logPath;
+        qWarning() << "Błąd:" << logFile.errorString();
+        return;
+    }
+
+    QTextStream out(&logFile);
+
+    QString timestamp = QDateTime::currentDateTime().toString("yyyy-MM-dd HH:mm:ss.zzz");
+
+    out << "========================================\n";
+    out << "[RAW DATA RECEIVED]\n";
+    out << "TIMESTAMP: " << timestamp << "\n";
+    out << "----------------------------------------\n";
+
+    // RAW DATA - HEX
+    out << "HEX: ";
+    for(int i = 0; i < rawData.size(); i++)
+    {
+        unsigned char byte = (unsigned char)rawData[i];
+        out << QString("%1").arg(byte, 2, 16, QChar('0')).toUpper();
+        if(i < rawData.size() - 1)
+            out << " ";
+    }
+    out << "\n";
+
+    // RAW DATA - ASCII/readable
+    out << "ASCII: ";
+    for(int i = 0; i < rawData.size(); i++)
+    {
+        unsigned char c = (unsigned char)rawData[i];
+        if(c >= 32 && c < 127)
+            out << QChar(c);
+        else
+            out << QString("[%1]").arg(c, 2, 16, QChar('0')).toUpper();
+    }
+    out << "\n";
+
+    out << "SIZE: " << rawData.size() << " bytes\n";
+    out << "========================================\n\n";
+
+    logFile.close();
+}
+
+void logParsedMeasure(const RadwagMeasure& measure, const QString& filePath)
+{
+    if(!s_loggingEnabled)
+        return;
+
+    QString logPath = filePath.isEmpty() ? getDefaultLogPath() : filePath;
+
+    QFile logFile(logPath);
+    if(!logFile.open(QIODevice::WriteOnly | QIODevice::Append | QIODevice::Text))
+    {
+        qWarning() << "Nie można otworzyć pliku logowania:" << logPath;
+        qWarning() << "Błąd:" << logFile.errorString();
+        return;
+    }
+
+    QTextStream out(&logFile);
+
+    QString timestamp = QDateTime::currentDateTime().toString("yyyy-MM-dd HH:mm:ss.zzz");
+
+    out << "========================================\n";
+    out << "[PARSED MEASUREMENT]\n";
+    out << "TIMESTAMP: " << timestamp << "\n";
+    out << "----------------------------------------\n";
+
+    // RAW DATA z pomiaru
+    const QByteArray& rawData = measure.getData();
+    out << "RAW HEX: ";
+    for(int i = 0; i < rawData.size(); i++)
+    {
+        unsigned char byte = (unsigned char)rawData[i];
+        out << QString("%1").arg(byte, 2, 16, QChar('0')).toUpper();
+        if(i < rawData.size() - 1)
+            out << " ";
+    }
+    out << "\n";
+
+    out << "RAW ASCII: ";
+    for(int i = 0; i < rawData.size(); i++)
+    {
+        unsigned char c = (unsigned char)rawData[i];
+        if(c >= 32 && c < 127)
+            out << QChar(c);
+        else
+            out << QString("[%1]").arg(c, 2, 16, QChar('0')).toUpper();
+    }
+    out << "\n";
+
+    out << "----------------------------------------\n";
+
+    // PARSED VALUES
+    out << "VALUE: " << QString::number(measure.getValue(), 'f', 4) << "\n";
+    out << "VALUE (scientific): " << QString::number(measure.getValue(), 'e', 10) << "\n";
+    out << "UNIT: " << measure.getUnitString() << "\n";
+    out << "STABLE: " << (measure.isStable() ? "YES" : "NO") << "\n";
+    out << "========================================\n\n";
+
+    logFile.close();
+}
+}
+
 // #include "radwag_measure.h"
 
 // RadwagMeasure::RadwagMeasure(const QByteArray& rawData) : DeviceData(rawData)
