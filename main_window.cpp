@@ -3,11 +3,11 @@
 
 #include <QMessageBox>
 
+#include "radwag/radwagcontroldialog.h"
 #include "sieveAnalysis/sieve_analysis_stages.h"
 #include "tooltip/tooltip_manager.h"
 #include "radwag/measurement.h"
 #include "app_core.h"
-#include "utils.h"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -25,12 +25,13 @@ MainWindow::MainWindow(QWidget *parent)
     hydrostaticMeasurementModule.initialize();
     sieveAnalysisModule.initialize();
 
-    // tooltip i.e
     TooltipManager& tooltipManager = TooltipManager::getInstance();
     tooltipManager.setGlobalStyle("QToolTip { background-color: #2C3E50; color: white; }");
     tooltipManager.registerImage("info", ":/icons/image.jpg", 424, 424);
     tooltipManager.registerTooltip(ui->buttonDryMassExecuteStepOne, ui->buttonDryMassExecuteStepOne->text(), "Wyzeruj wagę wskazanym na ilustracji przyciskiem", "info", TooltipManager::IMAGE_BOTTOM);
 
+    // ui->pushButton_3->setVisible(false);
+    // ui->pushButton->setVisible(false);
     showMaximized();
 }
 

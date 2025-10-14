@@ -1,6 +1,14 @@
 #include "radwag_measure.h"
 #include <QRegularExpression>
+#include <qdatetime.h>
+#include <qobject.h>
+#include <qserialport.h>
 
+#include <QFile>
+
+#include <QFileInfo>
+
+#include <QDir>
 
 RadwagMeasure::RadwagMeasure(const QByteArray& rawData)
     : DeviceData(rawData), _value(0.0), _unitStr(""), _unit(Unit::Unknown), _stable(false)
@@ -18,33 +26,50 @@ bool RadwagMeasure::parse()
     if(rawData.isEmpty())
         return false;
 
-    QString data = QString::fromLatin1(rawData).trimmed();
+    // Użyj UTF-8 dla spójności
+    QString data = QString::fromUtf8(rawData).trimmed();
 
     if(parseFlexibly(data))
         return true;
-
-    return parseStrictFormat(rawData);
+    return true;
+    //return parseStrictFormat(rawData);
 }
 
 bool RadwagMeasure::parseFlexibly(const QString &data)
 {
-    QRegularExpression rxFloat("([+-]?\\d+\\.\\d+)");
-    QRegularExpressionMatch match = rxFloat.match(data);
+    // Format Radwag: "4,321[2]g" gdzie [2] to dodatkowa cyfra po przecinku
+    // Regex: wartość (z przecinkiem lub kropką) + opcjonalna cyfra w [nawiasach]
+    QRegularExpression rxRadwag("([+-]?\\d+[,\\.]\\d+)(?:\\[(\\d)\\])?");
+    QRegularExpressionMatch match = rxRadwag.match(data);
 
     if(match.hasMatch())
     {
-        QString valueStr = match.captured(1);
+        QString valueStr = match.captured(1);        // np. "4,321"
+        QString extraDigit = match.captured(2);      // np. "2" (może być pusty)
+
+        // Zamień przecinek na kropkę dla toDouble()
+        valueStr.replace(',', '.');
+
+        // Jeśli jest dodatkowa cyfra w [nawiasach], dołącz ją do wartości
+        if(!extraDigit.isEmpty())
+        {
+            valueStr += extraDigit;  // "4.321" + "2" = "4.3212"
+        }
+
         bool conversionOk;
         double parsedValue = valueStr.toDouble(&conversionOk);
+
         if(!conversionOk)
             return false;
+
         _value = parsedValue;
 
-        // Znajdź jednostkę - zwykle zaraz po wartości liczbowej
-        int valuePos = data.indexOf(valueStr) + valueStr.length();
+        // Znajdź jednostkę - może być po nawiasach lub bezpośrednio po wartości
+        // Szukaj od pozycji po całym dopasowaniu (wartość + ewentualne [n])
+        int searchStart = data.indexOf(match.captured(0)) + match.captured(0).length();
 
         // Pomiń białe znaki
-        int unitStart = valuePos;
+        int unitStart = searchStart;
         while(unitStart < data.length() && data.at(unitStart).isSpace())
             unitStart++;
 
@@ -55,78 +80,120 @@ bool RadwagMeasure::parseFlexibly(const QString &data)
             int maxUnitChars = qMin(3, data.length() - unitStart);
             for(int i = 0; i < maxUnitChars; i++)
             {
-                if(data.at(unitStart + i).isSpace() || data.at(unitStart + i) == '\r' || data.at(unitStart + i) == '\n')
+                if(unitStart + i >= data.length())
                     break;
+
+                QChar ch = data.at(unitStart + i);
+                if(ch.isSpace() || ch == '\r' || ch == '\n')
+                    break;
+
                 unitEnd++;
             }
-            _unitStr = data.mid(unitStart, unitEnd - unitStart);
+
+            _unitStr = data.mid(unitStart, unitEnd - unitStart).trimmed();
             _unit = parseUnitFromString(_unitStr);
         }
 
         // Sprawdź stabilność (brak znaku zapytania oznacza stabilność)
-        _stable = !data.contains("?");
+        _stable = !data.contains("?") && !data.contains("~");
+
         return true;
     }
+
     return false;
 }
 
-bool RadwagMeasure::parseStrictFormat(const QByteArray &data)
+bool RadwagMeasure::parseFlexibly2(const QString &data)
 {
-    // Format według dokumentacji:
-    // 1 – 3 4 5 6 7 8 – 16 17 18 - 20 21 22
-    // Rozkaz spacja znak_stabilności spacja znak Masa spacja jednostka CRLF
+    qDebug() << "=== PARSOWANIE RADWAG ===";
+    qDebug() << "Dane wejściowe:" << data;
 
-    if (data.size() < 14)
-        return false;
+    // Format Radwag: "3,321[4]g" gdzie [4] to dodatkowa cyfra po przecinku
+    // Regex: wartość + opcjonalna cyfra w nawiasach + jednostka
+    QRegularExpression rxRadwag("([+-]?\\d+[\\.,]\\d+)\\[(\\d)\\]\\s*(\\w*)");
+    QRegularExpressionMatch match = rxRadwag.match(data);
 
-    _stable = (data.at(4) == ' '); // spacja oznacza stabilny, '?' oznacza niestabilny
-
-    // Pomijamy rozkaz i znaki kontrolne, szukamy wartości masowej
-    // Typowo masa jest w pozycjach 8-16
-    bool foundValue = false;
-
-    for(int i = 6; i < data.size() - 5; i++)
+    if(match.hasMatch())
     {
-        if(isdigit(data.at(i)) || data.at(i) == '.')
+        QString valueStr = match.captured(1);        // "3,321"
+        QString extraDigit = match.captured(2);      // "4"
+        QString unitStr = match.captured(3);         // "g"
+
+        qDebug() << "Dopasowano format Radwag:";
+        qDebug() << "  Wartość podstawowa:" << valueStr;
+        qDebug() << "  Dodatkowa cyfra [n]:" << extraDigit;
+        qDebug() << "  Jednostka:" << unitStr;
+
+        // Zamień przecinek na kropkę
+        valueStr.replace(',', '.');
+
+        // POŁĄCZ wartość z dodatkową cyfrą: "3.321" + "4" = "3.3214"
+        QString fullValueStr = valueStr + extraDigit;
+
+        qDebug() << "  Pełna wartość (string):" << fullValueStr;
+
+        bool conversionOk;
+        double parsedValue = fullValueStr.toDouble(&conversionOk);
+
+        if(!conversionOk)
         {
-            // Szukaj końca liczby
-            int j = i;
-            while(j < data.size() && (isdigit(data.at(j)) || data.at(j) == '.'))
-                j++;
-
-            QString massStr = QString::fromLatin1(data.mid(i, j-i));
-            bool conversionOk;
-            double parsedValue = massStr.toDouble(&conversionOk);
-
-            if (conversionOk)
-            {
-                _value = parsedValue;
-                foundValue = true;
-
-                // Szukaj jednostki po wartości liczbowej
-                int unitPos = j;
-                while(unitPos < data.size() && data.at(unitPos) == ' ')
-                    unitPos++;
-
-                // Pobierz jednostkę (do 3 znaków)
-                int unitEnd = unitPos;
-                while(unitEnd < qMin(unitPos + 3, data.size()) &&
-                       data.at(unitEnd) != ' ' &&
-                       data.at(unitEnd) != '\r' &&
-                       data.at(unitEnd) != '\n')
-                {
-                    unitEnd++;
-                }
-
-                _unitStr = QString::fromLatin1(data.mid(unitPos, unitEnd - unitPos));
-                _unit = parseUnitFromString(_unitStr);
-                break;
-            }
+            qDebug() << "BŁĄD: Nie udało się skonwertować" << fullValueStr << "na double";
+            return false;
         }
+
+        _value = parsedValue;
+        _unitStr = unitStr;
+        _unit = parseUnitFromString(_unitStr);
+        _stable = !data.contains("?") && !data.contains("~");
+
+        qDebug() << "=== WYNIK ===";
+        qDebug() << "Wartość:" << QString::number(_value, 'f', 4);
+        qDebug() << "Jednostka:" << _unitStr;
+        qDebug() << "Stabilność:" << (_stable ? "TAK" : "NIE");
+
+        return true;
     }
 
-    return foundValue;
+    // Fallback - format bez dodatkowej cyfry (starsze wagi lub inne tryby)
+    QRegularExpression rxSimple("([+-]?\\d+[\\.,]\\d+)\\s*(\\w*)");
+    match = rxSimple.match(data);
+
+    if(match.hasMatch())
+    {
+        qDebug() << "Dopasowano prosty format (bez [n]):";
+        QString valueStr = match.captured(1);
+        QString unitStr = match.captured(2);
+
+        valueStr.replace(',', '.');
+
+        qDebug() << "  Wartość:" << valueStr;
+        qDebug() << "  Jednostka:" << unitStr;
+
+        bool conversionOk;
+        double parsedValue = valueStr.toDouble(&conversionOk);
+
+        if(!conversionOk)
+        {
+            qDebug() << "BŁĄD: Konwersja nie powiodła się";
+            return false;
+        }
+
+        _value = parsedValue;
+        _unitStr = unitStr;
+        _unit = parseUnitFromString(_unitStr);
+        _stable = !data.contains("?");
+
+        qDebug() << "=== WYNIK ===";
+        qDebug() << "Wartość:" << QString::number(_value, 'f', 4);
+        qDebug() << "Jednostka:" << _unitStr;
+
+        return true;
+    }
+
+    qDebug() << "BŁĄD: Nie udało się sparsować danych";
+    return false;
 }
+
 
 RadwagMeasure::Unit RadwagMeasure::parseUnitFromString(const QString &unitStr)
 {
@@ -149,8 +216,8 @@ RadwagMeasure::Unit RadwagMeasure::parseUnitFromString(const QString &unitStr)
 // Gettery i settery
 double RadwagMeasure::getValue(int precision) const
 {
-    double factor = std::pow(10.0, precision);
-    return std::round(_value * factor) / factor;
+    //double factor = std::pow(10.0, precision);
+    return _value;//std::round(_value * factor) / factor;
 }
 
 void RadwagMeasure::setValue(double value)

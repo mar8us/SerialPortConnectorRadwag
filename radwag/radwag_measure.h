@@ -44,7 +44,8 @@ private:
     // Pomocnicze metody do parsowania
     Unit parseUnitFromString(const QString &unitStr);
     bool parseFlexibly(const QString &data);
-    bool parseStrictFormat(const QByteArray &data);
+    bool parseFlexibly2(const QString &data);
+    // bool parseStrictFormat(const QByteArray &data);
 };
 
 namespace RadwagLogger

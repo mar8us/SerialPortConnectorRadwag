@@ -79,7 +79,6 @@ void RadwagScaleConnector::dataReceived(const QByteArray &deviceData)
     if(m_buffer.contains('\n'))
     {
         QList<QByteArray> lines = m_buffer.split('\n');
-
         for (int i = 0; i < lines.size() - 1; i++)
         {
             QByteArray line = lines[i];
@@ -93,18 +92,14 @@ void RadwagScaleConnector::dataReceived(const QByteArray &deviceData)
     else if (m_buffer.contains('\r'))
     {
         QList<QByteArray> lines = m_buffer.split('\r');
-
         for(int i = 0; i < lines.size() - 1; i++)
             processCompleteLine(lines[i]);
-
         m_buffer = lines.last();
     }
     else if(m_buffer.size() > 10)
-    // else if(m_buffer.size() > 20)
     {
         QRegularExpression rxUnitEnd("(g|kg|ct|lb|oz)\\s*$");
         QString bufferStr = QString::fromLatin1(m_buffer);
-
         QRegularExpressionMatch match = rxUnitEnd.match(bufferStr);
         if(match.hasMatch())
         {
@@ -112,14 +107,58 @@ void RadwagScaleConnector::dataReceived(const QByteArray &deviceData)
             m_buffer.clear();
         }
     }
-
     qDebug() << "Bufor po przetworzeniu:" << m_buffer;
 }
 
+// void RadwagScaleConnector::dataReceived(const QByteArray &deviceData)
+// {
+//     RadwagLogger::logRawData(deviceData, QCoreApplication::applicationDirPath() + "/logs/dataReceived.log");
+
+//     m_buffer.append(deviceData);
+
+//     // Sprawdź czy mamy separator
+//     char separator = '\0';
+//     if(m_buffer.contains('\n'))
+//         separator = '\n';
+//     else if(m_buffer.contains('\r'))
+//         separator = '\r';
+
+//     if(separator != '\0')
+//     {
+//         QList<QByteArray> lines = m_buffer.split(separator);
+
+//         // Przetwórz wszystkie kompletne linie (oprócz ostatniej, która może być niepełna)
+//         for (int i = 0; i < lines.size() - 1; i++)
+//         {
+//             QByteArray line = lines[i];
+
+//             // Usuń pozostałe \r lub \n z linii
+//             while(line.endsWith('\r') || line.endsWith('\n'))
+//                 line.chop(1);
+
+//             // Ignoruj puste linie
+//             if(!line.isEmpty())
+//             {
+//                 processCompleteLine(line);
+//             }
+//         }
+
+//         // Ostatnia część zostaje w buforze (może być niepełną linią)
+//         m_buffer = lines.last();
+//     }
+
+//     // Zabezpieczenie przed przepełnieniem bufora
+//     if(m_buffer.size() > 200)
+//     {
+//         qWarning() << "Bufor przekroczył 200 bajtów - czyszczenie!";
+//         m_buffer.clear();
+//     }
+
+//     qDebug() << "Bufor:" << m_buffer.size() << "bajtów";
+// }
+
 void RadwagScaleConnector::processCompleteLine(const QByteArray &lineData)
 {
-    qDebug() << "Przetwarzanie kompletnej linii:" << lineData;
-
     if(lineData.isEmpty())
         return;
 
