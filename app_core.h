@@ -10,7 +10,7 @@ public:
     AppCore();;
     ~AppCore();
 
-    void connectScale(const QString& port, const std::shared_ptr<const Device>& device);
+    bool connectScale(const QString& port, const std::shared_ptr<const Device>& device);
     void disconnectScale();
 
     bool hasConnectionWithScale() const;

@@ -13,13 +13,13 @@ AppCore::~AppCore()
 
 }
 
-void AppCore::connectScale(const QString& port, const std::shared_ptr<const Device>& device)
+bool AppCore::connectScale(const QString& port, const std::shared_ptr<const Device>& device)
 {
     if(radwagScaleConnector)
         disconnectScale();
 
     radwagScaleConnector->setActiveDevice(device);
-    radwagScaleConnector->connectDevice(port);
+    return radwagScaleConnector->connectDevice(port);
 }
 
 void AppCore::disconnectScale()
