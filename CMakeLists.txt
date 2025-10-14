@@ -94,6 +94,8 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         themes/dark/darkstyle.qrc
         themes/light/lightstyle.qrc
         config.h
+        radwag/radwagcontroldialog.h radwag/radwagcontroldialog.cpp radwag/radwagcontroldialog.ui
+
 
 
 
