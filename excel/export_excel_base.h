@@ -40,6 +40,10 @@ public:
     void setColumnWidths(int fromColumn, int toColumn, double width);
     double getColumnWidth(int column) const;
 
+    void setRowHeight(int row, double height);
+    void setRowHeights(int fromRow, int toRow, double height);
+    double getRowHeight(int row) const;
+
     double calculateTextWidth(const QString& text, const QFont& font = QFont()) const;
     int calculateRequiredCells(const QString& text, const QFont& font = QFont(), double cellWidth = COL_WIDTH) const;
 

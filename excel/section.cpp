@@ -1,6 +1,8 @@
 #include "section_excel.h"
 #include "measurement_exporter.h"
 
+static const int MAX_CELL_MERGE = 5;
+
 Section::Section(const QString& title, const QXlsx::Format &titleFormat, MeasurementExporter *exporter, int startRow, int startCol)
     : m_title(title)
     , m_startRow(startRow)
@@ -134,7 +136,7 @@ QVector<int> Section::calculateColumnWidths() const
                 maxWidth = qMax(maxWidth, requiredWidth);
             }
         }
-        columnWidths[col] = maxWidth;
+        columnWidths[col] = qMin(maxWidth, MAX_CELL_MERGE);
     }
     return columnWidths;
 }
@@ -180,12 +182,22 @@ void Section::renderData(const QVector<int>& columnWidths)
     for(int row = 0; row < m_data.size(); row++)
     {
         int currentCol = m_startCol;
+        bool needsWrapping = false;
 
         for(int col = 0; col < m_data[row].size() && col < columnWidths.size(); col++)
         {
             QVariant cellValue = m_data[row][col];
             QXlsx::Format cellFormat = getFormat(row, col);
             int mergeWidth = columnWidths[col];
+
+            QString text = cellValue.toString();
+            int requiredWidth = m_exporter->calculateRequiredMergeCells(text, cellFormat.font());
+
+            if(requiredWidth > MAX_CELL_MERGE)
+            {
+                cellFormat.setTextWrap(true);
+                needsWrapping = true;
+            }
 
             m_exporter->writeValue(m_exporter->getCurrentRow(), currentCol, cellValue, cellFormat);
 
@@ -194,6 +206,9 @@ void Section::renderData(const QVector<int>& columnWidths)
 
             currentCol += mergeWidth;
         }
+
+        if(needsWrapping)
+            m_exporter->setRowHeight(m_exporter->getCurrentRow(), 30.0);
 
         m_exporter->moveToNextRow();
     }

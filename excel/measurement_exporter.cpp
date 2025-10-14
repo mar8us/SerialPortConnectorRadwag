@@ -150,6 +150,8 @@ SectionRange MeasurementExporter::exportGeneralDataSection(const Measurement* me
     int authorRow = generalSection.addRow({"Wykonawca:", measurement->getAuthor()});
     int dateRow = generalSection.addRow({"Data/godzina:", measurement->getDate().toString("dd-MM-yyyy hh:mm")});
 
+    int commentRow = generalSection.addRow({"Komentarze:", measurement->getComments()});
+
     generalSection.setCellFormat(dateRow, VALUE_COL, getDateTimeFormat());
 
     generalSection.render();
@@ -245,7 +247,7 @@ SectionRange MeasurementExporter::exportMeasurementTableSection(const QList<cons
     QVariantList headerRow;
     headerRow << "Parametr";
     for(int i = 0; i < measurements.size(); i++)
-        headerRow << QString("Pomiar %1 %2").arg(i + 1).arg(measurements[i]->getDate().toString("dd-MM-yyyy hh:mm"));
+        headerRow << QString("Pomiar %1 %2 %3").arg(i + 1).arg(" (" + measurements[i]->getSampleName() + ") ").arg(measurements[i]->getDate().toString("dd-MM-yyyy hh:mm"));
     int headerRowIndex = tableSection.addRow(headerRow);
 
     QVariantList dryMassRow;
