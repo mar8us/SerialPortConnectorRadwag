@@ -42,7 +42,7 @@ private:
     bool _stable;
 
     Unit parseUnitFromString(const QString &unitStr);
-    bool parse(const QString &data);
+    bool parseFlexibly(const QByteArray &data);
 };
 
 namespace RadwagLogger

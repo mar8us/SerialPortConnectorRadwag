@@ -26,172 +26,195 @@ bool RadwagMeasure::parse()
     if(rawData.isEmpty())
         return false;
 
-    // Użyj UTF-8 dla spójności
-    QString data = QString::fromUtf8(rawData).trimmed();
+    return parseFlexibly(rawData);
+}
 
-    if(parseFlexibly(data))
-        return true;
+bool RadwagMeasure::parseFlexibly(const QByteArray &data)
+{
+    // Reset wartości
+    _value = 0.0;
+    _unitStr.clear();
+    _unit = Unit::Unknown;
+    _stable = true;  // Domyślnie stabilny, dopóki nie znajdziemy ?, ^, v
+
+    // Format Radwag wg dokumentacji:
+    // [Rozkaz][spacja][znak stabilności][spacja][znak][Masa][spacja][jednostka][CR][LF]
+    //
+    // Przykłady:
+    // "SI       9.988[5] g"     - SI + spacja + stabilność + spacja + znak + masa + jednostka
+    // "SUI   -   4.333[5] g"    - SUI + spacja + stabilność + spacja + minus + masa + jednostka
+    // "      4.333[5] g"        - bez rozkazu, same spacje
+
+    int pos = 0;
+    int len = data.size();
+
+    // KROK 1: Parsuj ROZKAZ (SI, SUI, SU, S, C1, CU1)
+    // Rozkazy mogą mieć 1-3 znaki
+    if(data.startsWith("SUI"))
+    {
+        pos = 3;
+    }
+    else if(data.startsWith("SI"))
+    {
+        pos = 2;
+    }
+    else if(data.startsWith("SU"))
+    {
+        pos = 2;
+    }
+    else if(data.startsWith("C1") || data.startsWith("CU"))
+    {
+        pos = 2;
+        if(pos < len && data[pos] == '1')
+            pos = 3;  // CU1
+    }
+    else if(data.startsWith("S"))
+    {
+        pos = 1;
+    }
+    // Jeśli nie ma rozkazu, pos = 0
+
+    // KROK 2: Pomiń SPACJĘ po rozkazie
+    if(pos < len && data[pos] == ' ')
+        pos++;
+
+    // KROK 3: Sprawdź ZNAK STABILNOŚCI
+    // [spacja] = stabilny
+    // [?] = niestabilny
+    // [^] = overflow dodatni
+    // [v] = overflow ujemny
+    if(pos < len)
+    {
+        char stabilityChar = data[pos];
+        if(stabilityChar == '?')
+        {
+            _stable = false;
+            pos++;
+        }
+        else if(stabilityChar == '^')
+        {
+            _stable = false;  // Overflow to też niestabilność
+            pos++;
+        }
+        else if(stabilityChar == 'v')
+        {
+            _stable = false;  // Overflow to też niestabilność
+            pos++;
+        }
+        else if(stabilityChar == ' ')
+        {
+            _stable = true;
+            pos++;
+        }
+        // Jeśli nie ma tego znaku, zakładamy stabilny
+    }
+
+    // KROK 4: Pomiń SPACJĘ po znaku stabilności
+    if(pos < len && data[pos] == ' ')
+        pos++;
+
+    // KROK 5: Sprawdź ZNAK wartości (+/-)
+    // [spacja] lub [+] = dodatnia
+    // [-] = ujemna
+    bool isNegative = false;
+    if(pos < len)
+    {
+        char signChar = data[pos];
+        if(signChar == '-')
+        {
+            isNegative = true;
+            pos++;
+        }
+        else if(signChar == '+' || signChar == ' ')
+        {
+            isNegative = false;
+            pos++;
+        }
+        // Jeśli nie ma znaku, zakładamy dodatnią
+    }
+
+    // KROK 6: Pomiń dodatkowe spacje przed MASĄ
+    while(pos < len && (data[pos] == ' ' || data[pos] == '\t'))
+        pos++;
+
+    // KROK 7: Parsuj MASĘ (wartość numeryczną)
+    QByteArray valueBytes;
+    bool hasDigit = false;
+
+    // Zbieraj cyfry, kropki, przecinki
+    while(pos < len)
+    {
+        char ch = data[pos];
+
+        if(ch >= '0' && ch <= '9')
+        {
+            valueBytes.append(ch);
+            hasDigit = true;
+            pos++;
+        }
+        else if(ch == '.' || ch == ',')
+        {
+            valueBytes.append('.');  // Normalizuj przecinek na kropkę
+            pos++;
+        }
+        else
+            break;  // Koniec wartości numerycznej
+    }
+
+    if(!hasDigit)
+        return false;  // Brak wartości numerycznej
+
+    // KROK 8: Sprawdź czy jest dodatkowa cyfra w nawiasach [n]
+    if(pos < len && data[pos] == '[')
+    {
+        pos++;  // Pomiń '['
+
+        // Pobierz cyfrę
+        if(pos < len && data[pos] >= '0' && data[pos] <= '9')
+        {
+            valueBytes.append(data[pos]);
+            pos++;
+        }
+
+        // Pomiń ']'
+        if(pos < len && data[pos] == ']')
+            pos++;
+    }
+
+    // Konwertuj wartość na double
+    bool conversionOk;
+    _value = valueBytes.toDouble(&conversionOk);
+
+    if(!conversionOk)
+        return false;
+
+    // Zastosuj znak ujemny jeśli był wykryty
+    if(isNegative)
+        _value = -_value;
+
+    // KROK 9: Pomiń SPACJĘ przed jednostką
+    while(pos < len && (data[pos] == ' ' || data[pos] == '\t'))
+        pos++;
+
+    // KROK 10: Zbierz JEDNOSTKĘ (tylko litery, max 3 znaki)
+    QByteArray unitBytes;
+    while(pos < len && unitBytes.size() < 3)
+    {
+        char ch = data[pos];
+
+        if((ch >= 'a' && ch <= 'z') || (ch >= 'A' && ch <= 'Z'))
+        {
+            unitBytes.append(ch);
+            pos++;
+        }
+        else
+            break;
+    }
+
+    _unitStr = QString::fromLatin1(unitBytes);
+    _unit = parseUnitFromString(_unitStr);
+
     return true;
-    //return parseStrictFormat(rawData);
-}
-
-bool RadwagMeasure::parseFlexibly(const QString &data)
-{
-    // Format Radwag: "4,321[2]g" gdzie [2] to dodatkowa cyfra po przecinku
-    // Regex: wartość (z przecinkiem lub kropką) + opcjonalna cyfra w [nawiasach]
-    QRegularExpression rxRadwag("([+-]?\\d+[,\\.]\\d+)(?:\\[(\\d)\\])?");
-    QRegularExpressionMatch match = rxRadwag.match(data);
-
-    if(match.hasMatch())
-    {
-        QString valueStr = match.captured(1);        // np. "4,321"
-        QString extraDigit = match.captured(2);      // np. "2" (może być pusty)
-
-        // Zamień przecinek na kropkę dla toDouble()
-        valueStr.replace(',', '.');
-
-        // Jeśli jest dodatkowa cyfra w [nawiasach], dołącz ją do wartości
-        if(!extraDigit.isEmpty())
-        {
-            valueStr += extraDigit;  // "4.321" + "2" = "4.3212"
-        }
-
-        bool conversionOk;
-        double parsedValue = valueStr.toDouble(&conversionOk);
-
-        if(!conversionOk)
-            return false;
-
-        _value = parsedValue;
-
-        // Znajdź jednostkę - może być po nawiasach lub bezpośrednio po wartości
-        // Szukaj od pozycji po całym dopasowaniu (wartość + ewentualne [n])
-        int searchStart = data.indexOf(match.captured(0)) + match.captured(0).length();
-
-        // Pomiń białe znaki
-        int unitStart = searchStart;
-        while(unitStart < data.length() && data.at(unitStart).isSpace())
-            unitStart++;
-
-        // Pobierz znaki jednostki (do 3 znaków lub do białego znaku)
-        if(unitStart < data.length())
-        {
-            int unitEnd = unitStart;
-            int maxUnitChars = qMin(3, data.length() - unitStart);
-            for(int i = 0; i < maxUnitChars; i++)
-            {
-                if(unitStart + i >= data.length())
-                    break;
-
-                QChar ch = data.at(unitStart + i);
-                if(ch.isSpace() || ch == '\r' || ch == '\n')
-                    break;
-
-                unitEnd++;
-            }
-
-            _unitStr = data.mid(unitStart, unitEnd - unitStart).trimmed();
-            _unit = parseUnitFromString(_unitStr);
-        }
-
-        // Sprawdź stabilność (brak znaku zapytania oznacza stabilność)
-        _stable = !data.contains("?") && !data.contains("~");
-
-        return true;
-    }
-
-    return false;
-}
-
-bool RadwagMeasure::parseFlexibly2(const QString &data)
-{
-    qDebug() << "=== PARSOWANIE RADWAG ===";
-    qDebug() << "Dane wejściowe:" << data;
-
-    // Format Radwag: "3,321[4]g" gdzie [4] to dodatkowa cyfra po przecinku
-    // Regex: wartość + opcjonalna cyfra w nawiasach + jednostka
-    QRegularExpression rxRadwag("([+-]?\\d+[\\.,]\\d+)\\[(\\d)\\]\\s*(\\w*)");
-    QRegularExpressionMatch match = rxRadwag.match(data);
-
-    if(match.hasMatch())
-    {
-        QString valueStr = match.captured(1);        // "3,321"
-        QString extraDigit = match.captured(2);      // "4"
-        QString unitStr = match.captured(3);         // "g"
-
-        qDebug() << "Dopasowano format Radwag:";
-        qDebug() << "  Wartość podstawowa:" << valueStr;
-        qDebug() << "  Dodatkowa cyfra [n]:" << extraDigit;
-        qDebug() << "  Jednostka:" << unitStr;
-
-        // Zamień przecinek na kropkę
-        valueStr.replace(',', '.');
-
-        // POŁĄCZ wartość z dodatkową cyfrą: "3.321" + "4" = "3.3214"
-        QString fullValueStr = valueStr + extraDigit;
-
-        qDebug() << "  Pełna wartość (string):" << fullValueStr;
-
-        bool conversionOk;
-        double parsedValue = fullValueStr.toDouble(&conversionOk);
-
-        if(!conversionOk)
-        {
-            qDebug() << "BŁĄD: Nie udało się skonwertować" << fullValueStr << "na double";
-            return false;
-        }
-
-        _value = parsedValue;
-        _unitStr = unitStr;
-        _unit = parseUnitFromString(_unitStr);
-        _stable = !data.contains("?") && !data.contains("~");
-
-        qDebug() << "=== WYNIK ===";
-        qDebug() << "Wartość:" << QString::number(_value, 'f', 4);
-        qDebug() << "Jednostka:" << _unitStr;
-        qDebug() << "Stabilność:" << (_stable ? "TAK" : "NIE");
-
-        return true;
-    }
-
-    // Fallback - format bez dodatkowej cyfry (starsze wagi lub inne tryby)
-    QRegularExpression rxSimple("([+-]?\\d+[\\.,]\\d+)\\s*(\\w*)");
-    match = rxSimple.match(data);
-
-    if(match.hasMatch())
-    {
-        qDebug() << "Dopasowano prosty format (bez [n]):";
-        QString valueStr = match.captured(1);
-        QString unitStr = match.captured(2);
-
-        valueStr.replace(',', '.');
-
-        qDebug() << "  Wartość:" << valueStr;
-        qDebug() << "  Jednostka:" << unitStr;
-
-        bool conversionOk;
-        double parsedValue = valueStr.toDouble(&conversionOk);
-
-        if(!conversionOk)
-        {
-            qDebug() << "BŁĄD: Konwersja nie powiodła się";
-            return false;
-        }
-
-        _value = parsedValue;
-        _unitStr = unitStr;
-        _unit = parseUnitFromString(_unitStr);
-        _stable = !data.contains("?");
-
-        qDebug() << "=== WYNIK ===";
-        qDebug() << "Wartość:" << QString::number(_value, 'f', 4);
-        qDebug() << "Jednostka:" << _unitStr;
-
-        return true;
-    }
-
-    qDebug() << "BŁĄD: Nie udało się sparsować danych";
-    return false;
 }
 
 

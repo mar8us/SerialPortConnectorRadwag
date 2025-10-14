@@ -27,6 +27,7 @@ const QString COMMAND_UNAVAILABLE = "_I";
 const QString COMMAND_MAX_RANGE_EXCEEDED = "_^";
 const QString COMMAND_MIN_RANGE_EXCEEDED = "_v";
 const QString COMMAND_ERROR = "_E";
+const QString COMMAND_IN_PROGRESS = "_D";  // Komenda w trakcie wykonywania
 }
 
 class RadwagScaleConnector : public DeviceConnector
@@ -57,6 +58,7 @@ private:
     const QMap<QString, QString> errorDescriptions;
     bool parseCommandResponse(const QString &data);
     bool parseErrorCode(const QString &data);
+    QByteArray removeDuplicateChars(const QByteArray &data);
 
 signals:
     void radwagDataReady(const RadwagMeasure &data);
