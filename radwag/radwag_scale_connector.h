@@ -62,25 +62,5 @@ signals:
     void radwagDataReady(const RadwagMeasure &data);
 };
 
-namespace RadwagLogger
-{
-// Loguje surowe dane otrzymane z wagi
-void logRawData(const QByteArray& rawData, const QString& filePath);
-
-// Loguje sparsowany pomiar
-void logParsedMeasure(const RadwagMeasure& measure, const QString& filePath);
-
-// Ustawia domyślną ścieżkę do pliku logu
-void setDefaultLogPath(const QString& path);
-
-// Pobiera domyślną ścieżkę
-QString getDefaultLogPath();
-
-// Włącza/wyłącza logowanie
-void enableLogging(bool enable);
-
-// Sprawdza czy logowanie jest włączone
-bool isLoggingEnabled();
-}
 
 #endif // RADWAG_SCALE_CONNECTOR_H

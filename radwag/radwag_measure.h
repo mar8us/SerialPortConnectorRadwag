@@ -7,7 +7,8 @@
 class RadwagMeasure : public DeviceData
 {
 public:
-    enum class Unit {
+    enum class Unit
+    {
         Unknown,
         G,      // gram
         KG,     // kilogram
@@ -22,7 +23,6 @@ public:
     // Implementacja metody parse z klasy bazowej
     virtual bool parse() override;
 
-    // Gettery i settery
     double getValue(int precision = 4) const;
     void setValue(double value);
 
@@ -41,11 +41,8 @@ private:
     Unit _unit;
     bool _stable;
 
-    // Pomocnicze metody do parsowania
     Unit parseUnitFromString(const QString &unitStr);
-    bool parseFlexibly(const QString &data);
-    bool parseFlexibly2(const QString &data);
-    // bool parseStrictFormat(const QByteArray &data);
+    bool parse(const QString &data);
 };
 
 namespace RadwagLogger
