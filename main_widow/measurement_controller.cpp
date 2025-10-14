@@ -151,6 +151,26 @@ double MeasurementController::getFluidDensity()
     return measurement->getFluidDensity();
 }
 
+QString MeasurementController::getComments()
+{
+    if(!hasActiveMeasurement())
+        return QString();
+    return measurement->getComments();
+}
+
+bool MeasurementController::setComments(const QString &comments)
+{
+    if(!hasActiveMeasurement())
+        return false;
+
+    if(comments == measurement->getComments())
+        return true;
+
+    measurement->setComments(comments);
+    hasChanges = true;
+    return true;
+}
+
 bool MeasurementController::setMeasureStatus(MeasurementStatus status)
 {
     if(!hasActiveMeasurement() || static_cast<int>(status) <= static_cast<int>(measurement->getStatus()))

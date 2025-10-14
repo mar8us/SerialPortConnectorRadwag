@@ -3392,9 +3392,48 @@ umieszczając ją w komorze próźniowej na czas zaniku ostatniego pęcherzyka</
                           <bool>false</bool>
                          </property>
                          <property name="plainText">
-                          <string>Ujemna wartość porowatości całkowitej sugeruje, że gęstość teoretyczna materiału może być niedokładna lub zmierzona masa próbki zanurzonej jest obarczona błędem. Zaleca się powtórzenie pomiaru lub weryfikację danych teoretycznych.</string>
+                          <string/>
                          </property>
                         </widget>
+                       </item>
+                       <item>
+                        <layout class="QHBoxLayout" name="horizontalLayout_12">
+                         <property name="topMargin">
+                          <number>0</number>
+                         </property>
+                         <item>
+                          <spacer name="horizontalSpacer_5">
+                           <property name="orientation">
+                            <enum>Qt::Orientation::Horizontal</enum>
+                           </property>
+                           <property name="sizeHint" stdset="0">
+                            <size>
+                             <width>40</width>
+                             <height>20</height>
+                            </size>
+                           </property>
+                          </spacer>
+                         </item>
+                         <item>
+                          <widget class="QPushButton" name="buttonSaveCommentSecond">
+                           <property name="minimumSize">
+                            <size>
+                             <width>130</width>
+                             <height>30</height>
+                            </size>
+                           </property>
+                           <property name="maximumSize">
+                            <size>
+                             <width>130</width>
+                             <height>16777215</height>
+                            </size>
+                           </property>
+                           <property name="text">
+                            <string>Zapisz</string>
+                           </property>
+                          </widget>
+                         </item>
+                        </layout>
                        </item>
                       </layout>
                      </widget>
@@ -5441,9 +5480,45 @@ umieszczając ją w komorze próźniowej na czas zaniku ostatniego pęcherzyka</
                           <bool>false</bool>
                          </property>
                          <property name="plainText">
-                          <string>Badany materiał charakteryzuje się wysoką porowatością otwartą (37.28%) i bardzo niską porowatością zamkniętą (0.14%). Wskazuje to na dobrą podatność materiału na procesy nasącania i impregnacji.</string>
+                          <string/>
                          </property>
                         </widget>
+                       </item>
+                       <item>
+                        <layout class="QHBoxLayout" name="horizontalLayout_16">
+                         <item>
+                          <spacer name="horizontalSpacer_12">
+                           <property name="orientation">
+                            <enum>Qt::Orientation::Horizontal</enum>
+                           </property>
+                           <property name="sizeHint" stdset="0">
+                            <size>
+                             <width>40</width>
+                             <height>20</height>
+                            </size>
+                           </property>
+                          </spacer>
+                         </item>
+                         <item>
+                          <widget class="QPushButton" name="buttonSaveCommentTriple">
+                           <property name="minimumSize">
+                            <size>
+                             <width>130</width>
+                             <height>30</height>
+                            </size>
+                           </property>
+                           <property name="maximumSize">
+                            <size>
+                             <width>130</width>
+                             <height>30</height>
+                            </size>
+                           </property>
+                           <property name="text">
+                            <string>Zapisz</string>
+                           </property>
+                          </widget>
+                         </item>
+                        </layout>
                        </item>
                       </layout>
                      </widget>

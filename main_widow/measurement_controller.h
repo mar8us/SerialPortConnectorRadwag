@@ -38,6 +38,9 @@ public:
     double getFluidTemperature();
     double getFluidDensity();
 
+    QString getComments();
+    bool setComments(const QString &comments);
+
     bool setMeasureStatus(MeasurementStatus status);
     bool setStage(MeasurementStages::Stage stage);
     bool setType(MeasurementType type);
