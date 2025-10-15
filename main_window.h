@@ -39,7 +39,6 @@ private slots:
     void onRadwagMeasueReady(const RadwagMeasure &data);
 
     void onMainPageChanged(int index);
-
 private:
     void updateActionIcons(int index);
     void updateConnectonLabelsStatusBar(bool connectionStatus);
@@ -62,5 +61,7 @@ private:
     QIcon activeSettingsIcon;
     QIcon defaultRadwagIcon;
     QIcon activeRadwagIcon;
+    QIcon defaultSieveIcon;
+    QIcon activeSieveIcon;
 };
 #endif

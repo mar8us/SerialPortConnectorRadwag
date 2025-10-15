@@ -22,6 +22,8 @@ private slots:
 
     void onConnectDeviceClicked();
     void onDisconnectDeviceClicked();
+    void onRefreshPortClicked();
+    void onControlPanelClicked();
 
 private:
     std::shared_ptr<const Device> getSelectedDevice();

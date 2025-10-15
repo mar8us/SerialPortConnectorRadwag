@@ -113,6 +113,11 @@ private slots:
     void onReplyMeasureSummaryButtonClicked();
     void onButtonExportExcelCilcked();
 
+    void onTextEditSecondMeasureCommentsChanged();
+    void onTextEditTripleMeasureCommentsChanged();
+    void onButtonSaveCommentSecondClicked();
+    void onButtonSaveCommentTripleClicked();
+
     void onConfrimPrepareWorkstationButtonClicked();
     void onConfrimPrepareMeasureSecondButtonClicked();
 
@@ -160,6 +165,9 @@ private:
     void updateSaveFinishSecondButtonState();
     void updateSaveFinishTripleButtonState();
     void updateSaveSaturatedTripleButtonState();
+
+    void updateSaveCommentSecondButtonState();
+    void updateSaveCommentTripleButtonState();
 
     void updateSaturationMethodPrepareTriple();
     void updatePrepareSaturationFluidDensityLabel();

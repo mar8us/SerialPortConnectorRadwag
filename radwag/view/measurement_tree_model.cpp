@@ -159,6 +159,9 @@ QVariant MeasurementTreeModel::data(const QModelIndex& index, int role) const
             case Date:
                 return measurement->getDate().toString("dd-MM-yyyy hh:mm");
 
+            case EndDate:
+                return measurement->getEndDate().toString("dd-MM-yyyy hh:mm");
+
             case MeasureId:
                 return measurement->getId();
 
@@ -190,10 +193,11 @@ QVariant MeasurementTreeModel::data(const QModelIndex& index, int role) const
     }
     else if (role == Qt::ToolTipRole)
     {
-        return tr("ID: %1\nTyp: %2\nData: %3\nAutor: %4\nStatus: %5")
+        return tr("ID: %1\nTyp: %2\nData rozpoczęcia: %3\nData zakończenia: %4\nAutor: %5\nStatus: %6")
             .arg(measurement->getId())
             .arg(measurement->isThreeType() ? tr("Trójstopniowy") : tr("Dwustopniowy"))
             .arg(measurement->getDate().toString("dd-MM-yyyy hh:mm"))
+            .arg(measurement->getEndDate().toString("dd-MM-yyyy hh:mm"))
             .arg(measurement->getAuthor())
             .arg(measurement->getStatus() == MeasurementStatus::Completed ? tr("Zakończony") : (measurement->getStatus() == MeasurementStatus::InProgress ? tr("W trakcie") : tr("Błąd")));
     }
@@ -232,7 +236,10 @@ QVariant MeasurementTreeModel::headerData(int section, Qt::Orientation orientati
                 return tr("Wykonawca");
 
             case Date:
-                return tr("Data");
+                return tr("Data rozpoczęcia");
+
+            case EndDate:
+                return tr("Data zakończenia");
 
             case MeasureId:
                 return tr("ID");
@@ -395,6 +402,9 @@ bool MeasurementTreeModel::matchesFilter(const std::shared_ptr<const Measurement
         case Date:
             return measurement->getDate().toString("dd-MM-yyyy hh:mm").contains(filterText, Qt::CaseInsensitive);
 
+        case EndDate:
+            return measurement->getEndDate().toString("dd-MM-yyyy hh:mm").contains(filterText, Qt::CaseInsensitive);
+
         case MeasureId:
             return measurement->getId().contains(filterText, Qt::CaseInsensitive);
 
@@ -406,6 +416,7 @@ bool MeasurementTreeModel::matchesFilter(const std::shared_ptr<const Measurement
                    measurement->getFluidName().contains(filterText, Qt::CaseInsensitive) ||
                    measurement->getAuthor().contains(filterText, Qt::CaseInsensitive) ||
                    measurement->getDate().toString("dd-MM-yyyy hh:mm").contains(filterText, Qt::CaseInsensitive) ||
+                   measurement->getEndDate().toString("dd-MM-yyyy hh:mm").contains(filterText, Qt::CaseInsensitive) ||
                    getStatusText(measurement->getStatus()).contains(filterText, Qt::CaseInsensitive);
         }
 }
@@ -434,6 +445,9 @@ QString MeasurementTreeModel::getGroupKey(const std::shared_ptr<const Measuremen
 
         case Date:
             return measurement->getDate().toString("dd-MM-yyyy");
+
+        case EndDate:
+            return measurement->getEndDate().toString("dd-MM-yyyy");
 
         default:
             return QString();

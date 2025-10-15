@@ -9,6 +9,8 @@
 #include "library_dialogs/summary_measure_dialog.h"
 #include <QPointer>
 #include <QMap>
+#include "../../radwag/measure_statistic_analyzer.h"
+#include "../../excel/measurement_exporter.h"
 
 class MainWindow;
 
@@ -30,7 +32,8 @@ signals:
     void continueSelectedMeasure(const std::shared_ptr<const Measurement> &sourceMeasure);
 
 public slots:
-    void onExportMeasuresExcel(const QList<const Measurement*>& measures);
+    void onExportExcelMeasures(const QList<const Measurement*>& measures);
+    void onExportExcelMeasuresWithAnalysis(const AnalysisResult *analysisResult);
 
 private slots:
     void onLibrarySearchTextChanged(const QString& text);
@@ -57,7 +60,11 @@ private:
 
     QList<const Measurement*> getSelectedMeasuresList() const;
 
+    bool tryExport(MeasurementExporter& exporter);
+    bool canExportExcel(const QList<const Measurement *> &measures);
+    QString getExportFilePath(const QList<const Measurement*>& measures);
     QString generateExportFileName(const QList<const Measurement*>& measures) const;
+    void handleSuccessfulExport(const QString& filePath);
 
     void setupLibraryView();
     void setupLibraryControls();

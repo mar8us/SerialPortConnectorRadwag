@@ -27,7 +27,10 @@ bool SerialPort::connect(QString portName, QSerialPort::BaudRate baudRate, QSeri
     serial_port->setStopBits(stopBits);
 
     if(serial_port->open(QIODevice::ReadWrite))
+    {
+        serial_port->clear();
         QObject::connect(serial_port, &QSerialPort::readyRead, this, &SerialPort::dataReady);
+    }
 
     return isOpen();
 }
@@ -36,6 +39,10 @@ bool SerialPort::closeConnection()
 {
     if(!serial_port)
         return false;
+
+    if(serial_port->isOpen())
+        serial_port->clear(QSerialPort::AllDirections);
+
     serial_port->close();
     delete serial_port;
     serial_port = nullptr;

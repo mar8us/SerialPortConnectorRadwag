@@ -25,10 +25,12 @@ Measurement::Measurement(const Measurement& other)
     , sample(other.sample)
     , fluid(other.fluid)
     , author(other.author)
+    , comments(other.comments)
     , stage(other.stage)
     , status(other.status)
     , saturationBeginDate(other.saturationBeginDate)
     , date(other.date)
+    , endDate(other.endDate)
     , fluidTemperature(other.fluidTemperature)
     , sampleDryMass(other.sampleDryMass)
     , sampleInFluidMass(other.sampleInFluidMass)
@@ -79,6 +81,11 @@ QDateTime Measurement::getDate() const
     return date;
 }
 
+QDateTime Measurement::getEndDate() const
+{
+    return isCompleted() ? endDate : QDateTime();
+}
+
 QString Measurement::getAuthor() const
 {
     return author;
@@ -124,9 +131,24 @@ void Measurement::setDate(const QDateTime& newDate)
     date = newDate;
 }
 
+void Measurement::setEndDate(const QDateTime &newDate)
+{
+    endDate = newDate;
+}
+
 void Measurement::setAuthor(const QString &authorName)
 {
     author = authorName;
+}
+
+QString Measurement::getComments() const
+{
+    return comments;
+}
+
+void Measurement::setComments(const QString &newComments)
+{
+    comments = newComments;
 }
 
 std::shared_ptr<const Sample> Measurement::getSample() const
@@ -264,7 +286,9 @@ QJsonObject Measurement::toJson() const
     obj["stage"] = static_cast<int>(stage);
     obj["status"] = static_cast<int>(status);
     obj["date"] = date.toString(Qt::ISODate);
+    obj["endDate"] = endDate.toString(Qt::ISODate);
     obj["author"] = author;
+    obj["comments"] = comments;
     obj["fluidTemperature"] = fluidTemperature;
     obj["sampleDryMass"] = sampleDryMass;
     obj["sampleInFluidMass"] = sampleInFluidMass;
@@ -286,7 +310,9 @@ void Measurement::fromJson(const QJsonObject &json, const SampleManager *sampleM
     stage = static_cast<MeasurementStages::Stage>(json["stage"].toInt());
     status = static_cast<MeasurementStatus>(json["status"].toInt());
     date = QDateTime::fromString(json["date"].toString(), Qt::ISODate);
+    endDate = QDateTime::fromString(json["endDate"].toString(), Qt::ISODate);
     author = json["author"].toString();
+    comments = json["comments"].toString();
     fluidTemperature = json["fluidTemperature"].toDouble();
     sampleDryMass = json["sampleDryMass"].toDouble();
     sampleInFluidMass = json["sampleInFluidMass"].toDouble();

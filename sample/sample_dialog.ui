@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Zarządzanie próbkami</string>
+   <string>Serie pomiarowe</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>

@@ -4,6 +4,7 @@
 #include "export_excel_base.h"
 #include "../radwag/measurement.h"
 #include "section_excel.h"
+#include "../radwag/measure_statistic_analyzer.h"
 #include <QList>
 #include <QString>
 
@@ -12,23 +13,31 @@ class MeasurementExporter : public ExportExcelBase
 public:
     explicit MeasurementExporter(const QString& fileName, const Measurement* measurement);
     explicit MeasurementExporter(const QString& fileName, const QList<const Measurement*>& measurements);
+    explicit MeasurementExporter(const QString& fileName, const AnalysisResult* analysisResult);
 
     bool exportData() override;
 
 private:
     QList<const Measurement*> m_measurements;
+    const AnalysisResult* m_analysisResult;
 
     SectionRange exportGeneralDataSection(const Measurement* measurement, int startRow, int startCol);
     SectionRange exportMeasurementDataSection(const Measurement* measurement, int startRow, int startCol);
     SectionRange exportCalculationResultsSection(const Measurement* measurement, int startRow, int startCol);
+    SectionRange exportMeasurementTableSection(const QList<const Measurement *> &measurements, int startRow, int startCol);
+    SectionRange exportAnalysisSection(const AnalysisResult* analysisResult, int startRow, int startCol);
+
+    SectionRange exportDensityAnalysisSection(const DensityAnalysisResult& densityResult, int startRow, int startCol);
+    SectionRange exportPorosityAnalysisSection(const PorosityAnalysisResult& porosityResult, int startRow, int startCol);
+    SectionRange exportFullStatisticalTable(const AnalysisResult* analysisResult, int startRow, int startCol);
+
     SectionRange exportCommentsSection(const Measurement* measurement); //TO DO
 
     SectionRange addMeasurementTitle(const Measurement* measurement, int index, int startRow, int startCol);
+    SectionRange addTitle(const Measurement* measurement, int index, int startRow, int startCol);
 
     void setupColumnSize(int columns, int size = 10);
     void setupStandardSectionFormat(Section& section);
-
-    SectionRange exportMeasurementTableSection(const QList<const Measurement *> &measurements, int startRow, int startCol);
 
     bool hasValidResults(const Measurement* measurement) const;
     bool validateData() const;

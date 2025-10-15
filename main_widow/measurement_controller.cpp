@@ -62,10 +62,6 @@ bool MeasurementController::save()
     if(!hasActiveMeasurement())
         return false;
 
-    MeasurementStages::Stage currentStage = measurement->getCurrentStage();
-    if(currentStage == MeasurementStages::Stage::SummarySecond || currentStage == MeasurementStages::Stage::SummaryTriple)
-        measurement->setStatus(MeasurementStatus::Completed);
-
     measurementManager->removeMeasurement(measurement->getId());
     if(measurementManager->addMeasurement(measurement))
         hasChanges = false;
@@ -78,6 +74,14 @@ bool MeasurementController::save()
 bool MeasurementController::needSave()
 {
     return hasActiveMeasurement() && hasChanges;
+}
+
+void MeasurementController::updateStatus()
+{
+    MeasurementStages::Stage currentStage = measurement->getCurrentStage();
+    measurement->setStatus(currentStage == MeasurementStages::Stage::SummarySecond || currentStage == MeasurementStages::Stage::SummaryTriple ? MeasurementStatus::Completed : MeasurementStatus::InProgress);
+    if(measurement->isCompleted())
+        measurement->setEndDate(QDateTime::currentDateTime());
 }
 
 const std::shared_ptr<Measurement>& MeasurementController::getActiveMeasure()
@@ -145,6 +149,26 @@ double MeasurementController::getFluidTemperature()
 double MeasurementController::getFluidDensity()
 {
     return measurement->getFluidDensity();
+}
+
+QString MeasurementController::getComments()
+{
+    if(!hasActiveMeasurement())
+        return QString();
+    return measurement->getComments();
+}
+
+bool MeasurementController::setComments(const QString &comments)
+{
+    if(!hasActiveMeasurement())
+        return false;
+
+    if(comments == measurement->getComments())
+        return true;
+
+    measurement->setComments(comments);
+    hasChanges = true;
+    return true;
 }
 
 bool MeasurementController::setMeasureStatus(MeasurementStatus status)

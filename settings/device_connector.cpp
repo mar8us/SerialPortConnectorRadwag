@@ -17,6 +17,8 @@ bool DeviceConnector::connectDevice(const QString &portName) const
     if(!activeDevice.get())
         return false;
 
+    disconnect(serialPort.get(), &SerialPort::dataRecevied, this, &DeviceConnector::dataReceived);
+
     if(!serialPort->connect(portName, activeDevice->getBaudRate(), activeDevice->getDataBits(), activeDevice->getParity(), activeDevice->getStopBits()))
     {
         connectionResult(false);
@@ -35,6 +37,11 @@ bool DeviceConnector::closeActiveConnection()
         emit connectionResult(false);
         return false;
     }
+
+    disconnect(serialPort.get(), &SerialPort::dataRecevied, this, &DeviceConnector::dataReceived);
+
+    m_buffer.clear();
+
     bool connectionClosed = serialPort->closeConnection();
     activeDevice = nullptr;
     emit connectionResult(!connectionClosed);
@@ -60,18 +67,14 @@ bool DeviceConnector::sendCommand(const QByteArray &command) const
 {
     if(!connectionIsActive())
         return false;
+    return serialPort->write(command) == -1 ? false : true;
+}
 
-    qint64 bytesWritten = serialPort->write(command);
-    if (bytesWritten == -1)
-    {
-        qDebug() << "Błąd: Nie można wysłać komendy do wagi";
-        return false;
-    }
-    else
-    {
-        qDebug() << "Wysłano komendę: " << command << ". Zapisano bajtów:" << bytesWritten;
-        return true;
-    }
+int DeviceConnector::clearData()
+{
+    int size = m_buffer.size();
+    m_buffer.clear();
+    return size;
 }
 
 void DeviceConnector::dataReceived(const QByteArray &deviceData)

@@ -43,6 +43,8 @@ void SummaryMeasureDialog::updateMeasureSecondLabelsSummary()
     ui->valueSecondMeasureOperator->setText(sourceMeasure->getAuthor());
     QString dateTime = sourceMeasure->getDate().toString("dd-MM-yyyy HH:mm");
     ui->valueSecondMeasureDateTime->setText(dateTime);
+    QString endDateTime = sourceMeasure->getEndDate().toString("dd-MM-yyyy HH:mm");
+    ui->valueSecondMeasureEndDateTime->setText(endDateTime);
 
     auto sample = sourceMeasure->getSample();
     ui->valueSecondSampleName->setText(sample->getName());
@@ -68,6 +70,7 @@ void SummaryMeasureDialog::updateMeasureSecondLabelsSummary()
     double totalPorosity = results.getTotalPorosity();
     ui->valueSecondMeasureTotalPorosity->setText(QString::number(totalPorosity) + " %");
 
+    ui->textEditSecondMeasureComments->setPlainText(sourceMeasure->getComments());
     updateSecondCharts(results);
 }
 
@@ -96,6 +99,8 @@ void SummaryMeasureDialog::updateMeasureTripleLabelsSummary()
     ui->valueTripleMeasureOperator->setText(sourceMeasure->getAuthor());
     QString dateTime = sourceMeasure->getDate().toString("dd-MM-yyyy HH:mm");
     ui->valueTripleMeasureDateTime->setText(dateTime);
+    QString endDateTime = sourceMeasure->getEndDate().toString("dd-MM-yyyy HH:mm");
+    ui->valueTripleMeasureEndDateTime->setText(endDateTime);
 
     double dryMass = sourceMeasure->getSampleDryMass();
     ui->valueTripleMeasureDryMass->setText(QString::number(dryMass) + " g");
@@ -121,6 +126,7 @@ void SummaryMeasureDialog::updateMeasureTripleLabelsSummary()
     double waterAbsorption = results.getWaterAbsorption();
     ui->valueTripleMeasureWaterAbsorbability->setText(QString::number(waterAbsorption) + " %");
 
+    ui->textEditTripleMeasureComments->setPlainText(sourceMeasure->getComments());
     updateTripleCharts(results);
 }
 

@@ -224,11 +224,21 @@ void MeasurementProcessUiHandler::onFinishTriplePageEnter()
 void MeasurementProcessUiHandler::onSummarySecondPageEnter()
 {
     updateMeasureSecondLabelsSummary();
+    radwagMeasureControler.updateStatus();
+
+    QString comments = radwagMeasureControler.getComments();
+    ui->textEditSecondMeasureComments->setPlainText(comments);
+    updateSaveCommentSecondButtonState();
 }
 
 void MeasurementProcessUiHandler::onSummaryTriplePageEnter()
 {
     updateMeasureTripleLabelsSummary();
+    radwagMeasureControler.updateStatus();
+
+    QString comments = radwagMeasureControler.getComments();
+    ui->textEditTripleMeasureComments->setPlainText(comments);
+    updateSaveCommentTripleButtonState();
 }
 
 bool MeasurementProcessUiHandler::onExitStage(MeasurementStages::Stage stage, MeasurementStages::Stage toStage)
@@ -806,6 +816,30 @@ void MeasurementProcessUiHandler::onButtonExportExcelCilcked()
     emit exportMeasuresExcel(QList<const Measurement*>{radwagMeasureControler.getActiveMeasure().get()});
 }
 
+void MeasurementProcessUiHandler::onTextEditSecondMeasureCommentsChanged()
+{
+    updateSaveCommentSecondButtonState();
+}
+
+void MeasurementProcessUiHandler::onTextEditTripleMeasureCommentsChanged()
+{
+    updateSaveCommentTripleButtonState();
+}
+
+void MeasurementProcessUiHandler::onButtonSaveCommentSecondClicked()
+{
+    QString comments = ui->textEditSecondMeasureComments->toPlainText();
+    if(radwagMeasureControler.setComments(comments))
+        updateSaveCommentSecondButtonState();
+}
+
+void MeasurementProcessUiHandler::onButtonSaveCommentTripleClicked()
+{
+    QString comments = ui->textEditTripleMeasureComments->toPlainText();
+    if(radwagMeasureControler.setComments(comments))
+        updateSaveCommentTripleButtonState();
+}
+
 bool MeasurementProcessUiHandler::validateInitialDataPage()
 {
     if(!radwagMeasureControler.hasActiveMeasurement())
@@ -1163,6 +1197,8 @@ void MeasurementProcessUiHandler::updateMeasureSecondLabelsSummary()
     ui->valueSecondMeasureOperator->setText(measure->getAuthor());
     QString dateTime = measure->getDate().toString("dd-MM-yyyy HH:mm");
     ui->valueSecondMeasureDateTime->setText(dateTime);
+    QString endDateTime = measure->getEndDate().toString("dd-MM-yyyy HH:mm");
+    ui->valueSecondMeasureEndDateTime->setText(endDateTime);
 
     auto sample = measure->getSample();
     ui->valueSecondSampleName->setText(sample->getName());
@@ -1344,6 +1380,8 @@ void MeasurementProcessUiHandler::updateMeasureTripleLabelsSummary()
     ui->valueTripleMeasureOperator->setText(measure->getAuthor());
     QString dateTime = measure->getDate().toString("dd-MM-yyyy HH:mm");
     ui->valueTripleMeasureDateTime->setText(dateTime);
+    QString endDateTime = measure->getEndDate().toString("dd-MM-yyyy HH:mm");
+    ui->valueTripleMeasureEndDateTime->setText(endDateTime);
 
     double dryMass = measure->getSampleDryMass();
     ui->valueTripleMeasureDryMass->setText(QString::number(dryMass) + " g");
@@ -1392,6 +1430,32 @@ void MeasurementProcessUiHandler::updateSaveFinishTripleButtonState()
 void MeasurementProcessUiHandler::updateSaveSaturatedTripleButtonState()
 {
     ui->buttonSaveCurrentMeasureSaturated->setEnabled(utils::getDouble(ui->editCurrentMeasureSaturated->text()) > 0.0);
+}
+
+void MeasurementProcessUiHandler::updateSaveCommentSecondButtonState()
+{
+    if(!radwagMeasureControler.hasActiveMeasurement())
+    {
+        ui->buttonSaveCommentSecond->setEnabled(false);
+        return;
+    }
+
+    QString currentComments = ui->textEditSecondMeasureComments->toPlainText();
+    QString savedComments = radwagMeasureControler.getComments();
+    ui->buttonSaveCommentSecond->setEnabled(currentComments != savedComments);
+}
+
+void MeasurementProcessUiHandler::updateSaveCommentTripleButtonState()
+{
+    if(!radwagMeasureControler.hasActiveMeasurement())
+    {
+        ui->buttonSaveCommentTriple->setEnabled(false);
+        return;
+    }
+
+    QString currentComments = ui->textEditTripleMeasureComments->toPlainText();
+    QString savedComments = radwagMeasureControler.getComments();
+    ui->buttonSaveCommentTriple->setEnabled(currentComments != savedComments);
 }
 
 void MeasurementProcessUiHandler::updateFluidDensityLabel()
@@ -1553,9 +1617,7 @@ bool MeasurementProcessUiHandler::checkGuidePrepareMeasureSecondButton()
 {
     if(!ui->stepFirstPrepareMeasureSecond->isChecked() ||
         !ui->stepTwoPrepareMeasureSecond->isChecked() ||
-        !ui->stepTreePrepareMeasureSecond->isChecked() ||
-        !ui->stepFourPrepareMeasureSecond->isChecked() ||
-        !ui->stepFivePrepareMeasureSecond->isChecked())
+        !ui->stepTreePrepareMeasureSecond->isChecked())
     {
         mainWindow->showWarning("Niepełne przygotowanie", "Przed rozpoczęciem pomiaru wykonaj wszystkie kroki przygotowawcze (część druga).");
         return false;
@@ -1569,8 +1631,7 @@ bool MeasurementProcessUiHandler::checkGuideSampleSaturationPreparation()
         !ui->step2CheckBoxPrepareSaturation->isChecked() ||
         !ui->step3CheckBoxPrepareSaturation->isChecked() ||
         !ui->step4CheckBoxPrepareSaturation->isChecked() ||
-        !ui->step5CheckBoxPrepareSaturation->isChecked() ||
-        !ui->step6CheckBoxPrepareSaturation->isChecked())
+        !ui->step5CheckBoxPrepareSaturation->isChecked())
     {
         mainWindow->showWarning("Niepełne przygotowanie", "Przed kontynuacją pomiaru wykonaj wszystkie wymagane kroki.");
         return false;
@@ -1832,8 +1893,6 @@ void MeasurementProcessUiHandler::onConfrimPrepareMeasureSecondButtonClicked()
     ui->stepFirstPrepareMeasureSecond->setChecked(true);
     ui->stepTwoPrepareMeasureSecond->setChecked(true);
     ui->stepTreePrepareMeasureSecond->setChecked(true);
-    ui->stepFourPrepareMeasureSecond->setChecked(true);
-    ui->stepFivePrepareMeasureSecond->setChecked(true);
 }
 
 void MeasurementProcessUiHandler::onConfirmSampleSaturationPreparationClicked()
@@ -1843,7 +1902,6 @@ void MeasurementProcessUiHandler::onConfirmSampleSaturationPreparationClicked()
     ui->step3CheckBoxPrepareSaturation->setChecked(true);
     ui->step4CheckBoxPrepareSaturation->setChecked(true);
     ui->step5CheckBoxPrepareSaturation->setChecked(true);
-    ui->step6CheckBoxPrepareSaturation->setChecked(true);
 }
 
 void MeasurementProcessUiHandler::onSpinSaturationTimeChanged()
@@ -2022,6 +2080,9 @@ void MeasurementProcessUiHandler::connectSummaryMeasureSecondPageButtons()
     connect(ui->buttonNewSecondMeasure, &QPushButton::clicked, this, &MeasurementProcessUiHandler::onNewMeasureSummaryButtonClicked);
     connect(ui->buttonReplySecondMeasure, &QPushButton::clicked, this, &MeasurementProcessUiHandler::onReplyMeasureSummaryButtonClicked);
     connect(ui->buttonExportExcelSecond, &QPushButton::clicked, this, &MeasurementProcessUiHandler::onButtonExportExcelCilcked);
+
+    connect(ui->textEditSecondMeasureComments, &QPlainTextEdit::textChanged, this, &MeasurementProcessUiHandler::onTextEditSecondMeasureCommentsChanged);
+    connect(ui->buttonSaveCommentSecond, &QPushButton::clicked, this, &MeasurementProcessUiHandler::onButtonSaveCommentSecondClicked);
 }
 
 void MeasurementProcessUiHandler::connectSummaryMeasureTriplePageButtons()
@@ -2029,6 +2090,9 @@ void MeasurementProcessUiHandler::connectSummaryMeasureTriplePageButtons()
     connect(ui->buttonNewTripleMeasure, &QPushButton::clicked, this, &MeasurementProcessUiHandler::onNewMeasureSummaryButtonClicked);
     connect(ui->buttonReplyTripleMeasure, &QPushButton::clicked, this, &MeasurementProcessUiHandler::onReplyMeasureSummaryButtonClicked);
     connect(ui->buttonExportExcelTriple, &QPushButton::clicked, this, &MeasurementProcessUiHandler::onButtonExportExcelCilcked);
+
+    connect(ui->textEditTripleMeasureComments, &QPlainTextEdit::textChanged, this, &MeasurementProcessUiHandler::onTextEditTripleMeasureCommentsChanged);
+    connect(ui->buttonSaveCommentTriple, &QPushButton::clicked, this, &MeasurementProcessUiHandler::onButtonSaveCommentTripleClicked);
 }
 
 void MeasurementProcessUiHandler::connectCatalogsButtons()

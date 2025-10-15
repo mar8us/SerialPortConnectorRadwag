@@ -19,6 +19,7 @@ public:
     void endMeasure();
     bool save();
     bool needSave();
+    void updateStatus();
 
     const std::shared_ptr<Measurement>& getActiveMeasure();
     bool hasActiveMeasurement() const;
@@ -36,6 +37,9 @@ public:
 
     double getFluidTemperature();
     double getFluidDensity();
+
+    QString getComments();
+    bool setComments(const QString &comments);
 
     bool setMeasureStatus(MeasurementStatus status);
     bool setStage(MeasurementStages::Stage stage);

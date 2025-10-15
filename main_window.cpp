@@ -3,11 +3,11 @@
 
 #include <QMessageBox>
 
+#include "radwag/radwagcontroldialog.h"
 #include "sieveAnalysis/sieve_analysis_stages.h"
 #include "tooltip/tooltip_manager.h"
 #include "radwag/measurement.h"
 #include "app_core.h"
-#include "utils.h"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -25,7 +25,6 @@ MainWindow::MainWindow(QWidget *parent)
     hydrostaticMeasurementModule.initialize();
     sieveAnalysisModule.initialize();
 
-    // tooltip i.e
     TooltipManager& tooltipManager = TooltipManager::getInstance();
     tooltipManager.setGlobalStyle("QToolTip { background-color: #2C3E50; color: white; }");
     tooltipManager.registerImage("info", ":/icons/image.jpg", 424, 424);
@@ -146,6 +145,7 @@ void MainWindow::updateActionIcons(int index)
 {
     ui->actionSettings->setIcon(ui->stackedWidget->widget(index) == ui->settingsPage ? activeSettingsIcon : defaultSettingsIcon);
     ui->actionMeasureDensity->setIcon(ui->stackedWidget->widget(index) == ui->measureDensityPage ? activeRadwagIcon : defaultRadwagIcon);
+    ui->actionSieveAnalysis->setIcon(ui->stackedWidget->widget(index) == ui->sieveAnalysisPage ? activeSieveIcon : defaultSieveIcon);
 }
 
 void MainWindow::updateConnectonLabelsStatusBar(bool connectionStatus)
@@ -163,6 +163,8 @@ void MainWindow::updateConnectonLabelsStatusBar(bool connectionStatus)
         ui->labelConnectionStatusStatusBar->setText("Status: <font color='#E74C3C'><b>Brak połączenia</b></font>");
         ui->comboBoxSelectDevice->setEnabled(true);
     }
+    ui->labelDeviceNameStatusBar->setStyleSheet("background-color: transparent; border: none;");
+    ui->labelConnectionStatusStatusBar->setStyleSheet("background-color: transparent; border: none;");
 }
 
 void MainWindow::initControls()
@@ -175,6 +177,8 @@ void MainWindow::initControls()
     navigateToToolBoxPage(ui->measureDensityPage);
     updateActionIcons(0);
     updateConnectonLabelsStatusBar(false);
+    // ui->tabWidgetMain->setTabVisible(2, false);
+    // ui->tabWidgetMain->setTabVisible(3, false);
     QTimer::singleShot(0, this, &MainWindow::resizeAllTablesColumnsToContents);
 }
 
@@ -192,6 +196,8 @@ void MainWindow::setIcons()
     activeSettingsIcon = QIcon(":/icons/settings_selected.png");
     defaultRadwagIcon = QIcon(":/icons/balance_white.png");
     activeRadwagIcon = QIcon(":/icons/balance_selected.png");
+    defaultSieveIcon = QIcon(":/icons/funnel_white.png");
+    activeSieveIcon = QIcon(":/icons/funnel_selected.png");
 }
 
 void MainWindow::setPalette()
@@ -247,3 +253,5 @@ void MainWindow::connectScaleSignals()
     connect(appCore.getScaleConnector(), &RadwagScaleConnector::radwagDataReady, this, &MainWindow::onRadwagMeasueReady);
     connect(ui->comboBoxSelectDevice, &QComboBox::currentIndexChanged, this, &MainWindow::onDeviceComboSelectionChanged);
 }
+
+

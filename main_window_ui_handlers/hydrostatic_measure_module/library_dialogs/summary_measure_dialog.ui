@@ -57,7 +57,7 @@
     <item>
      <widget class="QStackedWidget" name="stackedWidget">
       <property name="currentIndex">
-       <number>0</number>
+       <number>1</number>
       </property>
       <widget class="QWidget" name="page">
        <layout class="QVBoxLayout" name="verticalLayout_2">
@@ -72,7 +72,7 @@
              <x>0</x>
              <y>0</y>
              <width>1150</width>
-             <height>1196</height>
+             <height>1206</height>
             </rect>
            </property>
            <layout class="QGridLayout" name="gridLayout_10">
@@ -115,6 +115,13 @@
                    <string>Dane ogólne</string>
                   </property>
                   <layout class="QGridLayout" name="gridLayout_16">
+                   <item row="3" column="0" colspan="2">
+                    <widget class="Line" name="line_preview_second_summary1">
+                     <property name="orientation">
+                      <enum>Qt::Orientation::Horizontal</enum>
+                     </property>
+                    </widget>
+                   </item>
                    <item row="1" column="0">
                     <widget class="QLabel" name="labelMaterial_4">
                      <property name="text">
@@ -122,86 +129,10 @@
                      </property>
                     </widget>
                    </item>
-                   <item row="9" column="1">
-                    <widget class="QLabel" name="valueSecondMeasureOperator">
-                     <property name="font">
-                      <font>
-                       <bold>true</bold>
-                      </font>
-                     </property>
-                     <property name="text">
-                      <string>Q</string>
-                     </property>
-                    </widget>
-                   </item>
-                   <item row="8" column="1">
-                    <widget class="QLabel" name="valueSecondMeasureType">
-                     <property name="font">
-                      <font>
-                       <bold>true</bold>
-                      </font>
-                     </property>
-                     <property name="text">
-                      <string>Q</string>
-                     </property>
-                    </widget>
-                   </item>
-                   <item row="10" column="1">
-                    <widget class="QLabel" name="valueSecondMeasureDateTime">
-                     <property name="font">
-                      <font>
-                       <bold>true</bold>
-                      </font>
-                     </property>
-                     <property name="text">
-                      <string>Q</string>
-                     </property>
-                    </widget>
-                   </item>
-                   <item row="5" column="0">
-                    <widget class="QLabel" name="labelFluidTemp">
-                     <property name="text">
-                      <string>Temperatura cieczy:</string>
-                     </property>
-                    </widget>
-                   </item>
                    <item row="4" column="0">
                     <widget class="QLabel" name="labelLiquidType">
                      <property name="text">
                       <string>Ciecz:</string>
-                     </property>
-                    </widget>
-                   </item>
-                   <item row="4" column="1">
-                    <widget class="QLabel" name="valueSecondLiquidType">
-                     <property name="font">
-                      <font>
-                       <bold>true</bold>
-                      </font>
-                     </property>
-                     <property name="text">
-                      <string>Q</string>
-                     </property>
-                    </widget>
-                   </item>
-                   <item row="9" column="0">
-                    <widget class="QLabel" name="labelOperator_2">
-                     <property name="text">
-                      <string>Wykonawca:</string>
-                     </property>
-                    </widget>
-                   </item>
-                   <item row="0" column="0">
-                    <widget class="QLabel" name="labelSampleName_3">
-                     <property name="text">
-                      <string>Seria:</string>
-                     </property>
-                    </widget>
-                   </item>
-                   <item row="2" column="0">
-                    <widget class="QLabel" name="labelTheoreticalDensity_3">
-                     <property name="text">
-                      <string>Gęstość teoretyczna materiału:</string>
                      </property>
                     </widget>
                    </item>
@@ -217,15 +148,55 @@
                      </property>
                     </widget>
                    </item>
-                   <item row="6" column="0">
-                    <widget class="QLabel" name="labelLiquidDensity">
+                   <item row="2" column="0">
+                    <widget class="QLabel" name="labelTheoreticalDensity_3">
                      <property name="text">
-                      <string>Gęstość cieczy:</string>
+                      <string>Gęstość teoretyczna materiału:</string>
                      </property>
                     </widget>
                    </item>
-                   <item row="5" column="1">
-                    <widget class="QLabel" name="valueSecondFluidTemp">
+                   <item row="5" column="0">
+                    <widget class="QLabel" name="labelFluidTemp">
+                     <property name="text">
+                      <string>Temperatura cieczy:</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="10" column="0">
+                    <widget class="QLabel" name="labelDateTime">
+                     <property name="text">
+                      <string>Data rozpoczęcia:</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="0" column="0">
+                    <widget class="QLabel" name="labelSampleName_3">
+                     <property name="text">
+                      <string>Seria:</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="8" column="1">
+                    <widget class="QLabel" name="valueSecondMeasureType">
+                     <property name="font">
+                      <font>
+                       <bold>true</bold>
+                      </font>
+                     </property>
+                     <property name="text">
+                      <string>Q</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="7" column="0" colspan="2">
+                    <widget class="Line" name="line_preview_second_summary2">
+                     <property name="orientation">
+                      <enum>Qt::Orientation::Horizontal</enum>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="9" column="1">
+                    <widget class="QLabel" name="valueSecondMeasureOperator">
                      <property name="font">
                       <font>
                        <bold>true</bold>
@@ -248,22 +219,34 @@
                      </property>
                     </widget>
                    </item>
-                   <item row="3" column="0" colspan="2">
-                    <widget class="Line" name="line_preview_second_summary1">
-                     <property name="orientation">
-                      <enum>Qt::Orientation::Horizontal</enum>
-                     </property>
-                    </widget>
-                   </item>
-                   <item row="10" column="0">
-                    <widget class="QLabel" name="labelDateTime">
+                   <item row="6" column="0">
+                    <widget class="QLabel" name="labelLiquidDensity">
                      <property name="text">
-                      <string>Data/godzina:</string>
+                      <string>Gęstość cieczy:</string>
                      </property>
                     </widget>
                    </item>
-                   <item row="1" column="1">
-                    <widget class="QLabel" name="valueSecondMaterial">
+                   <item row="10" column="1">
+                    <widget class="QLabel" name="valueSecondMeasureDateTime">
+                     <property name="font">
+                      <font>
+                       <bold>true</bold>
+                      </font>
+                     </property>
+                     <property name="text">
+                      <string>Q</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="9" column="0">
+                    <widget class="QLabel" name="labelOperator_2">
+                     <property name="text">
+                      <string>Wykonawca:</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="5" column="1">
+                    <widget class="QLabel" name="valueSecondFluidTemp">
                      <property name="font">
                       <font>
                        <bold>true</bold>
@@ -293,10 +276,46 @@
                      </property>
                     </widget>
                    </item>
-                   <item row="7" column="0" colspan="2">
-                    <widget class="Line" name="line_preview_second_summary2">
-                     <property name="orientation">
-                      <enum>Qt::Orientation::Horizontal</enum>
+                   <item row="4" column="1">
+                    <widget class="QLabel" name="valueSecondLiquidType">
+                     <property name="font">
+                      <font>
+                       <bold>true</bold>
+                      </font>
+                     </property>
+                     <property name="text">
+                      <string>Q</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="1" column="1">
+                    <widget class="QLabel" name="valueSecondMaterial">
+                     <property name="font">
+                      <font>
+                       <bold>true</bold>
+                      </font>
+                     </property>
+                     <property name="text">
+                      <string>Q</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="11" column="0">
+                    <widget class="QLabel" name="label">
+                     <property name="text">
+                      <string>Data zakończenia:</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="11" column="1">
+                    <widget class="QLabel" name="valueSecondMeasureEndDateTime">
+                     <property name="font">
+                      <font>
+                       <bold>true</bold>
+                      </font>
+                     </property>
+                     <property name="text">
+                      <string>Q</string>
                      </property>
                     </widget>
                    </item>
@@ -538,7 +557,7 @@
                   <bool>false</bool>
                  </property>
                  <property name="plainText">
-                  <string>Ujemna wartość porowatości całkowitej sugeruje, że gęstość teoretyczna materiału może być niedokładna lub zmierzona masa próbki zanurzonej jest obarczona błędem. Zaleca się powtórzenie pomiaru lub weryfikację danych teoretycznych.</string>
+                  <string/>
                  </property>
                 </widget>
                </item>
@@ -609,7 +628,7 @@
              <x>0</x>
              <y>0</y>
              <width>1150</width>
-             <height>1272</height>
+             <height>1275</height>
             </rect>
            </property>
            <layout class="QVBoxLayout" name="verticalLayout_35">
@@ -639,77 +658,17 @@
                    <string>Dane ogólne</string>
                   </property>
                   <layout class="QGridLayout" name="gridLayout_27">
-                   <item row="17" column="1">
-                    <widget class="QLabel" name="valueTripleMeasureDateTime">
-                     <property name="font">
-                      <font>
-                       <bold>true</bold>
-                      </font>
-                     </property>
+                   <item row="12" column="0">
+                    <widget class="QLabel" name="labelMeasurementType_4">
                      <property name="text">
-                      <string>QQ</string>
+                      <string>Typ pomiaru:</string>
                      </property>
                     </widget>
                    </item>
-                   <item row="9" column="0">
-                    <widget class="QLabel" name="labelSaturationTime">
+                   <item row="4" column="0">
+                    <widget class="QLabel" name="labelLiquidType_4">
                      <property name="text">
-                      <string>Czas nasycania:</string>
-                     </property>
-                    </widget>
-                   </item>
-                   <item row="0" column="1">
-                    <widget class="QLabel" name="valueTripleSampleName">
-                     <property name="font">
-                      <font>
-                       <bold>true</bold>
-                      </font>
-                     </property>
-                     <property name="text">
-                      <string>QQ</string>
-                     </property>
-                    </widget>
-                   </item>
-                   <item row="4" column="1">
-                    <widget class="QLabel" name="valueTripleMeasureLiquidName">
-                     <property name="font">
-                      <font>
-                       <bold>true</bold>
-                      </font>
-                     </property>
-                     <property name="text">
-                      <string>QQ</string>
-                     </property>
-                    </widget>
-                   </item>
-                   <item row="5" column="1">
-                    <widget class="QLabel" name="valueTripleFluidTemp">
-                     <property name="font">
-                      <font>
-                       <bold>true</bold>
-                      </font>
-                     </property>
-                     <property name="text">
-                      <string>QQ</string>
-                     </property>
-                    </widget>
-                   </item>
-                   <item row="7" column="0">
-                    <widget class="QLabel" name="labelSaturationMethod_3">
-                     <property name="text">
-                      <string>Metoda nasycania:</string>
-                     </property>
-                    </widget>
-                   </item>
-                   <item row="6" column="1">
-                    <widget class="QLabel" name="valueTripleMeasureLiquidDensity">
-                     <property name="font">
-                      <font>
-                       <bold>true</bold>
-                      </font>
-                     </property>
-                     <property name="text">
-                      <string>QQ</string>
+                      <string>Ciecz:</string>
                      </property>
                     </widget>
                    </item>
@@ -725,6 +684,20 @@
                      </property>
                     </widget>
                    </item>
+                   <item row="16" column="0">
+                    <widget class="QLabel" name="labelOperator_5">
+                     <property name="text">
+                      <string>Wykonawca:</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="10" column="0" colspan="2">
+                    <widget class="Line" name="line_preview_triple_summary2">
+                     <property name="orientation">
+                      <enum>Qt::Orientation::Horizontal</enum>
+                     </property>
+                    </widget>
+                   </item>
                    <item row="7" column="1">
                     <widget class="QLabel" name="valueTripleMeasureSaturationMethod">
                      <property name="font">
@@ -737,8 +710,98 @@
                      </property>
                     </widget>
                    </item>
-                   <item row="9" column="1">
-                    <widget class="QLabel" name="valueTripleMeasureSaturationTime">
+                   <item row="6" column="1">
+                    <widget class="QLabel" name="valueTripleMeasureLiquidDensity">
+                     <property name="font">
+                      <font>
+                       <bold>true</bold>
+                      </font>
+                     </property>
+                     <property name="text">
+                      <string>QQ</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="0" column="1">
+                    <widget class="QLabel" name="valueTripleSampleName">
+                     <property name="font">
+                      <font>
+                       <bold>true</bold>
+                      </font>
+                     </property>
+                     <property name="text">
+                      <string>QQ</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="2" column="0">
+                    <widget class="QLabel" name="labelTheoreticalDensity_5">
+                     <property name="text">
+                      <string>Gęstość teoretyczna materiału:</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="4" column="1">
+                    <widget class="QLabel" name="valueTripleMeasureLiquidName">
+                     <property name="font">
+                      <font>
+                       <bold>true</bold>
+                      </font>
+                     </property>
+                     <property name="text">
+                      <string>QQ</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="0" column="0">
+                    <widget class="QLabel" name="labelSampleName_6">
+                     <property name="text">
+                      <string>Seria:</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="17" column="0">
+                    <widget class="QLabel" name="labelDateTime_5">
+                     <property name="text">
+                      <string>Data rozpoczęcia:</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="9" column="0">
+                    <widget class="QLabel" name="labelSaturationTime">
+                     <property name="text">
+                      <string>Czas nasycania:</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="1" column="0">
+                    <widget class="QLabel" name="labelMaterial_6">
+                     <property name="text">
+                      <string>Materiał:</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="16" column="1">
+                    <widget class="QLabel" name="valueTripleMeasureOperator">
+                     <property name="font">
+                      <font>
+                       <bold>true</bold>
+                      </font>
+                     </property>
+                     <property name="text">
+                      <string>QQ</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="6" column="0">
+                    <widget class="QLabel" name="labelLiquidDensity_4">
+                     <property name="text">
+                      <string>Gęstość cieczy:</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="2" column="1">
+                    <widget class="QLabel" name="valueTripleTheoreticalDensity">
                      <property name="font">
                       <font>
                        <bold>true</bold>
@@ -761,36 +824,15 @@
                      </property>
                     </widget>
                    </item>
-                   <item row="0" column="0">
-                    <widget class="QLabel" name="labelSampleName_6">
+                   <item row="7" column="0">
+                    <widget class="QLabel" name="labelSaturationMethod_3">
                      <property name="text">
-                      <string>Seria:</string>
+                      <string>Metoda nasycania:</string>
                      </property>
                     </widget>
                    </item>
-                   <item row="12" column="0">
-                    <widget class="QLabel" name="labelMeasurementType_4">
-                     <property name="text">
-                      <string>Typ pomiaru:</string>
-                     </property>
-                    </widget>
-                   </item>
-                   <item row="8" column="0">
-                    <widget class="QLabel" name="labelSaturationBeginDate">
-                     <property name="text">
-                      <string>Rozpoczęcie nasycania</string>
-                     </property>
-                    </widget>
-                   </item>
-                   <item row="4" column="0">
-                    <widget class="QLabel" name="labelLiquidType_4">
-                     <property name="text">
-                      <string>Ciecz:</string>
-                     </property>
-                    </widget>
-                   </item>
-                   <item row="2" column="1">
-                    <widget class="QLabel" name="valueTripleTheoreticalDensity">
+                   <item row="17" column="1">
+                    <widget class="QLabel" name="valueTripleMeasureDateTime">
                      <property name="font">
                       <font>
                        <bold>true</bold>
@@ -798,27 +840,6 @@
                      </property>
                      <property name="text">
                       <string>QQ</string>
-                     </property>
-                    </widget>
-                   </item>
-                   <item row="1" column="0">
-                    <widget class="QLabel" name="labelMaterial_6">
-                     <property name="text">
-                      <string>Materiał:</string>
-                     </property>
-                    </widget>
-                   </item>
-                   <item row="5" column="0">
-                    <widget class="QLabel" name="labelFluidTempTriple">
-                     <property name="text">
-                      <string>Temperatura cieczy:</string>
-                     </property>
-                    </widget>
-                   </item>
-                   <item row="3" column="0" colspan="2">
-                    <widget class="Line" name="line_preview_triple_summary1">
-                     <property name="orientation">
-                      <enum>Qt::Orientation::Horizontal</enum>
                      </property>
                     </widget>
                    </item>
@@ -834,36 +855,8 @@
                      </property>
                     </widget>
                    </item>
-                   <item row="2" column="0">
-                    <widget class="QLabel" name="labelTheoreticalDensity_5">
-                     <property name="text">
-                      <string>Gęstość teoretyczna materiału:</string>
-                     </property>
-                    </widget>
-                   </item>
-                   <item row="6" column="0">
-                    <widget class="QLabel" name="labelLiquidDensity_4">
-                     <property name="text">
-                      <string>Gęstość cieczy:</string>
-                     </property>
-                    </widget>
-                   </item>
-                   <item row="17" column="0">
-                    <widget class="QLabel" name="labelDateTime_5">
-                     <property name="text">
-                      <string>Data/godzina:</string>
-                     </property>
-                    </widget>
-                   </item>
-                   <item row="16" column="0">
-                    <widget class="QLabel" name="labelOperator_5">
-                     <property name="text">
-                      <string>Wykonawca:</string>
-                     </property>
-                    </widget>
-                   </item>
-                   <item row="16" column="1">
-                    <widget class="QLabel" name="valueTripleMeasureOperator">
+                   <item row="9" column="1">
+                    <widget class="QLabel" name="valueTripleMeasureSaturationTime">
                      <property name="font">
                       <font>
                        <bold>true</bold>
@@ -874,10 +867,55 @@
                      </property>
                     </widget>
                    </item>
-                   <item row="10" column="0" colspan="2">
-                    <widget class="Line" name="line_preview_triple_summary2">
+                   <item row="5" column="0">
+                    <widget class="QLabel" name="labelFluidTempTriple">
+                     <property name="text">
+                      <string>Temperatura cieczy:</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="5" column="1">
+                    <widget class="QLabel" name="valueTripleFluidTemp">
+                     <property name="font">
+                      <font>
+                       <bold>true</bold>
+                      </font>
+                     </property>
+                     <property name="text">
+                      <string>QQ</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="3" column="0" colspan="2">
+                    <widget class="Line" name="line_preview_triple_summary1">
                      <property name="orientation">
                       <enum>Qt::Orientation::Horizontal</enum>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="8" column="0">
+                    <widget class="QLabel" name="labelSaturationBeginDate">
+                     <property name="text">
+                      <string>Rozpoczęcie nasycania</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="18" column="0">
+                    <widget class="QLabel" name="label_3">
+                     <property name="text">
+                      <string>Data zakończenia:</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="18" column="1">
+                    <widget class="QLabel" name="valueTripleMeasureEndDateTime">
+                     <property name="font">
+                      <font>
+                       <bold>true</bold>
+                      </font>
+                     </property>
+                     <property name="text">
+                      <string>QQ</string>
                      </property>
                     </widget>
                    </item>
@@ -1238,7 +1276,7 @@
                   <bool>false</bool>
                  </property>
                  <property name="plainText">
-                  <string>Badany materiał charakteryzuje się wysoką porowatością otwartą (37.28%) i bardzo niską porowatością zamkniętą (0.14%). Wskazuje to na dobrą podatność materiału na procesy nasącania i impregnacji.</string>
+                  <string/>
                  </property>
                 </widget>
                </item>

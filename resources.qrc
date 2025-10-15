@@ -428,5 +428,9 @@
         <file>themes/light/rc/window_undock_pressed.png</file>
         <file>themes/light/rc/window_undock_pressed@2x.png</file>
         <file>themes/light/lightstyle.qss</file>
+        <file>icons/logo.png</file>
+        <file>icons/funnel_dark.png</file>
+        <file>icons/funnel_selected.png</file>
+        <file>icons/funnel_white.png</file>
     </qresource>
 </RCC>

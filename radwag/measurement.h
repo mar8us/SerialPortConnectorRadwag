@@ -69,6 +69,7 @@ public:
     SaturationMethod getSaturationMethod() const;
     int getSaturationTime() const;
     QDateTime getDate() const;
+    QDateTime getEndDate() const;
     QString getAuthor() const;
 
     void setType(MeasurementType newType);
@@ -80,7 +81,11 @@ public:
     QDateTime getSaturationBeginDate() const;
 
     void setDate(const QDateTime& newDate);
+    void setEndDate(const QDateTime& newDate);
     void setAuthor(const QString &authorName);
+
+    QString getComments() const;
+    void setComments(const QString &comments);
 
     std::shared_ptr<const Sample> getSample() const;
     QString getSampleName() const;
@@ -120,7 +125,9 @@ private:
     int saturationTimeMin;
     QDateTime saturationBeginDate;
     QDateTime date;
+    QDateTime endDate;
     QString author;
+    QString comments;
 
     double fluidTemperature;
     double sampleDryMass;

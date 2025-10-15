@@ -10,6 +10,7 @@
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
+    a.setWindowIcon(QIcon(":/icons/logo.png"));
     #ifdef USE_THEME
     theme_utils::useTheme();
     #endif

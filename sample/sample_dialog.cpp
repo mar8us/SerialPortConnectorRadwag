@@ -233,7 +233,7 @@ void SampleDialog::updateSampleDetails(const QString &sampleName)
     if(materialIndex >= 0)
         ui->comboBoxMaterial->setCurrentIndex(materialIndex);
 
-    ui->editMaterialDensity->setText(QString::number(sample->getMaterialDensity(), 'f', 5));
+    ui->editMaterialDensity->setText(QString::number(sample->getMaterialDensity(), 'f', 5) + " g/cm³");
     ui->editSampleDescription->setPlainText(sample->getDescription());
 }
 
@@ -321,7 +321,7 @@ void SampleDialog::comboBoxMaterialOnCurrentIndexChanged(const QString &material
     if(materials.contains(materialName))
     {
         double density = materials[materialName].getDensity();
-        ui->editMaterialDensity->setText(QString::number(density, 'f', 3));
+        ui->editMaterialDensity->setText(QString::number(density, 'f', 5) +  + " g/cm³");
     }
     else
         ui->editMaterialDensity->clear();
