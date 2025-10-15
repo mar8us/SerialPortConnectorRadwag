@@ -122,9 +122,6 @@ QVariant ManualMeasurementsModel::data(const QModelIndex& index, int role) const
             case Label:
                 return record.label.isEmpty() ? tr("---") : record.label;
 
-            case Note:
-                return record.note;
-
             default:
                 return QVariant();
         }
@@ -136,12 +133,11 @@ QVariant ManualMeasurementsModel::data(const QModelIndex& index, int role) const
     else if(role == Qt::ToolTipRole)
     {
         return tr("Data: %1\nWartość: %2 %3\nStabilny: %4\nEtykieta: %5\nNotatka: %6")
-            .arg(record.timestamp.toString("yyyy-MM-dd HH:mm:ss"))
+            .arg(record.timestamp.toString("dd-MM-yyyy HH:mm:ss"))
             .arg(record.value, 0, 'f', 4)
             .arg(record.unit)
             .arg(record.isStable ? tr("TAK") : tr("NIE"))
-            .arg(record.label.isEmpty() ? tr("brak") : record.label)
-            .arg(record.note.isEmpty() ? tr("brak") : record.note);
+            .arg(record.label.isEmpty() ? tr("brak") : record.label);
     }
 
     return QVariant();
@@ -167,9 +163,6 @@ QVariant ManualMeasurementsModel::headerData(int section, Qt::Orientation orient
 
             case Label:
                 return tr("Etykieta");
-
-            case Note:
-                return tr("Notatka");
 
             default:
                 return QVariant();
@@ -239,9 +232,6 @@ QString ManualMeasurementsModel::getGroupKey(const ManualMeasurementRecord& reco
         case Label:
             return record.label.isEmpty() ? tr("Bez etykiety") : record.label;
 
-        case Note:
-            return record.note.isEmpty() ? tr("Bez notatki") : record.note;
-
         default:
             return QString();
     }
@@ -256,7 +246,6 @@ void ManualMeasurementsModel::buildTree()
 
     if(m_groupByColumn == -1)
     {
-        // Bez grupowania - każdy pomiar jako osobny wiersz
         for(const auto& measurement : m_measurements)
         {
             TreeItem* leafItem = new TreeItem(QString(), m_rootItem);
@@ -266,7 +255,6 @@ void ManualMeasurementsModel::buildTree()
     }
     else
     {
-        // Grupowanie po wybranej kolumnie
         QMap<QString, TreeItem*> groupItems;
 
         for(const auto& measurement : m_measurements)

@@ -11,7 +11,7 @@ HydrostaticMeasurementModule::HydrostaticMeasurementModule(MainWindow *mainWindo
     , radwagMeasureControler(std::make_shared<MeasurementController>(dataHolder.measurementManager, this))
     , processUiHandler(mainWindow, *radwagMeasureControler.get(), dataHolder, this)
     , libraryUiHandler(mainWindow, dataHolder)
-    , manualUiHandler(mainWindow, appCore.getScaleConnector(), this)
+    , manualUiHandler(mainWindow, this)
 {
 
 }

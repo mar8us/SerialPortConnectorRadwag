@@ -12,7 +12,6 @@ struct ManualMeasurementRecord
     QString unit;
     bool isStable;
     QString label;
-    QString note;
     QByteArray rawData;
 };
 

@@ -15,9 +15,7 @@ class ManualMeasurementsHandler : public QObject
 {
     Q_OBJECT
 public:
-    explicit ManualMeasurementsHandler(MainWindow* mainWindow,
-                                       const RadwagScaleConnector* connector,
-                                       QObject *parent = nullptr);
+    explicit ManualMeasurementsHandler(MainWindow* mainWindow, QObject *parent = nullptr);
     ~ManualMeasurementsHandler();
 
     void initialize();
@@ -34,8 +32,8 @@ private slots:
     void onAutoSaveToggled(bool checked);
     void onManualGroupByChanged(int index);
 
-    // Slot odbierający dane z wagi
     void onRadwagDataReady(const RadwagMeasure& measure);
+    void updateCurrentMeasureButtonsState(bool enable);
 
 private:
     void setupConnections();

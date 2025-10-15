@@ -16,14 +16,12 @@ public:
         Unit,
         Stability,
         Label,
-        Note,
         ColumnCount
     };
 
     explicit ManualMeasurementsModel(QObject *parent = nullptr);
     ~ManualMeasurementsModel() override;
 
-    // QAbstractItemModel interface
     QModelIndex index(int row, int column, const QModelIndex& parent = QModelIndex()) const override;
     QModelIndex parent(const QModelIndex& index) const override;
     int rowCount(const QModelIndex& parent = QModelIndex()) const override;
@@ -31,7 +29,6 @@ public:
     QVariant data(const QModelIndex& index, int role = Qt::DisplayRole) const override;
     QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const override;
 
-    // Metody zarządzania pomiarami
     void addMeasurement(const ManualMeasurementRecord& record);
     void removeMeasurements(const QModelIndexList& indexes);
     void clearAll();
@@ -39,20 +36,23 @@ public:
     QList<ManualMeasurementRecord> getAllMeasurements() const;
     void setGroupBy(int columnEnum);
 
-    // Pomocnicze
     void refresh();
 
 private:
     struct TreeItem
     {
-        QString groupKey;  // Klucz grupowania (etykieta lub pusty)
+        QString groupKey;
         QVector<ManualMeasurementRecord> measurements;
         QVector<TreeItem*> children;
         TreeItem* parent;
 
         TreeItem(const QString& key = QString(), TreeItem* parentItem = nullptr)
-            : groupKey(key), parent(parentItem) {}
-        ~TreeItem() { qDeleteAll(children); }
+            : groupKey(key), parent(parentItem)
+        {
+
+        }
+        ~TreeItem()
+            { qDeleteAll(children); }
     };
 
     void buildTree();
@@ -62,7 +62,7 @@ private:
 
     TreeItem* m_rootItem;
     QVector<ManualMeasurementRecord> m_measurements;
-    int m_groupByColumn;  // -1 = no grouping, or column enum value
+    int m_groupByColumn;
 };
 
 #endif // MANUAL_MEASUREMENTS_MODEL_H
