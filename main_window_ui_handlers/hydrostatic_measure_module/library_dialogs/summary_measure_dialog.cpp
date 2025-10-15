@@ -70,6 +70,7 @@ void SummaryMeasureDialog::updateMeasureSecondLabelsSummary()
     double totalPorosity = results.getTotalPorosity();
     ui->valueSecondMeasureTotalPorosity->setText(QString::number(totalPorosity) + " %");
 
+    ui->textEditSecondMeasureComments->setPlainText(sourceMeasure->getComments());
     updateSecondCharts(results);
 }
 
@@ -125,6 +126,7 @@ void SummaryMeasureDialog::updateMeasureTripleLabelsSummary()
     double waterAbsorption = results.getWaterAbsorption();
     ui->valueTripleMeasureWaterAbsorbability->setText(QString::number(waterAbsorption) + " %");
 
+    ui->textEditTripleMeasureComments->setPlainText(sourceMeasure->getComments());
     updateTripleCharts(results);
 }
 

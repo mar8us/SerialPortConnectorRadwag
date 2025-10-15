@@ -25,6 +25,7 @@ Measurement::Measurement(const Measurement& other)
     , sample(other.sample)
     , fluid(other.fluid)
     , author(other.author)
+    , comments(other.comments)
     , stage(other.stage)
     , status(other.status)
     , saturationBeginDate(other.saturationBeginDate)
@@ -138,6 +139,16 @@ void Measurement::setEndDate(const QDateTime &newDate)
 void Measurement::setAuthor(const QString &authorName)
 {
     author = authorName;
+}
+
+QString Measurement::getComments() const
+{
+    return comments;
+}
+
+void Measurement::setComments(const QString &newComments)
+{
+    comments = newComments;
 }
 
 std::shared_ptr<const Sample> Measurement::getSample() const
@@ -277,6 +288,7 @@ QJsonObject Measurement::toJson() const
     obj["date"] = date.toString(Qt::ISODate);
     obj["endDate"] = endDate.toString(Qt::ISODate);
     obj["author"] = author;
+    obj["comments"] = comments;
     obj["fluidTemperature"] = fluidTemperature;
     obj["sampleDryMass"] = sampleDryMass;
     obj["sampleInFluidMass"] = sampleInFluidMass;
@@ -300,6 +312,7 @@ void Measurement::fromJson(const QJsonObject &json, const SampleManager *sampleM
     date = QDateTime::fromString(json["date"].toString(), Qt::ISODate);
     endDate = QDateTime::fromString(json["endDate"].toString(), Qt::ISODate);
     author = json["author"].toString();
+    comments = json["comments"].toString();
     fluidTemperature = json["fluidTemperature"].toDouble();
     sampleDryMass = json["sampleDryMass"].toDouble();
     sampleInFluidMass = json["sampleInFluidMass"].toDouble();

@@ -94,6 +94,7 @@ void MeasurementManager::loadMeasurements(std::shared_ptr<const SampleManager> s
         QJsonObject obj = value.toObject();
         auto measurement = std::make_shared<Measurement>(nullptr);
         measurement->fromJson(obj, sampleManager.get());
+        measurement->calculateResults();
         if(measurement->getSample())
             measurements.insert(measurement->getId(), measurement);
     }

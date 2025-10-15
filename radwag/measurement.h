@@ -84,6 +84,9 @@ public:
     void setEndDate(const QDateTime& newDate);
     void setAuthor(const QString &authorName);
 
+    QString getComments() const;
+    void setComments(const QString &comments);
+
     std::shared_ptr<const Sample> getSample() const;
     QString getSampleName() const;
     double getSampleMaterialDensity() const;
@@ -124,6 +127,7 @@ private:
     QDateTime date;
     QDateTime endDate;
     QString author;
+    QString comments;
 
     double fluidTemperature;
     double sampleDryMass;

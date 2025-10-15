@@ -5,6 +5,7 @@
 #include "data_holder/hydrostatic_data_holder.h"
 #include "measurement_process_ui_handler.h"
 #include "measurement_library_ui_handler.h"
+#include "../../radwag/manual_measurements_handler.h"
 
 class MainWindow;
 
@@ -34,6 +35,7 @@ protected:
     std::shared_ptr<MeasurementController> radwagMeasureControler;
     MeasurementProcessUiHandler processUiHandler;
     MeasurementLibraryUiHandler libraryUiHandler;
+    ManualMeasurementsHandler manualUiHandler;
 };
 
 #endif

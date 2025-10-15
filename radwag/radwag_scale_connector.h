@@ -27,6 +27,7 @@ const QString COMMAND_UNAVAILABLE = "_I";
 const QString COMMAND_MAX_RANGE_EXCEEDED = "_^";
 const QString COMMAND_MIN_RANGE_EXCEEDED = "_v";
 const QString COMMAND_ERROR = "_E";
+const QString COMMAND_IN_PROGRESS = "_D";  // Komenda w trakcie wykonywania
 }
 
 class RadwagScaleConnector : public DeviceConnector
@@ -36,16 +37,16 @@ public:
     explicit RadwagScaleConnector();
     virtual ~RadwagScaleConnector();
 
-    void sendTareCommand() const;
-    void sendZeroCommand() const;
-    void sendImmediateWeightCommand() const;
-    void sendStableWeightCommand() const;
-    void sendStableWeightCurrentUnitCommand() const;
-    void sendImmediateWeightCurrentUnitCommand() const;
-    void startContinuousTransmissionBasicUnit() const;
-    void stopContinuousTransmissionBasicUnit() const;
-    void startContinuousTransmissionCurrentUnit() const;
-    void stopContinuousTransmissionCurrentUnit() const;
+    bool sendTareCommand() const;
+    bool sendZeroCommand() const;
+    bool sendImmediateWeightCommand() const;
+    bool sendStableWeightCommand() const;
+    bool sendStableWeightCurrentUnitCommand() const;
+    bool sendImmediateWeightCurrentUnitCommand() const;
+    bool startContinuousTransmissionBasicUnit() const;
+    bool stopContinuousTransmissionBasicUnit() const;
+    bool startContinuousTransmissionCurrentUnit() const;
+    bool stopContinuousTransmissionCurrentUnit() const;
 
 protected:
     void processCompleteLine(const QByteArray &lineData);
@@ -57,9 +58,11 @@ private:
     const QMap<QString, QString> errorDescriptions;
     bool parseCommandResponse(const QString &data);
     bool parseErrorCode(const QString &data);
+    QByteArray removeDuplicateChars(const QByteArray &data);
 
 signals:
     void radwagDataReady(const RadwagMeasure &data);
 };
+
 
 #endif // RADWAG_SCALE_CONNECTOR_H

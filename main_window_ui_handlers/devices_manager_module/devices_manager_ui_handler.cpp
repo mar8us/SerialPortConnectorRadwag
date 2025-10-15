@@ -1,6 +1,7 @@
 #include "devices_manager_ui_handler.h"
 #include "../../main_window.h"
 #include "../../app_core.h"
+#include "../../radwag/radwagcontroldialog.h"
 
 DevicesManagerUiHandler::DevicesManagerUiHandler(MainWindow *mainWindow)
     : QObject(mainWindow)
@@ -65,6 +66,30 @@ void DevicesManagerUiHandler::onDisconnectDeviceClicked()
 {
     appCore.disconnectScale();
     fillDevicesCombo(true);
+}
+
+void DevicesManagerUiHandler::onRefreshPortClicked()
+{
+    QString currentPort;
+    if(appCore.hasConnectionWithScale())
+        currentPort = ui->comboBoxSelectPort->currentText();
+
+    fillSerialPortCombo();
+    ui->comboBoxSelectPort->setCurrentIndex(ui->comboBoxSelectPort->findText(currentPort));
+}
+
+void DevicesManagerUiHandler::onControlPanelClicked()
+{
+    auto scaleConnector = appCore.getScaleConnector();
+    if(!scaleConnector)
+    {
+        mainWindow->showWarning("Błąd", "Brak połączenia z urządzeniem.");
+        return;
+    }
+
+    RadwagControlDialog* dialog = new RadwagControlDialog(scaleConnector, mainWindow);
+    dialog->setAttribute(Qt::WA_DeleteOnClose);
+    dialog->show();
 }
 
 std::shared_ptr<const Device> DevicesManagerUiHandler::getSelectedDevice()
@@ -135,6 +160,7 @@ void DevicesManagerUiHandler::fillDevicesCombo(bool keepActiveDevice)
 
 void DevicesManagerUiHandler::fillSerialPortCombo()
 {
+    ui->comboBoxSelectPort->clear();
     foreach(auto &port, QSerialPortInfo::availablePorts())
         ui->comboBoxSelectPort->addItem(port.portName());
 }
@@ -153,4 +179,6 @@ void DevicesManagerUiHandler::connectDevicesSettingsButtons()
 
     connect(ui->buttonConnectDevice, &QPushButton::clicked, this, &DevicesManagerUiHandler::onConnectDeviceClicked);
     connect(ui->buttonDisconnectDevice, &QPushButton::clicked, this, &DevicesManagerUiHandler::onDisconnectDeviceClicked);
+    connect(ui->buttonRefreshPortCombo, &QPushButton::clicked, this, &DevicesManagerUiHandler::onRefreshPortClicked);
+    connect(ui->buttonControlPanel, &QPushButton::clicked, this, &DevicesManagerUiHandler::onControlPanelClicked);
 }

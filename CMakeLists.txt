@@ -39,6 +39,9 @@ set(PROJECT_SOURCES
         settings/device_data.h settings/device_data.cpp
 
         radwag/radwag_measure.h radwag/radwag_measure.cpp
+        radwag/manual_measurement_record.h
+        radwag/manual_measurements_model.h radwag/manual_measurements_model.cpp
+        radwag/manual_measurements_handler.h radwag/manual_measurements_handler.cpp
 
 
         fluid_tabels/fluid_tables_form.h fluid_tabels/fluid_tables_form.cpp fluid_tabels/fluid_tables_form.ui
@@ -94,6 +97,8 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         themes/dark/darkstyle.qrc
         themes/light/lightstyle.qrc
         config.h
+        radwag/radwagcontroldialog.h radwag/radwagcontroldialog.cpp radwag/radwagcontroldialog.ui
+
 
 
 

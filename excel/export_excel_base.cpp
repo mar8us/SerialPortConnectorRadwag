@@ -126,6 +126,25 @@ double ExportExcelBase::getColumnWidth(int column) const
     return COL_WIDTH;
 }
 
+void ExportExcelBase::setRowHeight(int row, double height)
+{
+    if(m_document && row > 0)
+        m_document->setRowHeight(row, height);
+}
+
+void ExportExcelBase::setRowHeights(int fromRow, int toRow, double height)
+{
+    for(int row = fromRow; row <= toRow; ++row)
+        setRowHeight(row, height);
+}
+
+double ExportExcelBase::getRowHeight(int row) const
+{
+    if(m_document && row > 0)
+        return m_document->rowHeight(row);
+    return 15.0; // Domyślna wysokość wiersza w Excel
+}
+
 double ExportExcelBase::calculateTextWidth(const QString& text, const QFont& font) const
 {
     QFont usedFont = font.family().isEmpty() ? QFont("Calibri", 10) : font;

@@ -57,7 +57,7 @@
     <item>
      <widget class="QStackedWidget" name="stackedWidget">
       <property name="currentIndex">
-       <number>0</number>
+       <number>1</number>
       </property>
       <widget class="QWidget" name="page">
        <layout class="QVBoxLayout" name="verticalLayout_2">
@@ -557,7 +557,7 @@
                   <bool>false</bool>
                  </property>
                  <property name="plainText">
-                  <string>Ujemna wartość porowatości całkowitej sugeruje, że gęstość teoretyczna materiału może być niedokładna lub zmierzona masa próbki zanurzonej jest obarczona błędem. Zaleca się powtórzenie pomiaru lub weryfikację danych teoretycznych.</string>
+                  <string/>
                  </property>
                 </widget>
                </item>
@@ -1276,7 +1276,7 @@
                   <bool>false</bool>
                  </property>
                  <property name="plainText">
-                  <string>Badany materiał charakteryzuje się wysoką porowatością otwartą (37.28%) i bardzo niską porowatością zamkniętą (0.14%). Wskazuje to na dobrą podatność materiału na procesy nasącania i impregnacji.</string>
+                  <string/>
                  </property>
                 </widget>
                </item>
