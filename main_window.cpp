@@ -30,8 +30,6 @@ MainWindow::MainWindow(QWidget *parent)
     tooltipManager.registerImage("info", ":/icons/image.jpg", 424, 424);
     tooltipManager.registerTooltip(ui->buttonDryMassExecuteStepOne, ui->buttonDryMassExecuteStepOne->text(), "Wyzeruj wagę wskazanym na ilustracji przyciskiem", "info", TooltipManager::IMAGE_BOTTOM);
 
-    // ui->pushButton_3->setVisible(false);
-    // ui->pushButton->setVisible(false);
     showMaximized();
 }
 

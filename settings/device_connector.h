@@ -22,6 +22,7 @@ public:
     void setActiveDevice(const std::shared_ptr<const Device>& newActiveDevice);
 
     bool sendCommand(const QByteArray &command) const;
+    int clearData();
 
 protected:
     std::shared_ptr<const Device> activeDevice;

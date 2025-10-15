@@ -1631,8 +1631,7 @@ bool MeasurementProcessUiHandler::checkGuideSampleSaturationPreparation()
         !ui->step2CheckBoxPrepareSaturation->isChecked() ||
         !ui->step3CheckBoxPrepareSaturation->isChecked() ||
         !ui->step4CheckBoxPrepareSaturation->isChecked() ||
-        !ui->step5CheckBoxPrepareSaturation->isChecked() ||
-        !ui->step6CheckBoxPrepareSaturation->isChecked())
+        !ui->step5CheckBoxPrepareSaturation->isChecked())
     {
         mainWindow->showWarning("Niepełne przygotowanie", "Przed kontynuacją pomiaru wykonaj wszystkie wymagane kroki.");
         return false;
@@ -1903,7 +1902,6 @@ void MeasurementProcessUiHandler::onConfirmSampleSaturationPreparationClicked()
     ui->step3CheckBoxPrepareSaturation->setChecked(true);
     ui->step4CheckBoxPrepareSaturation->setChecked(true);
     ui->step5CheckBoxPrepareSaturation->setChecked(true);
-    ui->step6CheckBoxPrepareSaturation->setChecked(true);
 }
 
 void MeasurementProcessUiHandler::onSpinSaturationTimeChanged()

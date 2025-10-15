@@ -75,7 +75,7 @@ void RadwagScaleConnector::dataReceived(const QByteArray &deviceData)
     // Dodaj nowe dane do bufora
     m_buffer.append(deviceData);
 
-    const int MAX_BUFFER_SIZE = 124;
+    const int MAX_BUFFER_SIZE = 50;
     if(m_buffer.size() > MAX_BUFFER_SIZE)
     {
         qWarning() << "RadwagScaleConnector: Bufor przepełniony (" << m_buffer.size() << "bajtów). Czyszczenie bufora.";

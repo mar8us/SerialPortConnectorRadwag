@@ -18,6 +18,7 @@ bool AppCore::connectScale(const QString& port, const std::shared_ptr<const Devi
     if(radwagScaleConnector)
         disconnectScale();
 
+    radwagScaleConnector->clearData();
     radwagScaleConnector->setActiveDevice(device);
     return radwagScaleConnector->connectDevice(port);
 }

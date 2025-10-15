@@ -15,6 +15,7 @@ RadwagControlDialog::RadwagControlDialog(const RadwagScaleConnector* connector, 
     setWindowTitle("Sterowanie Wagą Radwag");
     setMinimumSize(600, 700);
 
+    setWindowFlags(windowFlags() | Qt::WindowMinimizeButtonHint);
     setupUI();
 
     if(m_connector)
