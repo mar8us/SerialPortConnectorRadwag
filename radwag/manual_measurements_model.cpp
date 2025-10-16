@@ -240,7 +240,45 @@ void ManualMeasurementsModel::clearAll()
 
 void ManualMeasurementsModel::assignLabelToIndexes(const QModelIndexList& indexes, const QString& label)
 {
-    // TODO: implementacja przypisywania etykiet
+    if(indexes.isEmpty())
+        return;
+
+    QSet<int> measurementIndexesToUpdate;
+    for(const QModelIndex& index : indexes)
+    {
+        if(!index.isValid())
+            continue;
+
+        TreeItem* item = getItem(index);
+        if(!item)
+            continue;
+
+        if(item->measurements.isEmpty())
+        {
+            for(TreeItem* child : item->children)
+            {
+                if(!child->measurements.isEmpty())
+                {
+                    const ManualMeasurementRecord& childRecord = child->measurements.first();
+                    for(int i = 0; i < m_measurements.size(); ++i)
+                        if(areMeasurementsEqual(m_measurements[i], childRecord))
+                            measurementIndexesToUpdate.insert(i);
+                }
+            }
+        }
+        else
+        {
+            const ManualMeasurementRecord& recordToUpdate = item->measurements.first();
+            for(int i = 0; i < m_measurements.size(); ++i)
+                if(areMeasurementsEqual(m_measurements[i], recordToUpdate))
+                    measurementIndexesToUpdate.insert(i);
+        }
+    }
+
+    for(int idx : measurementIndexesToUpdate)
+        if(idx >= 0 && idx < m_measurements.size())
+            m_measurements[idx].label = label;
+    buildTree();
 }
 
 QList<ManualMeasurementRecord> ManualMeasurementsModel::getAllMeasurements() const
