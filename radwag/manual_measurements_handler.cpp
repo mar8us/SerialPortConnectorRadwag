@@ -233,12 +233,68 @@ void ManualMeasurementsHandler::onRemoveLabelClicked()
 
 void ManualMeasurementsHandler::onAssignLabelClicked()
 {
-    QMessageBox::information(m_mainWindow, "Info", "Funkcja przypisywania etykiet będzie wkrótce zaimplementowana");
+    if(!m_ui || !m_ui->treeViewManualMeasures || !m_ui->listLabels)
+        return;
+
+    QModelIndexList selectedMeasurements = m_ui->treeViewManualMeasures->selectionModel()->selectedRows();
+
+    if(selectedMeasurements.isEmpty())
+        return;
+
+    QListWidgetItem* selectedLabelItem = m_ui->listLabels->currentItem();
+    if(!selectedLabelItem)
+    {
+        QMessageBox::warning(m_mainWindow, "Uwaga", "Nie wybrano etykiety do przypisania");
+        return;
+    }
+
+    QString labelText = selectedLabelItem->text();
+    int measurementsCount = m_model->countMeasurementsInIndexes(selectedMeasurements);
+
+    QString message = QString("Czy na pewno chcesz przypisać etykietę \"%1\" do %2 %3?")
+        .arg(labelText)
+        .arg(measurementsCount)
+        .arg(measurementsCount == 1 ? "pomiaru" : (measurementsCount < 5 ? "pomiarów" : "pomiarów"));
+
+    QMessageBox::StandardButton reply = QMessageBox::question(
+        m_mainWindow,
+        "Potwierdzenie przypisania etykiety",
+        message,
+        QMessageBox::Yes | QMessageBox::No
+    );
+
+    if(reply == QMessageBox::Yes)
+        m_model->assignLabelToIndexes(selectedMeasurements, labelText);
 }
 
 void ManualMeasurementsHandler::onDeleteSelectedClicked()
 {
-    QMessageBox::information(m_mainWindow, "Info", "Funkcja usuwania pomiarów będzie wkrótce zaimplementowana");
+    if(!m_ui || !m_ui->treeViewManualMeasures)
+        return;
+
+    QModelIndexList selectedIndexes = m_ui->treeViewManualMeasures->selectionModel()->selectedRows();
+
+    if(selectedIndexes.isEmpty())
+    {
+        QMessageBox::warning(m_mainWindow, "Uwaga", "Nie zaznaczono żadnych pomiarów do usunięcia");
+        return;
+    }
+
+    int measurementsCount = m_model->countMeasurementsInIndexes(selectedIndexes);
+
+    QString message = QString("Czy na pewno chcesz usunąć %1 %2?")
+        .arg(measurementsCount)
+        .arg(measurementsCount == 1 ? "pomiar" : (measurementsCount < 5 ? "pomiary" : "pomiarów"));
+
+    QMessageBox::StandardButton reply = QMessageBox::question(
+        m_mainWindow,
+        "Potwierdzenie usunięcia",
+        message,
+        QMessageBox::Yes | QMessageBox::No
+    );
+
+    if(reply == QMessageBox::Yes)
+        m_model->removeMeasurements(selectedIndexes);
 }
 
 void ManualMeasurementsHandler::onClearAllClicked()

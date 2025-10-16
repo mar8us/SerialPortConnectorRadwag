@@ -1,6 +1,7 @@
 #include "manual_measurements_model.h"
 #include <QBrush>
 #include <QFont>
+#include "../utils.h"
 
 ManualMeasurementsModel::ManualMeasurementsModel(QObject *parent)
     : QAbstractItemModel(parent)
@@ -180,7 +181,55 @@ void ManualMeasurementsModel::addMeasurement(const ManualMeasurementRecord& reco
 
 void ManualMeasurementsModel::removeMeasurements(const QModelIndexList& indexes)
 {
-    // TODO: implementacja usuwania
+    if(indexes.isEmpty())
+        return;
+
+    // Zbierz wszystkie pomiary do usunięcia (z TreeItem)
+    QSet<ManualMeasurementRecord*> measurementsToRemove;
+
+    for(const QModelIndex& index : indexes)
+    {
+        if(!index.isValid())
+            continue;
+
+        TreeItem* item = getItem(index);
+        if(!item)
+            continue;
+
+        // Jeśli to węzeł grupujący, usuń wszystkie pomiary z grupy
+        if(item->measurements.isEmpty())
+        {
+            // Przejdź przez wszystkie dzieci (pomiary) tej grupy
+            for(TreeItem* child : item->children)
+                if(!child->measurements.isEmpty())
+                    // Znajdź ten pomiar w m_measurements i zaznacz do usunięcia
+                    for(int i = 0; i < m_measurements.size(); ++i)
+                        if(areMeasurementsEqual(m_measurements[i], child->measurements.first()))
+                            measurementsToRemove.insert(&m_measurements[i]);
+
+        }
+        else
+        {
+            const ManualMeasurementRecord& recordToRemove = item->measurements.first();
+            for(int i = 0; i < m_measurements.size(); ++i)
+                if(areMeasurementsEqual(m_measurements[i], recordToRemove))
+                    measurementsToRemove.insert(&m_measurements[i]);
+        }
+    }
+
+    for(int i = m_measurements.size() - 1; i >= 0; --i)
+        if(measurementsToRemove.contains(&m_measurements[i]))
+            m_measurements.remove(i);
+    buildTree();
+}
+
+bool ManualMeasurementsModel::areMeasurementsEqual(const ManualMeasurementRecord& a, const ManualMeasurementRecord& b) const
+{
+    return a.timestamp == b.timestamp &&
+           utils::compareDouble(a.value, b.value) &&
+           a.unit == b.unit &&
+           a.isStable == b.isStable &&
+           a.label == b.label;
 }
 
 void ManualMeasurementsModel::clearAll()
@@ -211,6 +260,28 @@ void ManualMeasurementsModel::setGroupBy(int columnEnum)
 void ManualMeasurementsModel::refresh()
 {
     buildTree();
+}
+
+int ManualMeasurementsModel::countMeasurementsInIndexes(const QModelIndexList& indexes) const
+{
+    int count = 0;
+
+    for(const QModelIndex& index : indexes)
+    {
+        if(!index.isValid())
+            continue;
+
+        TreeItem* item = getItem(index);
+        if(!item)
+            continue;
+
+        if(item->measurements.isEmpty())
+            count += item->children.size();
+        else
+            count++;
+    }
+
+    return count;
 }
 
 QString ManualMeasurementsModel::getGroupKey(const ManualMeasurementRecord& record, int columnEnum) const

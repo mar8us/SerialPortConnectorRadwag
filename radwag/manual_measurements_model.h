@@ -35,6 +35,7 @@ public:
     void assignLabelToIndexes(const QModelIndexList& indexes, const QString& label);
     QList<ManualMeasurementRecord> getAllMeasurements() const;
     void setGroupBy(int columnEnum);
+    int countMeasurementsInIndexes(const QModelIndexList& indexes) const;
 
     void refresh();
 
@@ -59,6 +60,7 @@ private:
     void clearTree();
     TreeItem* getItem(const QModelIndex& index) const;
     QString getGroupKey(const ManualMeasurementRecord& record, int columnEnum) const;
+    bool areMeasurementsEqual(const ManualMeasurementRecord& a, const ManualMeasurementRecord& b) const;
 
     TreeItem* m_rootItem;
     QVector<ManualMeasurementRecord> m_measurements;
