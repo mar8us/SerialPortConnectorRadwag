@@ -37,7 +37,7 @@
            </size>
           </property>
           <property name="currentIndex">
-           <number>2</number>
+           <number>1</number>
           </property>
           <property name="iconSize">
            <size>
@@ -224,7 +224,7 @@
                 </property>
                 <layout class="QVBoxLayout" name="verticalLayout_43">
                  <item>
-                  <widget class="QPushButton" name="buttonSamples_3">
+                  <widget class="QPushButton" name="buttonCatalogSamples">
                    <property name="minimumSize">
                     <size>
                      <width>110</width>
@@ -243,7 +243,7 @@
                   </widget>
                  </item>
                  <item>
-                  <widget class="QPushButton" name="buttonTableFluids_3">
+                  <widget class="QPushButton" name="buttonCatalogFluids">
                    <property name="minimumSize">
                     <size>
                      <width>110</width>
@@ -541,7 +541,7 @@
                </size>
               </property>
               <property name="currentIndex">
-               <number>0</number>
+               <number>6</number>
               </property>
               <widget class="QWidget" name="pageStartMeasure">
                <layout class="QVBoxLayout" name="verticalLayout_12">
@@ -822,8 +822,8 @@ Odpowiedni dla materiałów wchłaniających wodę (ceramika, skały osadowe, be
                        <rect>
                         <x>0</x>
                         <y>0</y>
-                        <width>440</width>
-                        <height>244</height>
+                        <width>967</width>
+                        <height>359</height>
                        </rect>
                       </property>
                       <layout class="QGridLayout" name="gridLayout_17">
@@ -1374,7 +1374,7 @@ i wykonaj pomiar</string>
                          <set>Qt::AlignmentFlag::AlignCenter</set>
                         </property>
                         <property name="readOnly">
-                         <bool>true</bool>
+                         <bool>false</bool>
                         </property>
                        </widget>
                       </item>
@@ -1474,7 +1474,7 @@ i wykonaj pomiar</string>
                          <set>Qt::AlignmentFlag::AlignCenter</set>
                         </property>
                         <property name="readOnly">
-                         <bool>true</bool>
+                         <bool>false</bool>
                         </property>
                         <property name="placeholderText">
                          <string>0.0</string>
@@ -2632,7 +2632,7 @@ i wykonaj pomiar</string>
                          <set>Qt::AlignmentFlag::AlignCenter</set>
                         </property>
                         <property name="readOnly">
-                         <bool>true</bool>
+                         <bool>false</bool>
                         </property>
                        </widget>
                       </item>
@@ -2732,7 +2732,7 @@ i wykonaj pomiar</string>
                          <set>Qt::AlignmentFlag::AlignCenter</set>
                         </property>
                         <property name="readOnly">
-                         <bool>true</bool>
+                         <bool>false</bool>
                         </property>
                         <property name="placeholderText">
                          <string>0.0</string>
@@ -2813,7 +2813,7 @@ i wykonaj pomiar</string>
                     <rect>
                      <x>0</x>
                      <y>0</y>
-                     <width>750</width>
+                     <width>983</width>
                      <height>1245</height>
                     </rect>
                    </property>
@@ -3420,29 +3420,6 @@ i wykonaj pomiar</string>
                    </widget>
                   </item>
                   <item>
-                   <widget class="QPushButton" name="buttonExportSecondPDF">
-                    <property name="minimumSize">
-                     <size>
-                      <width>130</width>
-                      <height>30</height>
-                     </size>
-                    </property>
-                    <property name="maximumSize">
-                     <size>
-                      <width>150</width>
-                      <height>16777215</height>
-                     </size>
-                    </property>
-                    <property name="text">
-                     <string>Eksportuj do PDF</string>
-                    </property>
-                    <property name="icon">
-                     <iconset>
-                      <normaloff>:/icons/pdf.png</normaloff>:/icons/pdf.png</iconset>
-                    </property>
-                   </widget>
-                  </item>
-                  <item>
                    <spacer name="horizontalSpacer_30">
                     <property name="orientation">
                      <enum>Qt::Orientation::Horizontal</enum>
@@ -3454,29 +3431,6 @@ i wykonaj pomiar</string>
                      </size>
                     </property>
                    </spacer>
-                  </item>
-                  <item>
-                   <widget class="QPushButton" name="buttonSaveSecondMeasureToLibrary">
-                    <property name="minimumSize">
-                     <size>
-                      <width>130</width>
-                      <height>30</height>
-                     </size>
-                    </property>
-                    <property name="maximumSize">
-                     <size>
-                      <width>150</width>
-                      <height>16777215</height>
-                     </size>
-                    </property>
-                    <property name="text">
-                     <string>Zapisz do biblioteki</string>
-                    </property>
-                    <property name="icon">
-                     <iconset>
-                      <normaloff>:/icons/save.png</normaloff>:/icons/save.png</iconset>
-                    </property>
-                   </widget>
                   </item>
                   <item>
                    <widget class="QPushButton" name="buttonNewSecondMeasure">
@@ -3993,7 +3947,7 @@ i wykonaj pomiar</string>
                          <set>Qt::AlignmentFlag::AlignCenter</set>
                         </property>
                         <property name="readOnly">
-                         <bool>true</bool>
+                         <bool>false</bool>
                         </property>
                        </widget>
                       </item>
@@ -4790,7 +4744,7 @@ i wykonaj pomiar</string>
                     <rect>
                      <x>0</x>
                      <y>0</y>
-                     <width>856</width>
+                     <width>985</width>
                      <height>1314</height>
                     </rect>
                    </property>
@@ -6155,229 +6109,11 @@ i wykonaj pomiar</string>
               </layout>
              </widget>
             </item>
-            <item row="1" column="2">
-             <layout class="QVBoxLayout" name="verticalLayout_leftButtons_2">
-              <item>
-               <layout class="QHBoxLayout" name="horizontalLayout_21">
-                <property name="topMargin">
-                 <number>0</number>
-                </property>
-                <item>
-                 <widget class="QGroupBox" name="groupBoxOperations">
-                  <property name="title">
-                   <string>Operacje</string>
-                  </property>
-                  <layout class="QVBoxLayout" name="verticalLayout_operations_2">
-                   <item>
-                    <widget class="QPushButton" name="btnDeleteSelected">
-                     <property name="minimumSize">
-                      <size>
-                       <width>0</width>
-                       <height>30</height>
-                      </size>
-                     </property>
-                     <property name="text">
-                      <string>Usuń zaznaczone</string>
-                     </property>
-                    </widget>
-                   </item>
-                   <item>
-                    <widget class="QPushButton" name="btnClearAll">
-                     <property name="minimumSize">
-                      <size>
-                       <width>0</width>
-                       <height>30</height>
-                      </size>
-                     </property>
-                     <property name="text">
-                      <string>Wyczyść wszystkie</string>
-                     </property>
-                    </widget>
-                   </item>
-                   <item>
-                    <widget class="Line" name="line_operations_2">
-                     <property name="orientation">
-                      <enum>Qt::Orientation::Horizontal</enum>
-                     </property>
-                    </widget>
-                   </item>
-                   <item>
-                    <widget class="QPushButton" name="btnCreateHydroMeasurement">
-                     <property name="minimumSize">
-                      <size>
-                       <width>170</width>
-                       <height>30</height>
-                      </size>
-                     </property>
-                     <property name="text">
-                      <string>Pomiar hydrostatyczny</string>
-                     </property>
-                    </widget>
-                   </item>
-                   <item>
-                    <widget class="QPushButton" name="btnExportExcel">
-                     <property name="minimumSize">
-                      <size>
-                       <width>0</width>
-                       <height>30</height>
-                      </size>
-                     </property>
-                     <property name="text">
-                      <string>Eksport do Excel</string>
-                     </property>
-                    </widget>
-                   </item>
-                   <item>
-                    <spacer name="verticalSpacer_8">
-                     <property name="orientation">
-                      <enum>Qt::Orientation::Vertical</enum>
-                     </property>
-                     <property name="sizeHint" stdset="0">
-                      <size>
-                       <width>20</width>
-                       <height>40</height>
-                      </size>
-                     </property>
-                    </spacer>
-                   </item>
-                  </layout>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QGroupBox" name="groupBoxLabels_2">
-                  <property name="title">
-                   <string>Etykiety</string>
-                  </property>
-                  <layout class="QGridLayout" name="gridLayout_14">
-                   <item row="3" column="1">
-                    <layout class="QGridLayout" name="gridLayout_13">
-                     <property name="topMargin">
-                      <number>0</number>
-                     </property>
-                     <item row="0" column="2">
-                      <widget class="QPushButton" name="btnRemoveLabel">
-                       <property name="minimumSize">
-                        <size>
-                         <width>130</width>
-                         <height>30</height>
-                        </size>
-                       </property>
-                       <property name="maximumSize">
-                        <size>
-                         <width>130</width>
-                         <height>30</height>
-                        </size>
-                       </property>
-                       <property name="text">
-                        <string>Usuń etykietę</string>
-                       </property>
-                      </widget>
-                     </item>
-                     <item row="0" column="1">
-                      <widget class="QPushButton" name="btnAddLabel">
-                       <property name="minimumSize">
-                        <size>
-                         <width>130</width>
-                         <height>30</height>
-                        </size>
-                       </property>
-                       <property name="maximumSize">
-                        <size>
-                         <width>130</width>
-                         <height>30</height>
-                        </size>
-                       </property>
-                       <property name="text">
-                        <string>Dodaj etykietę</string>
-                       </property>
-                      </widget>
-                     </item>
-                     <item row="0" column="3">
-                      <widget class="QPushButton" name="btnAssignLabel">
-                       <property name="minimumSize">
-                        <size>
-                         <width>180</width>
-                         <height>30</height>
-                        </size>
-                       </property>
-                       <property name="maximumSize">
-                        <size>
-                         <width>180</width>
-                         <height>30</height>
-                        </size>
-                       </property>
-                       <property name="text">
-                        <string>Przypisz do pomiarów</string>
-                       </property>
-                      </widget>
-                     </item>
-                     <item row="0" column="0">
-                      <spacer name="horizontalSpacer_13">
-                       <property name="orientation">
-                        <enum>Qt::Orientation::Horizontal</enum>
-                       </property>
-                       <property name="sizeHint" stdset="0">
-                        <size>
-                         <width>40</width>
-                         <height>20</height>
-                        </size>
-                       </property>
-                      </spacer>
-                     </item>
-                    </layout>
-                   </item>
-                   <item row="1" column="1">
-                    <widget class="Line" name="line_labels_2">
-                     <property name="orientation">
-                      <enum>Qt::Orientation::Horizontal</enum>
-                     </property>
-                    </widget>
-                   </item>
-                   <item row="2" column="1">
-                    <widget class="QLineEdit" name="editNewLabel">
-                     <property name="placeholderText">
-                      <string>Nowa etykieta...</string>
-                     </property>
-                    </widget>
-                   </item>
-                   <item row="0" column="1">
-                    <widget class="QListWidget" name="listLabels">
-                     <property name="minimumSize">
-                      <size>
-                       <width>0</width>
-                       <height>100</height>
-                      </size>
-                     </property>
-                     <property name="selectionMode">
-                      <enum>QAbstractItemView::SelectionMode::SingleSelection</enum>
-                     </property>
-                    </widget>
-                   </item>
-                   <item row="4" column="1">
-                    <spacer name="verticalSpacer_19">
-                     <property name="orientation">
-                      <enum>Qt::Orientation::Vertical</enum>
-                     </property>
-                     <property name="sizeHint" stdset="0">
-                      <size>
-                       <width>20</width>
-                       <height>40</height>
-                      </size>
-                     </property>
-                    </spacer>
-                   </item>
-                  </layout>
-                 </widget>
-                </item>
-               </layout>
-              </item>
-             </layout>
-            </item>
             <item row="1" column="0">
              <widget class="QTreeView" name="treeViewManualMeasures">
               <property name="minimumSize">
                <size>
-                <width>0</width>
+                <width>500</width>
                 <height>0</height>
                </size>
               </property>
@@ -6405,6 +6141,279 @@ i wykonaj pomiar</string>
               <property name="animated">
                <bool>true</bool>
               </property>
+             </widget>
+            </item>
+            <item row="1" column="1">
+             <widget class="QScrollArea" name="scrollArea">
+              <property name="frameShape">
+               <enum>QFrame::Shape::NoFrame</enum>
+              </property>
+              <property name="widgetResizable">
+               <bool>true</bool>
+              </property>
+              <widget class="QWidget" name="scrollAreaWidgetContents_11">
+               <property name="geometry">
+                <rect>
+                 <x>0</x>
+                 <y>0</y>
+                 <width>720</width>
+                 <height>502</height>
+                </rect>
+               </property>
+               <layout class="QGridLayout" name="gridLayout_15">
+                <item row="0" column="0">
+                 <widget class="QGroupBox" name="groupBoxOperations">
+                  <property name="title">
+                   <string>Operacje</string>
+                  </property>
+                  <layout class="QVBoxLayout" name="verticalLayout_operations_2">
+                   <item>
+                    <layout class="QGridLayout" name="gridLayout_31">
+                     <property name="topMargin">
+                      <number>0</number>
+                     </property>
+                     <item row="1" column="2">
+                      <widget class="QPushButton" name="btnExportExcel">
+                       <property name="minimumSize">
+                        <size>
+                         <width>0</width>
+                         <height>30</height>
+                        </size>
+                       </property>
+                       <property name="maximumSize">
+                        <size>
+                         <width>170</width>
+                         <height>16777215</height>
+                        </size>
+                       </property>
+                       <property name="text">
+                        <string>Eksport do Excel</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="0" column="1" rowspan="2">
+                      <widget class="Line" name="line_4">
+                       <property name="orientation">
+                        <enum>Qt::Orientation::Vertical</enum>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="1" column="0">
+                      <widget class="QPushButton" name="btnClearAll">
+                       <property name="minimumSize">
+                        <size>
+                         <width>170</width>
+                         <height>30</height>
+                        </size>
+                       </property>
+                       <property name="maximumSize">
+                        <size>
+                         <width>170</width>
+                         <height>16777215</height>
+                        </size>
+                       </property>
+                       <property name="text">
+                        <string>Wyczyść wszystkie</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="0" column="2">
+                      <widget class="QPushButton" name="btnCreateHydroMeasurement">
+                       <property name="minimumSize">
+                        <size>
+                         <width>170</width>
+                         <height>30</height>
+                        </size>
+                       </property>
+                       <property name="maximumSize">
+                        <size>
+                         <width>150</width>
+                         <height>16777215</height>
+                        </size>
+                       </property>
+                       <property name="text">
+                        <string>Pomiar hydrostatyczny</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="0" column="0">
+                      <widget class="QPushButton" name="btnDeleteSelected">
+                       <property name="minimumSize">
+                        <size>
+                         <width>170</width>
+                         <height>30</height>
+                        </size>
+                       </property>
+                       <property name="maximumSize">
+                        <size>
+                         <width>170</width>
+                         <height>16777215</height>
+                        </size>
+                       </property>
+                       <property name="text">
+                        <string>Usuń zaznaczone</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="1" column="3">
+                      <spacer name="horizontalSpacer_10">
+                       <property name="orientation">
+                        <enum>Qt::Orientation::Horizontal</enum>
+                       </property>
+                       <property name="sizeHint" stdset="0">
+                        <size>
+                         <width>40</width>
+                         <height>20</height>
+                        </size>
+                       </property>
+                      </spacer>
+                     </item>
+                    </layout>
+                   </item>
+                   <item>
+                    <widget class="QGroupBox" name="groupBoxLabels_2">
+                     <property name="title">
+                      <string>Etykiety</string>
+                     </property>
+                     <layout class="QGridLayout" name="gridLayout_14">
+                      <item row="3" column="1">
+                       <layout class="QGridLayout" name="gridLayout_13">
+                        <property name="topMargin">
+                         <number>0</number>
+                        </property>
+                        <item row="0" column="2">
+                         <widget class="QPushButton" name="btnRemoveLabel">
+                          <property name="minimumSize">
+                           <size>
+                            <width>130</width>
+                            <height>30</height>
+                           </size>
+                          </property>
+                          <property name="maximumSize">
+                           <size>
+                            <width>130</width>
+                            <height>30</height>
+                           </size>
+                          </property>
+                          <property name="text">
+                           <string>Usuń etykietę</string>
+                          </property>
+                         </widget>
+                        </item>
+                        <item row="0" column="1">
+                         <widget class="QPushButton" name="btnAddLabel">
+                          <property name="minimumSize">
+                           <size>
+                            <width>130</width>
+                            <height>30</height>
+                           </size>
+                          </property>
+                          <property name="maximumSize">
+                           <size>
+                            <width>130</width>
+                            <height>30</height>
+                           </size>
+                          </property>
+                          <property name="text">
+                           <string>Dodaj etykietę</string>
+                          </property>
+                         </widget>
+                        </item>
+                        <item row="0" column="3">
+                         <widget class="QPushButton" name="btnAssignLabel">
+                          <property name="minimumSize">
+                           <size>
+                            <width>180</width>
+                            <height>30</height>
+                           </size>
+                          </property>
+                          <property name="maximumSize">
+                           <size>
+                            <width>180</width>
+                            <height>30</height>
+                           </size>
+                          </property>
+                          <property name="text">
+                           <string>Przypisz do pomiarów</string>
+                          </property>
+                         </widget>
+                        </item>
+                        <item row="0" column="0">
+                         <spacer name="horizontalSpacer_13">
+                          <property name="orientation">
+                           <enum>Qt::Orientation::Horizontal</enum>
+                          </property>
+                          <property name="sizeHint" stdset="0">
+                           <size>
+                            <width>40</width>
+                            <height>20</height>
+                           </size>
+                          </property>
+                         </spacer>
+                        </item>
+                       </layout>
+                      </item>
+                      <item row="4" column="1">
+                       <spacer name="verticalSpacer_19">
+                        <property name="orientation">
+                         <enum>Qt::Orientation::Vertical</enum>
+                        </property>
+                        <property name="sizeHint" stdset="0">
+                         <size>
+                          <width>20</width>
+                          <height>40</height>
+                         </size>
+                        </property>
+                       </spacer>
+                      </item>
+                      <item row="1" column="1">
+                       <widget class="Line" name="line_labels_2">
+                        <property name="orientation">
+                         <enum>Qt::Orientation::Horizontal</enum>
+                        </property>
+                       </widget>
+                      </item>
+                      <item row="2" column="1">
+                       <widget class="QLineEdit" name="editNewLabel">
+                        <property name="placeholderText">
+                         <string>Nowa etykieta...</string>
+                        </property>
+                       </widget>
+                      </item>
+                      <item row="0" column="1">
+                       <widget class="QListWidget" name="listLabels">
+                        <property name="minimumSize">
+                         <size>
+                          <width>0</width>
+                          <height>100</height>
+                         </size>
+                        </property>
+                        <property name="selectionMode">
+                         <enum>QAbstractItemView::SelectionMode::SingleSelection</enum>
+                        </property>
+                       </widget>
+                      </item>
+                     </layout>
+                    </widget>
+                   </item>
+                   <item>
+                    <spacer name="verticalSpacer_8">
+                     <property name="orientation">
+                      <enum>Qt::Orientation::Vertical</enum>
+                     </property>
+                     <property name="sizeHint" stdset="0">
+                      <size>
+                       <width>20</width>
+                       <height>40</height>
+                      </size>
+                     </property>
+                    </spacer>
+                   </item>
+                  </layout>
+                 </widget>
+                </item>
+               </layout>
+              </widget>
              </widget>
             </item>
            </layout>
@@ -11174,7 +11183,7 @@ QPushButton:disabled {
                 </size>
                </property>
                <property name="text">
-                <string>Odświerz</string>
+                <string>Odśwież</string>
                </property>
               </widget>
              </item>
