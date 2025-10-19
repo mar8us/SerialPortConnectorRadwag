@@ -36,6 +36,7 @@ bool HydrostaticMeasurementModule::hasActiveMeasurement() const
 
 void HydrostaticMeasurementModule::connectSignals()
 {
+    connect(appCore.getScaleConnector(), &RadwagScaleConnector::radwagDataReady, &processUiHandler, &MeasurementProcessUiHandler::onRadwagMeasueReady);
     connect(&libraryUiHandler, &MeasurementLibraryUiHandler::newMeasure, &processUiHandler, &MeasurementProcessUiHandler::onNewMeasure);
     connect(&libraryUiHandler, &MeasurementLibraryUiHandler::replySelectedMeasure, &processUiHandler, &MeasurementProcessUiHandler::onReplyMeasure);
     connect(&libraryUiHandler, &MeasurementLibraryUiHandler::continueSelectedMeasure, &processUiHandler, &MeasurementProcessUiHandler::onContinueMeasure);

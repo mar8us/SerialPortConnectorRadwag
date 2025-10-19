@@ -36,7 +36,6 @@ public:
 private slots:
     void onConnectResult(bool connected);
     void onDeviceComboSelectionChanged();
-    void onRadwagMeasueReady(const RadwagMeasure &data);
 
     void onMainPageChanged(int index);
 private:

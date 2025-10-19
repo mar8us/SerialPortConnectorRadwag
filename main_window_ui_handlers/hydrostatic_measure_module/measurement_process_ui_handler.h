@@ -31,6 +31,7 @@ public slots:
     void onNewMeasure();
     void onReplyMeasure(const std::shared_ptr<const Measurement> &sourceMeasure);
     void onContinueMeasure(const std::shared_ptr<const Measurement> &sourceMeasure);
+    void onRadwagMeasueReady(const RadwagMeasure &data);
 
 signals:
     void exportMeasuresExcel(const QList<const Measurement*>& measures);

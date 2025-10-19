@@ -1963,6 +1963,19 @@ void MeasurementProcessUiHandler::onContinueMeasure(const std::shared_ptr<const 
         measureStateMachine->goToStage(radwagMeasureControler.getStage(), true);
 }
 
+void MeasurementProcessUiHandler::onRadwagMeasueReady(const RadwagMeasure &data)
+{
+    MeasurementStages::Stage currentStage = ui->measureDensityStage->property("currentStage").value<MeasurementStages::Stage>();
+    if(currentStage == MeasurementStages::Stage::DryMeasure)
+        ui->editCurrentDryMeasure->setText(QString::number(data.getValue()));
+    else if(currentStage == MeasurementStages::Stage::FinishSecond)
+        ui->editCurrentValueFinishSecond->setText(QString::number(data.getValue()));
+    else if(currentStage == MeasurementStages::Stage::SaturationMass)
+        ui->editCurrentValueFinishMeasurementTriple->setText(QString::number(data.getValue()));
+    else if(currentStage == MeasurementStages::Stage::FinishTriple)
+        ui->editCurrentMeasureSaturated->setText(QString::number(data.getValue()));
+}
+
 void MeasurementProcessUiHandler::connectSignals()
 {
     connectNavMeasurementButtons();

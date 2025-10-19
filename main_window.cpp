@@ -3,10 +3,8 @@
 
 #include <QMessageBox>
 
-#include "radwag/radwagcontroldialog.h"
 #include "sieveAnalysis/sieve_analysis_stages.h"
 #include "tooltip/tooltip_manager.h"
-#include "radwag/measurement.h"
 #include "app_core.h"
 
 MainWindow::MainWindow(QWidget *parent)
@@ -116,19 +114,6 @@ void MainWindow::navigateToToolBoxPage(QWidget* page)
 void MainWindow::onMainPageChanged(int index)
 {
     updateActionIcons(index);
-}
-
-void MainWindow::onRadwagMeasueReady(const RadwagMeasure &data)
-{
-    MeasurementStages::Stage currentStage = ui->measureDensityStage->property("currentStage").value<MeasurementStages::Stage>();
-    if(currentStage == MeasurementStages::Stage::DryMeasure)
-        ui->editCurrentDryMeasure->setText(QString::number(data.getValue()));
-    else if(currentStage == MeasurementStages::Stage::FinishSecond)
-        ui->editCurrentValueFinishSecond->setText(QString::number(data.getValue()));
-    else if(currentStage == MeasurementStages::Stage::SaturationMass)
-        ui->editCurrentValueFinishMeasurementTriple->setText(QString::number(data.getValue()));
-    else if(currentStage == MeasurementStages::Stage::FinishTriple)
-        ui->editCurrentMeasureSaturated->setText(QString::number(data.getValue()));
 }
 
 void MainWindow::onConnectResult(bool connected)
@@ -250,7 +235,6 @@ void MainWindow::connectMainNavButtons()
 void MainWindow::connectScaleSignals()
 {
     connect(appCore.getScaleConnector(), &DeviceConnector::connectionResult, this, &MainWindow::onConnectResult);
-    connect(appCore.getScaleConnector(), &RadwagScaleConnector::radwagDataReady, this, &MainWindow::onRadwagMeasueReady);
     connect(ui->comboBoxSelectDevice, &QComboBox::currentIndexChanged, this, &MainWindow::onDeviceComboSelectionChanged);
 }
 
