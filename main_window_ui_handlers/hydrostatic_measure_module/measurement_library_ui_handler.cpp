@@ -512,8 +512,11 @@ void MeasurementLibraryUiHandler::setupLibraryTreeView()
     connect(dataHolder.measurementManager.get(), &MeasurementManager::measurementsChanged, this, &MeasurementLibraryUiHandler::refreshLibraryView);
 
     QHeaderView* header = ui->treeViewLibMeasure->header();
+    header->setSectionResizeMode(QHeaderView::Interactive);
+    header->setStretchLastSection(false);
+
     for(int i = 0; i < ui->treeViewLibMeasure->model()->columnCount(); i++)
-        header->setSectionResizeMode(i, QHeaderView::ResizeToContents);
+        header->resizeSection(i, 150);
 }
 
 void MeasurementLibraryUiHandler::refreshLibraryView()
@@ -616,7 +619,7 @@ void MeasurementLibraryUiHandler::fillComboLibSearchIn()
 {
     ui->comboLibSearchIn->clear();
     ui->comboLibSearchIn->addItem("Wszystkie pola", -1);
-    ui->comboLibSearchIn->addItem("Nazwa próbki", MeasurementTreeModel::Columns::SampleName);
+    ui->comboLibSearchIn->addItem("Seria", MeasurementTreeModel::Columns::SampleName);
     ui->comboLibSearchIn->addItem("Materiał", MeasurementTreeModel::Columns::Material);
     ui->comboLibSearchIn->addItem("Ciecz", MeasurementTreeModel::Columns::Fluid);
     ui->comboLibSearchIn->addItem("Status", MeasurementTreeModel::Columns::Status);
@@ -629,7 +632,7 @@ void MeasurementLibraryUiHandler::fillComboLibGroupBy()
     ui->comboLibGroupBy->clear();
     ui->comboLibGroupBy->addItem("Brak grupowania", -1);
     ui->comboLibGroupBy->addItem("Typ pomiaru", MeasurementTreeModel::Columns::MeasureType);
-    ui->comboLibGroupBy->addItem("Nazwa próbki", MeasurementTreeModel::Columns::SampleName);
+    ui->comboLibGroupBy->addItem("Seria", MeasurementTreeModel::Columns::SampleName);
     ui->comboLibGroupBy->addItem("Materiał", MeasurementTreeModel::Columns::Material);
     ui->comboLibGroupBy->addItem("Ciecz", MeasurementTreeModel::Columns::Fluid);
     ui->comboLibGroupBy->addItem("Status", MeasurementTreeModel::Columns::Status);
