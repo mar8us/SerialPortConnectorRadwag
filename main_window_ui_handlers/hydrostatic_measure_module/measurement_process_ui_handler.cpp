@@ -63,66 +63,16 @@ void MeasurementProcessUiHandler::initializeStateMachine()
         return;
     measureStateMachine = new MeasurementStateMachine(ui->measureDensityStage, this);
 
-    measureStateMachine->addStageConfiguration({
-        MeasurementStages::Stage::StartMeasure,
-        ui->pageStartMeasure,
-        this
-    });
-
-    measureStateMachine->addStageConfiguration({
-        MeasurementStages::Stage::InitialData,
-        ui->pageInitialData,
-        this
-    });
-
-    measureStateMachine->addStageConfiguration({
-        MeasurementStages::Stage::DryMeasure,
-        ui->pageDryMeasure,
-        this
-    });
-
-    measureStateMachine->addStageConfiguration({
-        MeasurementStages::Stage::PrepareSecond,
-        ui->pagePrepareMeasureSecond,
-        this
-    });
-
-    measureStateMachine->addStageConfiguration({
-        MeasurementStages::Stage::PrepareTriple,
-        ui->pagePrepareMeasureTriple,
-        this
-    });
-
-    measureStateMachine->addStageConfiguration({
-        MeasurementStages::Stage::FinishSecond,
-        ui->pageFinishMeasurementSecond,
-        this
-    });
-
-    measureStateMachine->addStageConfiguration({
-        MeasurementStages::Stage::SaturationMass,
-        ui->pageSatruationMassTriple,
-        this
-    });
-
-    measureStateMachine->addStageConfiguration({
-        MeasurementStages::Stage::FinishTriple,
-        ui->pageFinishSaturatedMassTriple,
-        this
-    });
-
-    measureStateMachine->addStageConfiguration({
-        MeasurementStages::Stage::SummarySecond,
-        ui->pageSummarySecond,
-        this
-    });
-
-    measureStateMachine->addStageConfiguration({
-        MeasurementStages::Stage::SummaryTriple,
-        ui->pageSummaryTriple,
-        this
-    });
-
+    measureStateMachine->addStageConfiguration({MeasurementStages::Stage::StartMeasure, ui->pageStartMeasure, this});
+    measureStateMachine->addStageConfiguration({MeasurementStages::Stage::InitialData, ui->pageInitialData, this });
+    measureStateMachine->addStageConfiguration({MeasurementStages::Stage::DryMeasure, ui->pageDryMeasure, this});
+    measureStateMachine->addStageConfiguration({MeasurementStages::Stage::PrepareSecond, ui->pagePrepareMeasureSecond, this});
+    measureStateMachine->addStageConfiguration({MeasurementStages::Stage::PrepareTriple, ui->pagePrepareMeasureTriple, this});
+    measureStateMachine->addStageConfiguration({MeasurementStages::Stage::FinishSecond, ui->pageFinishMeasurementSecond, this});
+    measureStateMachine->addStageConfiguration({MeasurementStages::Stage::SaturationMass, ui->pageSatruationMassTriple, this});
+    measureStateMachine->addStageConfiguration({MeasurementStages::Stage::FinishTriple, ui->pageFinishSaturatedMassTriple, this});
+    measureStateMachine->addStageConfiguration({MeasurementStages::Stage::SummarySecond, ui->pageSummarySecond, this});
+    measureStateMachine->addStageConfiguration({MeasurementStages::Stage::SummaryTriple, ui->pageSummaryTriple, this});
     connect(measureStateMachine, &MeasurementStateMachine::stageChanged, this, &MeasurementProcessUiHandler::onStageChanged);
 }
 
@@ -243,10 +193,7 @@ void MeasurementProcessUiHandler::onSummaryTriplePageEnter()
 
 bool MeasurementProcessUiHandler::onExitStage(MeasurementStages::Stage stage, MeasurementStages::Stage toStage)
 {
-    qDebug() << "Exiting stage:" << static_cast<int>(stage) << "to:" << static_cast<int>(toStage);
-
     bool canExit = false;
-
     if(toStage < stage && !measureStateMachine->isLastStage(stage))
         return true;
 
@@ -298,7 +245,6 @@ bool MeasurementProcessUiHandler::onExitStage(MeasurementStages::Stage stage, Me
 
     if(canExit)
         radwagMeasureControler.setStage(toStage);
-
     auto measue = radwagMeasureControler.getActiveMeasure();
     return canExit;
 }
