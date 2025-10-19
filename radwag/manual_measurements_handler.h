@@ -21,7 +21,6 @@ public:
     void initialize();
 
 private slots:
-    void onToggleRecordingClicked(bool checked);
     void onGetMeasureClicked();
     void onSaveMeasureClicked();
     void onAddLabelClicked();
@@ -48,7 +47,6 @@ private:
     const RadwagScaleConnector* m_connector;
     ManualMeasurementsModel* m_model;
 
-    bool m_isRecording;
     bool m_autoSave;
     RadwagMeasure m_pendingMeasure;  // Ostatni pobrany pomiar oczekujący na zapis
 };

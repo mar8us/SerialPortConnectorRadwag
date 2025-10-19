@@ -12,7 +12,6 @@ ManualMeasurementsHandler::ManualMeasurementsHandler(MainWindow* mainWindow, QOb
     , m_ui(mainWindow->getUi())
     , m_connector(appCore.getScaleConnector())
     , m_model(new ManualMeasurementsModel(this))
-    , m_isRecording(false)
     , m_autoSave(false)
     , m_pendingMeasure(QByteArray())
 {
@@ -30,8 +29,11 @@ void ManualMeasurementsHandler::initialize()
     populateDefaultLabels();
     fillComboManualGroupBy();
     setupConnections();
-    addTestData();
-    updateCurrentMeasureButtonsState(false);
+
+    m_ui->line_4->setVisible(false);
+    m_ui->btnCreateHydroMeasurement->setVisible(false);
+    m_ui->btnExportExcel->setVisible(false);
+    // addTestData();
 }
 
 void ManualMeasurementsHandler::setupTreeView()
@@ -152,14 +154,6 @@ void ManualMeasurementsHandler::updateCurrentValueDisplay(const RadwagMeasure& m
 
     QString valueText = QString("%1 %2").arg(measure.getValue(), 0, 'f', 4).arg(measure.getUnitString());
     m_ui->lblCurrentValue->setText(valueText);
-}
-
-void ManualMeasurementsHandler::onToggleRecordingClicked(bool checked)
-{
-    if(!m_ui)
-        return;
-    m_isRecording = checked;
-    updateCurrentMeasureButtonsState(checked);
 }
 
 void ManualMeasurementsHandler::onGetMeasureClicked()
