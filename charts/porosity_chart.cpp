@@ -25,13 +25,15 @@ QString PorosityChartWidget::getTitle() const
     switch(getCurrentChartType())
     {
         case BaseChartType::PieChart:
-            return QString("Rozkład objętości próbki (porowatość całkowita: %1%)").arg(formatPercentage(totalPorosity));
+            return static_cast<PorosityChartMode>(chartTypeCombo->currentData().toInt()) == PorosityChartMode::VolumeDistribution ?
+                QString("Rozkład objętości próbki (porowatość całkowita: %1%)").arg(formatPercentage(totalPorosity)) :
+                QString("Analiza porowatości (porowatość całkowita: %1%)").arg(formatPercentage(totalPorosity));
 
         case BaseChartType::BarChart:
             return QString("Parametry porowatości (porowatość całkowita: %1%)").arg(formatPercentage(totalPorosity));
 
         default:
-            return QString("Analiza porowatości (porowatość całkowita: %1%)").arg(formatPercentage(totalPorosity));
+            return getCategoryName();
     }
 }
 
