@@ -127,11 +127,6 @@ void RadwagControlDialog::setupUI()
     layoutContinuousCurrent->addWidget(m_btnStartContinuousCurrent);
     layoutContinuousCurrent->addWidget(m_btnStopContinuousCurrent);
 
-    // === STATUS ===
-    m_lblStatus = new QLabel("Gotowy");
-    m_lblStatus->setAlignment(Qt::AlignCenter);
-    m_lblStatus->setStyleSheet("QLabel { font-size: 14pt; font-weight: bold; padding: 10px; background-color: #e0e0e0; border-radius: 5px; }");
-
     // === LOG ===
     QLabel* lblLogHeader = new QLabel("Log Komend i Pomiarów:");
     m_txtLog = new QTextEdit();
@@ -151,7 +146,6 @@ void RadwagControlDialog::setupUI()
     mainLayout->addWidget(groupSingleCurrent);
     mainLayout->addWidget(groupContinuousBasic);
     mainLayout->addWidget(groupContinuousCurrent);
-    mainLayout->addWidget(m_lblStatus);
     mainLayout->addWidget(lblLogHeader);
     mainLayout->addWidget(m_txtLog);
     mainLayout->addWidget(btnClose);
@@ -172,12 +166,6 @@ void RadwagControlDialog::logCommand(const QString& commandName, bool success)
                            .arg(commandName);
 
     m_txtLog->append(logEntry);
-
-    // Aktualizuj status
-    if(success)
-        m_lblStatus->setText("✓ " + commandName);
-    else
-        m_lblStatus->setText("✗ Błąd: " + commandName);
 }
 
 void RadwagControlDialog::onMeasurementReceived(const QString& measurement)
@@ -190,7 +178,6 @@ void RadwagControlDialog::onMeasurementReceived(const QString& measurement)
                            .arg(measurement);
 
     m_txtLog->append(logEntry);
-    m_lblStatus->setText("📊 " + measurement);
 }
 
 // === IMPLEMENTACJA SLOTÓW ===

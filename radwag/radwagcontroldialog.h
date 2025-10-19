@@ -38,7 +38,6 @@ private:
     QPushButton* m_btnStartContinuousCurrent;
     QPushButton* m_btnStopContinuousCurrent;
 
-    QLabel* m_lblStatus;
     QTextEdit* m_txtLog;
 
 private slots:
