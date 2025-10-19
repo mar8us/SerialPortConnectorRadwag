@@ -10,6 +10,7 @@
 #include "measurement_state_machine.h"
 
 #include "../../state_machine.h"
+#include "../../radwag/radwag_measure.h"
 
 class MainWindow;
 
@@ -32,9 +33,12 @@ public slots:
     void onReplyMeasure(const std::shared_ptr<const Measurement> &sourceMeasure);
     void onContinueMeasure(const std::shared_ptr<const Measurement> &sourceMeasure);
     void onRadwagMeasueReady(const RadwagMeasure &data);
+    void buttonTableFluidsOnClicked();
+    void onButtonSeriesOnClicked();
 
 signals:
     void exportMeasuresExcel(const QList<const Measurement*>& measures);
+    void activeMeasurementChanged(bool hasActiveMeasurement);
 
 private slots:
     void initializeStateMachine();
@@ -67,8 +71,6 @@ private slots:
     void goToPreviousMeasureStage();
     void onStageChanged();
 
-    void buttonTableFluidsOnClicked();
-    void onButtonSeriesOnClicked();
     void onMaterialsChanged(const QMap<QString, Material> &materials);
 
     void onShowHydroSetSchemeButtonClicked();

@@ -28,6 +28,12 @@ void MeasurementLibraryUiHandler::initialize()
     updateButtonsState();
 }
 
+void MeasurementLibraryUiHandler::updateCatalogButtonsState(bool hasActiveMeasurement)
+{
+    ui->buttonCatalogSamples->setEnabled(!hasActiveMeasurement);
+    ui->buttonCatalogFluids->setEnabled(!hasActiveMeasurement);
+}
+
 void MeasurementLibraryUiHandler::onLibrarySearchTextChanged(const QString& text)
 {
     measurementModel->setFilterText(text);
@@ -596,6 +602,16 @@ void MeasurementLibraryUiHandler::showMeasureResult(std::shared_ptr<const Measur
     dialog->show();
 }
 
+void MeasurementLibraryUiHandler::onCatalogSamplesButtonClicked()
+{
+    emit openSamplesCatalog();
+}
+
+void MeasurementLibraryUiHandler::onCatalogFluidsButtonClicked()
+{
+    emit openFluidsCatalog();
+}
+
 void MeasurementLibraryUiHandler::fillComboLibSearchIn()
 {
     ui->comboLibSearchIn->clear();
@@ -638,6 +654,9 @@ void MeasurementLibraryUiHandler::connectLibraryMeasureButtons()
     connect(ui->buttonLibCompareMeasures, &QPushButton::clicked, this, &MeasurementLibraryUiHandler::onLibraryShowAnalysisMeasuresButtonClicked);
     connect(ui->buttonExportLibraryMeasure, &QPushButton::clicked, this, &MeasurementLibraryUiHandler::onExcelExportButtonClicked);
     connect(ui->buttonColumnsConfig, &QPushButton::clicked, this, &MeasurementLibraryUiHandler::onColumnsConfigButtonClicked);
+
+    connect(ui->buttonCatalogSamples, &QPushButton::clicked, this, &MeasurementLibraryUiHandler::onCatalogSamplesButtonClicked);
+    connect(ui->buttonCatalogFluids, &QPushButton::clicked, this, &MeasurementLibraryUiHandler::onCatalogFluidsButtonClicked);
 }
 
 void MeasurementLibraryUiHandler::connectMeasurementTreeSignals()

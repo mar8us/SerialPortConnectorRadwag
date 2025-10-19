@@ -177,7 +177,7 @@ bool MeasurementProcessUiHandler::onEnterStage(MeasurementStages::Stage stage, M
         default:
             break;
     }
-
+    emit activeMeasurementChanged(radwagMeasureControler.hasActiveMeasurement());
     return true;
 }
 
@@ -489,6 +489,7 @@ void MeasurementProcessUiHandler::onResetMeasureButtonClicked()
 
     measureStateMachine->goToStage(MeasurementStages::Stage::StartMeasure, true);
     radwagMeasureControler.endMeasure();
+    emit activeMeasurementChanged(false);
     clearSecondMeasurePages();
     clearTripleMeasurePages();
     ui->frame->setVisible(false);
@@ -1917,6 +1918,7 @@ void MeasurementProcessUiHandler::onNewMeasure()
         return;
 
     radwagMeasureControler.beginNewMeasure();
+    emit activeMeasurementChanged(true);
     if(!checkGuidePrepareWorkstation())
         measureStateMachine->goToStage(MeasurementStages::Stage::StartMeasure, true);
     else
@@ -1929,6 +1931,7 @@ void MeasurementProcessUiHandler::onReplyMeasure(const std::shared_ptr<const Mea
         return;
 
     radwagMeasureControler.replyMeasure(sourceMeasure);
+    emit activeMeasurementChanged(true);
     ui->comboBoxSampleSelection->blockSignals(true);
     if(!checkGuidePrepareWorkstation())
         measureStateMachine->goToStage(MeasurementStages::Stage::StartMeasure, true);
@@ -1944,6 +1947,8 @@ void MeasurementProcessUiHandler::onContinueMeasure(const std::shared_ptr<const 
 
     if(!radwagMeasureControler.continueMeasure(sourceMeasure))
         return;
+
+    emit activeMeasurementChanged(true);
 
     MeasurementType type = radwagMeasureControler.getType();
     measureStateMachine->setMeasurementType(type);

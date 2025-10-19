@@ -25,11 +25,14 @@ public:
     explicit MeasurementLibraryUiHandler(MainWindow *mainWindow,  HydrostaticDataHolder &dataHolder, QObject *parent = nullptr);
 
     void initialize();
+    void updateCatalogButtonsState(bool hasActiveMeasurement);
 
 signals:
     void newMeasure();
     void replySelectedMeasure(const std::shared_ptr<const Measurement> &sourceMeasure);
     void continueSelectedMeasure(const std::shared_ptr<const Measurement> &sourceMeasure);
+    void openSamplesCatalog();
+    void openFluidsCatalog();
 
 public slots:
     void onExportExcelMeasures(const QList<const Measurement*>& measures);
@@ -48,6 +51,9 @@ private slots:
     void onLibraryShowAnalysisMeasuresButtonClicked();
     void onExcelExportButtonClicked();
     void onColumnsConfigButtonClicked(bool checked);
+
+    void onCatalogSamplesButtonClicked();
+    void onCatalogFluidsButtonClicked();
 
     void onSelectionChanged(const QItemSelection &selected, const QItemSelection &deselected);
     void onMeasurementDoubleClicked(const QModelIndex& index);

@@ -41,4 +41,8 @@ void HydrostaticMeasurementModule::connectSignals()
     connect(&libraryUiHandler, &MeasurementLibraryUiHandler::replySelectedMeasure, &processUiHandler, &MeasurementProcessUiHandler::onReplyMeasure);
     connect(&libraryUiHandler, &MeasurementLibraryUiHandler::continueSelectedMeasure, &processUiHandler, &MeasurementProcessUiHandler::onContinueMeasure);
     connect(&processUiHandler, &MeasurementProcessUiHandler::exportMeasuresExcel, &libraryUiHandler, &MeasurementLibraryUiHandler::onExportExcelMeasures);
+
+    connect(&libraryUiHandler, &MeasurementLibraryUiHandler::openSamplesCatalog, &processUiHandler, &MeasurementProcessUiHandler::onButtonSeriesOnClicked);
+    connect(&libraryUiHandler, &MeasurementLibraryUiHandler::openFluidsCatalog, &processUiHandler, &MeasurementProcessUiHandler::buttonTableFluidsOnClicked);
+    connect(&processUiHandler, &MeasurementProcessUiHandler::activeMeasurementChanged, &libraryUiHandler, &MeasurementLibraryUiHandler::updateCatalogButtonsState);
 }
