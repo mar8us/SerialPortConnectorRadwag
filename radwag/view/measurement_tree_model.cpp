@@ -135,6 +135,9 @@ QVariant MeasurementTreeModel::data(const QModelIndex& index, int role) const
             case ApparetDenisty:
                 return results.getApparentDensity();
 
+            case RelativeDensity:
+                return results.getRelativeDensity();
+
             case TotalPorosity:
                 return results.getTotalPorosity();
 
@@ -225,6 +228,9 @@ QVariant MeasurementTreeModel::headerData(int section, Qt::Orientation orientati
 
             case ApparetDenisty:
                 return tr("Gęstość pozorna [g]");
+
+            case RelativeDensity:
+                return tr("Gęstość względna [%]");
 
             case TotalPorosity:
                 return tr("Porowatość całkowita [%]");
