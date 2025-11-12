@@ -29,6 +29,7 @@ Resetting everything helps to unify styles across different operating systems
   border-style: none;
   border-image: none;
   outline: 0;
+  font-size: 15px;
 }
 
 /* specific reset for elements inside QToolBar */
@@ -2223,4 +2224,12 @@ QLabel[active="true"] {
 QLabel[radwagActive="true"] {
     font-weight: bold;
     color: #FFAA00; /* np. inny kolor dla etapu radwaga */
+}
+
+QScrollArea#scrollAreaLibrary {
+    border: none;
+}
+
+QScrollArea#scrollArea {
+    border: none;
 }
