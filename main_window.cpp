@@ -6,6 +6,7 @@
 #include "sieveAnalysis/sieve_analysis_stages.h"
 #include "tooltip/tooltip_manager.h"
 #include "app_core.h"
+#include "utils.h"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -177,11 +178,13 @@ void MainWindow::resizeAllTablesColumnsToContents()
 
 void MainWindow::setIcons()
 {
-    defaultSettingsIcon = QIcon(":/icons/settings_white.png");
+    bool isDark = theme_utils::detectSystemThemeMode() == theme_utils::ThemeMode::Dark;
+
+    defaultSettingsIcon = isDark ? QIcon(":/icons/settings_white.png") : QIcon(":/icons/settings_dark.png");
     activeSettingsIcon = QIcon(":/icons/settings_selected.png");
-    defaultRadwagIcon = QIcon(":/icons/balance_white.png");
+    defaultRadwagIcon = isDark ? QIcon(":/icons/balance_white.png") : QIcon(":/icons/balance_dark.png");
     activeRadwagIcon = QIcon(":/icons/balance_selected.png");
-    defaultSieveIcon = QIcon(":/icons/funnel_white.png");
+    defaultSieveIcon = isDark ? QIcon(":/icons/funnel_white.png") : QIcon(":/icons/funnel_dark.png");
     activeSieveIcon = QIcon(":/icons/funnel_selected.png");
 }
 
