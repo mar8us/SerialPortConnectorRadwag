@@ -122,6 +122,23 @@ public:
     bool canCalculate() const override;
 };
 
+// =============================================================================
+// RelativeDensityAnalysisResult
+// =============================================================================
+
+class RelativeDensityAnalysisResult : public BaseAnalysisResult
+{
+public:
+    RelativeDensityAnalysisResult();
+    RelativeDensityAnalysisResult(const std::vector<std::shared_ptr<const Measurement>>& measurements, double confidenceLevel);
+
+    QString getFinalResult() const override;
+    QString getUnitSymbol() const override;
+    QString getAnalysisTypeName() const override;
+    virtual void extractValues() override;
+    bool canCalculate() const override;
+};
+
 
 // =============================================================================
 // DryMassAnalysisResult
@@ -189,6 +206,7 @@ public:
 
     const DensityAnalysisResult& getDensityResult() const;
     const PorosityAnalysisResult& getPorosityResult() const;
+    const RelativeDensityAnalysisResult& getRelativeDensityResult() const;
     const DryMassAnalysisResult& getDryMassResult() const;
     const WetMassAnalysisResult& getWetMassResult() const;
     const SaturatedMassAnalysisResult& getSaturatedMassResult() const;
@@ -198,6 +216,7 @@ public:
 
     bool calculateDensityAnalysis();
     bool calculatePorosityAnalysis();
+    bool calculateRelativeDensityAnalysis();
     bool calculateMassAnalyses();
     bool calculateCompleteAnalysis();
 
@@ -223,6 +242,7 @@ private:
 
     DensityAnalysisResult densityResult;
     PorosityAnalysisResult porosityResult;
+    RelativeDensityAnalysisResult relativeDensityResult;
     DryMassAnalysisResult dryMassResult;
     WetMassAnalysisResult wetMassResult;
     SaturatedMassAnalysisResult saturatedMassResult;

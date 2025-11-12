@@ -28,6 +28,7 @@ void MeasurementTableModel::setAnalysisResults(const AnalysisResult& results)
     nodes.push_back(std::make_unique<ResultNode>(&results.getWetMassResult(), "Masa w cieczy [g]"));
     nodes.push_back(std::make_unique<ResultNode>(&results.getSaturatedMassResult(), "Masa nasycona [g]"));
     nodes.push_back(std::make_unique<ResultNode>(&results.getDensityResult(), "Gęstość pozorna [g/cm³]"));
+    nodes.push_back(std::make_unique<ResultNode>(&results.getRelativeDensityResult(), "Gęstość względna [%]"));
     nodes.push_back(std::make_unique<ResultNode>(&results.getPorosityResult(), "Porowatość całkowita [%]"));
 
     endResetModel();

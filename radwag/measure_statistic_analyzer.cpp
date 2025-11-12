@@ -338,6 +338,49 @@ bool PorosityAnalysisResult::canCalculate() const
 }
 
 // =============================================================================
+// RelativeDensityAnalysisResult Implementation
+// =============================================================================
+
+RelativeDensityAnalysisResult::RelativeDensityAnalysisResult()
+    : BaseAnalysisResult()
+{
+    analysisType = AnalysisType::Density;
+}
+
+RelativeDensityAnalysisResult::RelativeDensityAnalysisResult(const std::vector<std::shared_ptr<const Measurement>>& measurements, double confidenceLevel)
+    : BaseAnalysisResult(measurements, AnalysisType::Density, confidenceLevel)
+{
+
+}
+
+QString RelativeDensityAnalysisResult::getFinalResult() const
+{
+    return QString("%1 ± %2 %").arg(mean, 0, 'f', 2).arg(uncertainty, 0, 'f', 2);
+}
+
+QString RelativeDensityAnalysisResult::getUnitSymbol() const
+{
+    return "%";
+}
+
+QString RelativeDensityAnalysisResult::getAnalysisTypeName() const
+{
+    return "Gęstość względna";
+}
+
+void RelativeDensityAnalysisResult::extractValues()
+{
+    for(const auto& measure : measurements)
+        if(measure->hasResults())
+            individualValues.push_back(measure->getResults().getRelativeDensity());
+}
+
+bool RelativeDensityAnalysisResult::canCalculate() const
+{
+    return StatisticalAnalyzer::validateGroupCriteria(measurements, AnalysisType::Density);
+}
+
+// =============================================================================
 // DryMassAnalysisResult
 // =============================================================================
 
@@ -503,6 +546,7 @@ void AnalysisResult::setMeasurements(const std::vector<std::shared_ptr<const Mea
 
     densityResult = DensityAnalysisResult();
     porosityResult = PorosityAnalysisResult();
+    relativeDensityResult = RelativeDensityAnalysisResult();
 }
 
 const DensityAnalysisResult& AnalysisResult::getDensityResult() const
@@ -513,6 +557,11 @@ const DensityAnalysisResult& AnalysisResult::getDensityResult() const
 const PorosityAnalysisResult& AnalysisResult::getPorosityResult() const
 {
     return porosityResult;
+}
+
+const RelativeDensityAnalysisResult& AnalysisResult::getRelativeDensityResult() const
+{
+    return relativeDensityResult;
 }
 
 const DryMassAnalysisResult& AnalysisResult::getDryMassResult() const
@@ -556,6 +605,12 @@ bool AnalysisResult::calculatePorosityAnalysis()
     return porosityResult.calculate();
 }
 
+bool AnalysisResult::calculateRelativeDensityAnalysis()
+{
+    relativeDensityResult = RelativeDensityAnalysisResult(measurements, confidenceLevel);
+    return relativeDensityResult.calculate();
+}
+
 bool AnalysisResult::calculateMassAnalyses()
 {
     dryMassResult = DryMassAnalysisResult(measurements, confidenceLevel);
@@ -570,8 +625,9 @@ bool AnalysisResult::calculateCompleteAnalysis()
     bool massSuccess = calculateMassAnalyses();
     bool densitySuccess = calculateDensityAnalysis();
     bool porositySuccess = calculatePorosityAnalysis();
+    bool relativeDensitySuccess = calculateRelativeDensityAnalysis();
 
-    return massSuccess && densitySuccess && porositySuccess;
+    return massSuccess && densitySuccess && porositySuccess && relativeDensitySuccess;
 }
 
 QDateTime AnalysisResult::getAnalysisDate() const
@@ -600,17 +656,17 @@ int AnalysisResult::getMeasuresCount() const
 
 bool AnalysisResult::isValid() const
 {
-    return canCalculate() && densityResult.isValid() && porosityResult.isValid();
+    return canCalculate() && densityResult.isValid() && porosityResult.isValid() && relativeDensityResult.isValid();
 }
 
 bool AnalysisResult::isComplete() const
 {
-    return densityResult.isValid() && porosityResult.isValid() && dryMassResult.isValid() && wetMassResult.isValid() && saturatedMassResult.isValid();
+    return densityResult.isValid() && porosityResult.isValid() && relativeDensityResult.isValid() && dryMassResult.isValid() && wetMassResult.isValid() && saturatedMassResult.isValid();
 }
 
 bool AnalysisResult::canCalculate() const
 {
-    return densityResult.canCalculate() && porosityResult.canCalculate() && dryMassResult.canCalculate() && wetMassResult.canCalculate() && saturatedMassResult.canCalculate();
+    return densityResult.canCalculate() && porosityResult.canCalculate() && relativeDensityResult.canCalculate() && dryMassResult.canCalculate() && wetMassResult.canCalculate() && saturatedMassResult.canCalculate();
 }
 
 QJsonObject AnalysisResult::toJson() const
