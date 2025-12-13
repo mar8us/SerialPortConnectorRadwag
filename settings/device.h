@@ -6,6 +6,14 @@
 #include <QtSerialPort/QSerialPort>
 #include <QUuid>
 
+enum class DeviceType
+{
+    None,
+    RadwagScaleAC220,
+    RadwagScaleAC350,
+    Own
+};
+
 struct DeviceCommand
 {
     DeviceCommand(const QString &description, const QString &command)
@@ -15,10 +23,25 @@ struct DeviceCommand
     QString command;
 };
 
+static const QList<DeviceCommand> radwagCommands =
+{
+    DeviceCommand("Tarowanie", "T\r\n"),
+    DeviceCommand("Zerowanie", "Z\r\n"),
+    DeviceCommand("Pomiar natychmiastowy", "SI\r\n"),
+    DeviceCommand("Pomiar stabilny", "S\r\n"),
+    DeviceCommand("Pomiar stabilny w aktualnej jednostce", "SU\r\n"),
+    DeviceCommand("Pomiar natychmiastowy w aktualnej jednostce", "SUI\r\n"),
+    DeviceCommand("Rozpocznij transmisję ciągłą", "C1\r\n"),
+    DeviceCommand("Zatrzymaj transmisję ciągłą", "C0\r\n"),
+    DeviceCommand("Rozpocznij transmisję ciągłą w aktualnej jednostce", "CU1\r\n"),
+    DeviceCommand("Zatrzymaj transmisję ciągłą w aktualnej jednostce", "CU0\r\n")
+};
+
 class Device
 {
 public:
-    explicit Device(const QString &name,
+    explicit Device(DeviceType deviceType,
+                    const QString &name,
                     const QSerialPort::BaudRate baudRate = QSerialPort::Baud9600,
                     const QSerialPort::DataBits dataBits = QSerialPort::Data8,
                     const QSerialPort::Parity parity = QSerialPort::NoParity,
@@ -28,6 +51,7 @@ public:
 
     Device(const Device& source);
 
+    DeviceType getDeviceType() const;
     QString getName() const;
     QSerialPort::BaudRate getBaudRate() const;
     QSerialPort::DataBits getDataBits() const;
@@ -37,6 +61,7 @@ public:
     const QList<DeviceCommand>& getCommands() const;
     QString getGuid() const;
 
+    void setDeviceType(DeviceType type);
     void setName(const QString& value);
     void setBaudRate(const QSerialPort::BaudRate value);
     void setDataBits(const QSerialPort::DataBits value);
@@ -53,6 +78,7 @@ private:
     QSerialPort::StopBits stopBits;
     QList<DeviceCommand> commands;
     QUuid guid;
+    DeviceType deviceType;
 };
 
 // Q_DECLARE_METATYPE(std::shared_ptr<const Device>)

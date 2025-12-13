@@ -16,6 +16,7 @@ public:
         DeviceAdded,
         DeviceEdited,
         DeviceRemoved,
+        DeviceNoneType,
         DeviceNameIsEmpty,
         DeviceNameIsNotUnique,
         DeviceNotFound,
@@ -35,6 +36,7 @@ public:
     int getDeviceIndex(const QString &name) const;
 
     bool isUniqueDeviceName(const QString &name) const;
+    void recreateDevicesMap();
 
     int rowCount(const QModelIndex &parent = QModelIndex()) const override;
     QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;

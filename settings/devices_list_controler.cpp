@@ -11,7 +11,7 @@ DeviceControler::DeviceControler(DeviceListModel &deviceListModel, QWidget *pare
 
 const std::shared_ptr<const Device> DeviceControler::beginNew()
 {
-    auto newDevice = std::make_shared<Device>(QString());
+    auto newDevice = std::make_shared<Device>(DeviceType::None, QString());
     auto dialog = std::make_unique<DeviceForm>(newDevice, parent);
 
     bool result = false;
@@ -61,19 +61,6 @@ bool DeviceControler::beginRemove(const std::shared_ptr<const Device> &device)
     return handleModelOperationResult(deviceListModel.removeDevice(device->getName()), NULL);
 }
 
-std::shared_ptr<const Device> DeviceControler::getActiveDevice()
-{
-    return activeDevice;
-}
-
-bool DeviceControler::setActiveDevice(const std::shared_ptr<const Device>& newActiveDevice)
-{
-    if(!newActiveDevice || activeDevice == newActiveDevice)
-        return false;
-    activeDevice = newActiveDevice;
-    return true;
-}
-
 bool DeviceControler::handleModelOperationResult(DeviceListModel::OperationResult result, const std::shared_ptr<const Device> &device)
 {
     switch(result)
@@ -89,6 +76,10 @@ bool DeviceControler::handleModelOperationResult(DeviceListModel::OperationResul
 
         case DeviceListModel::OperationResult::NullDevice:
             emit operationFailed("Urządzenie jest puste!");
+            return false;
+
+        case DeviceListModel::OperationResult::DeviceNoneType:
+            emit operationFailed("Typ urządzenia nie może być puste!");
             return false;
 
         case DeviceListModel::OperationResult::DeviceNameIsEmpty:

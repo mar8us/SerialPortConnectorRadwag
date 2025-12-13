@@ -1,13 +1,15 @@
 #include "device.h"
 
-Device::Device(const QString &name,
+Device::Device(DeviceType deviceType,
+               const QString &name,
                QSerialPort::BaudRate baudRate,
                QSerialPort::DataBits dataBits,
                QSerialPort::Parity parity,
                QSerialPort::StopBits stopBits,
                const QList<DeviceCommand>& deviceCommands,
                const std::optional<QUuid> guid)
-    : name(name)
+    : deviceType(deviceType)
+    , name(name)
     , baudRate(baudRate)
     , dataBits(dataBits)
     , parity(parity)
@@ -19,7 +21,8 @@ Device::Device(const QString &name,
 }
 
 Device::Device(const Device& device)
-    : name(device.name)
+    : deviceType(device.deviceType)
+    , name(device.name)
     , baudRate(device.baudRate)
     , dataBits(device.dataBits)
     , parity(device.parity)
@@ -28,6 +31,11 @@ Device::Device(const Device& device)
     , guid(device.guid)
 {
 
+}
+
+DeviceType Device::getDeviceType() const
+{
+    return deviceType;
 }
 
 QString Device::getName() const
@@ -82,6 +90,11 @@ const QList<DeviceCommand>& Device::getCommands() const
 QString Device::getGuid() const
 {
     return guid.toString(QUuid::WithoutBraces);
+}
+
+void Device::setDeviceType(DeviceType value)
+{
+    deviceType = value;
 }
 
 void Device::setName(const QString& value)

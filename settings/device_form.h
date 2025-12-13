@@ -27,6 +27,8 @@ private slots:
     void onAcceptButtonClicked();
     void onCancelButtonClicked();
 
+    void onComboTypeChanged();
+    void setEnableDeviceCommandButtons(bool enabled);
     void onAddCommandButtonClicked();
     void onRemoveCommandsButtonClicked();
     void onItemSelectionChangedCommandTableWidget();
@@ -39,6 +41,8 @@ private:
     void initControls();
     void connectButtons();
     void setButtonsState();
+    bool canEditCommands();
+    void fillDeviceTypeCombo();
     void fillBaudRateCombo();
     void fillDataBitsCombo();
     void fillStopBitsCombo();

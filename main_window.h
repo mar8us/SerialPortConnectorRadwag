@@ -2,66 +2,65 @@
 #define MAIN_WINDOW_H
 
 #include <QMainWindow>
-#include "settings/device.h"
-#include "settings/devices_list_model.h"
-#include "settings/devices_list_controler.h"
+#include "main_window_ui_handlers/devices_manager_module/devices_manager_ui_handler.h"
+#include "main_window_ui_handlers/sieve_analysis_module/sieve_analysis_module.h"
+#include "radwag/radwag_measure.h"
 
-QT_BEGIN_NAMESPACE
-namespace Ui {
-class MainWindow;
-}
-QT_END_NAMESPACE
+#include "ui_main_window.h"
 
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
-
 public:
-    enum class MeasurementStage
-    {
-        Data = 0,
-        AirMeasure,
-        PrepareHydro,
-        HydroMeasure,
-        AirEndMeasure
-    };
-    Q_ENUM(MeasurementStage)
-
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
-signals:
+    Ui::MainWindow *getUi() const;
+    void navigateToToolBoxPage(QWidget* page);
+
+    void showWarning(const QString& title, const QString& message);
+    void showInfo(const QString& title, const QString& message);
+    bool showQuestion(const QString& title, const QString& message);
+
+    QString showSaveFileDialog(const QString& titleDialog, const QString& suggestedName, const QString& filters);
+
+    enum class MessageResult
+    {
+        Yes,
+        No,
+        Cancel
+    };
+
+    MessageResult showQuestionWithCancel(const QString& title, const QString& message);
 
 private slots:
-    void onAddDeviceButtonClicked();
-    void onEditDeviceButtonClicked();
-    void onRemoveDeviceButtonClicked();
+    void onConnectResult(bool connected);
     void onDeviceComboSelectionChanged();
 
-    void navigateToToolBoxPage(QWidget* page);
-    void goToPreviousMeasureStage();
-    void goToNextMeasureStage();
-    void updateActionIcons(int index);
-
+    void onMainPageChanged(int index);
 private:
-    std::shared_ptr<const Device> getSelectedDevice();
+    void updateActionIcons(int index);
+    void updateConnectonLabelsStatusBar(bool connectionStatus);
 
     void initControls();
-    void connectButtons();
-    void updateStageLabels();
-    void setProperty();
+    void resizeAllTablesColumnsToContents();
     void setIcons();
-    void updateDevicesComboConnection();
+    void setPalette();
+    void connectButtons();
+    void connectMainNavButtons();
+    void connectScaleSignals();
 
     Ui::MainWindow *ui;
-    DeviceListModel devicesListModel;
-    DeviceControler devicesListControler;
+
+    DevicesManagerUiHandler deviceManagerUiHandler;
+    HydrostaticMeasurementModule hydrostaticMeasurementModule;
+    SieveAnalysisModule sieveAnalysisModule;
 
     QIcon defaultSettingsIcon;
     QIcon activeSettingsIcon;
     QIcon defaultRadwagIcon;
     QIcon activeRadwagIcon;
-
-    static inline const QColor ACTIVE_LABEL_COLOR = QColor(0, 0, 255);
+    QIcon defaultSieveIcon;
+    QIcon activeSieveIcon;
 };
-#endif // MAIN_WINDOW_H
+#endif

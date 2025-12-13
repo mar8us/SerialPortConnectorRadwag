@@ -2,7 +2,7 @@
 
 QString DeviceStorage::getStoragePath()
 {
-    QString path = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
+    QString path = QStandardPaths::writableLocation(QStandardPaths::AppLocalDataLocation);
     QDir dir(path);
 
     if(!dir.exists() || !dir.mkpath("."))
@@ -27,6 +27,7 @@ bool DeviceStorage::saveDevicesToFile(const QList<std::shared_ptr<const Device>>
     for(const auto& device : devices)
     {
         QJsonObject obj;
+        obj["deviceType"] = static_cast<int>(device->getDeviceType());
         obj["name"] = device->getName();
         obj["baudRate"] = device->getBaudRate();
         obj["dataBits"] = device->getDataBits();
@@ -82,13 +83,14 @@ QList<std::shared_ptr<const Device>> DeviceStorage::loadDevicesFromFile()
 
         QJsonObject obj = value.toObject();
         QList<DeviceCommand> commands = parseCommands(obj);
+        DeviceType deviceType = static_cast<DeviceType>(obj["deviceType"].toInt());
         QString name = obj["name"].toString();
         QSerialPort::BaudRate baudRate = static_cast<QSerialPort::BaudRate>(obj["baudRate"].toInt());
         QSerialPort::DataBits dataBits = static_cast<QSerialPort::DataBits>(obj["dataBits"].toInt());
         QSerialPort::Parity parity = static_cast<QSerialPort::Parity>(obj["parity"].toInt());
         QSerialPort::StopBits stopBits = static_cast<QSerialPort::StopBits>(obj["stopBits"].toInt());
 
-        devices.append(std::make_shared<Device>(name, baudRate, dataBits, parity, stopBits, commands));
+        devices.append(std::make_shared<Device>(deviceType, name, baudRate, dataBits, parity, stopBits, commands));
     }
     return devices;
 }
