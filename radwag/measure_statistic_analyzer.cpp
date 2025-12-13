@@ -338,7 +338,7 @@ bool PorosityAnalysisResult::canCalculate() const
 }
 
 // =============================================================================
-// RelativeDensityAnalysisResult Implementation
+// RelativeDensityAnalysisResult
 // =============================================================================
 
 RelativeDensityAnalysisResult::RelativeDensityAnalysisResult()

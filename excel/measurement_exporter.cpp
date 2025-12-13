@@ -347,6 +347,11 @@ SectionRange MeasurementExporter::exportFullStatisticalTable(const AnalysisResul
         resultRows.append({"Masa nasycona [g]", &analysisResult->getSaturatedMassResult()});
     if(analysisResult->getDensityResult().isValid())
         resultRows.append({"Gęstość pozorna [g/cm³]", &analysisResult->getDensityResult()});
+
+    const auto &relativeDensityResult = analysisResult->getRelativeDensityResult();
+    if(relativeDensityResult.isValid())
+        resultRows.append({QString("Gęstość względna [%1]").arg(relativeDensityResult.getUnitSymbol()), &relativeDensityResult});
+
     if(analysisResult->getPorosityResult().isValid())
         resultRows.append({"Porowatość całkowita [%]", &analysisResult->getPorosityResult()});
 
@@ -387,6 +392,9 @@ SectionRange MeasurementExporter::exportFullStatisticalTable(const AnalysisResul
         rowData << row.result->getFinalResult();
 
         int rowIndex = statisticalTable.addRow(rowData);
+
+        QString name = row.result->getAnalysisTypeName();
+
         dataRowIndices.append(rowIndex);
     }
 
@@ -403,11 +411,15 @@ SectionRange MeasurementExporter::exportFullStatisticalTable(const AnalysisResul
         int rowIndex = dataRowIndices[i];
         const auto& result = resultRows[i].result;
         const auto& individualValues = result->getIndividualValues();
+        QString name = result->getAnalysisTypeName();
 
         statisticalTable.setCellFormat(rowIndex, 0, parameterFormat);
 
-        for (int col = 1; col <= individualValues.size(); ++col)
-            statisticalTable.setCellFormat(rowIndex, col, getDecimalFormat(4));
+        for(int col = 1; col <= individualValues.size(); ++col)
+            if(result->getUnitSymbol() == "%")
+                statisticalTable.setCellFormat(rowIndex, col, getPercentageFormat(2));
+            else
+                statisticalTable.setCellFormat(rowIndex, col, getDecimalFormat(4));
 
         int statStartCol = 1 + individualValues.size();
         statisticalTable.setCellFormat(rowIndex, statStartCol, getDecimalFormat(4));
