@@ -20,6 +20,7 @@ public:
         Material,
         Fluid,
         ApparetDenisty,
+        RelativeDensity,
         TotalPorosity,
         Status,
         Author,
